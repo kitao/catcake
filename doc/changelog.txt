@@ -1,0 +1,237 @@
+Changes in 0.9.0 (released on ??? ??, 2009)
+----------------------------------------------------------------
+
+- Renamed getLastDesc to getLastDescendant
+- Removed PyPogolyn
+-
+
+
+Changes in 0.8.0 (released on August 15, 2009)
+----------------------------------------------------------------
+
+- Fixed PG_NO_THROW_EXCEPTION build option
+- Renamed all the methods along the new coding-rule
+- Added pgMotData, the motion data class
+- Added pgMot, the motion-playing class
+- Added pgUtil::loadPixelArtModel and pgUtil::loadPixelArtModelAs
+- Added the sample #12
+- Stopped support for iPhone OS 1.x
+- Renamed the classes of all the samples
+- Removed pgKeyMgr::KEY_CAPSLOCK and pgKeyMgr::KEY_NUMLOCK
+- Changed the way to handle key-input for Linux
+- Upgraded Doxygen to version 1.5.8
+
+
+Changes in 0.7.0 (released on February 28, 2009)
+----------------------------------------------------------------
+
+- Added support for iPhone toolchain 2.0 (contributed by Takuro Noda)
+- Upgraded FreeType to version 2.3.8
+- Upgraded libpng to version 1.2.35
+- Added support for playing sounds on Linux (contributed by Akihiro Komori)
+- Added the sample #11
+- Changed pgReadLittleEndian and pgWriteLittleEndian
+- Changed the sample #10
+- Changed pgSndMgr and the sample #6
+- Fixed a memory leak in pgMemMgr
+- Added pgID_ macro
+- Changed pgID
+- Fixed the way to process events for Win32
+- Fixed pgDraw::~pgDraw
+- Added pgTex::GetProxyTextureID and pgTex::SetProxyTextureID
+- Added pgstyle, a c++ code beautifier for Pogolyn
+- Added pgCol::operator/ and pgCol::operator/=
+- Added pgUtil::CalcNormalAsTriangles
+- Removed pgRend_Light::CalcNormalAsTriangleStrip
+- Changed pgRend_Light::CalcNormalAsTriangles
+- Added pgUtil::Import3DS and pgUtil::Import3DSAs
+- Added pgMdl, the model-drawing class
+- Added pgMdlData, the model data class
+- Added pgScr::GetFirstDrawN and pgScr::GetLastDrawN
+- Added pgDraw::GetType
+
+
+Changes in 0.6.2 (released on December 20, 2008)
+----------------------------------------------------------------
+
+- Changed pgSysMgr::FramebufferSizeChangeP
+- Changed pgDbgMgr::DumpTask
+- Added pgSysMgr::UpdateForSystem
+- Renamed pgDrawMgr::SetRenderForSystem to pgDrawMgr::SetRender
+- Renamed pgDrawMgr::RenderPForSystem to pgDrawMgr::RenderP
+- Renamed GetExecuteionUsecTime to GetExecuteUsecTime in pgTask and pgTaskMgr
+- Added GetRenderUsecTime and MeasureRenderTimeForSystem to pgTaskMgr
+- Changed pgTask::UpdateForSystem
+- Renamed pgSndMgr::CreateAfterTaskAndRes to pgSndMgr::CreateAfterRes
+- Renamed pgDrawMgr::CreateAfterTaskAndRes to pgDrawMgr::CreateAfterRes
+- Renamed pgResMgr::CreateAfterSys to pgResMgr::CreateAfterTask
+- Changed pgDrawMgr::RenderForSystem
+- Added pgTree::GetLastDesc
+- Added thread-related methods to pgSysMgr
+- Changed the sample #5 for iPhone
+- Added pgPrim::ShareDataP and pgSprt::ShareDataP
+- Changed the sample #9
+- Renamed pgCdt::Cinf to pgCdt::CdtInfo
+- Added another two pgSprt::Init-s
+- Added an another pgRend_Shader::Init
+- Added an another pgRend_Light::Init
+- Added an another pgRend::Init
+- Changed pgPrim::ReallocData
+- Added another two pgPrim::Init-s
+- Removed CopyAll of the pgDraw-related classes
+- Changed pgMat::ToLocalOf and pgMat::ToLocalOf_NoTrans
+- Fixed the methods which use the size of the framebuffer
+
+
+Changes in 0.6.1 (released on November 15, 2008)
+----------------------------------------------------------------
+
+- Changed the color of a primitive of the sample #8
+- Fixed pgRend_Light
+- Renamed pgLts::PARA_LIGHT_NUM to pgLts::MAX_PARA_LIGHT_NUM
+- Added pgLts::MAX_NEAR_LIGHT_NUM
+- Changed the frame of the debug console
+- Fixed a bug with multi-touch handling for iPhone
+- Changed the makefiles for iPhone
+- Changed pgScr::UpdateScreenTexture
+- Fixed a bug with pgSysMgr::FLAG_DISABLE_SHADER
+- Fixed pgScr::CalcVisibleVector
+
+
+Changes in 0.6.0 (released on November 3, 2008)
+----------------------------------------------------------------
+
+- Added the sample #10
+- Added pgDbgMgr::DumpConfig
+- Added pgScr::CalcVisibleVector
+- Upgraded FreeType to version 2.3.7
+- Upgraded libpng to version 1.2.32
+- Changed the way to control the frame rate
+- Added support for multi-touch on iPhone
+- Added pgConf, the configuration file parser module
+- Changed the window size of the sample #9
+- Changed the hash size of pgResMgr
+- Added special tap commands for debug
+- Removed GetModifierKey and SetModifierKey of pgKeyMgr
+- Changed pogolyn.rc and resource.h for VS2008 Express
+- Changed the makefiles for MinGW not to open a console window
+- Added mothods to pgKeyMgr for managing extra values
+- Added extra keys to pgKeyMgr
+- Changed pgSysMgr::OpenFile and added pgSysMgr::WriteFile
+- Updated PyPogolyn
+- Added pgRealloc and pgMemMgr::ReallocForSystem
+- Renamed pypg to pypogolyn
+- Changed pgDelete, pgDeleteArray and pgFree
+
+
+Changes in 0.5.0 (released on October 1, 2008)
+----------------------------------------------------------------
+
+- Changed the types of arguments of pgUtil::ReadPNGInfo
+- Added the sample #9
+- Changed the framebuffer setting for Linux
+- Fixed a bug with screen setting of pgDbgMgr
+- Added pgSysMgr::FLAG_DISABLE_SHADER
+- Added pgDrawMgr::HasLightSetP
+- Added pgDrawMgr::HasShaderP
+- Added pgDrawMgr::HasTextureP
+- Added pgDrawMgr::HasScreenP
+- Added pgResMgr::HasResourceP
+- Changed pgShd, pgRend_Shader and the sample #7
+- Changed pgDrawMgr::NewShader
+- Added the default shader for pgPrim and pgSprt
+- Fixed a bug of the sample #6
+- Added pgCdt, the collision detection module
+- Changed pgDbgMgr::DrawSphere
+- Changed the way to control the frame rate
+- Changed the binary names of all the samples for Win32 debug build
+- Fixed pgTaskMgr::ResetFrameSkip
+- Fixed a bug with frame rate adjustment for iPhone
+
+
+Changes in 0.4.0 (released on August 13, 2008)
+----------------------------------------------------------------
+
+- Deleted the needless defines of each makefile
+- Fixed a bug with z-order of 2D screen
+- New samples (#7 and #8)
+- Added pgDbgMgr::DumpShader
+- Added pgRend_Light, the lighting plug-in class for pgPrim
+- Added pgRend_Shader, the shader plug-in class for pgPrim
+- Added some methods to pgDrawMgr for pgShd
+- Added pgShd, the shader class
+- Fixed texture memory leak in pgTex::~pgTex
+- Fixed pgType to manage bool type correctly
+- Deleted pgTex::UploadImageForSystem
+- Added pgDrawMgr::DeleteAllVramObjForSystem
+- Deleted pgDrawMgr::DeleteAllTexObjForSystem
+- Added pgRend, the plug-in renderer class for pgPrim
+- Deleted the needless copy constructor and operator= of pgSprt
+- Deleted the needless copy constructor and operator= of pgPrim
+- Deleted the needless copy constructor and operator= of pgNode
+- Added pgDrawMgr::ShaderAvailableP
+- Added pgPrim::MODE_RENDERER
+- Added some methods to pgDrawMgr for pgLts and pgLit
+- Added pgLts and pgLit, the classes for lighting
+
+
+Changes in 0.2.5 (released on July 12, 2008)
+----------------------------------------------------------------
+
+- Changed the types of primitives in drawing pgSprt
+- Changed the algorithm of pgSprt::ReallocData
+- Changed the algorithm of pgPrim::ReallocData
+- Changed the algorithm of pgSprt::CopyAll
+- Changed the algorithm of pgPrim::CopyAll
+- Changed the orders of four vertices set in pgPrim::SetRect
+- Fixed a bug with handling the active flag of pgTask
+- Improved the performance of drawing texture
+- Changed a compile option for Win32
+- Fixed a bug with handling the visible flag of pgDraw
+- Upgraded FreeType to version 2.3.6
+- Changed a compile option of each makefile
+- New tool: PyPg, a Python binding for Pogolyn
+- Changed the type of POGOLYN_VERSION to s32
+- Added support for MinGW
+- Upgraded libpng to version 1.2.29
+
+
+Changes in 0.2.0 (released on May 31, 2008)
+----------------------------------------------------------------
+
+- Changed the way to control the frame rate
+- Added the API reference of pgGen
+- Added support for iPhone Open SDK roughly
+- Added support for i386 Linux roughly
+- Added PG_NO_THROW_EXCEPTION build option
+- Renamed pgExitPogolyn to pgEndPogolyn
+- Added pgTry and pgCatch
+- Upgraded libpng to version 1.2.28
+- Changed pgDbgMgr::DumpMemory
+- Changed pgKeyMgr::KEY_TYPE
+- Added pgSysMgr::ChangeDirectoryToProcessDirectory
+- Changed all the samples for Win32 to use the Pogolyn icon
+- Added the Pogolyn icon data
+- Changed the algorithm of pgMap::GetN
+- Changed the test codes for VS2008
+- Changed a compile option of each VS2005 project file
+
+
+Changes in 0.1.5 (released on March 30, 2008)
+----------------------------------------------------------------
+
+- New samples (#2, #3, #4, #5 and #6)
+- Changed pgTaskMgr::SendMessage and pgTask::OnMessage
+- Changed pgSndMgr::FadeTrackVolume
+- Fixed pgKeyMgr::GetMouseWheel
+- Fixed pgMat::LookAt
+- Fixed pgQuat::Slerp
+- Removed pgPrim::MODE_QUADS and pgPrim::MODE_QUAD_STRIP
+- Fixed a bug with drawing sprite
+- Fixed pgScr::SetClearMode
+
+
+Changes in 0.1.0 (released on February 27, 2008)
+----------------------------------------------------------------
+
+- First release

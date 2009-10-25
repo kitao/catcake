@@ -1,0 +1,58 @@
+#
+#   Copyright (c) 2007-2009 Takashi Kitao
+#   All rights reserved.
+#
+#   Redistribution and use in source and binary forms, with or without
+#   modification, are permitted provided that the following conditions
+#   are met:
+#
+#   1. Redistributions of source code must retain the above copyright
+#   `  notice, this list of conditions and the following disclaimer.
+#
+#   2. Redistributions in binary form must reproduce the above copyright
+#   `  notice, this list of conditions and the following disclaimer in the
+#   `  documentation and/or other materials provided with the distribution.
+#
+#   3. The name of the author may not be used to endorse or promote products
+#   `  derived from this software without specific prior written permission.
+#
+#   THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+#   IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+#   OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+#   IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+#   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+#   NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+#   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+
+CC          = gcc
+CCFLAGS     = -O2 -Wall -mno-cygwin -s
+DEFINES     = -DNDEBUG -DFT2_BUILD_LIBRARY
+INCLUDES    = -Iinclude
+AR          = ar
+ARFLAGS     = rs
+OBJS1       = ftbase.o ftbitmap.o ftdebug.o ftgasp.o ftglyph.o ftinit.o ftstroke.o ftsystem.o ftbbox.o ftmm.o ftpfr.o ftsynth.o fttype1.o ftwinfnt.o
+OBJS2       = autofit/autofit.o bdf/bdf.o cff/cff.o cache/ftcache.o gzip/ftgzip.o lzw/ftlzw.o smooth/smooth.o pcf/pcf.o pfr/pfr.o psaux/psaux.o pshinter/pshinter.o psnames/psmodule.o raster/raster.o sfnt/sfnt.o truetype/truetype.o type1/type1.o cid/type1cid.o type42/type42.o winfonts/winfnt.o
+OBJS        = $(addprefix src/base/, $(OBJS1)) $(addprefix src/, $(OBJS2))
+TARGET      = libfreetype.a
+
+
+.PHONY: all clean
+
+all: $(TARGET)
+
+clean:
+	-rm -f $(TARGET) $(OBJS)
+
+$(TARGET): $(OBJS)
+	$(AR) $(ARFLAGS) $(TARGET) $(OBJS)
+
+
+.SUFFIXES: .o .c
+
+.c.o:
+	$(CC) $(CCFLAGS) $(DEFINES) $(INCLUDES) -c $< -o $@

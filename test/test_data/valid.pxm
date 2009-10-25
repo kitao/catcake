@@ -1,0 +1,5 @@
+transparent_color = (255, 0, 255)
+
+# node 0
+node_parent = 1
+node_center = (1.0, 2.0, 3.0)

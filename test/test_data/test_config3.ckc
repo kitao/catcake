@@ -1,0 +1,7 @@
+# invalid config test
+
+abc/=3
+def=6
+ghi=9
+jkl=12
+mno*=15

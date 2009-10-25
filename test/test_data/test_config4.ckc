@@ -1,0 +1,6 @@
+# invalid config test
+
+_ = "THIS"
+_ = "IS
+_ = "DUMMY
+_ = "TEXT

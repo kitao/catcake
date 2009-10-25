@@ -1,0 +1,8 @@
+# invalid config test
+
+01234567890123456789 = "valid length"
+01234567890123456789 = "valid length"
+012345678901234567890 = "invalid length"
+ABCDEFGHIJKLMNOPQRST = "valid length"
+ABCDEFGHIJKLMNOPQRSTU = "invalid length"
+ABCDEFGHIJKLMNOPQRST = "valid length"

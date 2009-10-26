@@ -181,11 +181,11 @@
 			Name="icon"
 			>
 			<File
-				RelativePath="..\..\icon\pogolyn.ico"
+				RelativePath="..\..\icon\catcake.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\..\icon\pogolyn.rc"
+				RelativePath="..\..\icon\catcake.rc"
 				>
 			</File>
 			<File
@@ -206,7 +206,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\..\..\sample01_debug\pogolyn_logo.cpp"
+			RelativePath="..\..\..\..\sample01_debug\catcake_logo.cpp"
 			>
 		</File>
 	</Files>

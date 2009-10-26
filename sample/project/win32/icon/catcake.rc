@@ -32,4 +32,4 @@
 #include "resource.h"
 
 
-IDI_POGOLYN ICON "pogolyn.ico"
+IDI_CATCAKE ICON "catcake.ico"

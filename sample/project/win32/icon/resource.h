@@ -29,4 +29,4 @@
 */
 
 
-#define IDI_POGOLYN 101
+#define IDI_CATCAKE 101

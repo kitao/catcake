@@ -32,46 +32,46 @@
 #include "test.h"
 
 
-void pgDbgMgrTest()
+void ckDbgMgrTest()
 {
     /*
-        static const pgID DEBUG_MODE_SCREEN_ID
-        static const pgID DEBUG_FONT_TEXTURE_ID
+        static const ckID DEBUG_MODE_SCREEN_ID
+        static const ckID DEBUG_FONT_TEXTURE_ID
     */
     {
-        pgAssert(pgDbgMgr::DEBUG_MODE_SCREEN_ID == pgID_("DEBUG_MODE_SCREEN"));
-        pgAssert(pgDbgMgr::DEBUG_FONT_TEXTURE_ID == pgID_("DEBUG_FONT_TEXTURE"));
+        ckAssert(ckDbgMgr::DEBUG_MODE_SCREEN_ID == ckID_("DEBUG_MODE_SCREEN"));
+        ckAssert(ckDbgMgr::DEBUG_FONT_TEXTURE_ID == ckID_("DEBUG_FONT_TEXTURE"));
 
-        pgAssertThrow(pgDrawMgr::getScreen(pgDbgMgr::DEBUG_MODE_SCREEN_ID), pgDrawMgr::ExceptionNotFound);
-        pgAssertThrow(pgDrawMgr::getTexture(pgDbgMgr::DEBUG_FONT_TEXTURE_ID), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::getScreen(ckDbgMgr::DEBUG_MODE_SCREEN_ID), ckDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::getTexture(ckDbgMgr::DEBUG_FONT_TEXTURE_ID), ckDrawMgr::ExceptionNotFound);
 
-        pgDbgMgr::createLast();
+        ckDbgMgr::createLast();
 
-        pgScr* dbg_mode_scr = pgDrawMgr::getScreen(pgDbgMgr::DEBUG_MODE_SCREEN_ID);
+        ckScr* dbg_mode_scr = ckDrawMgr::getScreen(ckDbgMgr::DEBUG_MODE_SCREEN_ID);
 
-        pgAssert(dbg_mode_scr->getLeftInFramebuffer() == 0 && dbg_mode_scr->getTopInFramebuffer() == 0 && //
-            dbg_mode_scr->getWidthInFramebuffer() == pgSysMgr::getFramebufferWidth() && //
-            dbg_mode_scr->getHeightInFramebuffer() == pgSysMgr::getFramebufferHeight());
-        pgAssert(dbg_mode_scr->getViewWidth() == pgSysMgr::getFramebufferWidth() && //
-            dbg_mode_scr->getViewHeight() == pgSysMgr::getFramebufferHeight());
-        pgAssert(dbg_mode_scr->isActive());
-        pgAssert(!dbg_mode_scr->isClearColor() && dbg_mode_scr->isClearDepth());
-        pgAssert(dbg_mode_scr->getClearColor() == pgCol(255, 0, 0, 0));
-        pgAssert(!dbg_mode_scr->isPerspective());
-        pgAssert(isEqual(dbg_mode_scr->getFocusDist(), static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST)));
-        pgAssert(isEqual(dbg_mode_scr->getNearClipDist(), static_cast<r32>(pgScr::DEFAULT_NEAR_CLIP_DIST)) && //
-            isEqual(dbg_mode_scr->getFarClipDist(), static_cast<r32>(pgScr::DEFAULT_FAR_CLIP_DIST)));
-        pgAssert(isEqual(dbg_mode_scr->view(), pgMat::UNIT.translate(0.0f, 0.0f, static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST))));
+        ckAssert(dbg_mode_scr->getLeftInFramebuffer() == 0 && dbg_mode_scr->getTopInFramebuffer() == 0 && //
+            dbg_mode_scr->getWidthInFramebuffer() == ckSysMgr::getFramebufferWidth() && //
+            dbg_mode_scr->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
+        ckAssert(dbg_mode_scr->getViewWidth() == ckSysMgr::getFramebufferWidth() && //
+            dbg_mode_scr->getViewHeight() == ckSysMgr::getFramebufferHeight());
+        ckAssert(dbg_mode_scr->isActive());
+        ckAssert(!dbg_mode_scr->isClearColor() && dbg_mode_scr->isClearDepth());
+        ckAssert(dbg_mode_scr->getClearColor() == ckCol(255, 0, 0, 0));
+        ckAssert(!dbg_mode_scr->isPerspective());
+        ckAssert(isEqual(dbg_mode_scr->getFocusDist(), static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST)));
+        ckAssert(isEqual(dbg_mode_scr->getNearClipDist(), static_cast<r32>(ckScr::DEFAULT_NEAR_CLIP_DIST)) && //
+            isEqual(dbg_mode_scr->getFarClipDist(), static_cast<r32>(ckScr::DEFAULT_FAR_CLIP_DIST)));
+        ckAssert(isEqual(dbg_mode_scr->view(), ckMat::UNIT.translate(0.0f, 0.0f, static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST))));
 
-        pgTex* dbg_font_tex = pgDrawMgr::getTexture(pgDbgMgr::DEBUG_FONT_TEXTURE_ID);
+        ckTex* dbg_font_tex = ckDrawMgr::getTexture(ckDbgMgr::DEBUG_FONT_TEXTURE_ID);
 
-        pgAssert(dbg_font_tex->getID() == pgID_("DEBUG_FONT_TEXTURE"));
-        pgAssert(dbg_font_tex->getWidth() == 128 && dbg_font_tex->getHeight() == 64);
-        pgAssert(dbg_font_tex->getFormat() == pgTex::FORMAT_ALPHA);
-        pgAssert(dbg_font_tex->getMode() == pgTex::MODE_READ_WRITE);
-        pgAssert(dbg_font_tex->getImage() && dbg_font_tex->getImageSize() == 8192);
+        ckAssert(dbg_font_tex->getID() == ckID_("DEBUG_FONT_TEXTURE"));
+        ckAssert(dbg_font_tex->getWidth() == 128 && dbg_font_tex->getHeight() == 64);
+        ckAssert(dbg_font_tex->getFormat() == ckTex::FORMAT_ALPHA);
+        ckAssert(dbg_font_tex->getMode() == ckTex::MODE_READ_WRITE);
+        ckAssert(dbg_font_tex->getImage() && dbg_font_tex->getImageSize() == 8192);
 
-        pgDbgMgr::destroySecond();
+        ckDbgMgr::destroySecond();
     }
 
     /*
@@ -80,17 +80,17 @@ void pgDbgMgrTest()
         static void destroySecond()
     */
     {
-        pgAssert(!pgDbgMgr::isCreated());
+        ckAssert(!ckDbgMgr::isCreated());
 
-        pgDbgMgr::createLast();
-        pgDbgMgr::createLast();
+        ckDbgMgr::createLast();
+        ckDbgMgr::createLast();
 
-        pgAssert(pgDbgMgr::isCreated());
+        ckAssert(ckDbgMgr::isCreated());
 
-        pgDbgMgr::destroySecond();
-        pgDbgMgr::destroySecond();
+        ckDbgMgr::destroySecond();
+        ckDbgMgr::destroySecond();
 
-        pgAssert(!pgDbgMgr::isCreated());
+        ckAssert(!ckDbgMgr::isCreated());
     }
 
     /*
@@ -100,106 +100,106 @@ void pgDbgMgrTest()
         static void pageDownConsole()
     */
     {
-        pgAssert(pgDbgMgr::getDebugMode() == pgDbgMgr::MODE_OFF);
+        ckAssert(ckDbgMgr::getDebugMode() == ckDbgMgr::MODE_OFF);
 
-        pgDbgMgr::setDebugMode(pgDbgMgr::MODE_MONITOR);
-        pgAssert(pgDbgMgr::getDebugMode() == pgDbgMgr::MODE_OFF);
+        ckDbgMgr::setDebugMode(ckDbgMgr::MODE_MONITOR);
+        ckAssert(ckDbgMgr::getDebugMode() == ckDbgMgr::MODE_OFF);
 
-        pgDbgMgr::pageUpConsole();
-        pgDbgMgr::pageDownConsole();
+        ckDbgMgr::pageUpConsole();
+        ckDbgMgr::pageDownConsole();
 
-        pgDbgMgr::createLast();
+        ckDbgMgr::createLast();
 
-        pgAssert(pgDbgMgr::getDebugMode() == pgDbgMgr::MODE_OFF);
+        ckAssert(ckDbgMgr::getDebugMode() == ckDbgMgr::MODE_OFF);
 
-        pgDbgMgr::setDebugMode(pgDbgMgr::MODE_CONSOLE);
-        pgAssert(pgDbgMgr::getDebugMode() == pgDbgMgr::MODE_CONSOLE);
+        ckDbgMgr::setDebugMode(ckDbgMgr::MODE_CONSOLE);
+        ckAssert(ckDbgMgr::getDebugMode() == ckDbgMgr::MODE_CONSOLE);
 
-        pgDbgMgr::setDebugMode(pgDbgMgr::MODE_MONITOR);
-        pgAssert(pgDbgMgr::getDebugMode() == pgDbgMgr::MODE_MONITOR);
+        ckDbgMgr::setDebugMode(ckDbgMgr::MODE_MONITOR);
+        ckAssert(ckDbgMgr::getDebugMode() == ckDbgMgr::MODE_MONITOR);
 
-        pgDbgMgr::pageUpConsole();
-        pgDbgMgr::pageDownConsole();
+        ckDbgMgr::pageUpConsole();
+        ckDbgMgr::pageDownConsole();
 
-        pgDbgMgr::destroySecond();
+        ckDbgMgr::destroySecond();
     }
 
     /*
-        static void drawLine(const pgVec& pos1, const pgVec& pos2, pgCol col, pgID scr_id)
-        static void drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, pgCol col, pgID scr_id)
-        static void drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, const pgVec& pos4, pgCol col, pgID scr_id)
-        static void drawBox(const pgMat& center, const pgVec& size, pgCol poly_col, pgCol line_col, pgID scr_id)
-        static void drawSphere(const pgVec& center, r32 radius, pgCol poly_col, pgCol line_col, pgID scr_id)
-        static void drawAxis(const pgMat& world, r32 size, pgID scr_id)
-        static void drawString(r32 left, r32 top, pgCol col, u8 scale, const char* str, ...)
+        static void drawLine(const ckVec& pos1, const ckVec& pos2, ckCol col, ckID scr_id)
+        static void drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, ckCol col, ckID scr_id)
+        static void drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, const ckVec& pos4, ckCol col, ckID scr_id)
+        static void drawBox(const ckMat& center, const ckVec& size, ckCol poly_col, ckCol line_col, ckID scr_id)
+        static void drawSphere(const ckVec& center, r32 radius, ckCol poly_col, ckCol line_col, ckID scr_id)
+        static void drawAxis(const ckMat& world, r32 size, ckID scr_id)
+        static void drawString(r32 left, r32 top, ckCol col, u8 scale, const char* str, ...)
         static void trace(const char* str, ...)
     */
     {
-        pgDbgMgr::drawLine(pgVec::ZERO, pgVec::ZERO, pgCol::ZERO, pgID::ZERO);
-        pgDbgMgr::drawPolygon(pgVec::ZERO, pgVec::ZERO, pgVec::ZERO, pgCol::ZERO, pgID::ZERO);
-        pgDbgMgr::drawPolygon(pgVec::ZERO, pgVec::ZERO, pgVec::ZERO, pgVec::ZERO, pgCol::ZERO, pgID::ZERO);
-        pgDbgMgr::drawBox(pgMat::ZERO, pgVec::ZERO, pgCol::ZERO, pgCol::ZERO, pgID::ZERO);
-        pgDbgMgr::drawSphere(pgVec::ZERO, 0.0f, pgCol::ZERO, pgCol::ZERO, pgID::ZERO);
-        pgDbgMgr::drawAxis(pgMat::ZERO, 0.0f, pgID::ZERO);
-        pgDbgMgr::drawString(0.0f, 0.0f, pgCol::ZERO, 0, NULL);
-        pgDbgMgr::trace(NULL);
+        ckDbgMgr::drawLine(ckVec::ZERO, ckVec::ZERO, ckCol::ZERO, ckID::ZERO);
+        ckDbgMgr::drawPolygon(ckVec::ZERO, ckVec::ZERO, ckVec::ZERO, ckCol::ZERO, ckID::ZERO);
+        ckDbgMgr::drawPolygon(ckVec::ZERO, ckVec::ZERO, ckVec::ZERO, ckVec::ZERO, ckCol::ZERO, ckID::ZERO);
+        ckDbgMgr::drawBox(ckMat::ZERO, ckVec::ZERO, ckCol::ZERO, ckCol::ZERO, ckID::ZERO);
+        ckDbgMgr::drawSphere(ckVec::ZERO, 0.0f, ckCol::ZERO, ckCol::ZERO, ckID::ZERO);
+        ckDbgMgr::drawAxis(ckMat::ZERO, 0.0f, ckID::ZERO);
+        ckDbgMgr::drawString(0.0f, 0.0f, ckCol::ZERO, 0, NULL);
+        ckDbgMgr::trace(NULL);
 
-        pgDbgMgr::createLast();
+        ckDbgMgr::createLast();
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDbgMgr::drawLine(pgVec(1.0f, 2.0f, 3.0f), pgVec(4.0f, 5.0f, 6.0f), pgCol::FULL, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgDbgMgr::drawPolygon(pgVec(-1.0f, -2.0f, -3.0f), pgVec(-4.0f, -5.0f, -6.0f), pgVec(-7.0f, -8.0f, -9.0f), pgCol(255, 0, 0, 128), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgDbgMgr::drawPolygon(pgVec(10.0f, 20.0f, 30.0f), pgVec(40.0f, 50.0f, 60.0f), pgVec(70.0f, 80.0f, 90.0f), pgCol(0, 255, 0, 128), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgDbgMgr::drawBox(pgMat::UNIT.rotateX_s32(30), pgVec(1.0f, 2.0f, 3.0f), pgCol(0, 0, 255, 64), pgCol(255, 255, 0, 96), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgDbgMgr::drawSphere(pgVec(11.0f, 22.0f, 33.0f), 123.0f, pgCol(255, 255, 0), pgCol(0, 255, 255), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgDbgMgr::drawAxis(pgMat::UNIT.translate(0.0f, 0.0f, -10.0f), 10.0f, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-
-        for (s32 i = 0; i < 100; i++)
-        {
-            pgDbgMgr::drawString(-10.0f, -20.0f, pgCol::FULL, 10, "TEST TEST TEST TEST");
-            pgDbgMgr::trace("\tTEST TEST TEST TEST\n");
-        }
-
-        pgAssert(pgMemMgr::getCurUsedMemorySize() > used_memory_size);
-
-        pgTaskMgr::updateForSystem();
-
-        used_memory_size = pgMemMgr::getCurUsedMemorySize();
-
-        pgDbgMgr::drawLine(pgVec(1.0f, 2.0f, 3.0f), pgVec(4.0f, 5.0f, 6.0f), pgCol::FULL, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgDbgMgr::drawPolygon(pgVec(-1.0f, -2.0f, -3.0f), pgVec(-4.0f, -5.0f, -6.0f), pgVec(-7.0f, -8.0f, -9.0f), pgCol(255, 0, 0, 128), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgDbgMgr::drawPolygon(pgVec(10.0f, 20.0f, 30.0f), pgVec(40.0f, 50.0f, 60.0f), pgVec(70.0f, 80.0f, 90.0f), pgCol(0, 255, 0, 128), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgDbgMgr::drawBox(pgMat::UNIT.rotateX_s32(30), pgVec(1.0f, 2.0f, 3.0f), pgCol(0, 0, 255, 64), pgCol(255, 255, 0, 96), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgDbgMgr::drawSphere(pgVec(11.0f, 22.0f, 33.0f), 123.0f, pgCol(255, 255, 0), pgCol(0, 255, 255), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgDbgMgr::drawAxis(pgMat::UNIT.translate(0.0f, 0.0f, -10.0f), 10.0f, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawLine(ckVec(1.0f, 2.0f, 3.0f), ckVec(4.0f, 5.0f, 6.0f), ckCol::FULL, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawPolygon(ckVec(-1.0f, -2.0f, -3.0f), ckVec(-4.0f, -5.0f, -6.0f), ckVec(-7.0f, -8.0f, -9.0f), ckCol(255, 0, 0, 128), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDbgMgr::drawPolygon(ckVec(10.0f, 20.0f, 30.0f), ckVec(40.0f, 50.0f, 60.0f), ckVec(70.0f, 80.0f, 90.0f), ckCol(0, 255, 0, 128), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDbgMgr::drawBox(ckMat::UNIT.rotateX_s32(30), ckVec(1.0f, 2.0f, 3.0f), ckCol(0, 0, 255, 64), ckCol(255, 255, 0, 96), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawSphere(ckVec(11.0f, 22.0f, 33.0f), 123.0f, ckCol(255, 255, 0), ckCol(0, 255, 255), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDbgMgr::drawAxis(ckMat::UNIT.translate(0.0f, 0.0f, -10.0f), 10.0f, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
         for (s32 i = 0; i < 100; i++)
         {
-            pgDbgMgr::drawString(-10.0f, -20.0f, pgCol::FULL, 10, "TEST TEST TEST TEST");
-            pgDbgMgr::trace("\tTEST TEST TEST TEST\n");
+            ckDbgMgr::drawString(-10.0f, -20.0f, ckCol::FULL, 10, "TEST TEST TEST TEST");
+            ckDbgMgr::trace("\tTEST TEST TEST TEST\n");
         }
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() > used_memory_size);
 
-        pgTaskMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
-        pgAssertThrow(pgDbgMgr::drawLine(pgVec::ZERO, pgVec::ZERO, pgCol::ZERO, pgID::ZERO), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawPolygon(pgVec::ZERO, pgVec::ZERO, pgVec::ZERO, pgCol::ZERO, pgID::ZERO), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawPolygon(pgVec::ZERO, pgVec::ZERO, pgVec::ZERO, pgVec::ZERO, pgCol::ZERO, pgID::ZERO), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawBox(pgMat::ZERO, pgVec::ZERO, pgCol::ZERO, pgCol::ZERO, pgID::ZERO), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawSphere(pgVec::ZERO, 0.0f, pgCol::ZERO, pgCol::ZERO, pgID::ZERO), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawAxis(pgMat::ZERO, 0.0f, pgID::ZERO), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawString(0.0f, 0.0f, pgCol::ZERO, 0, ""), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::drawString(0.0f, 0.0f, pgCol::ZERO, 1, NULL), pgDbgMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDbgMgr::trace(NULL), pgDbgMgr::ExceptionInvalidArgument);
+        used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDbgMgr::destroySecond();
+        ckDbgMgr::drawLine(ckVec(1.0f, 2.0f, 3.0f), ckVec(4.0f, 5.0f, 6.0f), ckCol::FULL, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawPolygon(ckVec(-1.0f, -2.0f, -3.0f), ckVec(-4.0f, -5.0f, -6.0f), ckVec(-7.0f, -8.0f, -9.0f), ckCol(255, 0, 0, 128), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDbgMgr::drawPolygon(ckVec(10.0f, 20.0f, 30.0f), ckVec(40.0f, 50.0f, 60.0f), ckVec(70.0f, 80.0f, 90.0f), ckCol(0, 255, 0, 128), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDbgMgr::drawBox(ckMat::UNIT.rotateX_s32(30), ckVec(1.0f, 2.0f, 3.0f), ckCol(0, 0, 255, 64), ckCol(255, 255, 0, 96), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawSphere(ckVec(11.0f, 22.0f, 33.0f), 123.0f, ckCol(255, 255, 0), ckCol(0, 255, 255), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDbgMgr::drawAxis(ckMat::UNIT.translate(0.0f, 0.0f, -10.0f), 10.0f, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+
+        for (s32 i = 0; i < 100; i++)
+        {
+            ckDbgMgr::drawString(-10.0f, -20.0f, ckCol::FULL, 10, "TEST TEST TEST TEST");
+            ckDbgMgr::trace("\tTEST TEST TEST TEST\n");
+        }
+
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
+
+        ckTaskMgr::updateForSystem();
+
+        ckAssertThrow(ckDbgMgr::drawLine(ckVec::ZERO, ckVec::ZERO, ckCol::ZERO, ckID::ZERO), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawPolygon(ckVec::ZERO, ckVec::ZERO, ckVec::ZERO, ckCol::ZERO, ckID::ZERO), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawPolygon(ckVec::ZERO, ckVec::ZERO, ckVec::ZERO, ckVec::ZERO, ckCol::ZERO, ckID::ZERO), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawBox(ckMat::ZERO, ckVec::ZERO, ckCol::ZERO, ckCol::ZERO, ckID::ZERO), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawSphere(ckVec::ZERO, 0.0f, ckCol::ZERO, ckCol::ZERO, ckID::ZERO), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawAxis(ckMat::ZERO, 0.0f, ckID::ZERO), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawString(0.0f, 0.0f, ckCol::ZERO, 0, ""), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::drawString(0.0f, 0.0f, ckCol::ZERO, 1, NULL), ckDbgMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDbgMgr::trace(NULL), ckDbgMgr::ExceptionInvalidArgument);
+
+        ckDbgMgr::destroySecond();
     }
 
     /*
-        static void dumpVector(const pgVec& vec, const char* name = NULL)
-        static void dumpMatrix(const pgMat& mat, const char* name = NULL)
+        static void dumpVector(const ckVec& vec, const char* name = NULL)
+        static void dumpMatrix(const ckMat& mat, const char* name = NULL)
         static void dumpMemory()
         static void dumpTask()
         static void dumpResource()
@@ -209,30 +209,30 @@ void pgDbgMgrTest()
         static void dumpShader()
     */
     {
-        pgDbgMgr::dumpVector(pgVec(1.0f, 2.0f, 3.0f), "VEC");
-        pgDbgMgr::dumpMatrix(pgMat::UNIT, "MAT");
-        pgDbgMgr::dumpMemory();
-        pgDbgMgr::dumpTask();
-        pgDbgMgr::dumpResource();
-        pgDbgMgr::dumpConfig();
-        pgDbgMgr::dumpScreen();
-        pgDbgMgr::dumpTexture();
-        pgDbgMgr::dumpShader();
+        ckDbgMgr::dumpVector(ckVec(1.0f, 2.0f, 3.0f), "VEC");
+        ckDbgMgr::dumpMatrix(ckMat::UNIT, "MAT");
+        ckDbgMgr::dumpMemory();
+        ckDbgMgr::dumpTask();
+        ckDbgMgr::dumpResource();
+        ckDbgMgr::dumpConfig();
+        ckDbgMgr::dumpScreen();
+        ckDbgMgr::dumpTexture();
+        ckDbgMgr::dumpShader();
 
-        pgDbgMgr::createLast();
+        ckDbgMgr::createLast();
 
-        pgDbgMgr::dumpVector(pgVec(1.0f, 2.0f, 3.0f));
-        pgDbgMgr::dumpVector(pgVec(4.0f, 5.0f, 6.0f), "TEST1");
-        pgDbgMgr::dumpMatrix(pgMat::UNIT);
-        pgDbgMgr::dumpMatrix(pgMat::ZERO, "TEST2");
-        pgDbgMgr::dumpMemory();
-        pgDbgMgr::dumpTask();
-        pgDbgMgr::dumpResource();
-        pgDbgMgr::dumpConfig();
-        pgDbgMgr::dumpScreen();
-        pgDbgMgr::dumpTexture();
-        pgDbgMgr::dumpShader();
+        ckDbgMgr::dumpVector(ckVec(1.0f, 2.0f, 3.0f));
+        ckDbgMgr::dumpVector(ckVec(4.0f, 5.0f, 6.0f), "TEST1");
+        ckDbgMgr::dumpMatrix(ckMat::UNIT);
+        ckDbgMgr::dumpMatrix(ckMat::ZERO, "TEST2");
+        ckDbgMgr::dumpMemory();
+        ckDbgMgr::dumpTask();
+        ckDbgMgr::dumpResource();
+        ckDbgMgr::dumpConfig();
+        ckDbgMgr::dumpScreen();
+        ckDbgMgr::dumpTexture();
+        ckDbgMgr::dumpShader();
 
-        pgDbgMgr::destroySecond();
+        ckDbgMgr::destroySecond();
     }
 }

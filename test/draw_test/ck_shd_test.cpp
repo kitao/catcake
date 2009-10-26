@@ -32,30 +32,30 @@
 #include "test.h"
 
 
-void pgShdTest()
+void ckShdTest()
 {
     /*
-        pgShd* getPrevN() const
-        pgShd* getNextN() const
-        pgID getID() const
+        ckShd* getPrevN() const
+        ckShd* getNextN() const
+        ckID getID() const
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgShd* def_shd = pgDrawMgr::getShader(pgDrawMgr::DEFAULT_SHADER_ID);
-        pgAssert(def_shd->getID() == pgDrawMgr::DEFAULT_SHADER_ID);
-        pgAssert(!def_shd->getPrevN() && !def_shd->getNextN());
+        ckShd* def_shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
+        ckAssert(def_shd->getID() == ckDrawMgr::DEFAULT_SHADER_ID);
+        ckAssert(!def_shd->getPrevN() && !def_shd->getNextN());
 
-        pgID id = pgID::genID();
-        pgShd* shd = pgDrawMgr::newShader(id, "dummy", "dummy", 0, 0, 0);
-        pgAssert(shd->getID() == id);
-        pgAssert(!def_shd->getPrevN() && def_shd->getNextN() == shd);
-        pgAssert(shd->getPrevN() == def_shd && !shd->getNextN());
+        ckID id = ckID::genID();
+        ckShd* shd = ckDrawMgr::newShader(id, "dummy", "dummy", 0, 0, 0);
+        ckAssert(shd->getID() == id);
+        ckAssert(!def_shd->getPrevN() && def_shd->getNextN() == shd);
+        ckAssert(shd->getPrevN() == def_shd && !shd->getNextN());
 
-        pgDrawMgr::deleteShader(id);
-        pgAssert(!def_shd->getPrevN() && !def_shd->getNextN());
+        ckDrawMgr::deleteShader(id);
+        ckAssert(!def_shd->getPrevN() && !def_shd->getNextN());
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
@@ -68,23 +68,23 @@ void pgShdTest()
         static const char s_vert_code[] = "void main() { gl_Position = vec4(0.0, 0.0, 0.0, 0.0); }";
         static const char s_frag_code[] = "void main() { gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0); }";
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgShd* shd = pgDrawMgr::newShader(pgID::genID(), s_vert_code, s_frag_code, 4, 3, 2);
+        ckShd* shd = ckDrawMgr::newShader(ckID::genID(), s_vert_code, s_frag_code, 4, 3, 2);
 
-        pgAssert(shd->getUniformNum() == 4);
-        pgAssert(shd->getAttribNum() == 3);
-        pgAssert(shd->getTextureNum() == 2);
+        ckAssert(shd->getUniformNum() == 4);
+        ckAssert(shd->getAttribNum() == 3);
+        ckAssert(shd->getTextureNum() == 2);
 
-        if (pgDrawMgr::isShaderAvailable())
+        if (ckDrawMgr::isShaderAvailable())
         {
-            pgAssert(shd->isValid());
+            ckAssert(shd->isValid());
         }
         else
         {
-            pgAssert(!shd->isValid());
+            ckAssert(!shd->isValid());
         }
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

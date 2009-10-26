@@ -32,7 +32,7 @@
 #include "test.h"
 
 
-void pgMathTest()
+void ckMathTest()
 {
     /*
         static const r32 EPSILON
@@ -41,84 +41,84 @@ void pgMathTest()
         static const r32 RAD_TO_DEG
     */
     {
-        pgAssert(pgMath::abs(pgMath::EPSILON - 0.0001f) < 1e-6f);
-        pgAssert(isEqual(pgMath::PI, 3.1415926535f));
-        pgAssert(isEqual(pgMath::DEG_TO_RAD, pgMath::PI / 180.0f));
-        pgAssert(isEqual(pgMath::RAD_TO_DEG, 180.0f / pgMath::PI));
+        ckAssert(ckMath::abs(ckMath::EPSILON - 0.0001f) < 1e-6f);
+        ckAssert(isEqual(ckMath::PI, 3.1415926535f));
+        ckAssert(isEqual(ckMath::DEG_TO_RAD, ckMath::PI / 180.0f));
+        ckAssert(isEqual(ckMath::RAD_TO_DEG, 180.0f / ckMath::PI));
     }
 
     /*
         template<class T> static T abs(T x)
     */
     {
-        pgAssert(pgMath::abs(100) == 100 && pgMath::abs(-100) == 100);
-        pgAssert(isEqual(pgMath::abs(100.0f), 100.0f));
-        pgAssert(isEqual(pgMath::abs(-100.0f), 100.0f));
+        ckAssert(ckMath::abs(100) == 100 && ckMath::abs(-100) == 100);
+        ckAssert(isEqual(ckMath::abs(100.0f), 100.0f));
+        ckAssert(isEqual(ckMath::abs(-100.0f), 100.0f));
     }
 
     /*
         template<class T> static T min(T a, T b)
     */
     {
-        pgAssert(pgMath::min(200, 100) == 100 && pgMath::min(-200, -100) == -200);
-        pgAssert(isEqual(pgMath::min(200.0f, 100.0f), 100.0f));
-        pgAssert(isEqual(pgMath::min(-200.0f, -100.0f), -200.0f));
+        ckAssert(ckMath::min(200, 100) == 100 && ckMath::min(-200, -100) == -200);
+        ckAssert(isEqual(ckMath::min(200.0f, 100.0f), 100.0f));
+        ckAssert(isEqual(ckMath::min(-200.0f, -100.0f), -200.0f));
     }
 
     /*
         template<class T> static T max(T a, T b)
     */
     {
-        pgAssert(pgMath::max(200, 100) == 200 && pgMath::max(-200, -100) == -100);
-        pgAssert(isEqual(pgMath::max(200.0f, 100.0f), 200.0f));
-        pgAssert(isEqual(pgMath::max(-200.0f, -100.0f), -100.0f));
+        ckAssert(ckMath::max(200, 100) == 200 && ckMath::max(-200, -100) == -100);
+        ckAssert(isEqual(ckMath::max(200.0f, 100.0f), 200.0f));
+        ckAssert(isEqual(ckMath::max(-200.0f, -100.0f), -100.0f));
     }
 
     /*
         template<class T> static T clamp(T x, T min, T max)
     */
     {
-        pgAssert(pgMath::clamp(-101, -100, 50) == -100);
-        pgAssert(pgMath::clamp(101, -50, 100) == 100);
-        pgAssert(pgMath::clamp(0, -50, 50) == 0);
+        ckAssert(ckMath::clamp(-101, -100, 50) == -100);
+        ckAssert(ckMath::clamp(101, -50, 100) == 100);
+        ckAssert(ckMath::clamp(0, -50, 50) == 0);
     }
 
     /*
         static r32 sqrt(r32 x)
     */
     {
-        pgAssert(isEqual(pgMath::sqrt(4.0f), 2.0f));
-        pgAssert(isEqual(pgMath::sqrt(100.0f), 10.0f));
+        ckAssert(isEqual(ckMath::sqrt(4.0f), 2.0f));
+        ckAssert(isEqual(ckMath::sqrt(100.0f), 10.0f));
     }
 
     /*
         static r32 sin_r32(r32 deg)
     */
     {
-        pgAssert(isEqual(pgMath::sin_r32(-360.0f), 0.0f));
-        pgAssert(isEqual(pgMath::sin_r32(-270.0f), 1.0f));
-        pgAssert(isEqual(pgMath::sin_r32(-180.0f), 0.0f));
-        pgAssert(isEqual(pgMath::sin_r32(-90.0f), -1.0f));
-        pgAssert(isEqual(pgMath::sin_r32(0.0f), 0.0f));
-        pgAssert(isEqual(pgMath::sin_r32(90.0f), 1.0f));
-        pgAssert(isEqual(pgMath::sin_r32(180.0f), 0.0f));
-        pgAssert(isEqual(pgMath::sin_r32(270.0f), -1.0f));
-        pgAssert(isEqual(pgMath::sin_r32(360.0f), 0.0f));
+        ckAssert(isEqual(ckMath::sin_r32(-360.0f), 0.0f));
+        ckAssert(isEqual(ckMath::sin_r32(-270.0f), 1.0f));
+        ckAssert(isEqual(ckMath::sin_r32(-180.0f), 0.0f));
+        ckAssert(isEqual(ckMath::sin_r32(-90.0f), -1.0f));
+        ckAssert(isEqual(ckMath::sin_r32(0.0f), 0.0f));
+        ckAssert(isEqual(ckMath::sin_r32(90.0f), 1.0f));
+        ckAssert(isEqual(ckMath::sin_r32(180.0f), 0.0f));
+        ckAssert(isEqual(ckMath::sin_r32(270.0f), -1.0f));
+        ckAssert(isEqual(ckMath::sin_r32(360.0f), 0.0f));
     }
 
     /*
         static r32 cos_r32(r32 deg)
     */
     {
-        pgAssert(isEqual(pgMath::cos_r32(-360.0f), 1.0f));
-        pgAssert(isEqual(pgMath::cos_r32(-270.0f), 0.0f));
-        pgAssert(isEqual(pgMath::cos_r32(-180.0f), -1.0f));
-        pgAssert(isEqual(pgMath::cos_r32(-90.0f), 0.0f));
-        pgAssert(isEqual(pgMath::cos_r32(0.0f), 1.0f));
-        pgAssert(isEqual(pgMath::cos_r32(90.0f), 0.0f));
-        pgAssert(isEqual(pgMath::cos_r32(180.0f), -1.0f));
-        pgAssert(isEqual(pgMath::cos_r32(270.0f), 0.0f));
-        pgAssert(isEqual(pgMath::cos_r32(360.0f), 1.0f));
+        ckAssert(isEqual(ckMath::cos_r32(-360.0f), 1.0f));
+        ckAssert(isEqual(ckMath::cos_r32(-270.0f), 0.0f));
+        ckAssert(isEqual(ckMath::cos_r32(-180.0f), -1.0f));
+        ckAssert(isEqual(ckMath::cos_r32(-90.0f), 0.0f));
+        ckAssert(isEqual(ckMath::cos_r32(0.0f), 1.0f));
+        ckAssert(isEqual(ckMath::cos_r32(90.0f), 0.0f));
+        ckAssert(isEqual(ckMath::cos_r32(180.0f), -1.0f));
+        ckAssert(isEqual(ckMath::cos_r32(270.0f), 0.0f));
+        ckAssert(isEqual(ckMath::cos_r32(360.0f), 1.0f));
     }
 
     /*
@@ -127,7 +127,7 @@ void pgMathTest()
     {
         for (s32 i = -720; i <= 720; i++)
         {
-            pgAssert(isEqual(pgMath::sin_s32(i), pgMath::sin_r32(static_cast<r32>(i))));
+            ckAssert(isEqual(ckMath::sin_s32(i), ckMath::sin_r32(static_cast<r32>(i))));
         }
     }
 
@@ -137,7 +137,7 @@ void pgMathTest()
     {
         for (s32 i = -720; i <= 720; i++)
         {
-            pgAssert(isEqual(pgMath::cos_s32(i), pgMath::cos_r32(static_cast<r32>(i))));
+            ckAssert(isEqual(ckMath::cos_s32(i), ckMath::cos_r32(static_cast<r32>(i))));
         }
     }
 
@@ -145,28 +145,28 @@ void pgMathTest()
         static r32 asin(r32 x)
     */
     {
-        pgAssert(isEqual(pgMath::asin(-1.0f), -90.0f));
-        pgAssert(isEqual(pgMath::asin(0.0f), 0.0f));
-        pgAssert(isEqual(pgMath::asin(1.0f), 90.0f));
+        ckAssert(isEqual(ckMath::asin(-1.0f), -90.0f));
+        ckAssert(isEqual(ckMath::asin(0.0f), 0.0f));
+        ckAssert(isEqual(ckMath::asin(1.0f), 90.0f));
     }
 
     /*
         static r32 acos(r32 x)
     */
     {
-        pgAssert(isEqual(pgMath::acos(-1.0f), 180.0f));
-        pgAssert(isEqual(pgMath::acos(0.0f), 90.0f));
-        pgAssert(isEqual(pgMath::acos(1.0f), 0.0f));
+        ckAssert(isEqual(ckMath::acos(-1.0f), 180.0f));
+        ckAssert(isEqual(ckMath::acos(0.0f), 90.0f));
+        ckAssert(isEqual(ckMath::acos(1.0f), 0.0f));
     }
 
     /*
         static r32 atan2(r32 y, r32 x)
     */
     {
-        pgAssert(isEqual(pgMath::atan2(0.0f, 2.0f), 0.0f));
-        pgAssert(isEqual(pgMath::atan2(2.0f, 0.0f), 90.0f));
-        pgAssert(isEqual(pgMath::atan2(0.0f, -2.0f), 180.0f));
-        pgAssert(isEqual(pgMath::atan2(-2.0f, 0.0f), -90.0f));
+        ckAssert(isEqual(ckMath::atan2(0.0f, 2.0f), 0.0f));
+        ckAssert(isEqual(ckMath::atan2(2.0f, 0.0f), 90.0f));
+        ckAssert(isEqual(ckMath::atan2(0.0f, -2.0f), 180.0f));
+        ckAssert(isEqual(ckMath::atan2(-2.0f, 0.0f), -90.0f));
     }
 
     /*
@@ -178,24 +178,24 @@ void pgMathTest()
 
         for (s32 i = 0; i < 1000; i++)
         {
-            pgMath::srand(i);
+            ckMath::srand(i);
 
             {
-                s32 n = pgMath::rand(-1, 2);
-                pgAssert(n == -1 || n == 0 || n == 1 || n == 2);
+                s32 n = ckMath::rand(-1, 2);
+                ckAssert(n == -1 || n == 0 || n == 1 || n == 2);
 
                 flag1 |= 1 << (n + 1);
             }
 
             {
-                s32 n = pgMath::rand(1, -2);
-                pgAssert(n == -2 || n == -1 || n == 0 || n == 1);
+                s32 n = ckMath::rand(1, -2);
+                ckAssert(n == -2 || n == -1 || n == 0 || n == 1);
 
                 flag2 |= 1 << (n + 2);
             }
         }
 
-        pgAssert(flag1 == 0x0f && flag2 == 0x0f);
+        ckAssert(flag1 == 0x0f && flag2 == 0x0f);
     }
 
     /*
@@ -206,53 +206,53 @@ void pgMathTest()
 
         for (s32 i = 0; i < 1000; i++)
         {
-            pgMath::srand(i);
+            ckMath::srand(i);
 
             {
-                r32 r = pgMath::rand(-2.0f, 2.0f, 2.0f);
-                pgAssert(isEqual(r, -2.0f) || isEqual(r, 0.0f) || isEqual(r, 2.0f));
+                r32 r = ckMath::rand(-2.0f, 2.0f, 2.0f);
+                ckAssert(isEqual(r, -2.0f) || isEqual(r, 0.0f) || isEqual(r, 2.0f));
 
                 flag1 |= 1 << (static_cast<s32>(r) + 2);
             }
 
             {
-                r32 r = pgMath::rand(-1.0f, 4.0f, 2.0f);
-                pgAssert(isEqual(r, -1.0f) || isEqual(r, 1.0f) || isEqual(r, 3.0f));
+                r32 r = ckMath::rand(-1.0f, 4.0f, 2.0f);
+                ckAssert(isEqual(r, -1.0f) || isEqual(r, 1.0f) || isEqual(r, 3.0f));
 
                 flag2 |= 1 << (static_cast<s32>(r) + 1);
             }
 
             {
-                r32 r = pgMath::rand(-1.0f, 4.0f, -2.0f);
-                pgAssert(isEqual(r, -1.0f) || isEqual(r, 1.0f) || isEqual(r, 3.0f));
+                r32 r = ckMath::rand(-1.0f, 4.0f, -2.0f);
+                ckAssert(isEqual(r, -1.0f) || isEqual(r, 1.0f) || isEqual(r, 3.0f));
 
                 flag3 |= 1 << (static_cast<s32>(r) + 1);
             }
 
             {
-                r32 r = pgMath::rand(4.0f, -1.0f, 2.0f);
-                pgAssert(isEqual(r, 4.0f) || isEqual(r, 2.0f) || isEqual(r, 0.0f));
+                r32 r = ckMath::rand(4.0f, -1.0f, 2.0f);
+                ckAssert(isEqual(r, 4.0f) || isEqual(r, 2.0f) || isEqual(r, 0.0f));
 
                 flag4 |= 1 << static_cast<s32>(r);
             }
 
             {
-                r32 r = pgMath::rand(4.0f, -1.0f, -2.0f);
-                pgAssert(isEqual(r, 4.0f) || isEqual(r, 2.0f) || isEqual(r, 0.0f));
+                r32 r = ckMath::rand(4.0f, -1.0f, -2.0f);
+                ckAssert(isEqual(r, 4.0f) || isEqual(r, 2.0f) || isEqual(r, 0.0f));
 
                 flag5 |= 1 << static_cast<s32>(r);
             }
         }
 
-        pgAssert(flag1 == 0x15 && flag2 == 0x15 && flag3 == 0x15 && flag4 == 0x15 && flag5 == 0x15);
+        ckAssert(flag1 == 0x15 && flag2 == 0x15 && flag3 == 0x15 && flag4 == 0x15 && flag5 == 0x15);
     }
 
     /*
         static r32 interp(r32 from, r32 to, r32 ratio)
     */
     {
-        pgAssert(isEqual(pgMath::interp(1.0f, -3.0f, 0.0f), 1.0f));
-        pgAssert(isEqual(pgMath::interp(1.0f, -3.0f, 0.25f), 0.0f));
-        pgAssert(isEqual(pgMath::interp(1.0f, -3.0f, 1.0f), -3.0f));
+        ckAssert(isEqual(ckMath::interp(1.0f, -3.0f, 0.0f), 1.0f));
+        ckAssert(isEqual(ckMath::interp(1.0f, -3.0f, 0.25f), 0.0f));
+        ckAssert(isEqual(ckMath::interp(1.0f, -3.0f, 1.0f), -3.0f));
     }
 }

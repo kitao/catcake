@@ -35,77 +35,77 @@
 static u32 s_exinfo = 123;
 
 
-static void initializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
+static void initializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
 {
     *exinfo = &s_exinfo;
 }
 
 
-static void finalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
+static void finalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
 {
-    pgAssert(exinfo == &s_exinfo);
+    ckAssert(exinfo == &s_exinfo);
 }
 
 
-void pgResTest()
+void ckResTest()
 {
     /*
-        pgRes()
-        pgID getID() const
-        pgStr<char, 3> getExtension() const
+        ckRes()
+        ckID getID() const
+        ckStr<char, 3> getExtension() const
         template<class T> const T* getData() const
         u32 getDataSize() const
         template<class T> T* getExInfo() const
         bool isAutoFree() const
     */
     {
-        pgRes res1;
-        pgAssert(res1.getID() == pgID::ZERO);
-        pgAssert(res1.getExtension() == "");
-        pgAssert(!res1.getData<void>());
-        pgAssert(res1.getDataSize() == 0);
-        pgAssert(!res1.getExInfo<void>());
-        pgAssert(!res1.isAutoFree());
+        ckRes res1;
+        ckAssert(res1.getID() == ckID::ZERO);
+        ckAssert(res1.getExtension() == "");
+        ckAssert(!res1.getData<void>());
+        ckAssert(res1.getDataSize() == 0);
+        ckAssert(!res1.getExInfo<void>());
+        ckAssert(!res1.isAutoFree());
 
-        pgResMgr::createAfterTask();
+        ckResMgr::createAfterTask();
 
-        pgID id1 = pgID::genID();
+        ckID id1 = ckID::genID();
         u32 data = 123;
 
-        pgResMgr::addType("TST", initializer, finalizer);
-        pgResMgr::addResource(id1, "TST", &data, sizeof(data), false);
+        ckResMgr::addType("TST", initializer, finalizer);
+        ckResMgr::addResource(id1, "TST", &data, sizeof(data), false);
 
-        res1 = pgResMgr::getResource(id1);
+        res1 = ckResMgr::getResource(id1);
 
-        pgAssert(res1.getID() == id1);
-        pgAssert(res1.getExtension() == "TST");
-        pgAssert(res1.getData<u32>() == &data);
-        pgAssert(res1.getDataSize() == sizeof(data));
-        pgAssert(res1.getExInfo<u32>() == &s_exinfo);
-        pgAssert(!res1.isAutoFree());
+        ckAssert(res1.getID() == id1);
+        ckAssert(res1.getExtension() == "TST");
+        ckAssert(res1.getData<u32>() == &data);
+        ckAssert(res1.getDataSize() == sizeof(data));
+        ckAssert(res1.getExInfo<u32>() == &s_exinfo);
+        ckAssert(!res1.isAutoFree());
 
-        pgID id2 = pgID::genID();
-        pgResMgr::loadResourceAs(id2, TEST_DATA_DIR "test_data1.dat", true);
-        pgRes res2 = pgResMgr::getResource(id2);
+        ckID id2 = ckID::genID();
+        ckResMgr::loadResourceAs(id2, TEST_DATA_DIR "test_data1.dat", true);
+        ckRes res2 = ckResMgr::getResource(id2);
 
-        pgAssert(res2.getID() == id2);
-        pgAssert(res2.getExtension() == "DAT");
-        pgAssert(res2.getData<u32>());
-        pgAssert(res2.getDataSize() == 10);
-        pgAssert(!res2.getExInfo<u32>());
-        pgAssert(res2.isAutoFree());
+        ckAssert(res2.getID() == id2);
+        ckAssert(res2.getExtension() == "DAT");
+        ckAssert(res2.getData<u32>());
+        ckAssert(res2.getDataSize() == 10);
+        ckAssert(!res2.getExInfo<u32>());
+        ckAssert(res2.isAutoFree());
 
-        pgID id3 = pgID::genID();
-        pgResMgr::loadResourceAs(id3, TEST_DATA_DIR "test_data1.dat", false);
-        pgRes res3 = pgResMgr::getResource(id3);
+        ckID id3 = ckID::genID();
+        ckResMgr::loadResourceAs(id3, TEST_DATA_DIR "test_data1.dat", false);
+        ckRes res3 = ckResMgr::getResource(id3);
 
-        pgAssert(res3.getID() == id3);
-        pgAssert(res3.getExtension() == "");
-        pgAssert(res3.getData<u32>());
-        pgAssert(res3.getDataSize() == 10);
-        pgAssert(!res3.getExInfo<u32>());
-        pgAssert(res3.isAutoFree());
+        ckAssert(res3.getID() == id3);
+        ckAssert(res3.getExtension() == "");
+        ckAssert(res3.getData<u32>());
+        ckAssert(res3.getDataSize() == 10);
+        ckAssert(!res3.getExInfo<u32>());
+        ckAssert(res3.isAutoFree());
 
-        pgResMgr::destroyBeforeSys();
+        ckResMgr::destroyBeforeSys();
     }
 }

@@ -38,34 +38,34 @@ static void assertKeyState( //
     bool is_c_on, bool is_c_off, bool is_c_pressed, bool is_c_released, //
     bool is_any_on, bool is_any_off, bool is_any_pressed, bool is_any_released)
 {
-    pgAssert(pgKeyMgr::isOn(pgKeyMgr::KEY_A) == is_a_on);
-    pgAssert(pgKeyMgr::isOff(pgKeyMgr::KEY_A) == is_a_off);
-    pgAssert(pgKeyMgr::isPressed(pgKeyMgr::KEY_A) == is_a_pressed);
-    pgAssert(pgKeyMgr::isReleased(pgKeyMgr::KEY_A) == is_a_released);
+    ckAssert(ckKeyMgr::isOn(ckKeyMgr::KEY_A) == is_a_on);
+    ckAssert(ckKeyMgr::isOff(ckKeyMgr::KEY_A) == is_a_off);
+    ckAssert(ckKeyMgr::isPressed(ckKeyMgr::KEY_A) == is_a_pressed);
+    ckAssert(ckKeyMgr::isReleased(ckKeyMgr::KEY_A) == is_a_released);
 
-    pgAssert(pgKeyMgr::isOn(pgKeyMgr::KEY_B) == is_b_on);
-    pgAssert(pgKeyMgr::isOff(pgKeyMgr::KEY_B) == is_b_off);
-    pgAssert(pgKeyMgr::isPressed(pgKeyMgr::KEY_B) == is_b_pressed);
-    pgAssert(pgKeyMgr::isReleased(pgKeyMgr::KEY_B) == is_b_released);
+    ckAssert(ckKeyMgr::isOn(ckKeyMgr::KEY_B) == is_b_on);
+    ckAssert(ckKeyMgr::isOff(ckKeyMgr::KEY_B) == is_b_off);
+    ckAssert(ckKeyMgr::isPressed(ckKeyMgr::KEY_B) == is_b_pressed);
+    ckAssert(ckKeyMgr::isReleased(ckKeyMgr::KEY_B) == is_b_released);
 
-    pgAssert(pgKeyMgr::isOn(pgKeyMgr::KEY_C) == is_c_on);
-    pgAssert(pgKeyMgr::isOff(pgKeyMgr::KEY_C) == is_c_off);
-    pgAssert(pgKeyMgr::isPressed(pgKeyMgr::KEY_C) == is_c_pressed);
-    pgAssert(pgKeyMgr::isReleased(pgKeyMgr::KEY_C) == is_c_released);
+    ckAssert(ckKeyMgr::isOn(ckKeyMgr::KEY_C) == is_c_on);
+    ckAssert(ckKeyMgr::isOff(ckKeyMgr::KEY_C) == is_c_off);
+    ckAssert(ckKeyMgr::isPressed(ckKeyMgr::KEY_C) == is_c_pressed);
+    ckAssert(ckKeyMgr::isReleased(ckKeyMgr::KEY_C) == is_c_released);
 
-    pgAssert(pgKeyMgr::isOn(pgKeyMgr::KEY_ANY) == is_any_on);
-    pgAssert(pgKeyMgr::isOff(pgKeyMgr::KEY_ANY) == is_any_off);
-    pgAssert(pgKeyMgr::isPressed(pgKeyMgr::KEY_ANY) == is_any_pressed);
-    pgAssert(pgKeyMgr::isReleased(pgKeyMgr::KEY_ANY) == is_any_released);
+    ckAssert(ckKeyMgr::isOn(ckKeyMgr::KEY_ANY) == is_any_on);
+    ckAssert(ckKeyMgr::isOff(ckKeyMgr::KEY_ANY) == is_any_off);
+    ckAssert(ckKeyMgr::isPressed(ckKeyMgr::KEY_ANY) == is_any_pressed);
+    ckAssert(ckKeyMgr::isReleased(ckKeyMgr::KEY_ANY) == is_any_released);
 
-    pgAssert(!pgKeyMgr::isOn(pgKeyMgr::KEY_NONE));
-    pgAssert(pgKeyMgr::isOff(pgKeyMgr::KEY_NONE));
-    pgAssert(!pgKeyMgr::isPressed(pgKeyMgr::KEY_NONE));
-    pgAssert(!pgKeyMgr::isReleased(pgKeyMgr::KEY_NONE));
+    ckAssert(!ckKeyMgr::isOn(ckKeyMgr::KEY_NONE));
+    ckAssert(ckKeyMgr::isOff(ckKeyMgr::KEY_NONE));
+    ckAssert(!ckKeyMgr::isPressed(ckKeyMgr::KEY_NONE));
+    ckAssert(!ckKeyMgr::isReleased(ckKeyMgr::KEY_NONE));
 }
 
 
-void pgKeyMgrTest()
+void ckKeyMgrTest()
 {
     /*
         static bool isCreated()
@@ -73,17 +73,17 @@ void pgKeyMgrTest()
         static void destroyBeforeSys()
     */
     {
-        pgAssert(!pgKeyMgr::isCreated());
+        ckAssert(!ckKeyMgr::isCreated());
 
-        pgKeyMgr::createAfterTask();
-        pgKeyMgr::createAfterTask();
+        ckKeyMgr::createAfterTask();
+        ckKeyMgr::createAfterTask();
 
-        pgAssert(pgKeyMgr::isCreated());
+        ckAssert(ckKeyMgr::isCreated());
 
-        pgKeyMgr::destroyBeforeSys();
-        pgKeyMgr::destroyBeforeSys();
+        ckKeyMgr::destroyBeforeSys();
+        ckKeyMgr::destroyBeforeSys();
 
-        pgAssert(!pgKeyMgr::isCreated());
+        ckAssert(!ckKeyMgr::isCreated());
     }
 
     /*
@@ -98,63 +98,63 @@ void pgKeyMgrTest()
         static void resetKeyStateForSystem()
     */
     {
-        pgAssertThrow(pgKeyMgr::getKeyEventHandlerN(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::setKeyEventHandler(NULL), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_NONE, pgKeyMgr::STATE_DOWN), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::isOn(pgKeyMgr::KEY_NONE), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::isOff(pgKeyMgr::KEY_NONE), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::isPressed(pgKeyMgr::KEY_NONE), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::isReleased(pgKeyMgr::KEY_NONE), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::updateKeyStateForSystem(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::resetKeyStateForSystem(), pgKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getKeyEventHandlerN(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::setKeyEventHandler(NULL), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_NONE, ckKeyMgr::STATE_DOWN), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::isOn(ckKeyMgr::KEY_NONE), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::isOff(ckKeyMgr::KEY_NONE), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::isPressed(ckKeyMgr::KEY_NONE), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::isReleased(ckKeyMgr::KEY_NONE), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::updateKeyStateForSystem(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::resetKeyStateForSystem(), ckKeyMgr::ExceptionNotInitialized);
 
-        pgKeyMgr::createAfterTask();
+        ckKeyMgr::createAfterTask();
 
-        pgAssert(pgKeyMgr::getKeyEventHandlerN() == pgKeyMgr::defaultKeyEventHandler);
+        ckAssert(ckKeyMgr::getKeyEventHandlerN() == ckKeyMgr::defaultKeyEventHandler);
 
-        pgKeyMgr::setKeyEventHandler(NULL);
-        pgAssert(!pgKeyMgr::getKeyEventHandlerN());
+        ckKeyMgr::setKeyEventHandler(NULL);
+        ckAssert(!ckKeyMgr::getKeyEventHandlerN());
 
-        pgTaskMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
         assertKeyState(false, true, false, false, false, true, false, false, //
             false, true, false, false, false, true, false, false);
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_A, pgKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_A, ckKeyMgr::STATE_DOWN);
         assertKeyState(false, true, false, false, false, true, false, false, //
             false, true, false, false, false, true, false, false);
 
-        pgKeyMgr::updateKeyStateForSystem();
+        ckKeyMgr::updateKeyStateForSystem();
         assertKeyState(true, false, true, false, false, true, false, false, //
             false, true, false, false, true, false, true, false);
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_B, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_B, pgKeyMgr::STATE_UP);
-        pgKeyMgr::updateKeyStateForSystem();
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_B, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_B, ckKeyMgr::STATE_UP);
+        ckKeyMgr::updateKeyStateForSystem();
         assertKeyState(true, false, false, false, true, false, true, false, //
             false, true, false, false, true, false, false, false);
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_A, pgKeyMgr::STATE_UP);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_C, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::updateKeyStateForSystem();
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_A, ckKeyMgr::STATE_UP);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_C, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::updateKeyStateForSystem();
         assertKeyState(false, true, false, true, false, true, false, true, //
             true, false, true, false, true, false, false, false);
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_C, pgKeyMgr::STATE_UP);
-        pgKeyMgr::updateKeyStateForSystem();
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_C, ckKeyMgr::STATE_UP);
+        ckKeyMgr::updateKeyStateForSystem();
         assertKeyState(false, true, false, false, false, true, false, false, //
             false, true, false, true, false, true, false, true);
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_B, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::resetKeyStateForSystem();
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_B, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::resetKeyStateForSystem();
         assertKeyState(false, true, false, false, false, true, false, false, //
             false, true, false, false, false, true, false, false);
 
-        pgKeyMgr::updateKeyStateForSystem();
+        ckKeyMgr::updateKeyStateForSystem();
         assertKeyState(false, true, false, false, false, true, false, false, //
             false, true, false, false, false, true, false, false);
 
-        pgKeyMgr::destroyBeforeSys();
+        ckKeyMgr::destroyBeforeSys();
     }
 
     /*
@@ -169,79 +169,79 @@ void pgKeyMgrTest()
         static void setMouseVisible(bool is_visible)
     */
     {
-        pgAssertThrow(pgKeyMgr::getMouseEventHandlerN(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::setMouseEventHandler(NULL), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::defaultMouseEventHandler(0, 0), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::getMouseX(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::getMouseY(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::getMouseWheel(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::setMousePos(0, 0), pgKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getMouseEventHandlerN(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::setMouseEventHandler(NULL), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::defaultMouseEventHandler(0, 0), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getMouseX(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getMouseY(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getMouseWheel(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::setMousePos(0, 0), ckKeyMgr::ExceptionNotInitialized);
 
-        pgKeyMgr::createAfterTask();
+        ckKeyMgr::createAfterTask();
 
-        pgAssert(pgKeyMgr::getMouseEventHandlerN() == pgKeyMgr::defaultMouseEventHandler);
-        pgAssert(pgKeyMgr::isMouseVisible());
+        ckAssert(ckKeyMgr::getMouseEventHandlerN() == ckKeyMgr::defaultMouseEventHandler);
+        ckAssert(ckKeyMgr::isMouseVisible());
 
-        pgKeyMgr::setKeyEventHandler(NULL);
+        ckKeyMgr::setKeyEventHandler(NULL);
 
-        pgKeyMgr::setMouseEventHandler(NULL);
-        pgAssert(!pgKeyMgr::getMouseEventHandlerN());
+        ckKeyMgr::setMouseEventHandler(NULL);
+        ckAssert(!ckKeyMgr::getMouseEventHandlerN());
 
-        pgTaskMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
-        pgAssert(pgKeyMgr::getMouseX() == 0 && pgKeyMgr::getMouseY() == 0);
-        pgAssert(pgKeyMgr::getMouseWheel() == 0);
+        ckAssert(ckKeyMgr::getMouseX() == 0 && ckKeyMgr::getMouseY() == 0);
+        ckAssert(ckKeyMgr::getMouseWheel() == 0);
 
-        pgKeyMgr::defaultMouseEventHandler(12, 34);
-        pgAssert(pgKeyMgr::getMouseX() == 12 && pgKeyMgr::getMouseY() == 34);
+        ckKeyMgr::defaultMouseEventHandler(12, 34);
+        ckAssert(ckKeyMgr::getMouseX() == 12 && ckKeyMgr::getMouseY() == 34);
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELUP, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELUP, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELUP, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELDOWN, pgKeyMgr::STATE_DOWN);
-        pgAssert(pgKeyMgr::getMouseWheel() == 0);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELUP, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELUP, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELUP, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELDOWN, ckKeyMgr::STATE_DOWN);
+        ckAssert(ckKeyMgr::getMouseWheel() == 0);
 
-        pgKeyMgr::updateKeyStateForSystem();
-        pgAssert(pgKeyMgr::getMouseWheel() == 2);
-        pgAssert(pgKeyMgr::isOn(pgKeyMgr::KEY_WHEELUP) && pgKeyMgr::isOn(pgKeyMgr::KEY_WHEELDOWN));
+        ckKeyMgr::updateKeyStateForSystem();
+        ckAssert(ckKeyMgr::getMouseWheel() == 2);
+        ckAssert(ckKeyMgr::isOn(ckKeyMgr::KEY_WHEELUP) && ckKeyMgr::isOn(ckKeyMgr::KEY_WHEELDOWN));
 
-        pgKeyMgr::updateKeyStateForSystem();
-        pgAssert(pgKeyMgr::getMouseWheel() == 0);
-        pgAssert(pgKeyMgr::isOff(pgKeyMgr::KEY_WHEELUP) && pgKeyMgr::isOff(pgKeyMgr::KEY_WHEELDOWN));
+        ckKeyMgr::updateKeyStateForSystem();
+        ckAssert(ckKeyMgr::getMouseWheel() == 0);
+        ckAssert(ckKeyMgr::isOff(ckKeyMgr::KEY_WHEELUP) && ckKeyMgr::isOff(ckKeyMgr::KEY_WHEELDOWN));
 
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELUP, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELDOWN, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELDOWN, pgKeyMgr::STATE_DOWN);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELDOWN, pgKeyMgr::STATE_UP);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELDOWN, pgKeyMgr::STATE_UP);
-        pgKeyMgr::defaultKeyEventHandler(pgKeyMgr::KEY_WHEELUP, pgKeyMgr::STATE_UP);
-        pgAssert(pgKeyMgr::getMouseWheel() == 0);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELUP, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELDOWN, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELDOWN, ckKeyMgr::STATE_DOWN);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELDOWN, ckKeyMgr::STATE_UP);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELDOWN, ckKeyMgr::STATE_UP);
+        ckKeyMgr::defaultKeyEventHandler(ckKeyMgr::KEY_WHEELUP, ckKeyMgr::STATE_UP);
+        ckAssert(ckKeyMgr::getMouseWheel() == 0);
 
-        pgKeyMgr::updateKeyStateForSystem();
-        pgAssert(pgKeyMgr::getMouseWheel() == -1);
-        pgAssert(pgKeyMgr::isOn(pgKeyMgr::KEY_WHEELUP) && pgKeyMgr::isOn(pgKeyMgr::KEY_WHEELDOWN));
+        ckKeyMgr::updateKeyStateForSystem();
+        ckAssert(ckKeyMgr::getMouseWheel() == -1);
+        ckAssert(ckKeyMgr::isOn(ckKeyMgr::KEY_WHEELUP) && ckKeyMgr::isOn(ckKeyMgr::KEY_WHEELDOWN));
 
-        pgKeyMgr::resetKeyStateForSystem();
-        pgAssert(pgKeyMgr::getMouseX() == 12 && pgKeyMgr::getMouseY() == 34);
-        pgAssert(pgKeyMgr::getMouseWheel() == 0);
+        ckKeyMgr::resetKeyStateForSystem();
+        ckAssert(ckKeyMgr::getMouseX() == 12 && ckKeyMgr::getMouseY() == 34);
+        ckAssert(ckKeyMgr::getMouseWheel() == 0);
 
-        pgKeyMgr::updateKeyStateForSystem();
-        pgAssert(pgKeyMgr::getMouseX() == 12 && pgKeyMgr::getMouseY() == 34);
-        pgAssert(pgKeyMgr::getMouseWheel() == 0);
+        ckKeyMgr::updateKeyStateForSystem();
+        ckAssert(ckKeyMgr::getMouseX() == 12 && ckKeyMgr::getMouseY() == 34);
+        ckAssert(ckKeyMgr::getMouseWheel() == 0);
 
-        pgKeyMgr::setMousePos(23, 45);
-        pgAssert(pgKeyMgr::getMouseX() == 23 && pgKeyMgr::getMouseY() == 45);
+        ckKeyMgr::setMousePos(23, 45);
+        ckAssert(ckKeyMgr::getMouseX() == 23 && ckKeyMgr::getMouseY() == 45);
 
-        pgKeyMgr::updateKeyStateForSystem();
-        pgAssert(pgKeyMgr::getMouseX() == 23 && pgKeyMgr::getMouseY() == 45);
+        ckKeyMgr::updateKeyStateForSystem();
+        ckAssert(ckKeyMgr::getMouseX() == 23 && ckKeyMgr::getMouseY() == 45);
 
-        pgKeyMgr::setMouseVisible(false);
-        pgAssert(!pgKeyMgr::isMouseVisible());
+        ckKeyMgr::setMouseVisible(false);
+        ckAssert(!ckKeyMgr::isMouseVisible());
 
-        pgKeyMgr::setMouseVisible(true);
-        pgAssert(pgKeyMgr::isMouseVisible());
+        ckKeyMgr::setMouseVisible(true);
+        ckAssert(ckKeyMgr::isMouseVisible());
 
-        pgKeyMgr::destroyBeforeSys();
+        ckKeyMgr::destroyBeforeSys();
     }
 
     /*
@@ -255,48 +255,48 @@ void pgKeyMgrTest()
         static void updateExtraValueForSystem()
     */
     {
-        pgAssert(pgKeyMgr::EXTRA_VALUE_NUM == 16);
+        ckAssert(ckKeyMgr::EXTRA_VALUE_NUM == 16);
 
-        pgAssertThrow(pgKeyMgr::getExtraEventHandlerN(), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::setExtraEventHandler(NULL), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::getExtraValue_s32(0), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::getExtraValue_r32(0), pgKeyMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgKeyMgr::updateExtraValueForSystem(), pgKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getExtraEventHandlerN(), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::setExtraEventHandler(NULL), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getExtraValue_s32(0), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::getExtraValue_r32(0), ckKeyMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckKeyMgr::updateExtraValueForSystem(), ckKeyMgr::ExceptionNotInitialized);
 
-        pgKeyMgr::createAfterTask();
+        ckKeyMgr::createAfterTask();
 
-        pgAssert(pgKeyMgr::getExtraEventHandlerN() == pgKeyMgr::defaultExtraEventHandler);
+        ckAssert(ckKeyMgr::getExtraEventHandlerN() == ckKeyMgr::defaultExtraEventHandler);
 
-        for (u32 i = 0; i < pgKeyMgr::EXTRA_VALUE_NUM; i++)
+        for (u32 i = 0; i < ckKeyMgr::EXTRA_VALUE_NUM; i++)
         {
-            pgAssert(pgKeyMgr::getExtraValue_s32(i) == 0);
-            pgAssert(isEqual(pgKeyMgr::getExtraValue_r32(i), 0.0f));
+            ckAssert(ckKeyMgr::getExtraValue_s32(i) == 0);
+            ckAssert(isEqual(ckKeyMgr::getExtraValue_r32(i), 0.0f));
         }
 
-        pgKeyMgr::setExtraEventHandler(NULL);
-        pgAssert(!pgKeyMgr::getExtraEventHandlerN());
+        ckKeyMgr::setExtraEventHandler(NULL);
+        ckAssert(!ckKeyMgr::getExtraEventHandlerN());
 
-        pgTaskMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
-        for (u32 i = 0; i < pgKeyMgr::EXTRA_VALUE_NUM; i++)
+        for (u32 i = 0; i < ckKeyMgr::EXTRA_VALUE_NUM; i++)
         {
-            pgAssert(pgKeyMgr::getExtraValue_s32(i) == 0);
-            pgAssert(isEqual(pgKeyMgr::getExtraValue_r32(i), 0.0f));
+            ckAssert(ckKeyMgr::getExtraValue_s32(i) == 0);
+            ckAssert(isEqual(ckKeyMgr::getExtraValue_r32(i), 0.0f));
         }
 
-        pgKeyMgr::defaultExtraEventHandler(0, 123.0f);
-        pgAssert(pgKeyMgr::getExtraValue_s32(0) == 0);
-        pgAssert(isEqual(pgKeyMgr::getExtraValue_r32(0), 0.0f));
+        ckKeyMgr::defaultExtraEventHandler(0, 123.0f);
+        ckAssert(ckKeyMgr::getExtraValue_s32(0) == 0);
+        ckAssert(isEqual(ckKeyMgr::getExtraValue_r32(0), 0.0f));
 
-        pgKeyMgr::defaultExtraEventHandler(pgKeyMgr::EXTRA_VALUE_NUM + 100, 123.0f);
+        ckKeyMgr::defaultExtraEventHandler(ckKeyMgr::EXTRA_VALUE_NUM + 100, 123.0f);
 
-        pgKeyMgr::updateExtraValueForSystem();
-        pgAssert(pgKeyMgr::getExtraValue_s32(0) == 123);
-        pgAssert(isEqual(pgKeyMgr::getExtraValue_r32(0), 123.0f));
+        ckKeyMgr::updateExtraValueForSystem();
+        ckAssert(ckKeyMgr::getExtraValue_s32(0) == 123);
+        ckAssert(isEqual(ckKeyMgr::getExtraValue_r32(0), 123.0f));
 
-        pgAssertThrow(pgKeyMgr::getExtraValue_s32(pgKeyMgr::EXTRA_VALUE_NUM), pgKeyMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgKeyMgr::getExtraValue_r32(pgKeyMgr::EXTRA_VALUE_NUM), pgKeyMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckKeyMgr::getExtraValue_s32(ckKeyMgr::EXTRA_VALUE_NUM), ckKeyMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckKeyMgr::getExtraValue_r32(ckKeyMgr::EXTRA_VALUE_NUM), ckKeyMgr::ExceptionInvalidArgument);
 
-        pgKeyMgr::destroyBeforeSys();
+        ckKeyMgr::destroyBeforeSys();
     }
 }

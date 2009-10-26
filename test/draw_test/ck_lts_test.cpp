@@ -32,296 +32,296 @@
 #include "test.h"
 
 
-void pgLtsTest()
+void ckLtsTest()
 {
     /*
         static const u32 MAX_PARA_LIGHT_NUM
     */
     {
-        pgAssert(pgLts::MAX_PARA_LIGHT_NUM == 3);
+        ckAssert(ckLts::MAX_PARA_LIGHT_NUM == 3);
     }
 
     /*
         static const u32 MAX_NEAR_LIGHT_NUM
     */
     {
-        pgAssert(pgLts::MAX_NEAR_LIGHT_NUM == 3);
+        ckAssert(ckLts::MAX_NEAR_LIGHT_NUM == 3);
     }
 
     /*
-        pgLts* getPrevN() const
-        pgLts* getNextN() const
-        pgID getID() const
+        ckLts* getPrevN() const
+        ckLts* getNextN() const
+        ckID getID() const
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgLts* lts0 = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(lts0->getID() == pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckLts* lts0 = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(lts0->getID() == ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-        pgAssert(!lts0->getPrevN() && !lts0->getNextN());
+        ckAssert(!lts0->getPrevN() && !lts0->getNextN());
 
-        pgID id1 = pgID::genID();
-        pgLts* lts1 = pgDrawMgr::newLightSet(id1);
-        pgAssert(lts1->getID() == id1);
+        ckID id1 = ckID::genID();
+        ckLts* lts1 = ckDrawMgr::newLightSet(id1);
+        ckAssert(lts1->getID() == id1);
 
-        pgAssert(!lts0->getPrevN() && lts0->getNextN() == lts1);
-        pgAssert(lts1->getPrevN() == lts0 && !lts1->getNextN());
+        ckAssert(!lts0->getPrevN() && lts0->getNextN() == lts1);
+        ckAssert(lts1->getPrevN() == lts0 && !lts1->getNextN());
 
-        pgID id2 = pgID::genID();
-        pgLts* lts2 = pgDrawMgr::newLightSet(id2);
-        pgAssert(lts2->getID() == id2);
+        ckID id2 = ckID::genID();
+        ckLts* lts2 = ckDrawMgr::newLightSet(id2);
+        ckAssert(lts2->getID() == id2);
 
-        pgAssert(!lts0->getPrevN() && lts0->getNextN() == lts1);
-        pgAssert(lts1->getPrevN() == lts0 && lts1->getNextN() == lts2);
-        pgAssert(lts2->getPrevN() == lts1 && !lts2->getNextN());
+        ckAssert(!lts0->getPrevN() && lts0->getNextN() == lts1);
+        ckAssert(lts1->getPrevN() == lts0 && lts1->getNextN() == lts2);
+        ckAssert(lts2->getPrevN() == lts1 && !lts2->getNextN());
 
-        pgDrawMgr::deleteLightSet(id1);
+        ckDrawMgr::deleteLightSet(id1);
 
-        pgAssert(!lts0->getPrevN() && lts0->getNextN() == lts2);
-        pgAssert(lts2->getPrevN() == lts0 && !lts2->getNextN());
+        ckAssert(!lts0->getPrevN() && lts0->getNextN() == lts2);
+        ckAssert(lts2->getPrevN() == lts0 && !lts2->getNextN());
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
-        pgCol getAmbientColor() const
-        void setAmbientColor(pgCol col)
+        ckCol getAmbientColor() const
+        void setAmbientColor(ckCol col)
         bool isParaLightActive(u8 index) const
         void setParaLightActive(u8 index, bool is_active)
-        const pgVec& getParaLightDir(u8 index) const
-        void setParaLightDir(u8 index, const pgVec& dir)
-        pgCol getParaLightColor(u8 index) const
-        void setParaLightColor(u8 index, pgCol col)
+        const ckVec& getParaLightDir(u8 index) const
+        void setParaLightDir(u8 index, const ckVec& dir)
+        ckCol getParaLightColor(u8 index) const
+        void setParaLightColor(u8 index, ckCol col)
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgLts* lts = pgDrawMgr::newLightSet(pgID::genID());
+        ckLts* lts = ckDrawMgr::newLightSet(ckID::genID());
 
-        pgAssert(lts->getAmbientColor() == pgCol::ZERO);
+        ckAssert(lts->getAmbientColor() == ckCol::ZERO);
 
-        for (u32 i = 0; i < pgLts::MAX_PARA_LIGHT_NUM; i++)
+        for (u32 i = 0; i < ckLts::MAX_PARA_LIGHT_NUM; i++)
         {
-            pgAssert(!lts->isParaLightActive(i));
-            pgAssert(isEqual(lts->getParaLightDir(i), pgVec::X_UNIT));
-            pgAssert(lts->getParaLightColor(i) == pgCol::ZERO);
+            ckAssert(!lts->isParaLightActive(i));
+            ckAssert(isEqual(lts->getParaLightDir(i), ckVec::X_UNIT));
+            ckAssert(lts->getParaLightColor(i) == ckCol::ZERO);
         }
 
-        lts->setAmbientColor(pgCol(10, 20, 30, 40));
-        pgAssert(lts->getAmbientColor() == pgCol(10, 20, 30, 40));
+        lts->setAmbientColor(ckCol(10, 20, 30, 40));
+        ckAssert(lts->getAmbientColor() == ckCol(10, 20, 30, 40));
 
-        for (u32 i = 0; i < pgLts::MAX_PARA_LIGHT_NUM; i++)
+        for (u32 i = 0; i < ckLts::MAX_PARA_LIGHT_NUM; i++)
         {
             lts->setParaLightActive(i, true);
-            pgAssert(lts->isParaLightActive(i));
+            ckAssert(lts->isParaLightActive(i));
 
             lts->setParaLightActive(i, false);
-            pgAssert(!lts->isParaLightActive(i));
+            ckAssert(!lts->isParaLightActive(i));
 
-            lts->setParaLightDir(i, pgVec(-1.0f + i, 2.0f + i, -3.0f + i));
-            pgAssert(isEqual(lts->getParaLightDir(i), pgVec(-1.0f + i, 2.0f + i, -3.0f + i).normalize()));
+            lts->setParaLightDir(i, ckVec(-1.0f + i, 2.0f + i, -3.0f + i));
+            ckAssert(isEqual(lts->getParaLightDir(i), ckVec(-1.0f + i, 2.0f + i, -3.0f + i).normalize()));
 
-            lts->setParaLightDir(i, pgVec::ZERO);
-            pgAssert(isEqual(lts->getParaLightDir(i), pgVec(0.0f, -1.0f, 0.0f)));
+            lts->setParaLightDir(i, ckVec::ZERO);
+            ckAssert(isEqual(lts->getParaLightDir(i), ckVec(0.0f, -1.0f, 0.0f)));
 
-            lts->setParaLightColor(i, pgCol(12 + i, 34 + i, 56 + i));
-            pgAssert(lts->getParaLightColor(i) == pgCol(12 + i, 34 + i, 56 + i));
+            lts->setParaLightColor(i, ckCol(12 + i, 34 + i, 56 + i));
+            ckAssert(lts->getParaLightColor(i) == ckCol(12 + i, 34 + i, 56 + i));
         }
 
-        pgAssertThrow(lts->isParaLightActive(pgLts::MAX_PARA_LIGHT_NUM), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->setParaLightActive(pgLts::MAX_PARA_LIGHT_NUM, false), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->getParaLightDir(pgLts::MAX_PARA_LIGHT_NUM), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->setParaLightDir(pgLts::MAX_PARA_LIGHT_NUM, pgVec::X_UNIT), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->getParaLightColor(pgLts::MAX_PARA_LIGHT_NUM), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->setParaLightColor(pgLts::MAX_PARA_LIGHT_NUM, pgCol::ZERO), pgLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->isParaLightActive(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->setParaLightActive(ckLts::MAX_PARA_LIGHT_NUM, false), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getParaLightDir(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->setParaLightDir(ckLts::MAX_PARA_LIGHT_NUM, ckVec::X_UNIT), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getParaLightColor(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->setParaLightColor(ckLts::MAX_PARA_LIGHT_NUM, ckCol::ZERO), ckLts::ExceptionInvalidArgument);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
         u32 getPointLightNum() const
-        pgLit* getPointLight(pgID lit_id)
-        pgLit* newPointLight(pgID lit_id)
-        void deletePointLight(pgID lit_id)
-        pgLit* getFirstPointLightN() const
-        pgLit* getLastPointLightN() const
+        ckLit* getPointLight(ckID lit_id)
+        ckLit* newPointLight(ckID lit_id)
+        void deletePointLight(ckID lit_id)
+        ckLit* getFirstPointLightN() const
+        ckLit* getLastPointLightN() const
         void clearPointLight()
     */
     {
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgLts* lts = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckLts* lts = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-        pgAssert(lts->getPointLightNum() == 0);
-        pgAssert(!lts->getFirstPointLightN() && !lts->getLastPointLightN());
+        ckAssert(lts->getPointLightNum() == 0);
+        ckAssert(!lts->getFirstPointLightN() && !lts->getLastPointLightN());
 
-        pgID id1 = pgID::genID();
-        pgLit* lit1 = lts->newPointLight(id1);
-        pgAssert(lit1->getID() == id1);
-        pgAssert(lts->getPointLightNum() == 1);
-        pgAssert(lts->getFirstPointLightN() == lit1 && lts->getLastPointLightN() == lit1);
+        ckID id1 = ckID::genID();
+        ckLit* lit1 = lts->newPointLight(id1);
+        ckAssert(lit1->getID() == id1);
+        ckAssert(lts->getPointLightNum() == 1);
+        ckAssert(lts->getFirstPointLightN() == lit1 && lts->getLastPointLightN() == lit1);
 
-        pgAssertThrow(lts->newPointLight(id1), pgLts::ExceptionSameIDExists);
+        ckAssertThrow(lts->newPointLight(id1), ckLts::ExceptionSameIDExists);
 
-        pgID id2 = pgID::genID();
-        pgLit* lit2 = lts->newPointLight(id2);
-        pgAssert(lit2->getID() == id2);
-        pgAssert(lts->getPointLightNum() == 2);
-        pgAssert(lts->getFirstPointLightN() == lit1 && lts->getLastPointLightN() == lit2);
+        ckID id2 = ckID::genID();
+        ckLit* lit2 = lts->newPointLight(id2);
+        ckAssert(lit2->getID() == id2);
+        ckAssert(lts->getPointLightNum() == 2);
+        ckAssert(lts->getFirstPointLightN() == lit1 && lts->getLastPointLightN() == lit2);
 
         lts->deletePointLight(id1);
-        pgAssert(lts->getPointLightNum() == 1);
-        pgAssert(lts->getFirstPointLightN() == lit2 && lts->getLastPointLightN() == lit2);
+        ckAssert(lts->getPointLightNum() == 1);
+        ckAssert(lts->getFirstPointLightN() == lit2 && lts->getLastPointLightN() == lit2);
 
-        pgAssertThrow(lts->deletePointLight(id1), pgLts::ExceptionNotFound);
+        ckAssertThrow(lts->deletePointLight(id1), ckLts::ExceptionNotFound);
 
         lts->deletePointLight(id2);
-        pgAssert(lts->getPointLightNum() == 0);
-        pgAssert(!lts->getFirstPointLightN() && !lts->getLastPointLightN());
+        ckAssert(lts->getPointLightNum() == 0);
+        ckAssert(!lts->getFirstPointLightN() && !lts->getLastPointLightN());
 
-        lit1 = lts->newPointLight(pgID::genID());
-        lit2 = lts->newPointLight(pgID::genID());
-        pgAssert(lts->getPointLightNum() == 2);
-        pgAssert(lts->getFirstPointLightN() == lit1 && lts->getLastPointLightN() == lit2);
-
-        lts->clearPointLight();
-        pgAssert(lts->getPointLightNum() == 0);
-        pgAssert(!lts->getFirstPointLightN() && !lts->getLastPointLightN());
+        lit1 = lts->newPointLight(ckID::genID());
+        lit2 = lts->newPointLight(ckID::genID());
+        ckAssert(lts->getPointLightNum() == 2);
+        ckAssert(lts->getFirstPointLightN() == lit1 && lts->getLastPointLightN() == lit2);
 
         lts->clearPointLight();
+        ckAssert(lts->getPointLightNum() == 0);
+        ckAssert(!lts->getFirstPointLightN() && !lts->getLastPointLightN());
 
-        lts->newPointLight(pgID::genID());
-        lts->newPointLight(pgID::genID());
-        lts->newPointLight(pgID::genID());
+        lts->clearPointLight();
 
-        pgAssertThrow(lts->getPointLight(pgID::ZERO), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->newPointLight(pgID::ZERO), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->deletePointLight(pgID::ZERO), pgLts::ExceptionInvalidArgument);
+        lts->newPointLight(ckID::genID());
+        lts->newPointLight(ckID::genID());
+        lts->newPointLight(ckID::genID());
 
-        pgDrawMgr::destroyBeforeRes();
+        ckAssertThrow(lts->getPointLight(ckID::ZERO), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->newPointLight(ckID::ZERO), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->deletePointLight(ckID::ZERO), ckLts::ExceptionInvalidArgument);
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckDrawMgr::destroyBeforeRes();
+
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
     }
 
     /*
-        void findNearLight(const pgVec& pos)
+        void findNearLight(const ckVec& pos)
         u8 getNearLightNum() const
-        const pgVec& getNearLightDir(u8 index) const
-        pgCol getNearLightColor(u8 index) const
+        const ckVec& getNearLightDir(u8 index) const
+        ckCol getNearLightColor(u8 index) const
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgLts* lts = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(lts->getNearLightNum() == 0);
+        ckLts* lts = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(lts->getNearLightNum() == 0);
 
-        pgAssertThrow(lts->getNearLightDir(0), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->getNearLightColor(0), pgLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightDir(0), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightColor(0), ckLts::ExceptionInvalidArgument);
 
-        lts->setParaLightDir(0, -pgVec::X_UNIT);
-        lts->setParaLightDir(1, -pgVec::Y_UNIT);
-        lts->setParaLightDir(2, -pgVec::Z_UNIT);
+        lts->setParaLightDir(0, -ckVec::X_UNIT);
+        lts->setParaLightDir(1, -ckVec::Y_UNIT);
+        lts->setParaLightDir(2, -ckVec::Z_UNIT);
 
-        lts->setParaLightColor(0, pgCol(11, 11, 11));
-        lts->setParaLightColor(1, pgCol(33, 33, 33));
-        lts->setParaLightColor(2, pgCol(22, 22, 22));
+        lts->setParaLightColor(0, ckCol(11, 11, 11));
+        lts->setParaLightColor(1, ckCol(33, 33, 33));
+        lts->setParaLightColor(2, ckCol(22, 22, 22));
 
         lts->setParaLightActive(0, false);
         lts->setParaLightActive(1, false);
         lts->setParaLightActive(2, true);
 
-        lts->findNearLight(pgVec(100.0f, 100.0f, 100.0f));
-        pgAssert(lts->getNearLightNum() == 1);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Z_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(22, 22, 22));
+        lts->findNearLight(ckVec(100.0f, 100.0f, 100.0f));
+        ckAssert(lts->getNearLightNum() == 1);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Z_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(22, 22, 22));
 
-        pgAssertThrow(lts->getNearLightDir(1), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->getNearLightColor(1), pgLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightDir(1), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightColor(1), ckLts::ExceptionInvalidArgument);
 
         lts->setParaLightActive(0, false);
         lts->setParaLightActive(1, true);
         lts->setParaLightActive(2, true);
 
-        lts->findNearLight(pgVec(100.0f, 100.0f, 100.0f));
-        pgAssert(lts->getNearLightNum() == 2);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Y_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(1), -pgVec::Z_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(33, 33, 33));
-        pgAssert(lts->getNearLightColor(1) == pgCol(22, 22, 22));
+        lts->findNearLight(ckVec(100.0f, 100.0f, 100.0f));
+        ckAssert(lts->getNearLightNum() == 2);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Y_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(1), -ckVec::Z_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(33, 33, 33));
+        ckAssert(lts->getNearLightColor(1) == ckCol(22, 22, 22));
 
-        pgAssertThrow(lts->getNearLightDir(2), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->getNearLightColor(2), pgLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightDir(2), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightColor(2), ckLts::ExceptionInvalidArgument);
 
         lts->setParaLightActive(0, true);
         lts->setParaLightActive(1, true);
         lts->setParaLightActive(2, true);
 
-        lts->findNearLight(pgVec(100.0f, 100.0f, 100.0f));
-        pgAssert(lts->getNearLightNum() == 3);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Y_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(1), -pgVec::Z_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(2), -pgVec::X_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(33, 33, 33));
-        pgAssert(lts->getNearLightColor(1) == pgCol(22, 22, 22));
-        pgAssert(lts->getNearLightColor(2) == pgCol(11, 11, 11));
+        lts->findNearLight(ckVec(100.0f, 100.0f, 100.0f));
+        ckAssert(lts->getNearLightNum() == 3);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Y_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(1), -ckVec::Z_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(2), -ckVec::X_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(33, 33, 33));
+        ckAssert(lts->getNearLightColor(1) == ckCol(22, 22, 22));
+        ckAssert(lts->getNearLightColor(2) == ckCol(11, 11, 11));
 
-        pgAssertThrow(lts->getNearLightDir(3), pgLts::ExceptionInvalidArgument);
-        pgAssertThrow(lts->getNearLightColor(3), pgLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightDir(3), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->getNearLightColor(3), ckLts::ExceptionInvalidArgument);
 
-        pgLit* lit1 = lts->newPointLight(pgID::genID());
+        ckLit* lit1 = lts->newPointLight(ckID::genID());
 
-        lit1->setPos(pgVec(1000.0f, 1000.0f, 1000.0f));
+        lit1->setPos(ckVec(1000.0f, 1000.0f, 1000.0f));
         lit1->setRadius(100.0f, 200.0f);
-        lit1->setColor(pgCol(30, 30, 30));
+        lit1->setColor(ckCol(30, 30, 30));
 
-        lts->findNearLight(pgVec(1050.0f, 1000.0f, 1000.0f));
-        pgAssert(lts->getNearLightNum() == 3);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Y_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(1), pgVec::X_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(2), -pgVec::Z_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(33, 33, 33));
-        pgAssert(lts->getNearLightColor(1) == pgCol(30, 30, 30));
-        pgAssert(lts->getNearLightColor(2) == pgCol(22, 22, 22));
+        lts->findNearLight(ckVec(1050.0f, 1000.0f, 1000.0f));
+        ckAssert(lts->getNearLightNum() == 3);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Y_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(1), ckVec::X_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(2), -ckVec::Z_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(33, 33, 33));
+        ckAssert(lts->getNearLightColor(1) == ckCol(30, 30, 30));
+        ckAssert(lts->getNearLightColor(2) == ckCol(22, 22, 22));
 
-        pgLit* lit2 = lts->newPointLight(pgID::genID());
+        ckLit* lit2 = lts->newPointLight(ckID::genID());
 
-        lit2->setPos(pgVec(1000.0f, 900.0f, 1000.0f));
+        lit2->setPos(ckVec(1000.0f, 900.0f, 1000.0f));
         lit2->setRadius(50.0f, 150.0f);
-        lit2->setColor(pgCol(40, 40, 40));
+        lit2->setColor(ckCol(40, 40, 40));
 
-        lts->findNearLight(pgVec(1000.0f, 1000.0f, 1000.0f));
-        pgAssert(lts->getNearLightNum() == 3);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Y_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(1), -pgVec::Y_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(2), -pgVec::Z_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(33, 33, 33));
-        pgAssert(lts->getNearLightColor(1) == pgCol(30, 30, 30));
-        pgAssert(lts->getNearLightColor(2) == pgCol(22, 22, 22));
+        lts->findNearLight(ckVec(1000.0f, 1000.0f, 1000.0f));
+        ckAssert(lts->getNearLightNum() == 3);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Y_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(1), -ckVec::Y_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(2), -ckVec::Z_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(33, 33, 33));
+        ckAssert(lts->getNearLightColor(1) == ckCol(30, 30, 30));
+        ckAssert(lts->getNearLightColor(2) == ckCol(22, 22, 22));
 
         lts->setParaLightActive(0, true);
         lts->setParaLightActive(1, false);
         lts->setParaLightActive(2, true);
 
-        lts->findNearLight(pgVec(1000.0f, 1150.0f, 1000.0f));
-        pgAssert(lts->getNearLightNum() == 3);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Z_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(1), pgVec::Y_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(2), -pgVec::X_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(22, 22, 22));
-        pgAssert(lts->getNearLightColor(1) == pgCol(15, 15, 15));
-        pgAssert(lts->getNearLightColor(2) == pgCol(11, 11, 11));
+        lts->findNearLight(ckVec(1000.0f, 1150.0f, 1000.0f));
+        ckAssert(lts->getNearLightNum() == 3);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Z_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(1), ckVec::Y_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(2), -ckVec::X_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(22, 22, 22));
+        ckAssert(lts->getNearLightColor(1) == ckCol(15, 15, 15));
+        ckAssert(lts->getNearLightColor(2) == ckCol(11, 11, 11));
 
         lit1->setActive(false);
 
-        lts->findNearLight(pgVec(1000.0f, 1150.0f, 1000.0f));
-        pgAssert(lts->getNearLightNum() == 2);
-        pgAssert(isEqual(lts->getNearLightDir(0), -pgVec::Z_UNIT));
-        pgAssert(isEqual(lts->getNearLightDir(1), -pgVec::X_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(22, 22, 22));
-        pgAssert(lts->getNearLightColor(1) == pgCol(11, 11, 11));
+        lts->findNearLight(ckVec(1000.0f, 1150.0f, 1000.0f));
+        ckAssert(lts->getNearLightNum() == 2);
+        ckAssert(isEqual(lts->getNearLightDir(0), -ckVec::Z_UNIT));
+        ckAssert(isEqual(lts->getNearLightDir(1), -ckVec::X_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(22, 22, 22));
+        ckAssert(lts->getNearLightColor(1) == ckCol(11, 11, 11));
 
         lts->setParaLightActive(0, false);
         lts->setParaLightActive(1, false);
@@ -329,14 +329,14 @@ void pgLtsTest()
 
         lit1->setActive(true);
 
-        lts->findNearLight(pgVec(1000.0f, 1150.0f, 1000.0f));
-        pgAssert(lts->getNearLightNum() == 1);
-        pgAssert(isEqual(lts->getNearLightDir(0), pgVec::Y_UNIT));
-        pgAssert(lts->getNearLightColor(0) == pgCol(15, 15, 15));
+        lts->findNearLight(ckVec(1000.0f, 1150.0f, 1000.0f));
+        ckAssert(lts->getNearLightNum() == 1);
+        ckAssert(isEqual(lts->getNearLightDir(0), ckVec::Y_UNIT));
+        ckAssert(lts->getNearLightColor(0) == ckCol(15, 15, 15));
 
-        lts->findNearLight(pgVec(1000.0f, 1201.0f, 1000.0f));
-        pgAssert(lts->getNearLightNum() == 0);
+        lts->findNearLight(ckVec(1000.0f, 1201.0f, 1000.0f));
+        ckAssert(lts->getNearLightNum() == 0);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

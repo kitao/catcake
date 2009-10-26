@@ -38,39 +38,39 @@ static void* s_mh;
 
 static void threadFuncTest(void* user_param)
 {
-    pgAssert(user_param == s_mh);
+    ckAssert(user_param == s_mh);
 
-    pgSysMgr::lockMutex(s_mh);
+    ckSysMgr::lockMutex(s_mh);
 
-    pgAssert(s_thread_func_value == 1);
+    ckAssert(s_thread_func_value == 1);
 
-    pgSysMgr::unlockMutex(s_mh);
+    ckSysMgr::unlockMutex(s_mh);
 
-    pgSysMgr::sleepUsec(10000);
+    ckSysMgr::sleepUsec(10000);
 
     s_thread_func_value = 2;
 }
 
 
-void pgSysMgrTest()
+void ckSysMgrTest()
 {
     /*
         static void printf(const char* str, ...)
         static void sprintf(char* buf, u32 buf_size, const char* str, ...)
     */
     {
-        pgSysMgr::printf("Printf test %x\n", 65535);
+        ckSysMgr::printf("Printf test %x\n", 65535);
 
         char buf[10];
-        pgSysMgr::sprintf(buf, 10, "%d %3.1f", 123, 456.0f);
+        ckSysMgr::sprintf(buf, 10, "%d %3.1f", 123, 456.0f);
 
-        pgStr<char, 10> str = buf;
-        pgAssert(str == "123 456.0");
+        ckStr<char, 10> str = buf;
+        ckAssert(str == "123 456.0");
 
-        pgAssertThrow(pgSysMgr::printf(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::sprintf(NULL, 10, "dummy"), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::sprintf(buf, 0, "dummy"), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::sprintf(buf, 10, NULL), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::printf(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::sprintf(NULL, 10, "dummy"), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::sprintf(buf, 0, "dummy"), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::sprintf(buf, 10, NULL), ckSysMgr::ExceptionInvalidArgument);
     }
 
     /*
@@ -78,18 +78,18 @@ void pgSysMgrTest()
         static void swprintf(wchar_t* buf, u32 buf_size, const wchar_t* str, ...)
     */
     {
-        pgSysMgr::wprintf(L"Printf test %x\n", 65535);
+        ckSysMgr::wprintf(L"Printf test %x\n", 65535);
 
         wchar_t buf[10];
-        pgSysMgr::swprintf(buf, 10, L"%d %3.1f", 123, 456.0f);
+        ckSysMgr::swprintf(buf, 10, L"%d %3.1f", 123, 456.0f);
 
-        pgStr<wchar_t, 10> str = buf;
-        pgAssert(str == L"123 456.0");
+        ckStr<wchar_t, 10> str = buf;
+        ckAssert(str == L"123 456.0");
 
-        pgAssertThrow(pgSysMgr::wprintf(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::swprintf(NULL, 10, L"dummy"), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::swprintf(buf, 0, L"dummy"), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::swprintf(buf, 10, NULL), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::wprintf(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::swprintf(NULL, 10, L"dummy"), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::swprintf(buf, 0, L"dummy"), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::swprintf(buf, 10, NULL), ckSysMgr::ExceptionInvalidArgument);
     }
 
     /*
@@ -100,74 +100,74 @@ void pgSysMgrTest()
         static void closeFile(void* file_handler)
     */
     {
-        void* fh = pgSysMgr::openFile(TEST_DATA_DIR "test_data1.dat", pgSysMgr::FILE_MODE_READ);
-        pgAssert(fh);
-        pgAssert(pgSysMgr::getFileSize(fh) == 10);
+        void* fh = ckSysMgr::openFile(TEST_DATA_DIR "test_data1.dat", ckSysMgr::FILE_MODE_READ);
+        ckAssert(fh);
+        ckAssert(ckSysMgr::getFileSize(fh) == 10);
 
         u8 buf[10];
-        pgMemMgr::memset(buf, 255, 10);
+        ckMemMgr::memset(buf, 255, 10);
 
-        pgSysMgr::readFile(buf, 0, 3, fh);
-        pgAssert(buf[0] == '0' && buf[1] == '1' && buf[2] == '2' && buf[3] == 255);
+        ckSysMgr::readFile(buf, 0, 3, fh);
+        ckAssert(buf[0] == '0' && buf[1] == '1' && buf[2] == '2' && buf[3] == 255);
 
-        pgSysMgr::readFile(buf, 5, 2, fh);
-        pgAssert(buf[0] == '5' && buf[1] == '6' && buf[2] == '2' && buf[3] == 255);
+        ckSysMgr::readFile(buf, 5, 2, fh);
+        ckAssert(buf[0] == '5' && buf[1] == '6' && buf[2] == '2' && buf[3] == 255);
 
-        pgSysMgr::readFile(buf, 8, 2, fh);
-        pgAssert(buf[0] == '8' && buf[1] == '9' && buf[2] == '2' && buf[3] == 255);
+        ckSysMgr::readFile(buf, 8, 2, fh);
+        ckAssert(buf[0] == '8' && buf[1] == '9' && buf[2] == '2' && buf[3] == 255);
 
-        pgAssertThrow(pgSysMgr::readFile(buf, 8, 4, fh), pgSysMgr::ExceptionCannotReadFile);
-        pgAssertThrow(pgSysMgr::writeFile(0, buf, 3, fh), pgSysMgr::ExceptionCannotWriteFile);
+        ckAssertThrow(ckSysMgr::readFile(buf, 8, 4, fh), ckSysMgr::ExceptionCannotReadFile);
+        ckAssertThrow(ckSysMgr::writeFile(0, buf, 3, fh), ckSysMgr::ExceptionCannotWriteFile);
 
-        pgSysMgr::closeFile(fh);
+        ckSysMgr::closeFile(fh);
 
-        pgAssertThrow(pgSysMgr::openFile(TEST_DATA_DIR "dummy.dat", pgSysMgr::FILE_MODE_READ), pgSysMgr::ExceptionCannotOpenFile);
+        ckAssertThrow(ckSysMgr::openFile(TEST_DATA_DIR "dummy.dat", ckSysMgr::FILE_MODE_READ), ckSysMgr::ExceptionCannotOpenFile);
 
-        fh = pgSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", pgSysMgr::FILE_MODE_WRITE);
-        pgSysMgr::closeFile(fh);
+        fh = ckSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", ckSysMgr::FILE_MODE_WRITE);
+        ckSysMgr::closeFile(fh);
 
-        fh = pgSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", pgSysMgr::FILE_MODE_READ);
-        pgAssert(pgSysMgr::getFileSize(fh) == 0);
+        fh = ckSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", ckSysMgr::FILE_MODE_READ);
+        ckAssert(ckSysMgr::getFileSize(fh) == 0);
 
-        pgAssertThrow(pgSysMgr::getFileSize(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::readFile(buf, 0, 1, fh), pgSysMgr::ExceptionCannotReadFile);
+        ckAssertThrow(ckSysMgr::getFileSize(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::readFile(buf, 0, 1, fh), ckSysMgr::ExceptionCannotReadFile);
 
-        pgSysMgr::closeFile(fh);
+        ckSysMgr::closeFile(fh);
 
-        fh = pgSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", pgSysMgr::FILE_MODE_WRITE);
+        fh = ckSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", ckSysMgr::FILE_MODE_WRITE);
 
         buf[0] = 1;
         buf[1] = 2;
         buf[2] = 3;
 
-        pgSysMgr::writeFile(0, buf, 3, fh);
-        pgSysMgr::writeFile(2, buf, 3, fh);
+        ckSysMgr::writeFile(0, buf, 3, fh);
+        ckSysMgr::writeFile(2, buf, 3, fh);
 
-        pgAssertThrow(pgSysMgr::writeFile(0, NULL, 3, fh), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::readFile(buf, 0, 3, fh), pgSysMgr::ExceptionCannotReadFile);
+        ckAssertThrow(ckSysMgr::writeFile(0, NULL, 3, fh), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::readFile(buf, 0, 3, fh), ckSysMgr::ExceptionCannotReadFile);
 
-        pgSysMgr::closeFile(fh);
+        ckSysMgr::closeFile(fh);
 
-        fh = pgSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", pgSysMgr::FILE_MODE_READ);
-        pgAssert(pgSysMgr::getFileSize(fh) == 5);
+        fh = ckSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", ckSysMgr::FILE_MODE_READ);
+        ckAssert(ckSysMgr::getFileSize(fh) == 5);
 
-        pgSysMgr::readFile(buf, 0, 5, fh);
-        pgAssert(buf[0] = 1 && buf[1] == 2 && buf[2] == 1 && buf[3] == 2 && buf[4] == 3);
+        ckSysMgr::readFile(buf, 0, 5, fh);
+        ckAssert(buf[0] = 1 && buf[1] == 2 && buf[2] == 1 && buf[3] == 2 && buf[4] == 3);
 
-        pgSysMgr::closeFile(fh);
+        ckSysMgr::closeFile(fh);
 
-        fh = pgSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", pgSysMgr::FILE_MODE_WRITE);
-        pgSysMgr::closeFile(fh);
+        fh = ckSysMgr::openFile(TEST_DATA_DIR "test_data2.dat", ckSysMgr::FILE_MODE_WRITE);
+        ckSysMgr::closeFile(fh);
 
         fh = reinterpret_cast<void*>(1);
 
-        pgAssertThrow(pgSysMgr::openFile(NULL, pgSysMgr::FILE_MODE_READ), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::readFile(NULL, 0, 4, fh), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::readFile(NULL, 0, 0, fh), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::readFile(buf, 0, 4, NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::writeFile(0, buf, 0, fh), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::writeFile(0, buf, 3, NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::closeFile(NULL), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::openFile(NULL, ckSysMgr::FILE_MODE_READ), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::readFile(NULL, 0, 4, fh), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::readFile(NULL, 0, 0, fh), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::readFile(buf, 0, 4, NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::writeFile(0, buf, 0, fh), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::writeFile(0, buf, 3, NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::closeFile(NULL), ckSysMgr::ExceptionInvalidArgument);
     }
 
     /*
@@ -175,12 +175,12 @@ void pgSysMgrTest()
         static void sleepUsec(u64 usec)
     */
     {
-        u64 usec = pgSysMgr::getUsecTime();
-        pgAssert(usec > 0);
+        u64 usec = ckSysMgr::getUsecTime();
+        ckAssert(usec > 0);
 
-        pgSysMgr::sleepUsec(1000 * 100);
-        u64 elapsed = pgSysMgr::getUsecTime() - usec;
-        pgAssert(elapsed > 1000 * 50 && elapsed < 1000 * 150);
+        ckSysMgr::sleepUsec(1000 * 100);
+        u64 elapsed = ckSysMgr::getUsecTime() - usec;
+        ckAssert(elapsed > 1000 * 50 && elapsed < 1000 * 150);
     }
 
     /*
@@ -195,29 +195,29 @@ void pgSysMgrTest()
     {
         s_thread_func_value = 0;
 
-        s_mh = pgSysMgr::newMutex();
+        s_mh = ckSysMgr::newMutex();
 
-        pgSysMgr::lockMutex(s_mh);
+        ckSysMgr::lockMutex(s_mh);
 
-        void* th = pgSysMgr::newThread(threadFuncTest, s_mh);
+        void* th = ckSysMgr::newThread(threadFuncTest, s_mh);
 
         s_thread_func_value = 1;
 
-        pgSysMgr::unlockMutex(s_mh);
+        ckSysMgr::unlockMutex(s_mh);
 
-        pgSysMgr::joinThread(th);
+        ckSysMgr::joinThread(th);
 
-        pgAssert(s_thread_func_value == 2);
+        ckAssert(s_thread_func_value == 2);
 
-        pgSysMgr::deleteThread(th);
-        pgSysMgr::deleteMutex(s_mh);
+        ckSysMgr::deleteThread(th);
+        ckSysMgr::deleteMutex(s_mh);
 
-        pgAssertThrow(pgSysMgr::newThread(NULL, NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::deleteThread(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::joinThread(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::deleteMutex(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::lockMutex(NULL), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::unlockMutex(NULL), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::newThread(NULL, NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::deleteThread(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::joinThread(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::deleteMutex(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::lockMutex(NULL), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::unlockMutex(NULL), ckSysMgr::ExceptionInvalidArgument);
     }
 
     /*
@@ -232,72 +232,72 @@ void pgSysMgrTest()
         static void updateForSystem()
     */
     {
-        pgAssert(!pgSysMgr::isCreated());
+        ckAssert(!ckSysMgr::isCreated());
 
-        pgAssertThrow(pgSysMgr::getFramebufferWidth(), pgSysMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSysMgr::getFramebufferHeight(), pgSysMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSysMgr::isFramebufferSizeChanged(), pgSysMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSysMgr::isFullScreen(), pgSysMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSysMgr::toggleFullScreen(0, 0), pgSysMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSysMgr::updateForSystem(), pgSysMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSysMgr::getFramebufferWidth(), ckSysMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSysMgr::getFramebufferHeight(), ckSysMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSysMgr::isFramebufferSizeChanged(), ckSysMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSysMgr::isFullScreen(), ckSysMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSysMgr::toggleFullScreen(0, 0), ckSysMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSysMgr::updateForSystem(), ckSysMgr::ExceptionNotInitialized);
 
-        pgAssertThrow(pgSysMgr::createAfterMem(NULL, 100, 100, 0), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::createAfterMem("test", 0, 100, 0), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::createAfterMem("test", 100, 0, 0), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::createAfterMem(NULL, 100, 100, 0), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::createAfterMem("test", 0, 100, 0), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::createAfterMem("test", 100, 0, 0), ckSysMgr::ExceptionInvalidArgument);
 
-        pgSysMgr::createAfterMem("test1", 160, 170, 0);
+        ckSysMgr::createAfterMem("test1", 160, 170, 0);
 
-        pgAssert(pgSysMgr::isCreated());
-        pgAssert(pgSysMgr::getFramebufferWidth() == 160 && pgSysMgr::getFramebufferHeight() == 170);
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
-        pgAssert(!pgSysMgr::isFullScreen());
+        ckAssert(ckSysMgr::isCreated());
+        ckAssert(ckSysMgr::getFramebufferWidth() == 160 && ckSysMgr::getFramebufferHeight() == 170);
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
+        ckAssert(!ckSysMgr::isFullScreen());
 
-        pgSysMgr::updateForSystem();
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
+        ckSysMgr::updateForSystem();
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
 
-        pgSysMgr::createAfterMem("test2", 640, 480, pgSysMgr::FLAG_FULLSCREEN_START);
+        ckSysMgr::createAfterMem("test2", 640, 480, ckSysMgr::FLAG_FULLSCREEN_START);
 
-        pgAssert(pgSysMgr::isCreated());
-        pgAssert(pgSysMgr::getFramebufferWidth() >= 640 && pgSysMgr::getFramebufferHeight() >= 480);
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
-        pgAssert(pgSysMgr::isFullScreen());
+        ckAssert(ckSysMgr::isCreated());
+        ckAssert(ckSysMgr::getFramebufferWidth() >= 640 && ckSysMgr::getFramebufferHeight() >= 480);
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
+        ckAssert(ckSysMgr::isFullScreen());
 
-        pgSysMgr::updateForSystem();
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
+        ckSysMgr::updateForSystem();
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
 
-        pgSysMgr::toggleFullScreen(640, 480);
-        pgAssert(pgSysMgr::getFramebufferWidth() == 640 && pgSysMgr::getFramebufferHeight() == 480);
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
-        pgAssert(!pgSysMgr::isFullScreen());
+        ckSysMgr::toggleFullScreen(640, 480);
+        ckAssert(ckSysMgr::getFramebufferWidth() == 640 && ckSysMgr::getFramebufferHeight() == 480);
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
+        ckAssert(!ckSysMgr::isFullScreen());
 
-        pgSysMgr::updateForSystem();
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
+        ckSysMgr::updateForSystem();
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
 
-        pgSysMgr::toggleFullScreen(800, 600);
-        pgAssert(pgSysMgr::getFramebufferWidth() >= 800 && pgSysMgr::getFramebufferHeight() >= 600);
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
-        pgAssert(pgSysMgr::isFullScreen());
+        ckSysMgr::toggleFullScreen(800, 600);
+        ckAssert(ckSysMgr::getFramebufferWidth() >= 800 && ckSysMgr::getFramebufferHeight() >= 600);
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
+        ckAssert(ckSysMgr::isFullScreen());
 
-        pgSysMgr::updateForSystem();
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
+        ckSysMgr::updateForSystem();
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
 
-        pgAssertThrow(pgSysMgr::toggleFullScreen(0, 100), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::toggleFullScreen(100, 0), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::toggleFullScreen(0, 100), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::toggleFullScreen(100, 0), ckSysMgr::ExceptionInvalidArgument);
 
-        pgSysMgr::createAfterMem("test3", 234, 345, pgSysMgr::FLAG_VARIABLE_SIZE | pgSysMgr::FLAG_DISABLE_SHADER);
+        ckSysMgr::createAfterMem("test3", 234, 345, ckSysMgr::FLAG_VARIABLE_SIZE | ckSysMgr::FLAG_DISABLE_SHADER);
 
-        pgAssert(pgSysMgr::isCreated());
-        pgAssert(pgSysMgr::getFramebufferWidth() == 234 && pgSysMgr::getFramebufferHeight() == 345);
-        pgAssert(!pgSysMgr::isFullScreen());
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
+        ckAssert(ckSysMgr::isCreated());
+        ckAssert(ckSysMgr::getFramebufferWidth() == 234 && ckSysMgr::getFramebufferHeight() == 345);
+        ckAssert(!ckSysMgr::isFullScreen());
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
 
-        pgSysMgr::updateForSystem();
-        pgAssert(!pgSysMgr::isFramebufferSizeChanged());
+        ckSysMgr::updateForSystem();
+        ckAssert(!ckSysMgr::isFramebufferSizeChanged());
 
-        pgSysMgr::destroyBeforeMem();
-        pgSysMgr::destroyBeforeMem();
+        ckSysMgr::destroyBeforeMem();
+        ckSysMgr::destroyBeforeMem();
 
-        pgAssert(!pgSysMgr::isCreated());
+        ckAssert(!ckSysMgr::isCreated());
     }
 
     /*
@@ -320,31 +320,31 @@ void pgSysMgrTest()
         u32 val1;
         u16 val2;
 
-        pgSysMgr::readLittleEndianForSystem(&val1, data1, sizeof(u32));
-        pgAssert(val1 == 0x12345678);
+        ckSysMgr::readLittleEndianForSystem(&val1, data1, sizeof(u32));
+        ckAssert(val1 == 0x12345678);
 
-        pgSysMgr::readLittleEndianForSystem(&val2, data2, sizeof(u16));
-        pgAssert(val2 == 0xabcd);
+        ckSysMgr::readLittleEndianForSystem(&val2, data2, sizeof(u16));
+        ckAssert(val2 == 0xabcd);
 
-        pgAssert(pgSysMgr::readLittleEndianForSystem<u32>(data1) == 0x12345678);
-        pgAssert(pgSysMgr::readLittleEndianForSystem<u16>(data2) == 0xabcd);
+        ckAssert(ckSysMgr::readLittleEndianForSystem<u32>(data1) == 0x12345678);
+        ckAssert(ckSysMgr::readLittleEndianForSystem<u16>(data2) == 0xabcd);
 
         u8 data3[4], data4[2];
 
         s32 val3 = -123456;
         s16 val4 = -789;
 
-        pgSysMgr::writeLittleEndianForSystem(data3, &val3, sizeof(s32));
-        pgAssert(pgSysMgr::readLittleEndianForSystem<s32>(data3) == val3);
+        ckSysMgr::writeLittleEndianForSystem(data3, &val3, sizeof(s32));
+        ckAssert(ckSysMgr::readLittleEndianForSystem<s32>(data3) == val3);
 
-        pgSysMgr::writeLittleEndianForSystem(data4, &val4, sizeof(s16));
-        pgAssert(pgSysMgr::readLittleEndianForSystem<s16>(data4) == val4);
+        ckSysMgr::writeLittleEndianForSystem(data4, &val4, sizeof(s16));
+        ckAssert(ckSysMgr::readLittleEndianForSystem<s16>(data4) == val4);
 
-        pgSysMgr::writeLittleEndianForSystem<s16>(data3, -4321);
-        pgAssert(pgSysMgr::readLittleEndianForSystem<s16>(data3) == -4321);
+        ckSysMgr::writeLittleEndianForSystem<s16>(data3, -4321);
+        ckAssert(ckSysMgr::readLittleEndianForSystem<s16>(data3) == -4321);
 
-        pgSysMgr::writeLittleEndianForSystem<s8>(data4, -21);
-        pgAssert(pgSysMgr::readLittleEndianForSystem<s8>(data4) == -21);
+        ckSysMgr::writeLittleEndianForSystem<s8>(data4, -21);
+        ckAssert(ckSysMgr::readLittleEndianForSystem<s8>(data4) == -21);
     }
 
     /*
@@ -360,9 +360,9 @@ void pgSysMgrTest()
             str1, str2, str3
         };
 
-        pgAssertThrow(pgSysMgr::setInitialDirectoryForSystem(-1, dummy), pgSysMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSysMgr::setInitialDirectoryForSystem(1, NULL), pgSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::setInitialDirectoryForSystem(-1, dummy), ckSysMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSysMgr::setInitialDirectoryForSystem(1, NULL), ckSysMgr::ExceptionInvalidArgument);
 
-        pgSysMgr::setInitialDirectoryForSystem(0, NULL);
+        ckSysMgr::setInitialDirectoryForSystem(0, NULL);
     }
 }

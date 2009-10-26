@@ -32,33 +32,33 @@
 #include "test.h"
 
 
-void pgConfTest1()
+void ckConfTest1()
 {
     /*
-        pgConf* getPrevN() const
-        pgConf* getNextN() const
-        pgID getID() const
+        ckConf* getPrevN() const
+        ckConf* getNextN() const
+        ckID getID() const
     */
     {
-        pgConfMgr::createAfterRes();
+        ckConfMgr::createAfterRes();
 
-        pgID id1 = pgID::genID();
-        pgConf* conf1 = pgConfMgr::newConfig(id1, "dummy", 5);
-        pgAssert(conf1->getID() == id1);
-        pgAssert(pgConfMgr::getConfig(id1) == conf1);
-        pgAssert(!conf1->getPrevN() && !conf1->getNextN());
+        ckID id1 = ckID::genID();
+        ckConf* conf1 = ckConfMgr::newConfig(id1, "dummy", 5);
+        ckAssert(conf1->getID() == id1);
+        ckAssert(ckConfMgr::getConfig(id1) == conf1);
+        ckAssert(!conf1->getPrevN() && !conf1->getNextN());
 
-        pgID id2 = pgID::genID();
-        pgConf* conf2 = pgConfMgr::newConfig(id2, "dummy", 5);
-        pgAssert(conf2->getID() == id2);
-        pgAssert(pgConfMgr::getConfig(id2) == conf2);
-        pgAssert(!conf1->getPrevN() && conf1->getNextN() == conf2);
-        pgAssert(conf2->getPrevN() == conf1 && !conf2->getNextN());
+        ckID id2 = ckID::genID();
+        ckConf* conf2 = ckConfMgr::newConfig(id2, "dummy", 5);
+        ckAssert(conf2->getID() == id2);
+        ckAssert(ckConfMgr::getConfig(id2) == conf2);
+        ckAssert(!conf1->getPrevN() && conf1->getNextN() == conf2);
+        ckAssert(conf2->getPrevN() == conf1 && !conf2->getNextN());
 
-        pgConfMgr::deleteConfig(id1);
-        pgAssert(!conf2->getPrevN() && !conf2->getNextN());
+        ckConfMgr::deleteConfig(id1);
+        ckAssert(!conf2->getPrevN() && !conf2->getNextN());
 
-        pgConfMgr::destroyBeforeRes();
+        ckConfMgr::destroyBeforeRes();
     }
 
     /*
@@ -66,119 +66,119 @@ void pgConfTest1()
         u16 getErrorLineNo() const
     */
     {
-        pgConfMgr::createAfterRes();
+        ckConfMgr::createAfterRes();
 
-        pgResMgr::loadResource(TEST_DATA_DIR "test_config1.pgc", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "test_config2.pgc", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "test_config3.pgc", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "test_config4.pgc", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "test_config5.pgc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config2.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config3.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config4.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config5.ckc", true);
 
-        pgConf* conf1 = pgConfMgr::getConfig(pgID_("test_config1.pgc"));
-        pgAssert(conf1->isValid());
+        ckConf* conf1 = ckConfMgr::getConfig(ckID_("test_config1.ckc"));
+        ckAssert(conf1->isValid());
 
-        pgConf* conf2 = pgConfMgr::getConfig(pgID_("test_config2.pgc"));
-        pgAssert(conf2->isValid());
+        ckConf* conf2 = ckConfMgr::getConfig(ckID_("test_config2.ckc"));
+        ckAssert(conf2->isValid());
 
-        pgAssertThrow(conf1->getErrorLineNo(), pgConf::ExceptionInvalidCall);
-        pgAssertThrow(conf2->getErrorLineNo(), pgConf::ExceptionInvalidCall);
+        ckAssertThrow(conf1->getErrorLineNo(), ckConf::ExceptionInvalidCall);
+        ckAssertThrow(conf2->getErrorLineNo(), ckConf::ExceptionInvalidCall);
 
-        pgConf* conf3 = pgConfMgr::getConfig(pgID_("test_config3.pgc"));
-        pgAssert(!conf3->isValid() && conf3->getErrorLineNo() == 3);
+        ckConf* conf3 = ckConfMgr::getConfig(ckID_("test_config3.ckc"));
+        ckAssert(!conf3->isValid() && conf3->getErrorLineNo() == 3);
 
-        pgConf* conf4 = pgConfMgr::getConfig(pgID_("test_config4.pgc"));
-        pgAssert(!conf4->isValid() && conf4->getErrorLineNo() == 4);
+        ckConf* conf4 = ckConfMgr::getConfig(ckID_("test_config4.ckc"));
+        ckAssert(!conf4->isValid() && conf4->getErrorLineNo() == 4);
 
-        pgConf* conf5 = pgConfMgr::getConfig(pgID_("test_config5.pgc"));
-        pgAssert(!conf5->isValid() && conf5->getErrorLineNo() == 5);
+        ckConf* conf5 = ckConfMgr::getConfig(ckID_("test_config5.ckc"));
+        ckAssert(!conf5->isValid() && conf5->getErrorLineNo() == 5);
 
-        pgResMgr::removeResource(pgID_("test_config1.pgc"));
-        pgResMgr::removeResource(pgID_("test_config2.pgc"));
-        pgResMgr::removeResource(pgID_("test_config3.pgc"));
-        pgResMgr::removeResource(pgID_("test_config4.pgc"));
-        pgResMgr::removeResource(pgID_("test_config5.pgc"));
+        ckResMgr::removeResource(ckID_("test_config1.ckc"));
+        ckResMgr::removeResource(ckID_("test_config2.ckc"));
+        ckResMgr::removeResource(ckID_("test_config3.ckc"));
+        ckResMgr::removeResource(ckID_("test_config4.ckc"));
+        ckResMgr::removeResource(ckID_("test_config5.ckc"));
 
-        pgConfMgr::destroyBeforeRes();
+        ckConfMgr::destroyBeforeRes();
     }
 
     /*
         u16 getEntryNum(const char* ent_name) const
-        pgEnt* getEntryFromFirstN(const char* ent_name) const
-        pgEnt* getEntryFromLastN(const char* ent_name) const
-        pgEnt* getEntryBeforeN(const char* ent_name, pgEnt* ent) const
-        pgEnt* getEntryAfterN(const char* ent_name, pgEnt* ent) const
-        pgEnt* getFirstEntryN() const
-        pgEnt* getLastEntryN() const
+        ckEnt* getEntryFromFirstN(const char* ent_name) const
+        ckEnt* getEntryFromLastN(const char* ent_name) const
+        ckEnt* getEntryBeforeN(const char* ent_name, ckEnt* ent) const
+        ckEnt* getEntryAfterN(const char* ent_name, ckEnt* ent) const
+        ckEnt* getFirstEntryN() const
+        ckEnt* getLastEntryN() const
     */
     {
-        pgConfMgr::createAfterRes();
+        ckConfMgr::createAfterRes();
 
-        pgResMgr::loadResource(TEST_DATA_DIR "test_config1.pgc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckc", true);
 
-        pgConf* conf = pgConfMgr::getConfig(pgID_("test_config1.pgc"));
+        ckConf* conf = ckConfMgr::getConfig(ckID_("test_config1.ckc"));
 
-        pgAssert(conf->getEntryNum("section") == 3 && conf->getEntryNum("A") == 2 && conf->getEntryNum("test") == 0);
+        ckAssert(conf->getEntryNum("section") == 3 && conf->getEntryNum("A") == 2 && conf->getEntryNum("test") == 0);
 
-        pgEnt* ent1 = conf->getEntryFromFirstN("section");
-        pgAssert(ent1->getValue_s32(0) == 1);
+        ckEnt* ent1 = conf->getEntryFromFirstN("section");
+        ckAssert(ent1->getValue_s32(0) == 1);
 
-        pgAssert(!conf->getEntryFromFirstN("sectio"));
+        ckAssert(!conf->getEntryFromFirstN("sectio"));
 
-        pgEnt* ent2 = conf->getEntryFromLastN("section");
-        pgAssert(ent2->getValue_s32(0) == 3);
+        ckEnt* ent2 = conf->getEntryFromLastN("section");
+        ckAssert(ent2->getValue_s32(0) == 3);
 
-        pgAssert(!conf->getEntryFromLastN("sectio"));
+        ckAssert(!conf->getEntryFromLastN("sectio"));
 
-        pgEnt* ent3 = conf->getEntryBeforeN("A", ent2);
-        pgAssert(ent3->getValue_s32(0) == 1);
+        ckEnt* ent3 = conf->getEntryBeforeN("A", ent2);
+        ckAssert(ent3->getValue_s32(0) == 1);
 
-        pgAssert(!conf->getEntryBeforeN("A", ent1));
+        ckAssert(!conf->getEntryBeforeN("A", ent1));
 
-        pgEnt* ent4 = conf->getEntryAfterN("A", ent2);
-        pgAssert(ent4->getValue_s32(0) == 2);
+        ckEnt* ent4 = conf->getEntryAfterN("A", ent2);
+        ckAssert(ent4->getValue_s32(0) == 2);
 
-        pgAssert(!conf->getEntryAfterN("section", ent2));
+        ckAssert(!conf->getEntryAfterN("section", ent2));
 
-        pgEnt* ent5 = conf->getFirstEntryN();
-        pgAssert(ent5->getName() == "section" && ent5->getValue_s32(0) == 1);
+        ckEnt* ent5 = conf->getFirstEntryN();
+        ckAssert(ent5->getName() == "section" && ent5->getValue_s32(0) == 1);
 
-        pgEnt* ent6 = conf->getLastEntryN();
-        pgAssert(ent6->getName() == "A" && ent6->getValue_s32(0) == 2);
+        ckEnt* ent6 = conf->getLastEntryN();
+        ckAssert(ent6->getName() == "A" && ent6->getValue_s32(0) == 2);
 
-        pgAssertThrow(conf->getEntryFromFirstN(NULL), pgConf::ExceptionInvalidArgument);
-        pgAssertThrow(conf->getEntryFromLastN(NULL), pgConf::ExceptionInvalidArgument);
-        pgAssertThrow(conf->getEntryBeforeN(NULL, ent1), pgConf::ExceptionInvalidArgument);
-        pgAssertThrow(conf->getEntryBeforeN("dummy", NULL), pgConf::ExceptionInvalidArgument);
-        pgAssertThrow(conf->getEntryAfterN(NULL, ent1), pgConf::ExceptionInvalidArgument);
-        pgAssertThrow(conf->getEntryAfterN("dummy", NULL), pgConf::ExceptionInvalidArgument);
+        ckAssertThrow(conf->getEntryFromFirstN(NULL), ckConf::ExceptionInvalidArgument);
+        ckAssertThrow(conf->getEntryFromLastN(NULL), ckConf::ExceptionInvalidArgument);
+        ckAssertThrow(conf->getEntryBeforeN(NULL, ent1), ckConf::ExceptionInvalidArgument);
+        ckAssertThrow(conf->getEntryBeforeN("dummy", NULL), ckConf::ExceptionInvalidArgument);
+        ckAssertThrow(conf->getEntryAfterN(NULL, ent1), ckConf::ExceptionInvalidArgument);
+        ckAssertThrow(conf->getEntryAfterN("dummy", NULL), ckConf::ExceptionInvalidArgument);
 
-        pgAssertThrow(pgConf::newPriorConfigBeforeInitialization(NULL), pgConf::ExceptionInvalidCall);
-        pgAssertThrow(pgConf::deletePriorConfig(conf), pgConf::ExceptionInvalidCall);
+        ckAssertThrow(ckConf::newPriorConfigBeforeInitialization(NULL), ckConf::ExceptionInvalidCall);
+        ckAssertThrow(ckConf::deletePriorConfig(conf), ckConf::ExceptionInvalidCall);
 
-        pgResMgr::removeResource(pgID_("test_config1.pgc"));
+        ckResMgr::removeResource(ckID_("test_config1.ckc"));
 
-        pgConfMgr::destroyBeforeRes();
+        ckConfMgr::destroyBeforeRes();
     }
 }
 
 
-void pgConfTest2()
+void ckConfTest2()
 {
     /*
-        static pgConf* newPriorConfigBeforeInitialization(const char* filename)
-        static void deletePriorConfig(pgConf* conf)
+        static ckConf* newPriorConfigBeforeInitialization(const char* filename)
+        static void deletePriorConfig(ckConf* conf)
     */
     {
-        pgConf* conf = pgConf::newPriorConfigBeforeInitialization(TEST_DATA_DIR "test_config1.pgc");
+        ckConf* conf = ckConf::newPriorConfigBeforeInitialization(TEST_DATA_DIR "test_config1.ckc");
 
-        pgAssert(conf->isValid() && conf->getEntryNum("section") == 3);
+        ckAssert(conf->isValid() && conf->getEntryNum("section") == 3);
 
-        pgAssertThrow(pgConf::newPriorConfigBeforeInitialization("dummy"), pgConf::ExceptionCannotOpenFile);
-        pgAssertThrow(pgConf::newPriorConfigBeforeInitialization(TEST_DATA_DIR "test_data2.dat"), pgConf::ExceptionCannotReadFile);
+        ckAssertThrow(ckConf::newPriorConfigBeforeInitialization("dummy"), ckConf::ExceptionCannotOpenFile);
+        ckAssertThrow(ckConf::newPriorConfigBeforeInitialization(TEST_DATA_DIR "test_data2.dat"), ckConf::ExceptionCannotReadFile);
 
-        pgConf::deletePriorConfig(conf);
+        ckConf::deletePriorConfig(conf);
 
-        pgAssertThrow(pgConf::newPriorConfigBeforeInitialization(NULL), pgConf::ExceptionInvalidArgument);
-        pgAssertThrow(pgConf::deletePriorConfig(NULL), pgConf::ExceptionInvalidArgument);
+        ckAssertThrow(ckConf::newPriorConfigBeforeInitialization(NULL), ckConf::ExceptionInvalidArgument);
+        ckAssertThrow(ckConf::deletePriorConfig(NULL), ckConf::ExceptionInvalidArgument);
     }
 }

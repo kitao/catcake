@@ -38,135 +38,135 @@ enum TestType
 };
 
 
-void pgTypeTest()
+void ckTypeTest()
 {
     /*
-        pgType()
-        pgType(T type)
-        pgType<D, T>& operator=(T type)
+        ckType()
+        ckType(T type)
+        ckType<D, T>& operator=(T type)
         T getType() const
         D getValue() const
     */
     {
-        pgType<u8, TestType> type1;
-        pgAssert(type1.getType() == TYPE_TEST1);
-        pgAssert(type1.getValue() == 0);
+        ckType<u8, TestType> type1;
+        ckAssert(type1.getType() == TYPE_TEST1);
+        ckAssert(type1.getValue() == 0);
 
-        pgType<u8, TestType> type2;
+        ckType<u8, TestType> type2;
 
         type2 = TYPE_TEST2;
-        pgAssert(type2.getType() == TYPE_TEST2);
-        pgAssert(type2.getValue() == 1);
+        ckAssert(type2.getType() == TYPE_TEST2);
+        ckAssert(type2.getValue() == 1);
 
-        pgType<u8, TestType> type3 = type2;
-        pgAssert(type3.getType() == type2.getType());
-        pgAssert(type3.getValue() == type2.getValue());
+        ckType<u8, TestType> type3 = type2;
+        ckAssert(type3.getType() == type2.getType());
+        ckAssert(type3.getValue() == type2.getValue());
 
-        pgType<u8, TestType> type4 = TYPE_TEST3;
-        pgAssert(type4.getType() == TYPE_TEST3);
-        pgAssert(type4.getValue() == 2);
+        ckType<u8, TestType> type4 = TYPE_TEST3;
+        ckAssert(type4.getType() == TYPE_TEST3);
+        ckAssert(type4.getValue() == 2);
 
         type1 = type4;
-        pgAssert(type1.getType() == type4.getType());
-        pgAssert(type1.getValue() == type4.getValue());
+        ckAssert(type1.getType() == type4.getType());
+        ckAssert(type1.getValue() == type4.getValue());
     }
 
     /*
-        bool operator==(pgType<D, T> type) const
+        bool operator==(ckType<D, T> type) const
         bool operator==(T type) const
-        friend bool operator==(T type1, pgType<D, T> type2)
-        bool operator!=(pgType<D, T> type) const
+        friend bool operator==(T type1, ckType<D, T> type2)
+        bool operator!=(ckType<D, T> type) const
         bool operator!=(T type) const
-        friend bool operator!=(T type1, pgType<D, T> type2)
+        friend bool operator!=(T type1, ckType<D, T> type2)
     */
     {
-        pgType<u16, TestType> type1 = TYPE_TEST1;
-        pgType<u16, TestType> type2 = TYPE_TEST1;
-        pgType<u16, TestType> type3 = TYPE_TEST2;
+        ckType<u16, TestType> type1 = TYPE_TEST1;
+        ckType<u16, TestType> type2 = TYPE_TEST1;
+        ckType<u16, TestType> type3 = TYPE_TEST2;
 
-        pgAssert(type1 == type2);
-        pgAssert(!(type1 == type3));
+        ckAssert(type1 == type2);
+        ckAssert(!(type1 == type3));
 
-        pgAssert(type3 == TYPE_TEST2);
-        pgAssert(!(type3 == TYPE_TEST3));
+        ckAssert(type3 == TYPE_TEST2);
+        ckAssert(!(type3 == TYPE_TEST3));
 
-        pgAssert(TYPE_TEST2 == type3);
-        pgAssert(!(TYPE_TEST2 == type1));
+        ckAssert(TYPE_TEST2 == type3);
+        ckAssert(!(TYPE_TEST2 == type1));
 
-        pgAssert(type1 != type3);
-        pgAssert(!(type1 != type2));
+        ckAssert(type1 != type3);
+        ckAssert(!(type1 != type2));
 
-        pgAssert(type3 != TYPE_TEST3);
-        pgAssert(!(type3 != TYPE_TEST2));
+        ckAssert(type3 != TYPE_TEST3);
+        ckAssert(!(type3 != TYPE_TEST2));
 
-        pgAssert(TYPE_TEST2 != type1);
-        pgAssert(!(TYPE_TEST2 != type3));
+        ckAssert(TYPE_TEST2 != type1);
+        ckAssert(!(TYPE_TEST2 != type3));
     }
 
     /*
-        Test codes for pgType<D, bool>
+        Test codes for ckType<D, bool>
 
-        pgType()
-        pgType(T type)
-        pgType<D, T>& operator=(T type)
+        ckType()
+        ckType(T type)
+        ckType<D, T>& operator=(T type)
         T getType() const
         D getValue() const
     */
     {
-        pgType<u8, bool> type1;
-        pgAssert(type1.getType() == false);
-        pgAssert(type1.getValue() == 0);
+        ckType<u8, bool> type1;
+        ckAssert(type1.getType() == false);
+        ckAssert(type1.getValue() == 0);
 
-        pgType<u8, bool> type2;
+        ckType<u8, bool> type2;
 
         type2 = true;
-        pgAssert(type2.getType() == true);
-        pgAssert(type2.getValue() == 1);
+        ckAssert(type2.getType() == true);
+        ckAssert(type2.getValue() == 1);
 
-        pgType<u8, bool> type3 = type2;
-        pgAssert(type3.getType() == type2.getType());
-        pgAssert(type3.getValue() == type2.getValue());
+        ckType<u8, bool> type3 = type2;
+        ckAssert(type3.getType() == type2.getType());
+        ckAssert(type3.getValue() == type2.getValue());
 
-        pgType<u8, bool> type4 = true;
-        pgAssert(type4.getType() == true);
-        pgAssert(type4.getValue() == 1);
+        ckType<u8, bool> type4 = true;
+        ckAssert(type4.getType() == true);
+        ckAssert(type4.getValue() == 1);
 
         type1 = type4;
-        pgAssert(type1.getType() == type4.getType());
-        pgAssert(type1.getValue() == type4.getValue());
+        ckAssert(type1.getType() == type4.getType());
+        ckAssert(type1.getValue() == type4.getValue());
     }
 
     /*
-        Test codes for pgType<D, bool>
+        Test codes for ckType<D, bool>
 
-        bool operator==(pgType<D, T> type) const
+        bool operator==(ckType<D, T> type) const
         bool operator==(T type) const
-        friend bool operator==(T type1, pgType<D, T> type2)
-        bool operator!=(pgType<D, T> type) const
+        friend bool operator==(T type1, ckType<D, T> type2)
+        bool operator!=(ckType<D, T> type) const
         bool operator!=(T type) const
-        friend bool operator!=(T type1, pgType<D, T> type2)
+        friend bool operator!=(T type1, ckType<D, T> type2)
     */
     {
-        pgType<u16, bool> type1 = false;
-        pgType<u16, bool> type2 = false;
-        pgType<u16, bool> type3 = true;
+        ckType<u16, bool> type1 = false;
+        ckType<u16, bool> type2 = false;
+        ckType<u16, bool> type3 = true;
 
-        pgAssert(type1 == type2);
-        pgAssert(!(type1 == type3));
+        ckAssert(type1 == type2);
+        ckAssert(!(type1 == type3));
 
-        pgAssert(type3 == true);
-        pgAssert(!(type3 == false));
+        ckAssert(type3 == true);
+        ckAssert(!(type3 == false));
 
-        pgAssert(true == type3);
-        pgAssert(!(true == type1));
+        ckAssert(true == type3);
+        ckAssert(!(true == type1));
 
-        pgAssert(type1 != type3);
-        pgAssert(!(type1 != type2));
+        ckAssert(type1 != type3);
+        ckAssert(!(type1 != type2));
 
-        pgAssert(type3 != false);
-        pgAssert(!(type3 != true));
+        ckAssert(type3 != false);
+        ckAssert(!(type3 != true));
 
-        pgAssert(true != type1);
-        pgAssert(!(true != type3));
+        ckAssert(true != type1);
+        ckAssert(!(true != type3));
     }
 }

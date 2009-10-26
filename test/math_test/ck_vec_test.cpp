@@ -32,103 +32,103 @@
 #include "test.h"
 
 
-void pgVecTest()
+void ckVecTest()
 {
     /*
-        static const pgVec ZERO
-        static const pgVec X_UNIT
-        static const pgVec Y_UNIT
-        static const pgVec Z_UNIT
+        static const ckVec ZERO
+        static const ckVec X_UNIT
+        static const ckVec Y_UNIT
+        static const ckVec Z_UNIT
     */
     {
-        pgAssert(isEqual(pgVec::ZERO, pgVec(0.0f, 0.0f, 0.0f)));
-        pgAssert(isEqual(pgVec::X_UNIT, pgVec(1.0f, 0.0f, 0.0f)));
-        pgAssert(isEqual(pgVec::Y_UNIT, pgVec(0.0f, 1.0f, 0.0f)));
-        pgAssert(isEqual(pgVec::Z_UNIT, pgVec(0.0f, 0.0f, 1.0f)));
+        ckAssert(isEqual(ckVec::ZERO, ckVec(0.0f, 0.0f, 0.0f)));
+        ckAssert(isEqual(ckVec::X_UNIT, ckVec(1.0f, 0.0f, 0.0f)));
+        ckAssert(isEqual(ckVec::Y_UNIT, ckVec(0.0f, 1.0f, 0.0f)));
+        ckAssert(isEqual(ckVec::Z_UNIT, ckVec(0.0f, 0.0f, 1.0f)));
     }
 
     /*
-        pgVec()
-        pgVec(r32 x_, r32 y_, r32 z_ = 0.0f)
+        ckVec()
+        ckVec(r32 x_, r32 y_, r32 z_ = 0.0f)
         void set(r32 x_, r32 y_, r32 z_ = 0.0f)
     */
     {
-        pgVec vec1;
+        ckVec vec1;
 
         vec1.set(1.0f, 2.0f, 3.0f);
-        pgAssert(isEqual(vec1.x, 1.0f) && isEqual(vec1.y, 2.0f) && isEqual(vec1.z, 3.0f));
+        ckAssert(isEqual(vec1.x, 1.0f) && isEqual(vec1.y, 2.0f) && isEqual(vec1.z, 3.0f));
 
-        pgVec vec2 = vec1;
-        pgAssert(isEqual(vec2.x, 1.0f) && isEqual(vec2.y, 2.0f) && isEqual(vec2.z, 3.0f));
+        ckVec vec2 = vec1;
+        ckAssert(isEqual(vec2.x, 1.0f) && isEqual(vec2.y, 2.0f) && isEqual(vec2.z, 3.0f));
 
-        pgVec vec3(1.0f, 2.0f, 3.0f);
-        pgAssert(isEqual(vec3, vec1));
+        ckVec vec3(1.0f, 2.0f, 3.0f);
+        ckAssert(isEqual(vec3, vec1));
     }
 
     /*
-        pgVec operator+(const pgVec& vec) const
-        void operator+=(const pgVec& vec)
+        ckVec operator+(const ckVec& vec) const
+        void operator+=(const ckVec& vec)
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
-        pgVec vec2(3.0f, 4.0f, 5.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec2(3.0f, 4.0f, 5.0f);
 
-        pgVec vec3 = vec1 + vec2;
-        pgAssert(isEqual(vec3, pgVec(4.0f, 6.0f, 8.0f)));
+        ckVec vec3 = vec1 + vec2;
+        ckAssert(isEqual(vec3, ckVec(4.0f, 6.0f, 8.0f)));
 
         vec1 += vec2;
-        pgAssert(isEqual(vec1, pgVec(4.0f, 6.0f, 8.0f)));
+        ckAssert(isEqual(vec1, ckVec(4.0f, 6.0f, 8.0f)));
     }
 
     /*
-        pgVec operator-() const
-        pgVec operator-(const pgVec& vec) const
-        void operator-=(const pgVec& vec)
+        ckVec operator-() const
+        ckVec operator-(const ckVec& vec) const
+        void operator-=(const ckVec& vec)
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
-        pgVec vec2(3.0f, 5.0f, 7.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec2(3.0f, 5.0f, 7.0f);
 
-        pgVec vec3 = vec1 - vec2;
-        pgAssert(isEqual(vec3, pgVec(-2.0f, -3.0f, -4.0f)));
+        ckVec vec3 = vec1 - vec2;
+        ckAssert(isEqual(vec3, ckVec(-2.0f, -3.0f, -4.0f)));
 
         vec1 -= vec2;
-        pgAssert(isEqual(vec1, pgVec(-2.0f, -3.0f, -4.0f)));
+        ckAssert(isEqual(vec1, ckVec(-2.0f, -3.0f, -4.0f)));
 
         vec2 = -vec1;
-        pgAssert(isEqual(vec2, pgVec(2.0f, 3.0f, 4.0f)));
+        ckAssert(isEqual(vec2, ckVec(2.0f, 3.0f, 4.0f)));
     }
 
     /*
-        pgVec operator*(r32 s) const
-        friend pgVec operator*(r32 s, const pgVec& vec)
+        ckVec operator*(r32 s) const
+        friend ckVec operator*(r32 s, const ckVec& vec)
         void operator*=(r32 s)
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
 
-        pgVec vec2 = vec1 * 3.0f;
-        pgAssert(isEqual(vec2, pgVec(3.0f, 6.0f, 9.0f)));
+        ckVec vec2 = vec1 * 3.0f;
+        ckAssert(isEqual(vec2, ckVec(3.0f, 6.0f, 9.0f)));
 
-        pgVec vec3 = 3.0f * vec1;
-        pgAssert(isEqual(vec3, pgVec(3.0f, 6.0f, 9.0f)));
+        ckVec vec3 = 3.0f * vec1;
+        ckAssert(isEqual(vec3, ckVec(3.0f, 6.0f, 9.0f)));
 
         vec1 *= 3.0f;
-        pgAssert(isEqual(vec1, pgVec(3.0f, 6.0f, 9.0f)));
+        ckAssert(isEqual(vec1, ckVec(3.0f, 6.0f, 9.0f)));
     }
 
     /*
-        pgVec operator/(r32 s) const
+        ckVec operator/(r32 s) const
         void operator/=(r32 s)
     */
     {
-        pgVec vec1(2.0f, 4.0f, 6.0f);
+        ckVec vec1(2.0f, 4.0f, 6.0f);
 
-        pgVec vec2 = vec1 / 2.0f;
-        pgAssert(isEqual(vec2, pgVec(1.0f, 2.0f, 3.0f)));
+        ckVec vec2 = vec1 / 2.0f;
+        ckAssert(isEqual(vec2, ckVec(1.0f, 2.0f, 3.0f)));
 
         vec1 /= 2.0f;
-        pgAssert(isEqual(vec1, pgVec(1.0f, 2.0f, 3.0f)));
+        ckAssert(isEqual(vec1, ckVec(1.0f, 2.0f, 3.0f)));
     }
 
     /*
@@ -136,173 +136,173 @@ void pgVecTest()
         r32 sqLength() const
     */
     {
-        pgVec vec(1.0f, 2.0f, 3.0);
+        ckVec vec(1.0f, 2.0f, 3.0);
 
-        pgAssert(isEqual(vec.length(), pgMath::sqrt(14.0f)));
+        ckAssert(isEqual(vec.length(), ckMath::sqrt(14.0f)));
 
-        pgAssert(isEqual(vec.sqLength(), 14.0f));
+        ckAssert(isEqual(vec.sqLength(), 14.0f));
     }
 
     /*
-        r32 dist(const pgVec& vec) const
-        r32 sqDist(const pgVec& vec) const
+        r32 dist(const ckVec& vec) const
+        r32 sqDist(const ckVec& vec) const
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0);
-        pgVec vec2(2.0f, 4.0f, 6.0);
+        ckVec vec1(1.0f, 2.0f, 3.0);
+        ckVec vec2(2.0f, 4.0f, 6.0);
 
-        pgAssert(isEqual(vec1.dist(vec2), pgMath::sqrt(14.0f)));
+        ckAssert(isEqual(vec1.dist(vec2), ckMath::sqrt(14.0f)));
 
-        pgAssert(isEqual(vec1.sqDist(vec2), 14.0f));
+        ckAssert(isEqual(vec1.sqDist(vec2), 14.0f));
     }
 
     /*
-        r32 dot(const pgVec& vec) const
-        pgVec cross(const pgVec& vec) const
+        r32 dot(const ckVec& vec) const
+        ckVec cross(const ckVec& vec) const
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0);
-        pgVec vec2(-2.0f, 3.0f, 4.0);
+        ckVec vec1(1.0f, 2.0f, 3.0);
+        ckVec vec2(-2.0f, 3.0f, 4.0);
 
-        pgAssert(isEqual(vec1.dot(vec2), 16.0f));
+        ckAssert(isEqual(vec1.dot(vec2), 16.0f));
 
-        pgAssert(isEqual(vec1.cross(vec2), pgVec(-1.0f, -10.0f, 7.0f)));
+        ckAssert(isEqual(vec1.cross(vec2), ckVec(-1.0f, -10.0f, 7.0f)));
     }
 
     /*
-        pgVec rotateX_r32(r32 deg) const
-        pgVec rotateY_r32(r32 deg) const
-        pgVec rotateZ_r32(r32 deg) const
+        ckVec rotateX_r32(r32 deg) const
+        ckVec rotateY_r32(r32 deg) const
+        ckVec rotateZ_r32(r32 deg) const
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
 
-        pgVec vec2 = vec1.rotateX_r32(90.0f);
-        pgAssert(isEqual(vec2, pgVec(1.0f, -3.0f, 2.0f)));
+        ckVec vec2 = vec1.rotateX_r32(90.0f);
+        ckAssert(isEqual(vec2, ckVec(1.0f, -3.0f, 2.0f)));
 
-        pgVec vec3 = vec1.rotateY_r32(90.0f);
-        pgAssert(isEqual(vec3, pgVec(3.0f, 2.0f, -1.0f)));
+        ckVec vec3 = vec1.rotateY_r32(90.0f);
+        ckAssert(isEqual(vec3, ckVec(3.0f, 2.0f, -1.0f)));
 
-        pgVec vec4 = vec1.rotateZ_r32(90.0f);
-        pgAssert(isEqual(vec4, pgVec(-2.0f, 1.0f, 3.0f)));
+        ckVec vec4 = vec1.rotateZ_r32(90.0f);
+        ckAssert(isEqual(vec4, ckVec(-2.0f, 1.0f, 3.0f)));
     }
 
     /*
-        pgVec rotateX_s32(s32 deg) const
-        pgVec rotateY_s32(s32 deg) const
-        pgVec rotateZ_s32(s32 deg) const
+        ckVec rotateX_s32(s32 deg) const
+        ckVec rotateY_s32(s32 deg) const
+        ckVec rotateZ_s32(s32 deg) const
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
 
-        pgVec vec2 = vec1.rotateX_s32(90);
-        pgAssert(isEqual(vec2, pgVec(1.0f, -3.0f, 2.0f)));
+        ckVec vec2 = vec1.rotateX_s32(90);
+        ckAssert(isEqual(vec2, ckVec(1.0f, -3.0f, 2.0f)));
 
-        pgVec vec3 = vec1.rotateY_s32(90);
-        pgAssert(isEqual(vec3, pgVec(3.0f, 2.0f, -1.0f)));
+        ckVec vec3 = vec1.rotateY_s32(90);
+        ckAssert(isEqual(vec3, ckVec(3.0f, 2.0f, -1.0f)));
 
-        pgVec vec4 = vec1.rotateZ_s32(90);
-        pgAssert(isEqual(vec4, pgVec(-2.0f, 1.0f, 3.0f)));
+        ckVec vec4 = vec1.rotateZ_s32(90);
+        ckAssert(isEqual(vec4, ckVec(-2.0f, 1.0f, 3.0f)));
     }
 
     /*
-        pgVec normalize() const
+        ckVec normalize() const
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
 
-        pgVec vec2 = vec1.normalize();
-        pgAssert(isEqual(vec2.length(), 1.0f));
-        pgAssert(isEqual(vec2 * vec1.length(), vec1));
+        ckVec vec2 = vec1.normalize();
+        ckAssert(isEqual(vec2.length(), 1.0f));
+        ckAssert(isEqual(vec2 * vec1.length(), vec1));
     }
 
     /*
-        pgVec interp(const pgVec& to, r32 ratio) const
+        ckVec interp(const ckVec& to, r32 ratio) const
     */
     {
-        pgVec vec1(1.0f, 2.0f, 3.0f);
-        pgVec vec2(3.0f, 4.0f, 5.0f);
+        ckVec vec1(1.0f, 2.0f, 3.0f);
+        ckVec vec2(3.0f, 4.0f, 5.0f);
 
-        pgVec vec3 = vec1.interp(vec2, 0.0f);
-        pgAssert(isEqual(vec3, vec1));
+        ckVec vec3 = vec1.interp(vec2, 0.0f);
+        ckAssert(isEqual(vec3, vec1));
 
-        pgVec vec4 = vec1.interp(vec2, 0.25f);
-        pgAssert(isEqual(vec4, pgVec(1.5f, 2.5f, 3.5f)));
+        ckVec vec4 = vec1.interp(vec2, 0.25f);
+        ckAssert(isEqual(vec4, ckVec(1.5f, 2.5f, 3.5f)));
 
-        pgVec vec5 = vec1.interp(vec2, 1.0f);
-        pgAssert(isEqual(vec5, vec2));
+        ckVec vec5 = vec1.interp(vec2, 1.0f);
+        ckAssert(isEqual(vec5, vec2));
     }
 
     /*
-        pgVec slerp(const pgVec& to, r32 ratio) const
+        ckVec slerp(const ckVec& to, r32 ratio) const
     */
     {
-        pgVec vec1 = pgVec(1.0f, 1.0f, 1.0f).normalize();
-        pgVec vec2 = pgVec(-1.0f, 1.0f, -1.0f).normalize();
+        ckVec vec1 = ckVec(1.0f, 1.0f, 1.0f).normalize();
+        ckVec vec2 = ckVec(-1.0f, 1.0f, -1.0f).normalize();
 
-        pgVec vec3 = vec1.slerp(vec2, 0.0f);
-        pgAssert(isEqual(vec3, vec1));
+        ckVec vec3 = vec1.slerp(vec2, 0.0f);
+        ckAssert(isEqual(vec3, vec1));
 
-        pgVec vec4 = vec1.slerp(vec2, 0.25f).slerp(vec1.slerp(vec2, 0.75f), 0.5f);
-        pgAssert(isEqual(vec4, pgVec(0.0f, 1.0f, 0.0f)));
+        ckVec vec4 = vec1.slerp(vec2, 0.25f).slerp(vec1.slerp(vec2, 0.75f), 0.5f);
+        ckAssert(isEqual(vec4, ckVec(0.0f, 1.0f, 0.0f)));
 
-        pgVec vec5 = vec1.slerp(vec2, 1.0f);
-        pgAssert(isEqual(vec5, vec2));
+        ckVec vec5 = vec1.slerp(vec2, 1.0f);
+        ckAssert(isEqual(vec5, vec2));
     }
 
     /*
-        pgVec toLocalOf(const pgMat& mat) const
-        pgVec toGlobalFrom(const pgMat& mat) const
+        ckVec toLocalOf(const ckMat& mat) const
+        ckVec toGlobalFrom(const ckMat& mat) const
     */
     {
-        pgMat mat( //
-            pgVec(0.0f, 0.5f, 0.0f), //
-            pgVec(0.0f, 0.0f, 3.0f), //
-            pgVec(-0.5f, 0.0f, 0.0f), //
-            pgVec(10.0f, 11.0f, 12.0f));
+        ckMat mat( //
+            ckVec(0.0f, 0.5f, 0.0f), //
+            ckVec(0.0f, 0.0f, 3.0f), //
+            ckVec(-0.5f, 0.0f, 0.0f), //
+            ckVec(10.0f, 11.0f, 12.0f));
 
-        pgVec vec1(9.0f, 12.0f, 15.0f);
+        ckVec vec1(9.0f, 12.0f, 15.0f);
 
-        pgVec vec2 = vec1.toLocalOf(mat);
-        pgAssert(isEqual(vec2, pgVec(2.0f, 1.0f, 2.0f)));
+        ckVec vec2 = vec1.toLocalOf(mat);
+        ckAssert(isEqual(vec2, ckVec(2.0f, 1.0f, 2.0f)));
 
-        pgVec vec3 = vec2.toGlobalFrom(mat);
-        pgAssert(isEqual(vec3, vec1));
+        ckVec vec3 = vec2.toGlobalFrom(mat);
+        ckAssert(isEqual(vec3, vec1));
     }
 
     /*
-        pgVec toLocalOf_noTrans(const pgMat& mat) const
-        pgVec toGlobalFrom_noTrans(const pgMat& mat) const
+        ckVec toLocalOf_noTrans(const ckMat& mat) const
+        ckVec toGlobalFrom_noTrans(const ckMat& mat) const
     */
     {
-        pgMat mat( //
-            pgVec(0.0f, 0.5f, 0.0f), //
-            pgVec(0.0f, 0.0f, 3.0f), //
-            pgVec(-0.5f, 0.0f, 0.0f), //
-            pgVec(10.0f, 11.0f, 12.0f));
+        ckMat mat( //
+            ckVec(0.0f, 0.5f, 0.0f), //
+            ckVec(0.0f, 0.0f, 3.0f), //
+            ckVec(-0.5f, 0.0f, 0.0f), //
+            ckVec(10.0f, 11.0f, 12.0f));
 
-        pgVec vec1(9.0f, 12.0f, 15.0f);
+        ckVec vec1(9.0f, 12.0f, 15.0f);
 
-        pgVec vec2 = vec1.toLocalOf_noTrans(mat);
-        pgAssert(isEqual(vec2, pgVec(24.0f, 5.0f, -18.0f)));
+        ckVec vec2 = vec1.toLocalOf_noTrans(mat);
+        ckAssert(isEqual(vec2, ckVec(24.0f, 5.0f, -18.0f)));
 
-        pgVec vec3 = vec2.toGlobalFrom_noTrans(mat);
-        pgAssert(isEqual(vec3, vec1));
+        ckVec vec3 = vec2.toGlobalFrom_noTrans(mat);
+        ckAssert(isEqual(vec3, vec1));
     }
 
     /*
         void toR32x4(r32* r32x4, r32 w) const
-        static pgVec fromR32x4(const r32* r32x4)
+        static ckVec fromR32x4(const r32* r32x4)
     */
     {
-        pgVec vec1(0.1f, 0.2f, 0.3f);
+        ckVec vec1(0.1f, 0.2f, 0.3f);
 
         r32 v[4];
         vec1.toR32x4(v, 0.4f);
-        pgAssert(isEqual(v[0], 0.1f) && isEqual(v[1], 0.2f) && isEqual(v[2], 0.3f) && isEqual(v[3], 0.4f));
+        ckAssert(isEqual(v[0], 0.1f) && isEqual(v[1], 0.2f) && isEqual(v[2], 0.3f) && isEqual(v[3], 0.4f));
 
-        pgVec vec2 = pgVec::fromR32x4(v);
-        pgAssert(isEqual(vec1, vec2));
+        ckVec vec2 = ckVec::fromR32x4(v);
+        ckAssert(isEqual(vec1, vec2));
     }
 
     /*
@@ -320,10 +320,10 @@ void pgVecTest()
         };
 
         r32 v2[4];
-        pgVec::mulR32x4(v2, m, v1);
-        pgAssert(isEqual(v2[0], 9.0f) && isEqual(v2[1], 10.0f) && isEqual(v2[2], 11.0f) && isEqual(v2[3], 12.0f));
+        ckVec::mulR32x4(v2, m, v1);
+        ckAssert(isEqual(v2[0], 9.0f) && isEqual(v2[1], 10.0f) && isEqual(v2[2], 11.0f) && isEqual(v2[3], 12.0f));
 
-        pgVec::mulR32x4(v1, m, v1);
-        pgAssert(isEqual(v1[0], 9.0f) && isEqual(v1[1], 10.0f) && isEqual(v1[2], 11.0f) && isEqual(v1[3], 12.0f));
+        ckVec::mulR32x4(v1, m, v1);
+        ckAssert(isEqual(v1[0], 9.0f) && isEqual(v1[1], 10.0f) && isEqual(v1[2], 11.0f) && isEqual(v1[3], 12.0f));
     }
 }

@@ -38,17 +38,17 @@ static u8 s_update_flag;
 static u8 s_message_flag;
 
 
-class TaskMgrTestClass : public pgTask
+class TaskMgrTestClass : public ckTask
 {
 public:
-    TaskMgrTestClass(pgTask::TaskOrder order, u8 no) : pgTask(order)
+    TaskMgrTestClass(ckTask::TaskOrder order, u8 no) : ckTask(order)
     {
         m_no_flag = 1 << no;
 
         s_ctor_flag |= m_no_flag;
     }
 
-    TaskMgrTestClass(pgTask* parent, u8 no) : pgTask(parent)
+    TaskMgrTestClass(ckTask* parent, u8 no) : ckTask(parent)
     {
         m_no_flag = 1 << no;
 
@@ -62,23 +62,23 @@ public:
 
     virtual void onUpdate()
     {
-        pgAssert(m_no_flag > s_update_flag);
+        ckAssert(m_no_flag > s_update_flag);
 
         s_update_flag |= m_no_flag;
 
-        pgSysMgr::sleepUsec(10000);
+        ckSysMgr::sleepUsec(10000);
     }
 
-    virtual void onMessage(pgID msg_id, pgMsg<4>& msg)
+    virtual void onMessage(ckID msg_id, ckMsg<4>& msg)
     {
-        pgAssert(msg.getParam<u16>(0) == 123 && msg.getParam<u16>(1) == 456 && msg.getParam<u16>(2) == 789 && msg.getParam<s8>(3) == -10);
-        pgAssert(m_no_flag > s_message_flag);
+        ckAssert(msg.getParam<u16>(0) == 123 && msg.getParam<u16>(1) == 456 && msg.getParam<u16>(2) == 789 && msg.getParam<s8>(3) == -10);
+        ckAssert(m_no_flag > s_message_flag);
 
         s_message_flag |= m_no_flag;
 
-        if (msg_id == pgID_("DELETE"))
+        if (msg_id == ckID_("DELETE"))
         {
-            pgDeleteTask(this);
+            ckDeleteTask(this);
             return;
         }
     }
@@ -90,11 +90,11 @@ private:
 
 static void renderFuncTest()
 {
-    pgSysMgr::sleepUsec(10000);
+    ckSysMgr::sleepUsec(10000);
 }
 
 
-void pgTaskMgrTest()
+void ckTaskMgrTest()
 {
     /*
         static bool isCreated()
@@ -105,26 +105,26 @@ void pgTaskMgrTest()
         s_ctor_flag = 0x00;
         s_dtor_flag = 0x00;
 
-        pgAssert(!pgTaskMgr::isCreated());
+        ckAssert(!ckTaskMgr::isCreated());
 
-        pgAssertThrow(pgTaskMgr::createAfterSys(0), pgTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckTaskMgr::createAfterSys(0), ckTaskMgr::ExceptionInvalidArgument);
 
-        pgTaskMgr::createAfterSys(10);
-        pgTaskMgr::createAfterSys(20);
+        ckTaskMgr::createAfterSys(10);
+        ckTaskMgr::createAfterSys(20);
 
-        pgAssert(pgSysMgr::isCreated());
+        ckAssert(ckSysMgr::isCreated());
 
-        pgTask* task = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_ZERO, 0);
-        pgNewTask(TaskMgrTestClass)(task, 1);
-        pgNewTask(TaskMgrTestClass)(pgTask::ORDER_PLUS_7, 2);
+        ckTask* task = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_ZERO, 0);
+        ckNewTask(TaskMgrTestClass)(task, 1);
+        ckNewTask(TaskMgrTestClass)(ckTask::ORDER_PLUS_7, 2);
 
-        pgAssert(s_ctor_flag == 0x07 && s_dtor_flag == 0x00);
+        ckAssert(s_ctor_flag == 0x07 && s_dtor_flag == 0x00);
 
-        pgTaskMgr::destroyFirst();
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
 
-        pgAssert(s_ctor_flag == 0x07 && s_dtor_flag == 0x07);
-        pgAssert(!pgTaskMgr::isCreated());
+        ckAssert(s_ctor_flag == 0x07 && s_dtor_flag == 0x07);
+        ckAssert(!ckTaskMgr::isCreated());
     }
 
     /*
@@ -139,213 +139,213 @@ void pgTaskMgrTest()
     {
         s_update_flag = 0x00;
 
-        pgAssertThrow(pgTaskMgr::getAimFPS(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::getCurFPS(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::getExecuteUsecTime(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::getRenderUsecTime(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::getFrameCount(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::updateForSystem(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::measureRenderTimeForSystem(NULL), pgTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getAimFPS(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getCurFPS(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getExecuteUsecTime(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getRenderUsecTime(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getFrameCount(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::updateForSystem(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::measureRenderTimeForSystem(NULL), ckTaskMgr::ExceptionNotInitialized);
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
-        pgAssert(pgTaskMgr::getAimFPS() == 60);
-        pgAssert(isEqual(pgTaskMgr::getCurFPS(), 60.0f));
-        pgAssert(pgTaskMgr::getExecuteUsecTime() == 0);
-        pgAssert(pgTaskMgr::getRenderUsecTime() == 0);
-        pgAssert(pgTaskMgr::getFrameCount() == 0);
+        ckAssert(ckTaskMgr::getAimFPS() == 60);
+        ckAssert(isEqual(ckTaskMgr::getCurFPS(), 60.0f));
+        ckAssert(ckTaskMgr::getExecuteUsecTime() == 0);
+        ckAssert(ckTaskMgr::getRenderUsecTime() == 0);
+        ckAssert(ckTaskMgr::getFrameCount() == 0);
 
-        pgTask* task = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_MINUS_7, 0);
-        pgNewTask(TaskMgrTestClass)(task, 1);
+        ckTask* task = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_MINUS_7, 0);
+        ckNewTask(TaskMgrTestClass)(task, 1);
 
-        pgAssert(s_update_flag == 0x00);
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_update_flag == 0x03);
+        ckAssert(s_update_flag == 0x00);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_update_flag == 0x03);
 
-        pgAssert(pgTaskMgr::getCurFPS() > 55.0f && pgTaskMgr::getCurFPS() < 65.0f);
-        pgAssert(pgTaskMgr::getFrameCount() == 1);
-
-        s_update_flag = 0x00;
-        pgTaskMgr::updateForSystem();
-
-        pgAssert(isEqual(pgTaskMgr::getAimFPS(), 60.0f));
-        pgAssert(pgTaskMgr::getCurFPS() > 55.0f && pgTaskMgr::getCurFPS() < 65.0f);
-        pgAssert(pgTaskMgr::getExecuteUsecTime() > 1000000 / 65);
-        pgAssert(pgTaskMgr::getRenderUsecTime() == 0);
-        pgAssert(pgTaskMgr::getFrameCount() == 2);
-
-        u64 last_execute_time = pgTaskMgr::getExecuteUsecTime();
-
-        pgTaskMgr::measureRenderTimeForSystem(renderFuncTest);
-        pgAssert(pgTaskMgr::getExecuteUsecTime() == last_execute_time + pgTaskMgr::getRenderUsecTime());
-        pgAssert(pgTaskMgr::getRenderUsecTime() > 1000);
+        ckAssert(ckTaskMgr::getCurFPS() > 55.0f && ckTaskMgr::getCurFPS() < 65.0f);
+        ckAssert(ckTaskMgr::getFrameCount() == 1);
 
         s_update_flag = 0x00;
-        pgTaskMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
-        pgAssert(pgTaskMgr::getRenderUsecTime() == 0);
+        ckAssert(isEqual(ckTaskMgr::getAimFPS(), 60.0f));
+        ckAssert(ckTaskMgr::getCurFPS() > 55.0f && ckTaskMgr::getCurFPS() < 65.0f);
+        ckAssert(ckTaskMgr::getExecuteUsecTime() > 1000000 / 65);
+        ckAssert(ckTaskMgr::getRenderUsecTime() == 0);
+        ckAssert(ckTaskMgr::getFrameCount() == 2);
 
-        pgAssertThrow(pgTaskMgr::measureRenderTimeForSystem(NULL), pgTaskMgr::ExceptionInvalidArgument);
+        u64 last_execute_time = ckTaskMgr::getExecuteUsecTime();
 
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::measureRenderTimeForSystem(renderFuncTest);
+        ckAssert(ckTaskMgr::getExecuteUsecTime() == last_execute_time + ckTaskMgr::getRenderUsecTime());
+        ckAssert(ckTaskMgr::getRenderUsecTime() > 1000);
+
+        s_update_flag = 0x00;
+        ckTaskMgr::updateForSystem();
+
+        ckAssert(ckTaskMgr::getRenderUsecTime() == 0);
+
+        ckAssertThrow(ckTaskMgr::measureRenderTimeForSystem(NULL), ckTaskMgr::ExceptionInvalidArgument);
+
+        ckTaskMgr::destroyFirst();
     }
 
     /*
-        static pgTask* getFirstTaskN(pgTask::TaskOrder order)
-        static pgTask* getLastTaskN(pgTask::TaskOrder order)
-        static void sendMessage(pgID msg_id, pgMsg<4>& msg)
+        static ckTask* getFirstTaskN(ckTask::TaskOrder order)
+        static ckTask* getLastTaskN(ckTask::TaskOrder order)
+        static void sendMessage(ckID msg_id, ckMsg<4>& msg)
     */
     {
         s_ctor_flag = 0x00;
         s_dtor_flag = 0x00;
         s_message_flag = 0x00;
 
-        pgMsg<4> dummy;
+        ckMsg<4> dummy;
 
-        pgAssertThrow(pgTaskMgr::getFirstTaskN(pgTask::ORDER_MINUS_2), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::getLastTaskN(pgTask::ORDER_PLUS_2), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::sendMessage(pgID::ZERO, dummy), pgTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getFirstTaskN(ckTask::ORDER_MINUS_2), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::getLastTaskN(ckTask::ORDER_PLUS_2), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::sendMessage(ckID::ZERO, dummy), ckTaskMgr::ExceptionNotInitialized);
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
-        pgTask* task1 = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_MINUS_3, 0);
-        pgTask* task2 = pgNewTask(TaskMgrTestClass)(task1, 1);
-        pgTask* task3 = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_ZERO, 2);
-        pgTask* task4 = pgNewTask(TaskMgrTestClass)(task3, 3);
-        pgTask* task5 = pgNewTask(TaskMgrTestClass)(task4, 4);
-        pgTask* task6 = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_PLUS_3, 5);
-        pgTask* task7 = pgNewTask(TaskMgrTestClass)(task6, 6);
+        ckTask* task1 = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_MINUS_3, 0);
+        ckTask* task2 = ckNewTask(TaskMgrTestClass)(task1, 1);
+        ckTask* task3 = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_ZERO, 2);
+        ckTask* task4 = ckNewTask(TaskMgrTestClass)(task3, 3);
+        ckTask* task5 = ckNewTask(TaskMgrTestClass)(task4, 4);
+        ckTask* task6 = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_PLUS_3, 5);
+        ckTask* task7 = ckNewTask(TaskMgrTestClass)(task6, 6);
 
-        pgAssert(!pgTaskMgr::getFirstTaskN(pgTask::ORDER_MINUS_4));
-        pgAssert(!pgTaskMgr::getLastTaskN(pgTask::ORDER_MINUS_4));
-        pgAssert(pgTaskMgr::getFirstTaskN(pgTask::ORDER_MINUS_3) == task1);
-        pgAssert(pgTaskMgr::getLastTaskN(pgTask::ORDER_MINUS_3) == task2);
-        pgAssert(pgTaskMgr::getFirstTaskN(pgTask::ORDER_ZERO) == task3);
-        pgAssert(pgTaskMgr::getLastTaskN(pgTask::ORDER_ZERO) == task5);
-        pgAssert(pgTaskMgr::getFirstTaskN(pgTask::ORDER_PLUS_3) == task6);
-        pgAssert(pgTaskMgr::getLastTaskN(pgTask::ORDER_PLUS_3) == task7);
-        pgAssert(!pgTaskMgr::getFirstTaskN(pgTask::ORDER_PLUS_4));
-        pgAssert(!pgTaskMgr::getLastTaskN(pgTask::ORDER_PLUS_4));
+        ckAssert(!ckTaskMgr::getFirstTaskN(ckTask::ORDER_MINUS_4));
+        ckAssert(!ckTaskMgr::getLastTaskN(ckTask::ORDER_MINUS_4));
+        ckAssert(ckTaskMgr::getFirstTaskN(ckTask::ORDER_MINUS_3) == task1);
+        ckAssert(ckTaskMgr::getLastTaskN(ckTask::ORDER_MINUS_3) == task2);
+        ckAssert(ckTaskMgr::getFirstTaskN(ckTask::ORDER_ZERO) == task3);
+        ckAssert(ckTaskMgr::getLastTaskN(ckTask::ORDER_ZERO) == task5);
+        ckAssert(ckTaskMgr::getFirstTaskN(ckTask::ORDER_PLUS_3) == task6);
+        ckAssert(ckTaskMgr::getLastTaskN(ckTask::ORDER_PLUS_3) == task7);
+        ckAssert(!ckTaskMgr::getFirstTaskN(ckTask::ORDER_PLUS_4));
+        ckAssert(!ckTaskMgr::getLastTaskN(ckTask::ORDER_PLUS_4));
 
-        pgMsg<4> msg;
+        ckMsg<4> msg;
         msg.setParam<u16>(0, 123);
         msg.setParam<u16>(1, 456);
         msg.setParam<u16>(2, 789);
         msg.setParam<s8>(3, -10);
 
-        pgTaskMgr::sendMessage(pgID::ZERO, msg);
-        pgAssert(s_ctor_flag == 0x7f && s_dtor_flag == 0x00 && s_message_flag == 0x7f);
+        ckTaskMgr::sendMessage(ckID::ZERO, msg);
+        ckAssert(s_ctor_flag == 0x7f && s_dtor_flag == 0x00 && s_message_flag == 0x7f);
 
         s_message_flag = 0x00;
 
-        pgTaskMgr::sendMessage(pgID_("DELETE"), msg);
-        pgAssert(s_ctor_flag == 0x7f && s_dtor_flag == 0x7f && s_message_flag == 0x25);
+        ckTaskMgr::sendMessage(ckID_("DELETE"), msg);
+        ckAssert(s_ctor_flag == 0x7f && s_dtor_flag == 0x7f && s_message_flag == 0x25);
 
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
     }
 
     /*
-        static bool isOrderActive(pgTask::TaskOrder order)
-        static void setOrderActive(pgTask::TaskOrder from, pgTask::TaskOrder to, bool is_active)
-        static void deleteOrder(pgTask::TaskOrder from, pgTask::TaskOrder to)
+        static bool isOrderActive(ckTask::TaskOrder order)
+        static void setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active)
+        static void deleteOrder(ckTask::TaskOrder from, ckTask::TaskOrder to)
     */
     {
         s_dtor_flag = 0x00;
         s_update_flag = 0x00;
 
-        pgAssertThrow(pgTaskMgr::isOrderActive(pgTask::ORDER_MINUS_2), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::setOrderActive(pgTask::ORDER_MINUS_1, pgTask::ORDER_PLUS_1, true), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::deleteOrder(pgTask::ORDER_MINUS_5, pgTask::ORDER_PLUS_5), pgTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::isOrderActive(ckTask::ORDER_MINUS_2), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::setOrderActive(ckTask::ORDER_MINUS_1, ckTask::ORDER_PLUS_1, true), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::deleteOrder(ckTask::ORDER_MINUS_5, ckTask::ORDER_PLUS_5), ckTaskMgr::ExceptionNotInitialized);
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
-        for (s32 i = pgTask::ORDER_MINUS_8_FOR_SYSTEM; i <= pgTask::ORDER_PLUS_8_FOR_SYSTEM; i++)
+        for (s32 i = ckTask::ORDER_MINUS_8_FOR_SYSTEM; i <= ckTask::ORDER_PLUS_8_FOR_SYSTEM; i++)
         {
-            pgAssert(pgTaskMgr::isOrderActive(static_cast<pgTask::TaskOrder>(i)));
+            ckAssert(ckTaskMgr::isOrderActive(static_cast<ckTask::TaskOrder>(i)));
         }
 
-        pgNewTask(TaskMgrTestClass)(pgTask::ORDER_MINUS_6, 0);
-        pgNewTask(TaskMgrTestClass)(pgTask::ORDER_MINUS_4, 1);
-        pgNewTask(TaskMgrTestClass)(pgTask::ORDER_MINUS_2, 2);
-        pgTask* task = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_ZERO, 3);
-        pgNewTask(TaskMgrTestClass)(task, 4);
-        pgNewTask(TaskMgrTestClass)(pgTask::ORDER_PLUS_3, 5);
-        pgNewTask(TaskMgrTestClass)(pgTask::ORDER_PLUS_5, 6);
+        ckNewTask(TaskMgrTestClass)(ckTask::ORDER_MINUS_6, 0);
+        ckNewTask(TaskMgrTestClass)(ckTask::ORDER_MINUS_4, 1);
+        ckNewTask(TaskMgrTestClass)(ckTask::ORDER_MINUS_2, 2);
+        ckTask* task = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_ZERO, 3);
+        ckNewTask(TaskMgrTestClass)(task, 4);
+        ckNewTask(TaskMgrTestClass)(ckTask::ORDER_PLUS_3, 5);
+        ckNewTask(TaskMgrTestClass)(ckTask::ORDER_PLUS_5, 6);
 
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_update_flag == 0x7f);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_update_flag == 0x7f);
 
-        pgTaskMgr::setOrderActive(pgTask::ORDER_MINUS_7, pgTask::ORDER_PLUS_3, false);
+        ckTaskMgr::setOrderActive(ckTask::ORDER_MINUS_7, ckTask::ORDER_PLUS_3, false);
 
-        for (s32 i = pgTask::ORDER_MINUS_8_FOR_SYSTEM; i <= pgTask::ORDER_PLUS_8_FOR_SYSTEM; i++)
+        for (s32 i = ckTask::ORDER_MINUS_8_FOR_SYSTEM; i <= ckTask::ORDER_PLUS_8_FOR_SYSTEM; i++)
         {
-            if (i >= pgTask::ORDER_MINUS_7 && i <= pgTask::ORDER_PLUS_3)
+            if (i >= ckTask::ORDER_MINUS_7 && i <= ckTask::ORDER_PLUS_3)
             {
-                pgAssert(!pgTaskMgr::isOrderActive(static_cast<pgTask::TaskOrder>(i)));
+                ckAssert(!ckTaskMgr::isOrderActive(static_cast<ckTask::TaskOrder>(i)));
             }
             else
             {
-                pgAssert(pgTaskMgr::isOrderActive(static_cast<pgTask::TaskOrder>(i)));
+                ckAssert(ckTaskMgr::isOrderActive(static_cast<ckTask::TaskOrder>(i)));
             }
         }
 
         s_update_flag = 0;
 
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_update_flag == 0x40);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_update_flag == 0x40);
 
-        pgTaskMgr::deleteOrder(pgTask::ORDER_MINUS_5, pgTask::ORDER_PLUS_7);
-        pgAssert(s_dtor_flag == 0x7e);
-
-        s_update_flag = 0;
-
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_update_flag == 0x00);
-
-        pgTaskMgr::setOrderActive(pgTask::ORDER_MINUS_7, pgTask::ORDER_PLUS_7, true);
+        ckTaskMgr::deleteOrder(ckTask::ORDER_MINUS_5, ckTask::ORDER_PLUS_7);
+        ckAssert(s_dtor_flag == 0x7e);
 
         s_update_flag = 0;
 
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_update_flag == 0x01);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_update_flag == 0x00);
 
-        pgAssertThrow(pgTaskMgr::setOrderActive(pgTask::ORDER_PLUS_1, pgTask::ORDER_ZERO, false), pgTaskMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgTaskMgr::deleteOrder(pgTask::ORDER_PLUS_7, pgTask::ORDER_PLUS_6), pgTaskMgr::ExceptionInvalidArgument);
+        ckTaskMgr::setOrderActive(ckTask::ORDER_MINUS_7, ckTask::ORDER_PLUS_7, true);
 
-        pgTaskMgr::destroyFirst();
+        s_update_flag = 0;
+
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_update_flag == 0x01);
+
+        ckAssertThrow(ckTaskMgr::setOrderActive(ckTask::ORDER_PLUS_1, ckTask::ORDER_ZERO, false), ckTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckTaskMgr::deleteOrder(ckTask::ORDER_PLUS_7, ckTask::ORDER_PLUS_6), ckTaskMgr::ExceptionInvalidArgument);
+
+        ckTaskMgr::destroyFirst();
     }
 
     /*
         static u32 setNextTaskNameForSystem(const char* name)
-        static void deleteTaskForSystem(pgTask* task, bool is_direct_delete)
+        static void deleteTaskForSystem(ckTask* task, bool is_direct_delete)
     */
     {
-        pgAssertThrow(pgTaskMgr::setNextTaskNameForSystem("TEST"), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::deleteTaskForSystem(NULL, false), pgTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::setNextTaskNameForSystem("TEST"), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::deleteTaskForSystem(NULL, false), ckTaskMgr::ExceptionNotInitialized);
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
         const char* name = "TEST";
-        pgTaskMgr::setNextTaskNameForSystem(name);
-        pgTask* task = pgNew(TaskMgrTestClass)(pgTask::ORDER_ZERO, 0);
-        pgAssert(task->getName() == name);
+        ckTaskMgr::setNextTaskNameForSystem(name);
+        ckTask* task = ckNew(TaskMgrTestClass)(ckTask::ORDER_ZERO, 0);
+        ckAssert(task->getName() == name);
 
-        pgAssert(pgTaskMgr::getFirstTaskN(pgTask::ORDER_ZERO) == task);
-        pgAssert(pgTaskMgr::getLastTaskN(pgTask::ORDER_ZERO) == task);
+        ckAssert(ckTaskMgr::getFirstTaskN(ckTask::ORDER_ZERO) == task);
+        ckAssert(ckTaskMgr::getLastTaskN(ckTask::ORDER_ZERO) == task);
 
-        pgTaskMgr::deleteTaskForSystem(task, true);
+        ckTaskMgr::deleteTaskForSystem(task, true);
 
-        task = pgNewTask(TaskMgrTestClass)(pgTask::ORDER_ZERO, 0);
+        task = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_ZERO, 0);
 
-        pgTaskMgr::deleteTaskForSystem(task, false);
+        ckTaskMgr::deleteTaskForSystem(task, false);
 
-        pgAssert(!pgTaskMgr::getFirstTaskN(pgTask::ORDER_ZERO));
-        pgAssert(!pgTaskMgr::getLastTaskN(pgTask::ORDER_ZERO));
+        ckAssert(!ckTaskMgr::getFirstTaskN(ckTask::ORDER_ZERO));
+        ckAssert(!ckTaskMgr::getLastTaskN(ckTask::ORDER_ZERO));
 
-        pgAssertThrow(pgTaskMgr::setNextTaskNameForSystem(NULL), pgTaskMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgTaskMgr::deleteTaskForSystem(NULL, false), pgTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckTaskMgr::setNextTaskNameForSystem(NULL), ckTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckTaskMgr::deleteTaskForSystem(NULL, false), ckTaskMgr::ExceptionInvalidArgument);
 
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
     }
 
     /*
@@ -353,20 +353,20 @@ void pgTaskMgrTest()
         static bool isFrameSkipResetForSystem()
     */
     {
-        pgAssertThrow(pgTaskMgr::resetFrameSkip(), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgTaskMgr::isFrameSkipResetForSystem(), pgTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::resetFrameSkip(), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::isFrameSkipResetForSystem(), ckTaskMgr::ExceptionNotInitialized);
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
-        pgAssert(pgTaskMgr::isFrameSkipResetForSystem());
-        pgAssert(!pgTaskMgr::isFrameSkipResetForSystem());
-        pgAssert(!pgTaskMgr::isFrameSkipResetForSystem());
+        ckAssert(ckTaskMgr::isFrameSkipResetForSystem());
+        ckAssert(!ckTaskMgr::isFrameSkipResetForSystem());
+        ckAssert(!ckTaskMgr::isFrameSkipResetForSystem());
 
-        pgTaskMgr::resetFrameSkip();
-        pgAssert(pgTaskMgr::isFrameSkipResetForSystem());
-        pgAssert(!pgTaskMgr::isFrameSkipResetForSystem());
-        pgAssert(!pgTaskMgr::isFrameSkipResetForSystem());
+        ckTaskMgr::resetFrameSkip();
+        ckAssert(ckTaskMgr::isFrameSkipResetForSystem());
+        ckAssert(!ckTaskMgr::isFrameSkipResetForSystem());
+        ckAssert(!ckTaskMgr::isFrameSkipResetForSystem());
 
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
     }
 }

@@ -32,35 +32,35 @@
 #include "test.h"
 
 
-void pgMapTest()
+void ckMapTest()
 {
     /*
-        pgMap()
-        ~pgMap()
+        ckMap()
+        ~ckMap()
         void init(u16 hash_size)
         u16 getHashSize() const
         u16 getDataNum() const
         void add(K key, const D& data)
     */
     {
-        pgMap<s8, u32> map;
-        pgAssert(map.getHashSize() == 0 && map.getDataNum() == 0);
+        ckMap<s8, u32> map;
+        ckAssert(map.getHashSize() == 0 && map.getDataNum() == 0);
 
-        pgAssertThrow(map.init(0), pgMap<s8, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.add(0, 123), pgMap<s8, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.init(0), ckMap<s8, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.add(0, 123), ckMap<s8, u32>::ExceptionNotInitialized);
 
         map.init(5);
-        pgAssert(map.getHashSize() == 5 && map.getDataNum() == 0);
+        ckAssert(map.getHashSize() == 5 && map.getDataNum() == 0);
 
         map.init(3);
-        pgAssert(map.getHashSize() == 3 && map.getDataNum() == 0);
+        ckAssert(map.getHashSize() == 3 && map.getDataNum() == 0);
 
         map.add(1, 345);
         map.add(2, 456);
         map.add(-3, 789);
-        pgAssert(map.getHashSize() == 3 && map.getDataNum() == 3);
+        ckAssert(map.getHashSize() == 3 && map.getDataNum() == 3);
 
-        pgAssertThrow(map.add(-3, 123), pgMap<s8, u32>::ExceptionSameKeyExists);
+        ckAssertThrow(map.add(-3, 123), ckMap<s8, u32>::ExceptionSameKeyExists);
     }
 
     /*
@@ -70,19 +70,19 @@ void pgMapTest()
         void clear()
     */
     {
-        pgMap<pgID, u32> map;
+        ckMap<ckID, u32> map;
 
         map.clear();
 
-        pgAssertThrow(map.get(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.getN(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.remove(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.get(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.getN(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.remove(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
 
-        pgID id[20];
+        ckID id[20];
 
         for (s32 i = 0; i < 20; i++)
         {
-            id[i] = pgID::genID();
+            id[i] = ckID::genID();
         }
 
         map.init(5);
@@ -90,7 +90,7 @@ void pgMapTest()
         for (s32 i = 0; i < 10; i++)
         {
             map.add(id[i], 100 + i);
-            pgAssert(map.getHashSize() == 5 && map.getDataNum() == i + 1);
+            ckAssert(map.getHashSize() == 5 && map.getDataNum() == i + 1);
         }
 
         for (u32 i = 1; i < 20; i++)
@@ -99,13 +99,13 @@ void pgMapTest()
             {
                 if (j < 10)
                 {
-                    pgAssert(*map.get(id[j]) == 100 + j);
-                    pgAssert(*map.getN(id[j]) == 100 + j);
+                    ckAssert(*map.get(id[j]) == 100 + j);
+                    ckAssert(*map.getN(id[j]) == 100 + j);
                 }
                 else
                 {
-                    pgAssertThrow(map.get(id[j]), pgMap<pgID, u32>::ExceptionNotFound);
-                    pgAssert(!map.getN(id[j]));
+                    ckAssertThrow(map.get(id[j]), ckMap<ckID, u32>::ExceptionNotFound);
+                    ckAssert(!map.getN(id[j]));
                 }
             }
         }
@@ -118,11 +118,11 @@ void pgMapTest()
             }
             else
             {
-                pgAssertThrow(map.remove(id[i]), pgMap<pgID, u32>::ExceptionNotFound);
+                ckAssertThrow(map.remove(id[i]), ckMap<ckID, u32>::ExceptionNotFound);
             }
         }
 
-        pgAssert(map.getHashSize() == 5 && map.getDataNum() == 7);
+        ckAssert(map.getHashSize() == 5 && map.getDataNum() == 7);
 
         for (s32 i = 0; i < 20; i += 2)
         {
@@ -132,37 +132,37 @@ void pgMapTest()
             }
             else
             {
-                pgAssertThrow(map.remove(id[i]), pgMap<pgID, u32>::ExceptionNotFound);
+                ckAssertThrow(map.remove(id[i]), ckMap<ckID, u32>::ExceptionNotFound);
             }
         }
 
-        pgAssert(map.getHashSize() == 5 && map.getDataNum() == 3);
+        ckAssert(map.getHashSize() == 5 && map.getDataNum() == 3);
 
         for (u32 i = 0; i < 20; i++)
         {
             if (i < 7 && i % 2 != 0)
             {
-                pgAssert(*map.get(id[i]) == 100 + i);
-                pgAssert(*map.getN(id[i]) == 100 + i);
+                ckAssert(*map.get(id[i]) == 100 + i);
+                ckAssert(*map.getN(id[i]) == 100 + i);
             }
             else
             {
-                pgAssertThrow(map.get(id[i]), pgMap<pgID, u32>::ExceptionNotFound);
-                pgAssert(!map.getN(id[i]));
+                ckAssertThrow(map.get(id[i]), ckMap<ckID, u32>::ExceptionNotFound);
+                ckAssert(!map.getN(id[i]));
             }
         }
 
         map.clear();
-        pgAssert(map.getHashSize() == 5 && map.getDataNum() == 0);
+        ckAssert(map.getHashSize() == 5 && map.getDataNum() == 0);
 
         for (s32 i = 0; i < 20; i++)
         {
-            pgAssertThrow(map.get(id[i]), pgMap<pgID, u32>::ExceptionNotFound);
-            pgAssert(!map.getN(id[i]));
+            ckAssertThrow(map.get(id[i]), ckMap<ckID, u32>::ExceptionNotFound);
+            ckAssert(!map.getN(id[i]));
         }
 
         map.clear();
-        pgAssert(map.getHashSize() == 5 && map.getDataNum() == 0);
+        ckAssert(map.getHashSize() == 5 && map.getDataNum() == 0);
     }
 
     /*
@@ -176,84 +176,84 @@ void pgMapTest()
         void moveAfter(K key, K prev_key)
     */
     {
-        pgMap<pgID, u32> map;
+        ckMap<ckID, u32> map;
 
-        pgAssertThrow(map.getFirstKeyN(), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.getLastKeyN(), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.getPrevKeyN(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.getNextKeyN(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.moveFirst(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.moveLast(pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.moveBefore(pgID::ZERO, pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
-        pgAssertThrow(map.moveAfter(pgID::ZERO, pgID::ZERO), pgMap<pgID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.getFirstKeyN(), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.getLastKeyN(), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.getPrevKeyN(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.getNextKeyN(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.moveFirst(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.moveLast(ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.moveBefore(ckID::ZERO, ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
+        ckAssertThrow(map.moveAfter(ckID::ZERO, ckID::ZERO), ckMap<ckID, u32>::ExceptionNotInitialized);
 
         map.init(2);
-        pgAssert(!map.getFirstKeyN() && !map.getLastKeyN());
+        ckAssert(!map.getFirstKeyN() && !map.getLastKeyN());
 
-        pgID::setCurIDForSystem(1);
+        ckID::setCurIDForSystem(1);
 
-        pgID id1 = pgID::genID();
-        pgID id2 = pgID::genID();
-        pgID id3 = pgID::genID();
+        ckID id1 = ckID::genID();
+        ckID id2 = ckID::genID();
+        ckID id3 = ckID::genID();
 
         map.add(id1, 123);
         map.add(id2, 456);
         map.add(id3, 789);
-        pgAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id3);
-        pgAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id2);
-        pgAssert(*map.getPrevKeyN(id2) == id1 && *map.getNextKeyN(id2) == id3);
-        pgAssert(*map.getPrevKeyN(id3) == id2 && !map.getNextKeyN(id3));
+        ckAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id3);
+        ckAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id2);
+        ckAssert(*map.getPrevKeyN(id2) == id1 && *map.getNextKeyN(id2) == id3);
+        ckAssert(*map.getPrevKeyN(id3) == id2 && !map.getNextKeyN(id3));
 
         map.remove(id2);
-        pgAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id3);
-        pgAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id3);
-        pgAssert(*map.getPrevKeyN(id3) == id1 && !map.getNextKeyN(id3));
+        ckAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id3);
+        ckAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id3);
+        ckAssert(*map.getPrevKeyN(id3) == id1 && !map.getNextKeyN(id3));
 
         map.remove(id1);
-        pgAssert(*map.getFirstKeyN() == id3 && *map.getLastKeyN() == id3);
-        pgAssert(!map.getPrevKeyN(id3) && !map.getNextKeyN(id3));
+        ckAssert(*map.getFirstKeyN() == id3 && *map.getLastKeyN() == id3);
+        ckAssert(!map.getPrevKeyN(id3) && !map.getNextKeyN(id3));
 
-        pgAssertThrow(map.getPrevKeyN(pgID::ZERO), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.getPrevKeyN(pgID::genID()), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.getNextKeyN(pgID::ZERO), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.getNextKeyN(pgID::genID()), pgMap<pgID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.getPrevKeyN(ckID::ZERO), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.getPrevKeyN(ckID::genID()), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.getNextKeyN(ckID::ZERO), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.getNextKeyN(ckID::genID()), ckMap<ckID, u32>::ExceptionInvalidArgument);
 
-        pgAssertThrow(map.moveFirst(id1), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.moveLast(id1), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.moveBefore(id1, id3), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.moveBefore(id3, id1), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.moveAfter(id1, id3), pgMap<pgID, u32>::ExceptionInvalidArgument);
-        pgAssertThrow(map.moveAfter(id3, id1), pgMap<pgID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.moveFirst(id1), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.moveLast(id1), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.moveBefore(id1, id3), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.moveBefore(id3, id1), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.moveAfter(id1, id3), ckMap<ckID, u32>::ExceptionInvalidArgument);
+        ckAssertThrow(map.moveAfter(id3, id1), ckMap<ckID, u32>::ExceptionInvalidArgument);
 
         map.add(id1, 123);
         map.add(id2, 456);
-        pgAssert(*map.getFirstKeyN() == id3 && *map.getLastKeyN() == id2);
-        pgAssert(!map.getPrevKeyN(id3) && *map.getNextKeyN(id3) == id1);
-        pgAssert(*map.getPrevKeyN(id1) == id3 && *map.getNextKeyN(id1) == id2);
-        pgAssert(*map.getPrevKeyN(id2) == id1 && !map.getNextKeyN(id2));
+        ckAssert(*map.getFirstKeyN() == id3 && *map.getLastKeyN() == id2);
+        ckAssert(!map.getPrevKeyN(id3) && *map.getNextKeyN(id3) == id1);
+        ckAssert(*map.getPrevKeyN(id1) == id3 && *map.getNextKeyN(id1) == id2);
+        ckAssert(*map.getPrevKeyN(id2) == id1 && !map.getNextKeyN(id2));
 
         map.moveFirst(id1);
-        pgAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id2);
-        pgAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id3);
-        pgAssert(*map.getPrevKeyN(id3) == id1 && *map.getNextKeyN(id3) == id2);
-        pgAssert(*map.getPrevKeyN(id2) == id3 && !map.getNextKeyN(id2));
+        ckAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id2);
+        ckAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id3);
+        ckAssert(*map.getPrevKeyN(id3) == id1 && *map.getNextKeyN(id3) == id2);
+        ckAssert(*map.getPrevKeyN(id2) == id3 && !map.getNextKeyN(id2));
 
         map.moveLast(id3);
-        pgAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id3);
-        pgAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id2);
-        pgAssert(*map.getPrevKeyN(id2) == id1 && *map.getNextKeyN(id2) == id3);
-        pgAssert(*map.getPrevKeyN(id3) == id2 && !map.getNextKeyN(id3));
+        ckAssert(*map.getFirstKeyN() == id1 && *map.getLastKeyN() == id3);
+        ckAssert(!map.getPrevKeyN(id1) && *map.getNextKeyN(id1) == id2);
+        ckAssert(*map.getPrevKeyN(id2) == id1 && *map.getNextKeyN(id2) == id3);
+        ckAssert(*map.getPrevKeyN(id3) == id2 && !map.getNextKeyN(id3));
 
         map.moveBefore(id1, id3);
-        pgAssert(*map.getFirstKeyN() == id2 && *map.getLastKeyN() == id3);
-        pgAssert(!map.getPrevKeyN(id2) && *map.getNextKeyN(id2) == id1);
-        pgAssert(*map.getPrevKeyN(id1) == id2 && *map.getNextKeyN(id1) == id3);
-        pgAssert(*map.getPrevKeyN(id3) == id1 && !map.getNextKeyN(id3));
+        ckAssert(*map.getFirstKeyN() == id2 && *map.getLastKeyN() == id3);
+        ckAssert(!map.getPrevKeyN(id2) && *map.getNextKeyN(id2) == id1);
+        ckAssert(*map.getPrevKeyN(id1) == id2 && *map.getNextKeyN(id1) == id3);
+        ckAssert(*map.getPrevKeyN(id3) == id1 && !map.getNextKeyN(id3));
 
         map.moveAfter(id3, id2);
-        pgAssert(*map.getFirstKeyN() == id2 && *map.getLastKeyN() == id1);
-        pgAssert(!map.getPrevKeyN(id2) && *map.getNextKeyN(id2) == id3);
-        pgAssert(*map.getPrevKeyN(id3) == id2 && *map.getNextKeyN(id3) == id1);
-        pgAssert(*map.getPrevKeyN(id1) == id3 && !map.getNextKeyN(id1));
+        ckAssert(*map.getFirstKeyN() == id2 && *map.getLastKeyN() == id1);
+        ckAssert(!map.getPrevKeyN(id2) && *map.getNextKeyN(id2) == id3);
+        ckAssert(*map.getPrevKeyN(id3) == id2 && *map.getNextKeyN(id3) == id1);
+        ckAssert(*map.getPrevKeyN(id1) == id3 && !map.getNextKeyN(id1));
     }
 }

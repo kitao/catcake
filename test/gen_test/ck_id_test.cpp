@@ -32,99 +32,99 @@
 #include "test.h"
 
 
-void pgIDTest()
+void ckIDTest()
 {
     /*
-        static const pgID ZERO
+        static const ckID ZERO
     */
     {
-        pgAssert(pgID::ZERO.getValue() == 0);
+        ckAssert(ckID::ZERO.getValue() == 0);
     }
 
     /*
-        pgID()
+        ckID()
         u32 operator%(u32 n) const
         u32 getValue() const
-        pgID genID(const char* str)
+        ckID genID(const char* str)
     */
     {
-        pgID id1;
-        pgAssert(id1.getValue() == 0);
-        pgAssert(id1 % 2 == 0);
+        ckID id1;
+        ckAssert(id1.getValue() == 0);
+        ckAssert(id1 % 2 == 0);
 
-        pgID id2 = pgID::genID("TestA");
-        pgAssert(id2.getValue() != 0 && (id2.getValue() & (1 << 31)));
-        pgAssert(id2 % 3 == id2.getValue() % 3);
+        ckID id2 = ckID::genID("TestA");
+        ckAssert(id2.getValue() != 0 && (id2.getValue() & (1 << 31)));
+        ckAssert(id2 % 3 == id2.getValue() % 3);
 
-        pgID id3 = pgID::genID("TestA");
-        pgAssert(id3.getValue() == id2.getValue());
-        pgAssert(id3 % 5 == id2 % 5);
+        ckID id3 = ckID::genID("TestA");
+        ckAssert(id3.getValue() == id2.getValue());
+        ckAssert(id3 % 5 == id2 % 5);
 
-        pgID id4 = pgID::genID("TestB");
-        pgAssert(id4.getValue() != id2.getValue() && (id4.getValue() & (1 << 31)));
+        ckID id4 = ckID::genID("TestB");
+        ckAssert(id4.getValue() != id2.getValue() && (id4.getValue() & (1 << 31)));
 
-        pgID id5 = id2;
-        pgAssert(id5.getValue() == id2.getValue());
+        ckID id5 = id2;
+        ckAssert(id5.getValue() == id2.getValue());
 
-        pgAssertThrow(pgID::genID(NULL), pgID::ExceptionInvalidArgument);
+        ckAssertThrow(ckID::genID(NULL), ckID::ExceptionInvalidArgument);
     }
 
     /*
-        bool operator==(pgID id) const
-        bool operator!=(pgID id) const
+        bool operator==(ckID id) const
+        bool operator!=(ckID id) const
     */
     {
-        pgID id1 = pgID::genID("TestC");
-        pgID id2 = pgID::genID("TestC");
-        pgID id3 = pgID::genID("TestD");
+        ckID id1 = ckID::genID("TestC");
+        ckID id2 = ckID::genID("TestC");
+        ckID id3 = ckID::genID("TestD");
 
-        pgAssert(id1 == id2);
-        pgAssert(!(id1 == id3));
+        ckAssert(id1 == id2);
+        ckAssert(!(id1 == id3));
 
-        pgAssert(id1 != id3);
-        pgAssert(!(id1 != id2));
+        ckAssert(id1 != id3);
+        ckAssert(!(id1 != id2));
     }
 
     /*
-        static pgID genIDForSystem(u32 value)
+        static ckID genIDForSystem(u32 value)
     */
     {
-        pgAssert(pgID::genIDForSystem(123).getValue() == 123);
-        pgAssert(pgID::genIDForSystem(0).getValue() == 0);
+        ckAssert(ckID::genIDForSystem(123).getValue() == 123);
+        ckAssert(ckID::genIDForSystem(0).getValue() == 0);
     }
 
     /*
-        static pgID genID()
+        static ckID genID()
         static void setCurIDForSystem(u32 value)
     */
     {
-        pgAssert(pgID::genID().getValue() == 1);
-        pgAssert(pgID::genID().getValue() == 2);
-        pgAssert(pgID::genID().getValue() == 3);
+        ckAssert(ckID::genID().getValue() == 1);
+        ckAssert(ckID::genID().getValue() == 2);
+        ckAssert(ckID::genID().getValue() == 3);
 
-        pgAssertThrow(pgID::setCurIDForSystem(0), pgID::ExceptionInvalidArgument);
-        pgAssertThrow(pgID::setCurIDForSystem(0x80000000), pgID::ExceptionInvalidArgument);
+        ckAssertThrow(ckID::setCurIDForSystem(0), ckID::ExceptionInvalidArgument);
+        ckAssertThrow(ckID::setCurIDForSystem(0x80000000), ckID::ExceptionInvalidArgument);
 
-        pgID::setCurIDForSystem(0x7fffffff);
-        pgAssert(pgID::genID().getValue() == 0x7fffffff);
+        ckID::setCurIDForSystem(0x7fffffff);
+        ckAssert(ckID::genID().getValue() == 0x7fffffff);
 
-        pgAssertThrow(pgID::genID(), pgID::ExceptionOutOfID);
+        ckAssertThrow(ckID::genID(), ckID::ExceptionOutOfID);
 
-        pgID::setCurIDForSystem(1);
+        ckID::setCurIDForSystem(1);
 
-        pgAssert(pgID::genID() % 3 == 1);
-        pgAssert(pgID::genID() % 3 == 2);
-        pgAssert(pgID::genID() % 3 == 0);
+        ckAssert(ckID::genID() % 3 == 1);
+        ckAssert(ckID::genID() % 3 == 2);
+        ckAssert(ckID::genID() % 3 == 0);
     }
 
     /*
-        pgID_(str)
+        ckID_(str)
     */
     {
-        pgAssert(pgID_("pogolyn") == pgID::genID("pogolyn"));
-        pgAssert(pgID_("this is test") == pgID::genID("this is test"));
-        pgAssert(pgID_("") == pgID::genID(""));
-        pgAssert(pgID_("01234567890123456789012345678901") == pgID::genID("01234567890123456789012345678901"));
-        pgAssert(pgID_("012345678901234567890123456789010") != pgID::genID("012345678901234567890123456789010"));
+        ckAssert(ckID_("catcake") == ckID::genID("catcake"));
+        ckAssert(ckID_("this is test") == ckID::genID("this is test"));
+        ckAssert(ckID_("") == ckID::genID(""));
+        ckAssert(ckID_("01234567890123456789012345678901") == ckID::genID("01234567890123456789012345678901"));
+        ckAssert(ckID_("012345678901234567890123456789010") != ckID::genID("012345678901234567890123456789010"));
     }
 }

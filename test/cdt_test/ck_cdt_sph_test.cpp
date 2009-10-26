@@ -32,42 +32,42 @@
 #include "test.h"
 
 
-void pgCdtSphTest()
+void ckCdtSphTest()
 {
     /*
         Sph()
         const AABB& getAABB() const
-        const pgVec& getPos() const
-        void setPos(const pgVec& pos)
+        const ckVec& getPos() const
+        void setPos(const ckVec& pos)
         r32 getRadius() const
         void setRadius(r32 radius)
     */
     {
-        pgCdt::Sph sph;
-        pgAssert(isEqual(sph.getPos(), pgVec::ZERO));
-        pgAssert(isEqual(sph.getRadius(), 0.0f));
+        ckCdt::Sph sph;
+        ckAssert(isEqual(sph.getPos(), ckVec::ZERO));
+        ckAssert(isEqual(sph.getRadius(), 0.0f));
 
-        pgCdt::AABB aabb = sph.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        ckCdt::AABB aabb = sph.getAABB();
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
 
-        sph.setPos(pgVec(1.0f, 2.0f, 3.0f));
-        pgAssert(isEqual(sph.getPos(), pgVec(1.0f, 2.0f, 3.0f)));
+        sph.setPos(ckVec(1.0f, 2.0f, 3.0f));
+        ckAssert(isEqual(sph.getPos(), ckVec(1.0f, 2.0f, 3.0f)));
 
         aabb = sph.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(1.0f, 2.0f, 3.0f)) && isEqual(aabb.getMax(), pgVec(1.0f, 2.0f, 3.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(1.0f, 2.0f, 3.0f)) && isEqual(aabb.getMax(), ckVec(1.0f, 2.0f, 3.0f)));
 
         sph.setRadius(123.0f);
-        pgAssert(isEqual(sph.getRadius(), 123.0f));
+        ckAssert(isEqual(sph.getRadius(), 123.0f));
 
         aabb = sph.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-122.0f, -121.0f, -120.0f)) && isEqual(aabb.getMax(), pgVec(124.0f, 125.0f, 126.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-122.0f, -121.0f, -120.0f)) && isEqual(aabb.getMax(), ckVec(124.0f, 125.0f, 126.0f)));
 
         sph.setRadius(0.0f);
-        pgAssert(isEqual(sph.getRadius(), 0.0f));
+        ckAssert(isEqual(sph.getRadius(), 0.0f));
 
         aabb = sph.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(1.0f, 2.0f, 3.0f)) && isEqual(aabb.getMax(), pgVec(1.0f, 2.0f, 3.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(1.0f, 2.0f, 3.0f)) && isEqual(aabb.getMax(), ckVec(1.0f, 2.0f, 3.0f)));
 
-        pgAssertThrow(sph.setRadius(-0.1f), pgCdt::Sph::ExceptionInvalidArgument);
+        ckAssertThrow(sph.setRadius(-0.1f), ckCdt::Sph::ExceptionInvalidArgument);
     }
 }

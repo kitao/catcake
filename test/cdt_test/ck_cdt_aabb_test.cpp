@@ -32,24 +32,24 @@
 #include "test.h"
 
 
-void pgCdtAABBTest()
+void ckCdtAABBTest()
 {
     /*
-        const pgVec& getMin() const
-        const pgVec& getMax() const
-        void setBound(const pgVec& min, const pgVec& max)
+        const ckVec& getMin() const
+        const ckVec& getMax() const
+        void setBound(const ckVec& min, const ckVec& max)
     */
     {
-        pgCdt::AABB aabb;
+        ckCdt::AABB aabb;
 
-        aabb.setBound(pgVec(-1.0f, -2.0f, -3.0f), pgVec(4.0f, 5.0f, 6.0f));
-        pgAssert(isEqual(aabb.getMin(), pgVec(-1.0f, -2.0f, -3.0f)) && isEqual(aabb.getMax(), pgVec(4.0f, 5.0f, 6.0f)));
+        aabb.setBound(ckVec(-1.0f, -2.0f, -3.0f), ckVec(4.0f, 5.0f, 6.0f));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-1.0f, -2.0f, -3.0f)) && isEqual(aabb.getMax(), ckVec(4.0f, 5.0f, 6.0f)));
 
-        aabb.setBound(pgVec::ZERO, pgVec::ZERO);
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        aabb.setBound(ckVec::ZERO, ckVec::ZERO);
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
 
-        pgAssertThrow(aabb.setBound(pgVec(0.0f, 0.0f, 0.0f), pgVec(-0.1f, 0.0f, 0.0f)), pgCdt::AABB::ExceptionInvalidArgument);
-        pgAssertThrow(aabb.setBound(pgVec(0.0f, 0.0f, 0.0f), pgVec(0.0f, -0.1f, 0.0f)), pgCdt::AABB::ExceptionInvalidArgument);
-        pgAssertThrow(aabb.setBound(pgVec(0.0f, 0.0f, 0.0f), pgVec(0.0f, 0.0f, -0.1f)), pgCdt::AABB::ExceptionInvalidArgument);
+        ckAssertThrow(aabb.setBound(ckVec(0.0f, 0.0f, 0.0f), ckVec(-0.1f, 0.0f, 0.0f)), ckCdt::AABB::ExceptionInvalidArgument);
+        ckAssertThrow(aabb.setBound(ckVec(0.0f, 0.0f, 0.0f), ckVec(0.0f, -0.1f, 0.0f)), ckCdt::AABB::ExceptionInvalidArgument);
+        ckAssertThrow(aabb.setBound(ckVec(0.0f, 0.0f, 0.0f), ckVec(0.0f, 0.0f, -0.1f)), ckCdt::AABB::ExceptionInvalidArgument);
     }
 }

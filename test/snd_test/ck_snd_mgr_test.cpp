@@ -32,13 +32,13 @@
 #include "test.h"
 
 
-void pgSndMgrTest()
+void ckSndMgrTest()
 {
     /*
         static const u32 TRACK_NUM
     */
     {
-        pgAssert(pgSndMgr::TRACK_NUM == 4);
+        ckAssert(ckSndMgr::TRACK_NUM == 4);
     }
 
     /*
@@ -47,17 +47,17 @@ void pgSndMgrTest()
         static void destroyBeforeRes()
     */
     {
-        pgAssert(!pgSndMgr::isCreated());
+        ckAssert(!ckSndMgr::isCreated());
 
-        pgSndMgr::createAfterRes();
-        pgSndMgr::createAfterRes();
+        ckSndMgr::createAfterRes();
+        ckSndMgr::createAfterRes();
 
-        pgAssert(pgSndMgr::isCreated());
+        ckAssert(ckSndMgr::isCreated());
 
-        pgSndMgr::destroyBeforeRes();
-        pgSndMgr::destroyBeforeRes();
+        ckSndMgr::destroyBeforeRes();
+        ckSndMgr::destroyBeforeRes();
 
-        pgAssert(!pgSndMgr::isCreated());
+        ckAssert(!ckSndMgr::isCreated());
     }
 
     /*
@@ -69,105 +69,105 @@ void pgSndMgrTest()
         static u16 getSoundMixBufferMsec()
     */
     {
-        pgAssertThrow(pgSndMgr::isSoundDeviceOpen(), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_11KHZ, 0), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::closeSoundDevice(), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getSoundDeviceChannelNum(), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getSoundDeviceSampleRate(), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getSoundMixBufferMsec(), pgSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::isSoundDeviceOpen(), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_11KHZ, 0), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::closeSoundDevice(), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getSoundDeviceChannelNum(), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getSoundDeviceSampleRate(), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getSoundMixBufferMsec(), ckSndMgr::ExceptionNotInitialized);
 
-        pgSndMgr::createAfterRes();
+        ckSndMgr::createAfterRes();
 
-        pgAssert(!pgSndMgr::isSoundDeviceOpen());
-        pgAssert(pgSndMgr::getSoundDeviceChannelNum() == pgSndMgr::CHANNEL_NUM_MONO);
-        pgAssert(pgSndMgr::getSoundDeviceSampleRate() == pgSndMgr::SAMPLE_RATE_11KHZ);
-        pgAssert(pgSndMgr::getSoundMixBufferMsec() == 0);
+        ckAssert(!ckSndMgr::isSoundDeviceOpen());
+        ckAssert(ckSndMgr::getSoundDeviceChannelNum() == ckSndMgr::CHANNEL_NUM_MONO);
+        ckAssert(ckSndMgr::getSoundDeviceSampleRate() == ckSndMgr::SAMPLE_RATE_11KHZ);
+        ckAssert(ckSndMgr::getSoundMixBufferMsec() == 0);
 
-        pgSndMgr::closeSoundDevice();
+        ckSndMgr::closeSoundDevice();
 
-        if (pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_11KHZ, 1))
+        if (ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_11KHZ, 1))
         {
-            pgAssert(pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_STEREO, pgSndMgr::SAMPLE_RATE_44KHZ, 123));
-            pgAssert(pgSndMgr::isSoundDeviceOpen());
-            pgAssert(pgSndMgr::getSoundDeviceChannelNum() == pgSndMgr::CHANNEL_NUM_STEREO);
-            pgAssert(pgSndMgr::getSoundDeviceSampleRate() == pgSndMgr::SAMPLE_RATE_44KHZ);
-            pgAssert(pgSndMgr::getSoundMixBufferMsec() == 123);
+            ckAssert(ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_STEREO, ckSndMgr::SAMPLE_RATE_44KHZ, 123));
+            ckAssert(ckSndMgr::isSoundDeviceOpen());
+            ckAssert(ckSndMgr::getSoundDeviceChannelNum() == ckSndMgr::CHANNEL_NUM_STEREO);
+            ckAssert(ckSndMgr::getSoundDeviceSampleRate() == ckSndMgr::SAMPLE_RATE_44KHZ);
+            ckAssert(ckSndMgr::getSoundMixBufferMsec() == 123);
 
-            pgSndMgr::closeSoundDevice();
+            ckSndMgr::closeSoundDevice();
         }
 
-        pgSndMgr::closeSoundDevice();
+        ckSndMgr::closeSoundDevice();
 
-        pgAssert(!pgSndMgr::isSoundDeviceOpen());
+        ckAssert(!ckSndMgr::isSoundDeviceOpen());
 
-        pgAssertThrow(pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_11KHZ, 0), pgSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_11KHZ, 0), ckSndMgr::ExceptionInvalidArgument);
 
-        pgSndMgr::destroyBeforeRes();
+        ckSndMgr::destroyBeforeRes();
     }
 
     /*
-        static ChannelNum getChannelNum(pgID snd_id)
-        static SampleRate getSampleRate(pgID snd_id)
-        static u32 getSampleNum(pgID snd_id)
+        static ChannelNum getChannelNum(ckID snd_id)
+        static SampleRate getSampleRate(ckID snd_id)
+        static u32 getSampleNum(ckID snd_id)
     */
     {
-        pgAssertThrow(pgSndMgr::getChannelNum(pgID::ZERO), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getSampleRate(pgID::ZERO), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getSampleNum(pgID::ZERO), pgSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getChannelNum(ckID::ZERO), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getSampleRate(ckID::ZERO), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getSampleNum(ckID::ZERO), ckSndMgr::ExceptionNotInitialized);
 
-        pgSndMgr::createAfterRes();
+        ckSndMgr::createAfterRes();
 
-        pgResMgr::loadResource(TEST_DATA_DIR "mono_11khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "mono_22khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "mono_44khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "stereo_11khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "stereo_22khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "stereo_44khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "mono_11khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "mono_22khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "mono_44khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "stereo_11khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "stereo_22khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "stereo_44khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
 
-        pgAssert(pgSndMgr::getChannelNum(pgID_("mono_11khz.wav")) == pgSndMgr::CHANNEL_NUM_MONO);
-        pgAssert(pgSndMgr::getSampleRate(pgID_("mono_11khz.wav")) == pgSndMgr::SAMPLE_RATE_11KHZ);
-        pgAssert(pgSndMgr::getSampleNum(pgID_("mono_11khz.wav")) == 40792);
+        ckAssert(ckSndMgr::getChannelNum(ckID_("mono_11khz.wav")) == ckSndMgr::CHANNEL_NUM_MONO);
+        ckAssert(ckSndMgr::getSampleRate(ckID_("mono_11khz.wav")) == ckSndMgr::SAMPLE_RATE_11KHZ);
+        ckAssert(ckSndMgr::getSampleNum(ckID_("mono_11khz.wav")) == 40792);
 
-        pgAssert(pgSndMgr::getChannelNum(pgID_("mono_22khz.wav")) == pgSndMgr::CHANNEL_NUM_MONO);
-        pgAssert(pgSndMgr::getSampleRate(pgID_("mono_22khz.wav")) == pgSndMgr::SAMPLE_RATE_22KHZ);
-        pgAssert(pgSndMgr::getSampleNum(pgID_("mono_22khz.wav")) == 101269);
+        ckAssert(ckSndMgr::getChannelNum(ckID_("mono_22khz.wav")) == ckSndMgr::CHANNEL_NUM_MONO);
+        ckAssert(ckSndMgr::getSampleRate(ckID_("mono_22khz.wav")) == ckSndMgr::SAMPLE_RATE_22KHZ);
+        ckAssert(ckSndMgr::getSampleNum(ckID_("mono_22khz.wav")) == 101269);
 
-        pgAssert(pgSndMgr::getChannelNum(pgID_("mono_44khz.wav")) == pgSndMgr::CHANNEL_NUM_MONO);
-        pgAssert(pgSndMgr::getSampleRate(pgID_("mono_44khz.wav")) == pgSndMgr::SAMPLE_RATE_44KHZ);
-        pgAssert(pgSndMgr::getSampleNum(pgID_("mono_44khz.wav")) == 159157);
+        ckAssert(ckSndMgr::getChannelNum(ckID_("mono_44khz.wav")) == ckSndMgr::CHANNEL_NUM_MONO);
+        ckAssert(ckSndMgr::getSampleRate(ckID_("mono_44khz.wav")) == ckSndMgr::SAMPLE_RATE_44KHZ);
+        ckAssert(ckSndMgr::getSampleNum(ckID_("mono_44khz.wav")) == 159157);
 
-        pgAssert(pgSndMgr::getChannelNum(pgID_("stereo_11khz.wav")) == pgSndMgr::CHANNEL_NUM_STEREO);
-        pgAssert(pgSndMgr::getSampleRate(pgID_("stereo_11khz.wav")) == pgSndMgr::SAMPLE_RATE_11KHZ);
-        pgAssert(pgSndMgr::getSampleNum(pgID_("stereo_11khz.wav")) == 61535);
+        ckAssert(ckSndMgr::getChannelNum(ckID_("stereo_11khz.wav")) == ckSndMgr::CHANNEL_NUM_STEREO);
+        ckAssert(ckSndMgr::getSampleRate(ckID_("stereo_11khz.wav")) == ckSndMgr::SAMPLE_RATE_11KHZ);
+        ckAssert(ckSndMgr::getSampleNum(ckID_("stereo_11khz.wav")) == 61535);
 
-        pgAssert(pgSndMgr::getChannelNum(pgID_("stereo_22khz.wav")) == pgSndMgr::CHANNEL_NUM_STEREO);
-        pgAssert(pgSndMgr::getSampleRate(pgID_("stereo_22khz.wav")) == pgSndMgr::SAMPLE_RATE_22KHZ);
-        pgAssert(pgSndMgr::getSampleNum(pgID_("stereo_22khz.wav")) == 116553);
+        ckAssert(ckSndMgr::getChannelNum(ckID_("stereo_22khz.wav")) == ckSndMgr::CHANNEL_NUM_STEREO);
+        ckAssert(ckSndMgr::getSampleRate(ckID_("stereo_22khz.wav")) == ckSndMgr::SAMPLE_RATE_22KHZ);
+        ckAssert(ckSndMgr::getSampleNum(ckID_("stereo_22khz.wav")) == 116553);
 
-        pgAssert(pgSndMgr::getChannelNum(pgID_("stereo_44khz.wav")) == pgSndMgr::CHANNEL_NUM_STEREO);
-        pgAssert(pgSndMgr::getSampleRate(pgID_("stereo_44khz.wav")) == pgSndMgr::SAMPLE_RATE_44KHZ);
-        pgAssert(pgSndMgr::getSampleNum(pgID_("stereo_44khz.wav")) == 35944);
+        ckAssert(ckSndMgr::getChannelNum(ckID_("stereo_44khz.wav")) == ckSndMgr::CHANNEL_NUM_STEREO);
+        ckAssert(ckSndMgr::getSampleRate(ckID_("stereo_44khz.wav")) == ckSndMgr::SAMPLE_RATE_44KHZ);
+        ckAssert(ckSndMgr::getSampleNum(ckID_("stereo_44khz.wav")) == 35944);
 
-        pgAssertThrow(pgSndMgr::getChannelNum(pgID::ZERO), pgSndMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSndMgr::getChannelNum(pgID_("dummy")), pgSndMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSndMgr::getChannelNum(pgID_("rgb.png")), pgSndMgr::ExceptionInvalidType);
-        pgAssertThrow(pgSndMgr::getSampleRate(pgID::ZERO), pgSndMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSndMgr::getSampleRate(pgID_("dummy")), pgSndMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSndMgr::getSampleRate(pgID_("rgb.png")), pgSndMgr::ExceptionInvalidType);
-        pgAssertThrow(pgSndMgr::getSampleNum(pgID::ZERO), pgSndMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSndMgr::getSampleNum(pgID_("dummy")), pgSndMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgSndMgr::getSampleNum(pgID_("rgb.png")), pgSndMgr::ExceptionInvalidType);
+        ckAssertThrow(ckSndMgr::getChannelNum(ckID::ZERO), ckSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::getChannelNum(ckID_("dummy")), ckSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::getChannelNum(ckID_("rgb.png")), ckSndMgr::ExceptionInvalidType);
+        ckAssertThrow(ckSndMgr::getSampleRate(ckID::ZERO), ckSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::getSampleRate(ckID_("dummy")), ckSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::getSampleRate(ckID_("rgb.png")), ckSndMgr::ExceptionInvalidType);
+        ckAssertThrow(ckSndMgr::getSampleNum(ckID::ZERO), ckSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::getSampleNum(ckID_("dummy")), ckSndMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckSndMgr::getSampleNum(ckID_("rgb.png")), ckSndMgr::ExceptionInvalidType);
 
-        pgResMgr::removeResource(pgID_("mono_11khz.wav"));
-        pgResMgr::removeResource(pgID_("mono_22khz.wav"));
-        pgResMgr::removeResource(pgID_("mono_44khz.wav"));
-        pgResMgr::removeResource(pgID_("stereo_11khz.wav"));
-        pgResMgr::removeResource(pgID_("stereo_22khz.wav"));
-        pgResMgr::removeResource(pgID_("stereo_44khz.wav"));
-        pgResMgr::removeResource(pgID_("rgb.png"));
+        ckResMgr::removeResource(ckID_("mono_11khz.wav"));
+        ckResMgr::removeResource(ckID_("mono_22khz.wav"));
+        ckResMgr::removeResource(ckID_("mono_44khz.wav"));
+        ckResMgr::removeResource(ckID_("stereo_11khz.wav"));
+        ckResMgr::removeResource(ckID_("stereo_22khz.wav"));
+        ckResMgr::removeResource(ckID_("stereo_44khz.wav"));
+        ckResMgr::removeResource(ckID_("rgb.png"));
 
-        pgSndMgr::destroyBeforeRes();
+        ckSndMgr::destroyBeforeRes();
     }
 
     /*
@@ -176,127 +176,127 @@ void pgSndMgrTest()
         static void fadeTrackVolume(u8 trk_no, u8 to_trk_vol, r32 delta_per_frame)
     */
     {
-        pgAssertThrow(pgSndMgr::getTrackVolume(123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::setTrackVolume(123, 123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::fadeTrackVolume(123, 123, 0.0f), pgSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getTrackVolume(123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::setTrackVolume(123, 123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::fadeTrackVolume(123, 123, 0.0f), ckSndMgr::ExceptionNotInitialized);
 
-        pgSndMgr::createAfterRes();
+        ckSndMgr::createAfterRes();
 
-        pgAssert(pgSndMgr::getTrackVolume(123) == 0);
+        ckAssert(ckSndMgr::getTrackVolume(123) == 0);
 
-        pgSndMgr::setTrackVolume(123, 123);
-        pgSndMgr::fadeTrackVolume(123, 123, 0.0f);
+        ckSndMgr::setTrackVolume(123, 123);
+        ckSndMgr::fadeTrackVolume(123, 123, 0.0f);
 
-        if (pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_22KHZ, 100))
+        if (ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_22KHZ, 100))
         {
-            for (u32 i = 0; i < pgSndMgr::TRACK_NUM; i++)
+            for (u32 i = 0; i < ckSndMgr::TRACK_NUM; i++)
             {
-                pgAssert(pgSndMgr::getTrackVolume(i) == 192);
+                ckAssert(ckSndMgr::getTrackVolume(i) == 192);
 
-                pgSndMgr::setTrackVolume(i, 100);
-                pgAssert(pgSndMgr::getTrackVolume(i) == 100);
+                ckSndMgr::setTrackVolume(i, 100);
+                ckAssert(ckSndMgr::getTrackVolume(i) == 100);
             }
 
-            pgSndMgr::fadeTrackVolume(0, 98, 0.5f);
-            pgSndMgr::fadeTrackVolume(1, 130, 20.0f);
-            pgSndMgr::fadeTrackVolume(2, 100, 200.0f);
-            pgSndMgr::fadeTrackVolume(3, 0, 10.0f);
+            ckSndMgr::fadeTrackVolume(0, 98, 0.5f);
+            ckSndMgr::fadeTrackVolume(1, 130, 20.0f);
+            ckSndMgr::fadeTrackVolume(2, 100, 200.0f);
+            ckSndMgr::fadeTrackVolume(3, 0, 10.0f);
 
-            pgTaskMgr::updateForSystem();
-            pgTaskMgr::updateForSystem();
+            ckTaskMgr::updateForSystem();
+            ckTaskMgr::updateForSystem();
 
-            pgAssert(pgSndMgr::getTrackVolume(0) == 99);
-            pgAssert(pgSndMgr::getTrackVolume(1) == 130);
-            pgAssert(pgSndMgr::getTrackVolume(2) == 100);
-            pgAssert(pgSndMgr::getTrackVolume(3) == 80);
+            ckAssert(ckSndMgr::getTrackVolume(0) == 99);
+            ckAssert(ckSndMgr::getTrackVolume(1) == 130);
+            ckAssert(ckSndMgr::getTrackVolume(2) == 100);
+            ckAssert(ckSndMgr::getTrackVolume(3) == 80);
 
-            pgAssertThrow(pgSndMgr::getTrackVolume(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::setTrackVolume(pgSndMgr::TRACK_NUM, 123), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::fadeTrackVolume(pgSndMgr::TRACK_NUM, 123, 100), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::fadeTrackVolume(pgSndMgr::TRACK_NUM, 123, 0), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::fadeTrackVolume(0, 123, 0.0f), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::fadeTrackVolume(0, 123, -1.0f), pgSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::getTrackVolume(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::setTrackVolume(ckSndMgr::TRACK_NUM, 123), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::fadeTrackVolume(ckSndMgr::TRACK_NUM, 123, 100), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::fadeTrackVolume(ckSndMgr::TRACK_NUM, 123, 0), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::fadeTrackVolume(0, 123, 0.0f), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::fadeTrackVolume(0, 123, -1.0f), ckSndMgr::ExceptionInvalidArgument);
         }
 
-        pgSndMgr::destroyBeforeRes();
+        ckSndMgr::destroyBeforeRes();
     }
 
     /*
         static bool isPlaying(u8 trk_no)
-        static void play(u8 trk_no, pgID snd_id, u8 snd_vol, bool is_play_loop, u32 play_pos = 0)
+        static void play(u8 trk_no, ckID snd_id, u8 snd_vol, bool is_play_loop, u32 play_pos = 0)
         static void stop(u8 trk_no)
-        static pgID getPlayingSoundID(u8 trk_no)
+        static ckID getPlayingSoundID(u8 trk_no)
         static u8 getPlayingSoundVolume(u8 trk_no)
         static bool isPlayingLoop(u8 trk_no)
         static u32 getPlayingPosition(u8 trk_no)
     */
     {
-        pgAssertThrow(pgSndMgr::isPlaying(123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::play(123, pgID::ZERO, 0, false, 0), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::stop(123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getPlayingSoundID(123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getPlayingSoundVolume(123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::isPlayingLoop(123), pgSndMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgSndMgr::getPlayingPosition(123), pgSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::isPlaying(123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::play(123, ckID::ZERO, 0, false, 0), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::stop(123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getPlayingSoundID(123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getPlayingSoundVolume(123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::isPlayingLoop(123), ckSndMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckSndMgr::getPlayingPosition(123), ckSndMgr::ExceptionNotInitialized);
 
-        pgSndMgr::createAfterRes();
+        ckSndMgr::createAfterRes();
 
-        pgAssert(!pgSndMgr::isPlaying(123));
-        pgAssert(pgSndMgr::getPlayingSoundID(123) == pgID::ZERO);
-        pgAssert(pgSndMgr::getPlayingSoundVolume(123) == 0);
-        pgAssert(!pgSndMgr::isPlayingLoop(123));
-        pgAssert(pgSndMgr::getPlayingPosition(123) == 0);
+        ckAssert(!ckSndMgr::isPlaying(123));
+        ckAssert(ckSndMgr::getPlayingSoundID(123) == ckID::ZERO);
+        ckAssert(ckSndMgr::getPlayingSoundVolume(123) == 0);
+        ckAssert(!ckSndMgr::isPlayingLoop(123));
+        ckAssert(ckSndMgr::getPlayingPosition(123) == 0);
 
-        pgSndMgr::play(123, pgID::ZERO, 0, false, 0);
-        pgSndMgr::stop(123);
+        ckSndMgr::play(123, ckID::ZERO, 0, false, 0);
+        ckSndMgr::stop(123);
 
-        pgResMgr::loadResource(TEST_DATA_DIR "mono_22khz.wav", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "mono_22khz.wav", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
 
-        if (pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_STEREO, pgSndMgr::SAMPLE_RATE_11KHZ, 100))
+        if (ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_STEREO, ckSndMgr::SAMPLE_RATE_11KHZ, 100))
         {
-            for (u32 i = 0; i < pgSndMgr::TRACK_NUM; i++)
+            for (u32 i = 0; i < ckSndMgr::TRACK_NUM; i++)
             {
-                pgAssert(!pgSndMgr::isPlaying(i));
+                ckAssert(!ckSndMgr::isPlaying(i));
 
-                pgAssertThrow(pgSndMgr::getPlayingSoundID(i), pgSndMgr::ExceptionInvalidCall);
-                pgAssertThrow(pgSndMgr::isPlayingLoop(i), pgSndMgr::ExceptionInvalidCall);
-                pgAssertThrow(pgSndMgr::getPlayingPosition(i), pgSndMgr::ExceptionInvalidCall);
-                pgAssertThrow(pgSndMgr::getPlayingSoundVolume(i), pgSndMgr::ExceptionInvalidCall);
+                ckAssertThrow(ckSndMgr::getPlayingSoundID(i), ckSndMgr::ExceptionInvalidCall);
+                ckAssertThrow(ckSndMgr::isPlayingLoop(i), ckSndMgr::ExceptionInvalidCall);
+                ckAssertThrow(ckSndMgr::getPlayingPosition(i), ckSndMgr::ExceptionInvalidCall);
+                ckAssertThrow(ckSndMgr::getPlayingSoundVolume(i), ckSndMgr::ExceptionInvalidCall);
 
-                pgAssertThrow(pgSndMgr::play(i, pgID_("mono_22khz.wav"), 0, false, pgSndMgr::getSampleNum(pgID_("mono_22khz.wav"))), pgSndMgr::ExceptionInvalidArgument);
+                ckAssertThrow(ckSndMgr::play(i, ckID_("mono_22khz.wav"), 0, false, ckSndMgr::getSampleNum(ckID_("mono_22khz.wav"))), ckSndMgr::ExceptionInvalidArgument);
 
-                pgSndMgr::play(i, pgID_("mono_22khz.wav"), 12, false, 34);
-                pgAssert(pgSndMgr::getPlayingSoundID(i) == pgID_("mono_22khz.wav"));
-                pgAssert(pgSndMgr::getPlayingSoundVolume(i) == 12);
-                pgAssert(!pgSndMgr::isPlayingLoop(i));
-                pgAssert(pgSndMgr::getPlayingPosition(i) >= 34);
+                ckSndMgr::play(i, ckID_("mono_22khz.wav"), 12, false, 34);
+                ckAssert(ckSndMgr::getPlayingSoundID(i) == ckID_("mono_22khz.wav"));
+                ckAssert(ckSndMgr::getPlayingSoundVolume(i) == 12);
+                ckAssert(!ckSndMgr::isPlayingLoop(i));
+                ckAssert(ckSndMgr::getPlayingPosition(i) >= 34);
 
-                pgSndMgr::play(i, pgID_("mono_22khz.wav"), 23, true, 45);
-                pgAssert(pgSndMgr::getPlayingSoundID(i) == pgID_("mono_22khz.wav"));
-                pgAssert(pgSndMgr::getPlayingSoundVolume(i) == 23);
-                pgAssert(pgSndMgr::isPlayingLoop(i));
-                pgAssert(pgSndMgr::getPlayingPosition(i) >= 45);
+                ckSndMgr::play(i, ckID_("mono_22khz.wav"), 23, true, 45);
+                ckAssert(ckSndMgr::getPlayingSoundID(i) == ckID_("mono_22khz.wav"));
+                ckAssert(ckSndMgr::getPlayingSoundVolume(i) == 23);
+                ckAssert(ckSndMgr::isPlayingLoop(i));
+                ckAssert(ckSndMgr::getPlayingPosition(i) >= 45);
 
-                pgSndMgr::stop(i);
-                pgAssert(!pgSndMgr::isPlaying(i));
+                ckSndMgr::stop(i);
+                ckAssert(!ckSndMgr::isPlaying(i));
             }
 
-            pgAssertThrow(pgSndMgr::isPlaying(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::play(pgSndMgr::TRACK_NUM, pgID_("mono_22khz.wav"), 0, false, 0), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::play(0, pgID::ZERO, 0, false, 0), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::play(0, pgID_("dummy"), 0, false, 0), pgSndMgr::ExceptionNotFound);
-            pgAssertThrow(pgSndMgr::play(0, pgID_("rgb.png"), 0, false, 0), pgSndMgr::ExceptionInvalidType);
-            pgAssertThrow(pgSndMgr::stop(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::getPlayingSoundID(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::getPlayingSoundVolume(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::isPlayingLoop(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
-            pgAssertThrow(pgSndMgr::getPlayingPosition(pgSndMgr::TRACK_NUM), pgSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::isPlaying(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::play(ckSndMgr::TRACK_NUM, ckID_("mono_22khz.wav"), 0, false, 0), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::play(0, ckID::ZERO, 0, false, 0), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::play(0, ckID_("dummy"), 0, false, 0), ckSndMgr::ExceptionNotFound);
+            ckAssertThrow(ckSndMgr::play(0, ckID_("rgb.png"), 0, false, 0), ckSndMgr::ExceptionInvalidType);
+            ckAssertThrow(ckSndMgr::stop(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::getPlayingSoundID(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::getPlayingSoundVolume(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::isPlayingLoop(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
+            ckAssertThrow(ckSndMgr::getPlayingPosition(ckSndMgr::TRACK_NUM), ckSndMgr::ExceptionInvalidArgument);
         }
 
-        pgSndMgr::destroyBeforeRes();
+        ckSndMgr::destroyBeforeRes();
 
-        pgResMgr::removeResource(pgID_("mono_22khz.wav"));
-        pgResMgr::removeResource(pgID_("rgb.png"));
+        ckResMgr::removeResource(ckID_("mono_22khz.wav"));
+        ckResMgr::removeResource(ckID_("rgb.png"));
     }
 }

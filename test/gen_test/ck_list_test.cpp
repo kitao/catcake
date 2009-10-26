@@ -32,7 +32,7 @@
 #include "test.h"
 
 
-template<class T> void assertAlone(pgList<T>& list)
+template<class T> void assertAlone(ckList<T>& list)
 {
     /*
         u32 getItemNum() const
@@ -41,51 +41,51 @@ template<class T> void assertAlone(pgList<T>& list)
         Item* getLastN() const
     */
 
-    pgAssert(list.getItemNum() == 0 && !list.hasItem() && !list.getFirstN() && !list.getLastN());
+    ckAssert(list.getItemNum() == 0 && !list.hasItem() && !list.getFirstN() && !list.getLastN());
 }
 
 
-template<class T> void assertAlone(typename pgList<T>::Item& item)
+template<class T> void assertAlone(typename ckList<T>::Item& item)
 {
     /*
         Item* getPrevN() const
         Item* getNextN() const
         bool hasList() const
-        pgList<T>* getListN() const
+        ckList<T>* getListN() const
     */
 
-    pgAssert(!item.hasList() && !item.getListN());
+    ckAssert(!item.hasList() && !item.getListN());
 
-    pgAssertThrow(item.getPrevN(), typename pgList<T>::Item::ExceptionInvalidCall);
-    pgAssertThrow(item.getNextN(), typename pgList<T>::Item::ExceptionInvalidCall);
+    ckAssertThrow(item.getPrevN(), typename ckList<T>::Item::ExceptionInvalidCall);
+    ckAssertThrow(item.getNextN(), typename ckList<T>::Item::ExceptionInvalidCall);
 }
 
 
-template<class T> void assertItem(pgList<T>& list, typename pgList<T>::Item& item)
+template<class T> void assertItem(ckList<T>& list, typename ckList<T>::Item& item)
 {
-    pgAssert(list.getItemNum() == 1 && list.hasItem() && list.getFirstN() == &item && list.getLastN() == &item);
-    pgAssert(!item.getPrevN() && !item.getNextN() && item.hasList() && item.getListN() == &list);
+    ckAssert(list.getItemNum() == 1 && list.hasItem() && list.getFirstN() == &item && list.getLastN() == &item);
+    ckAssert(!item.getPrevN() && !item.getNextN() && item.hasList() && item.getListN() == &list);
 }
 
 
-template<class T> void assertItem(pgList<T>& list, typename pgList<T>::Item& item1, typename pgList<T>::Item& item2)
+template<class T> void assertItem(ckList<T>& list, typename ckList<T>::Item& item1, typename ckList<T>::Item& item2)
 {
-    pgAssert(list.getItemNum() == 2 && list.hasItem() && list.getFirstN() == &item1 && list.getLastN() == &item2);
-    pgAssert(!item1.getPrevN() && item1.getNextN() == &item2 && item1.hasList() && item1.getListN() == &list);
-    pgAssert(item2.getPrevN() == &item1 && !item2.getNextN() && item2.hasList() && item2.getListN() == &list);
+    ckAssert(list.getItemNum() == 2 && list.hasItem() && list.getFirstN() == &item1 && list.getLastN() == &item2);
+    ckAssert(!item1.getPrevN() && item1.getNextN() == &item2 && item1.hasList() && item1.getListN() == &list);
+    ckAssert(item2.getPrevN() == &item1 && !item2.getNextN() && item2.hasList() && item2.getListN() == &list);
 }
 
 
-template<class T> void assertItem(pgList<T>& list, typename pgList<T>::Item& item1, typename pgList<T>::Item& item2, typename pgList<T>::Item& item3)
+template<class T> void assertItem(ckList<T>& list, typename ckList<T>::Item& item1, typename ckList<T>::Item& item2, typename ckList<T>::Item& item3)
 {
-    pgAssert(list.getItemNum() == 3 && list.hasItem() && list.getFirstN() == &item1 && list.getLastN() == &item3);
-    pgAssert(!item1.getPrevN() && item1.getNextN() == &item2 && item1.hasList() && item1.getListN() == &list);
-    pgAssert(item2.getPrevN() == &item1 && item2.getNextN() == &item3 && item2.hasList() && item2.getListN() == &list);
-    pgAssert(item3.getPrevN() == &item2 && !item3.getNextN() && item3.hasList() && item3.getListN() == &list);
+    ckAssert(list.getItemNum() == 3 && list.hasItem() && list.getFirstN() == &item1 && list.getLastN() == &item3);
+    ckAssert(!item1.getPrevN() && item1.getNextN() == &item2 && item1.hasList() && item1.getListN() == &list);
+    ckAssert(item2.getPrevN() == &item1 && item2.getNextN() == &item3 && item2.hasList() && item2.getListN() == &list);
+    ckAssert(item3.getPrevN() == &item2 && !item3.getNextN() && item3.hasList() && item3.getListN() == &list);
 }
 
 
-void pgListTest()
+void ckListTest()
 {
     /*
         Item()
@@ -93,30 +93,30 @@ void pgListTest()
         void init(T* self)
         T* getSelf() const
 
-        pgList()
-        ~pgList()
+        ckList()
+        ~ckList()
         void addFirst(Item* item)
     */
     {
-        pgList<u32> list;
+        ckList<u32> list;
         assertAlone(list);
 
         {
-            pgList<u32>::Item item;
+            ckList<u32>::Item item;
             u32 val = 1;
 
-            pgAssertThrow(item.init(NULL), pgList<u32>::Item::ExceptionInvalidArgument);
-            pgAssertThrow(item.getSelf(), pgList<u32>::Item::ExceptionNotInitialized);
+            ckAssertThrow(item.init(NULL), ckList<u32>::Item::ExceptionInvalidArgument);
+            ckAssertThrow(item.getSelf(), ckList<u32>::Item::ExceptionNotInitialized);
 
             assertAlone<u32>(item);
 
             item.init(&val);
-            pgAssert(item.getSelf() == &val);
+            ckAssert(item.getSelf() == &val);
 
             list.addFirst(&item);
             assertItem(list, item);
 
-            pgAssertThrow(list.addFirst(NULL), pgList<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(list.addFirst(NULL), ckList<u32>::ExceptionInvalidArgument);
         }
 
         assertAlone(list);
@@ -126,15 +126,15 @@ void pgListTest()
         void addLast(Item* item)
     */
     {
-        pgList<u32>::Item item;
+        ckList<u32>::Item item;
 
         {
-            pgList<u32> list;
+            ckList<u32> list;
 
             list.addLast(&item);
             assertItem(list, item);
 
-            pgAssertThrow(list.addLast(NULL), pgList<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(list.addLast(NULL), ckList<u32>::ExceptionInvalidArgument);
         }
 
         assertAlone<u32>(item);
@@ -146,8 +146,8 @@ void pgListTest()
         void clear()
     */
     {
-        pgList<u32> list;
-        pgList<u32>::Item item1, item2, item3;
+        ckList<u32> list;
+        ckList<u32>::Item item1, item2, item3;
 
         list.addFirst(&item1);
         list.addLast(&item2);
@@ -179,8 +179,8 @@ void pgListTest()
         void joinAfter(Item* item)
     */
     {
-        pgList<u32> list;
-        pgList<u32>::Item item1, item2, item3;
+        ckList<u32> list;
+        ckList<u32>::Item item1, item2, item3;
 
         list.addFirst(&item2);
 
@@ -192,16 +192,16 @@ void pgListTest()
         item1.joinAfter(&item3);
         assertItem(list, item2, item3, item1);
 
-        pgAssertThrow(item1.joinBefore(NULL), pgList<u32>::Item::ExceptionInvalidArgument);
-        pgAssertThrow(item1.joinBefore(&item1), pgList<u32>::Item::ExceptionInvalidArgument);
+        ckAssertThrow(item1.joinBefore(NULL), ckList<u32>::Item::ExceptionInvalidArgument);
+        ckAssertThrow(item1.joinBefore(&item1), ckList<u32>::Item::ExceptionInvalidArgument);
 
         item1.leave();
-        pgAssertThrow(item2.joinBefore(&item1), pgList<u32>::Item::ExceptionInvalidArgument);
+        ckAssertThrow(item2.joinBefore(&item1), ckList<u32>::Item::ExceptionInvalidArgument);
 
-        pgAssertThrow(item3.joinAfter(NULL), pgList<u32>::Item::ExceptionInvalidArgument);
-        pgAssertThrow(item3.joinAfter(&item3), pgList<u32>::Item::ExceptionInvalidArgument);
+        ckAssertThrow(item3.joinAfter(NULL), ckList<u32>::Item::ExceptionInvalidArgument);
+        ckAssertThrow(item3.joinAfter(&item3), ckList<u32>::Item::ExceptionInvalidArgument);
 
         item3.leave();
-        pgAssertThrow(item2.joinAfter(&item3), pgList<u32>::Item::ExceptionInvalidArgument);
+        ckAssertThrow(item2.joinAfter(&item3), ckList<u32>::Item::ExceptionInvalidArgument);
     }
 }

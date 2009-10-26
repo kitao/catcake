@@ -33,71 +33,71 @@
 
 
 static bool s_is_new_task_in_dtor;
-static pgTask* s_delete_task_in_dtor;
+static ckTask* s_delete_task_in_dtor;
 
 
-class TaskUtilTestClass : public pgTask
+class TaskUtilTestClass : public ckTask
 {
 public:
-    TaskUtilTestClass(pgTask::TaskOrder order) : pgTask(order) {}
+    TaskUtilTestClass(ckTask::TaskOrder order) : ckTask(order) {}
 
-    TaskUtilTestClass(pgTask* parent) : pgTask(parent) {}
+    TaskUtilTestClass(ckTask* parent) : ckTask(parent) {}
 
     virtual ~TaskUtilTestClass()
     {
         if (s_is_new_task_in_dtor)
         {
-            pgNewTask(TaskUtilTestClass)(pgTask::ORDER_ZERO);
+            ckNewTask(TaskUtilTestClass)(ckTask::ORDER_ZERO);
         }
 
         if (s_delete_task_in_dtor)
         {
-            pgDeleteTask(s_delete_task_in_dtor);
+            ckDeleteTask(s_delete_task_in_dtor);
         }
     }
 };
 
 
-void pgTaskUtilTest()
+void ckTaskUtilTest()
 {
     /*
-        pgNewTask(type)
-        pgDeleteTask(task)
+        ckNewTask(type)
+        ckDeleteTask(task)
     */
     {
         s_is_new_task_in_dtor = false;
         s_delete_task_in_dtor = NULL;
 
-        pgAssertThrow(pgNewTask(TaskUtilTestClass)(pgTask::ORDER_ZERO), pgTaskMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDeleteTask(reinterpret_cast<pgTask*>(1)), pgTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckNewTask(TaskUtilTestClass)(ckTask::ORDER_ZERO), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDeleteTask(reinterpret_cast<ckTask*>(1)), ckTaskMgr::ExceptionNotInitialized);
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
-        pgTask* task1 = pgNewTask(TaskUtilTestClass)(pgTask::ORDER_ZERO);
-        pgTask* task2 = pgNewTask(TaskUtilTestClass)(pgTask::ORDER_ZERO);
+        ckTask* task1 = ckNewTask(TaskUtilTestClass)(ckTask::ORDER_ZERO);
+        ckTask* task2 = ckNewTask(TaskUtilTestClass)(ckTask::ORDER_ZERO);
 
-        pgAssertThrow(pgNew(TaskUtilTestClass)(pgTask::ORDER_ZERO), pgTask::ExceptionInvalidCall);
+        ckAssertThrow(ckNew(TaskUtilTestClass)(ckTask::ORDER_ZERO), ckTask::ExceptionInvalidCall);
         // This test leaks memory due to throw an exception in the constructor of the test class.
 
-        pgDeleteTask(task1);
+        ckDeleteTask(task1);
 
-        task1 = pgNewTask(TaskUtilTestClass)(pgTask::ORDER_ZERO);
+        task1 = ckNewTask(TaskUtilTestClass)(ckTask::ORDER_ZERO);
 
         s_is_new_task_in_dtor = true;
-        pgAssertThrow(pgDeleteTask(task1), pgTaskMgr::ExceptionNewTaskInDestructor);
+        ckAssertThrow(ckDeleteTask(task1), ckTaskMgr::ExceptionNewTaskInDestructor);
         s_is_new_task_in_dtor = false;
 
-        task1 = pgNewTask(TaskUtilTestClass)(pgTask::ORDER_ZERO);
+        task1 = ckNewTask(TaskUtilTestClass)(ckTask::ORDER_ZERO);
 
         s_delete_task_in_dtor = task2;
-        pgAssertThrow(pgDeleteTask(task1), pgTaskMgr::ExceptionDeleteTaskInDestructor);
+        ckAssertThrow(ckDeleteTask(task1), ckTaskMgr::ExceptionDeleteTaskInDestructor);
         s_delete_task_in_dtor = NULL;
 
-        pgAssertThrow(pgDelete(task2, TaskUtilTestClass), pgTask::ExceptionInvalidCall);
+        ckAssertThrow(ckDelete(task2, TaskUtilTestClass), ckTask::ExceptionInvalidCall);
         // This test leaks memory due to throw an exception in the destructor of the test class.
 
-        pgAssertThrow(pgDeleteTask(NULL), pgTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDeleteTask(NULL), ckTaskMgr::ExceptionInvalidArgument);
 
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
     }
 }

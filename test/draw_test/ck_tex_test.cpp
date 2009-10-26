@@ -32,12 +32,12 @@
 #include "test.h"
 
 
-void pgTexTest()
+void ckTexTest()
 {
     /*
-        pgTex* getPrevN() const
-        pgTex* getNextN() const
-        pgID getID() const
+        ckTex* getPrevN() const
+        ckTex* getNextN() const
+        ckID getID() const
         u16 getWidth() const
         u16 getHeight() const
         TexFormat getFormat() const
@@ -46,239 +46,239 @@ void pgTexTest()
         u32 getImageSize() const
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgID id1 = pgID::genID();
-        pgID id2 = pgID::genID();
-        pgID id3 = pgID::genID();
+        ckID id1 = ckID::genID();
+        ckID id2 = ckID::genID();
+        ckID id3 = ckID::genID();
 
-        pgTex* tex1 = pgDrawMgr::newTexture(id1, 10, 20, pgTex::FORMAT_RGB);
-        pgTex* tex2 = pgDrawMgr::newTexture(id2, 30, 40, pgTex::FORMAT_RGBA);
-        pgTex* tex3 = pgDrawMgr::newTexture(id3, 50, 60, pgTex::FORMAT_ALPHA);
+        ckTex* tex1 = ckDrawMgr::newTexture(id1, 10, 20, ckTex::FORMAT_RGB);
+        ckTex* tex2 = ckDrawMgr::newTexture(id2, 30, 40, ckTex::FORMAT_RGBA);
+        ckTex* tex3 = ckDrawMgr::newTexture(id3, 50, 60, ckTex::FORMAT_ALPHA);
 
-        pgAssert(tex1->getID() == id1);
-        pgAssert(tex2->getID() == id2);
-        pgAssert(tex3->getID() == id3);
+        ckAssert(tex1->getID() == id1);
+        ckAssert(tex2->getID() == id2);
+        ckAssert(tex3->getID() == id3);
 
-        pgAssert(pgDrawMgr::getFirstTextureN() == tex1 && pgDrawMgr::getLastTextureN() == tex3);
-        pgAssert(!tex1->getPrevN() && tex1->getNextN() == tex2);
-        pgAssert(tex2->getPrevN() == tex1 && tex2->getNextN() == tex3);
-        pgAssert(tex3->getPrevN() == tex2 && !tex3->getNextN());
+        ckAssert(ckDrawMgr::getFirstTextureN() == tex1 && ckDrawMgr::getLastTextureN() == tex3);
+        ckAssert(!tex1->getPrevN() && tex1->getNextN() == tex2);
+        ckAssert(tex2->getPrevN() == tex1 && tex2->getNextN() == tex3);
+        ckAssert(tex3->getPrevN() == tex2 && !tex3->getNextN());
 
-        pgAssert(tex1->getWidth() == 10 && tex1->getHeight() == 20);
-        pgAssert(tex1->getFormat() == pgTex::FORMAT_RGB && tex1->getMode() == pgTex::MODE_READ_WRITE);
-        pgAssert(tex1->getImage() && tex1->getImageSize() == 10 * 20 * 3);
+        ckAssert(tex1->getWidth() == 10 && tex1->getHeight() == 20);
+        ckAssert(tex1->getFormat() == ckTex::FORMAT_RGB && tex1->getMode() == ckTex::MODE_READ_WRITE);
+        ckAssert(tex1->getImage() && tex1->getImageSize() == 10 * 20 * 3);
 
-        pgAssert(tex2->getWidth() == 30 && tex2->getHeight() == 40);
-        pgAssert(tex2->getFormat() == pgTex::FORMAT_RGBA && tex2->getMode() == pgTex::MODE_READ_WRITE);
-        pgAssert(tex2->getImage() && tex2->getImageSize() == 30 * 40 * 4);
+        ckAssert(tex2->getWidth() == 30 && tex2->getHeight() == 40);
+        ckAssert(tex2->getFormat() == ckTex::FORMAT_RGBA && tex2->getMode() == ckTex::MODE_READ_WRITE);
+        ckAssert(tex2->getImage() && tex2->getImageSize() == 30 * 40 * 4);
 
-        pgAssert(tex3->getWidth() == 50 && tex3->getHeight() == 60);
-        pgAssert(tex3->getFormat() == pgTex::FORMAT_ALPHA && tex3->getMode() == pgTex::MODE_READ_WRITE);
-        pgAssert(tex3->getImage() && tex3->getImageSize() == 50 * 60 * 1);
+        ckAssert(tex3->getWidth() == 50 && tex3->getHeight() == 60);
+        ckAssert(tex3->getFormat() == ckTex::FORMAT_ALPHA && tex3->getMode() == ckTex::MODE_READ_WRITE);
+        ckAssert(tex3->getImage() && tex3->getImageSize() == 50 * 60 * 1);
 
-        pgDrawMgr::deleteTexture(id2);
+        ckDrawMgr::deleteTexture(id2);
 
-        pgAssert(pgDrawMgr::getFirstTextureN() == tex1 && pgDrawMgr::getLastTextureN() == tex3);
-        pgAssert(!tex1->getPrevN() && tex1->getNextN() == tex3);
-        pgAssert(tex3->getPrevN() == tex1 && !tex3->getNextN());
+        ckAssert(ckDrawMgr::getFirstTextureN() == tex1 && ckDrawMgr::getLastTextureN() == tex3);
+        ckAssert(!tex1->getPrevN() && tex1->getNextN() == tex3);
+        ckAssert(tex3->getPrevN() == tex1 && !tex3->getNextN());
 
-        pgDrawMgr::deleteTexture(id1);
+        ckDrawMgr::deleteTexture(id1);
 
-        pgAssert(pgDrawMgr::getFirstTextureN() == tex3 && pgDrawMgr::getLastTextureN() == tex3);
-        pgAssert(!tex3->getPrevN() && !tex3->getNextN());
+        ckAssert(ckDrawMgr::getFirstTextureN() == tex3 && ckDrawMgr::getLastTextureN() == tex3);
+        ckAssert(!tex3->getPrevN() && !tex3->getNextN());
 
-        pgDrawMgr::deleteTexture(id3);
+        ckDrawMgr::deleteTexture(id3);
 
-        pgResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "rgba.png", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "gray.png", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "gray_alpha.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "rgba.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "gray.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "gray_alpha.png", true);
 
-        pgID id4 = pgID_("rgb.png");
-        pgID id5 = pgID_("rgba.png");
-        pgID id6 = pgID_("gray.png");
-        pgID id7 = pgID_("gray_alpha.png");
+        ckID id4 = ckID_("rgb.png");
+        ckID id5 = ckID_("rgba.png");
+        ckID id6 = ckID_("gray.png");
+        ckID id7 = ckID_("gray_alpha.png");
 
-        pgTex* tex4 = pgDrawMgr::getTexture(id4);
-        pgTex* tex5 = pgDrawMgr::getTexture(id5);
-        pgTex* tex6 = pgDrawMgr::getTexture(id6);
-        pgTex* tex7 = pgDrawMgr::getTexture(id7);
+        ckTex* tex4 = ckDrawMgr::getTexture(id4);
+        ckTex* tex5 = ckDrawMgr::getTexture(id5);
+        ckTex* tex6 = ckDrawMgr::getTexture(id6);
+        ckTex* tex7 = ckDrawMgr::getTexture(id7);
 
-        pgAssert(tex4->getID() == id4);
-        pgAssert(tex4->getWidth() == 71 && tex4->getHeight() == 14);
-        pgAssert(tex4->getFormat() == pgTex::FORMAT_PNG_RGB && tex4->getMode() == pgTex::MODE_READ_ONLY);
-        pgAssert(tex4->getImage() && tex4->getImageSize() == 316);
+        ckAssert(tex4->getID() == id4);
+        ckAssert(tex4->getWidth() == 71 && tex4->getHeight() == 14);
+        ckAssert(tex4->getFormat() == ckTex::FORMAT_PNG_RGB && tex4->getMode() == ckTex::MODE_READ_ONLY);
+        ckAssert(tex4->getImage() && tex4->getImageSize() == 324);
 
-        pgAssert(tex5->getID() == id5);
-        pgAssert(tex5->getWidth() == 71 && tex5->getHeight() == 14);
-        pgAssert(tex5->getFormat() == pgTex::FORMAT_PNG_RGBA && tex5->getMode() == pgTex::MODE_READ_ONLY);
-        pgAssert(tex5->getImage() && tex5->getImageSize() == 358);
+        ckAssert(tex5->getID() == id5);
+        ckAssert(tex5->getWidth() == 71 && tex5->getHeight() == 14);
+        ckAssert(tex5->getFormat() == ckTex::FORMAT_PNG_RGBA && tex5->getMode() == ckTex::MODE_READ_ONLY);
+        ckAssert(tex5->getImage() && tex5->getImageSize() == 353);
 
-        pgAssert(tex6->getID() == id6);
-        pgAssert(tex6->getWidth() == 71 && tex6->getHeight() == 14);
-        pgAssert(tex6->getFormat() == pgTex::FORMAT_PNG_ALPHA && tex6->getMode() == pgTex::MODE_READ_ONLY);
-        pgAssert(tex6->getImage() && tex6->getImageSize() == 270);
+        ckAssert(tex6->getID() == id6);
+        ckAssert(tex6->getWidth() == 71 && tex6->getHeight() == 14);
+        ckAssert(tex6->getFormat() == ckTex::FORMAT_PNG_ALPHA && tex6->getMode() == ckTex::MODE_READ_ONLY);
+        ckAssert(tex6->getImage() && tex6->getImageSize() == 274);
 
-        pgAssert(tex7->getID() == id7);
-        pgAssert(tex7->getWidth() == 71 && tex7->getHeight() == 14);
-        pgAssert(tex7->getFormat() == pgTex::FORMAT_PNG_RGBA && tex7->getMode() == pgTex::MODE_READ_ONLY);
-        pgAssert(tex7->getImage() && tex7->getImageSize() == 307);
+        ckAssert(tex7->getID() == id7);
+        ckAssert(tex7->getWidth() == 71 && tex7->getHeight() == 14);
+        ckAssert(tex7->getFormat() == ckTex::FORMAT_PNG_RGBA && tex7->getMode() == ckTex::MODE_READ_ONLY);
+        ckAssert(tex7->getImage() && tex7->getImageSize() == 321);
 
-        pgDrawMgr::deleteTexture(id4);
+        ckDrawMgr::deleteTexture(id4);
 
-        pgResMgr::removeResource(id4);
-        pgResMgr::removeResource(id5);
+        ckResMgr::removeResource(id4);
+        ckResMgr::removeResource(id5);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgResMgr::removeResource(id6);
-        pgResMgr::removeResource(id7);
+        ckResMgr::removeResource(id6);
+        ckResMgr::removeResource(id7);
     }
 
     /*
         void* editImage()
-        void clearImage(pgCol col)
+        void clearImage(ckCol col)
         void resizeImage(u16 width, u16 height)
         void setVolatile()
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgTex* tex1 = pgDrawMgr::newTexture(pgID::genID(), 10, 11, pgTex::FORMAT_RGB);
-        pgTex* tex2 = pgDrawMgr::newTexture(pgID::genID(), 12, 13, pgTex::FORMAT_RGBA);
-        pgTex* tex3 = pgDrawMgr::newTexture(pgID::genID(), 14, 15, pgTex::FORMAT_ALPHA);
+        ckTex* tex1 = ckDrawMgr::newTexture(ckID::genID(), 10, 11, ckTex::FORMAT_RGB);
+        ckTex* tex2 = ckDrawMgr::newTexture(ckID::genID(), 12, 13, ckTex::FORMAT_RGBA);
+        ckTex* tex3 = ckDrawMgr::newTexture(ckID::genID(), 14, 15, ckTex::FORMAT_ALPHA);
 
-        pgAssert(tex1->getImageSize() == 10 * 11 * 3);
-        pgAssert(tex2->getImageSize() == 12 * 13 * 4);
-        pgAssert(tex3->getImageSize() == 14 * 15 * 1);
+        ckAssert(tex1->getImageSize() == 10 * 11 * 3);
+        ckAssert(tex2->getImageSize() == 12 * 13 * 4);
+        ckAssert(tex3->getImageSize() == 14 * 15 * 1);
 
         void* image1 = tex1->editImage();
         void* image2 = tex2->editImage();
         void* image3 = tex3->editImage();
-        pgAssert(image1 && image2 && image3);
+        ckAssert(image1 && image2 && image3);
 
-        pgMemMgr::memset(image1, 255, tex1->getImageSize());
-        pgMemMgr::memset(image2, 255, tex2->getImageSize());
-        pgMemMgr::memset(image3, 255, tex3->getImageSize());
+        ckMemMgr::memset(image1, 255, tex1->getImageSize());
+        ckMemMgr::memset(image2, 255, tex2->getImageSize());
+        ckMemMgr::memset(image3, 255, tex3->getImageSize());
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        tex1->clearImage(pgCol(1, 2, 3, 4));
-        tex2->clearImage(pgCol(1, 2, 3, 4));
-        tex3->clearImage(pgCol(1, 2, 3, 4));
+        tex1->clearImage(ckCol(1, 2, 3, 4));
+        tex2->clearImage(ckCol(1, 2, 3, 4));
+        tex3->clearImage(ckCol(1, 2, 3, 4));
 
         for (s32 i = 0; i < tex1->getWidth() * tex1->getHeight(); i++)
         {
             const u8* pixel = static_cast<const u8*>(tex1->getImage()) + i * 3;
 
-            pgAssert(*(pixel + 0) == 0x01 && *(pixel + 1) == 0x02 && *(pixel + 2) == 0x03);
+            ckAssert(*(pixel + 0) == 0x01 && *(pixel + 1) == 0x02 && *(pixel + 2) == 0x03);
         }
 
         for (s32 i = 0; i < tex2->getWidth() * tex2->getHeight(); i++)
         {
             const u8* pixel = static_cast<const u8*>(tex2->getImage()) + i * 4;
 
-            pgAssert(*(pixel + 0) == 0x01 && *(pixel + 1) == 0x02 && *(pixel + 2) == 0x03 && *(pixel + 3) == 0x04);
+            ckAssert(*(pixel + 0) == 0x01 && *(pixel + 1) == 0x02 && *(pixel + 2) == 0x03 && *(pixel + 3) == 0x04);
         }
 
         for (s32 i = 0; i < tex3->getWidth() * tex3->getHeight(); i++)
         {
             const u8* pixel = static_cast<const u8*>(tex3->getImage()) + i;
 
-            pgAssert(*pixel == 0x04);
+            ckAssert(*pixel == 0x04);
         }
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        pgAssertThrow(tex1->resizeImage(0, 10), pgTex::ExceptionInvalidArgument);
-        pgAssertThrow(tex1->resizeImage(10, 0), pgTex::ExceptionInvalidArgument);
-        pgAssertThrow(tex1->resizeImage(pgDrawMgr::getMaxTextureLength() + 1, 10), pgTex::ExceptionInvalidArgument);
-        pgAssertThrow(tex1->resizeImage(10, pgDrawMgr::getMaxTextureLength() + 1), pgTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->resizeImage(0, 10), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->resizeImage(10, 0), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->resizeImage(ckDrawMgr::getMaxTextureLength() + 1, 10), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->resizeImage(10, ckDrawMgr::getMaxTextureLength() + 1), ckTex::ExceptionInvalidArgument);
 
         tex1->resizeImage(10, 20);
         tex2->resizeImage(30, 40);
         tex3->resizeImage(50, 60);
 
-        pgAssert(tex1->getImageSize() == 10 * 20 * 3);
-        pgAssert(tex2->getImageSize() == 30 * 40 * 4);
-        pgAssert(tex3->getImageSize() == 50 * 60 * 1);
+        ckAssert(tex1->getImageSize() == 10 * 20 * 3);
+        ckAssert(tex2->getImageSize() == 30 * 40 * 4);
+        ckAssert(tex3->getImageSize() == 50 * 60 * 1);
 
         image1 = tex1->editImage();
         image2 = tex2->editImage();
         image3 = tex3->editImage();
-        pgAssert(image1 && image2 && image3);
+        ckAssert(image1 && image2 && image3);
 
-        pgMemMgr::memset(image1, 255, tex1->getImageSize());
-        pgMemMgr::memset(image2, 255, tex2->getImageSize());
-        pgMemMgr::memset(image3, 255, tex3->getImageSize());
+        ckMemMgr::memset(image1, 255, tex1->getImageSize());
+        ckMemMgr::memset(image2, 255, tex2->getImageSize());
+        ckMemMgr::memset(image3, 255, tex3->getImageSize());
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
         tex1->setVolatile();
-        pgAssert(tex1->getMode() == pgTex::MODE_VOLATILE);
-        pgAssert(!tex1->getImage() && tex1->getImageSize() == 0);
-        pgAssert(pgMemMgr::getCurUsedMemorySize() < used_memory_size);
+        ckAssert(tex1->getMode() == ckTex::MODE_VOLATILE);
+        ckAssert(!tex1->getImage() && tex1->getImageSize() == 0);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() < used_memory_size);
 
-        pgAssertThrow(tex1->setVolatile(), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex1->editImage(), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex1->resizeImage(123, 456), pgTex::ExceptionInvalidCall);
+        ckAssertThrow(tex1->setVolatile(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex1->editImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex1->resizeImage(123, 456), ckTex::ExceptionInvalidCall);
 
-        pgResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
-        pgTex* tex4 = pgDrawMgr::getTexture(pgID_("rgb.png"));
+        ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
+        ckTex* tex4 = ckDrawMgr::getTexture(ckID_("rgb.png"));
 
-        pgAssertThrow(tex4->editImage(), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex4->clearImage(pgCol::ZERO), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex4->resizeImage(123, 456), pgTex::ExceptionInvalidCall);
+        ckAssertThrow(tex4->editImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex4->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex4->resizeImage(123, 456), ckTex::ExceptionInvalidCall);
 
-        used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
         tex4->setVolatile();
-        pgAssert(tex1->getMode() == pgTex::MODE_VOLATILE);
-        pgAssert(!tex1->getImage() && tex1->getImageSize() == 0);
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(tex1->getMode() == ckTex::MODE_VOLATILE);
+        ckAssert(!tex1->getImage() && tex1->getImageSize() == 0);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
 
-        pgResMgr::removeResource(pgID_("rgb.png"));
+        ckResMgr::removeResource(ckID_("rgb.png"));
 
-        pgScr* scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        scr->attachScreenTexture(pgTex::FORMAT_RGB);
-        pgTex* tex5 = pgDrawMgr::getTexture(scr->getScreenTextureID());
+        ckScr* scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        scr->attachScreenTexture(ckTex::FORMAT_RGB);
+        ckTex* tex5 = ckDrawMgr::getTexture(scr->getScreenTextureID());
 
-        pgAssert(!tex5->getImage() && tex5->getImageSize() == 0);
+        ckAssert(!tex5->getImage() && tex5->getImageSize() == 0);
 
-        pgAssertThrow(tex5->editImage(), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex5->clearImage(pgCol::ZERO), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex5->resizeImage(123, 456), pgTex::ExceptionInvalidCall);
-        pgAssertThrow(tex5->setVolatile(), pgTex::ExceptionInvalidCall);
+        ckAssertThrow(tex5->editImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex5->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex5->resizeImage(123, 456), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex5->setVolatile(), ckTex::ExceptionInvalidCall);
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
-        pgID getProxyTextureID() const
-        void setProxyTextureID(pgID tex_id)
+        ckID getProxyTextureID() const
+        void setProxyTextureID(ckID tex_id)
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgTex* tex1 = pgDrawMgr::newTexture(pgID::genID(), 10, 20, pgTex::FORMAT_RGB);
-        pgTex* tex2 = pgDrawMgr::newTexture(pgID::genID(), 30, 40, pgTex::FORMAT_RGBA);
+        ckTex* tex1 = ckDrawMgr::newTexture(ckID::genID(), 10, 20, ckTex::FORMAT_RGB);
+        ckTex* tex2 = ckDrawMgr::newTexture(ckID::genID(), 30, 40, ckTex::FORMAT_RGBA);
 
-        pgAssert(tex1->getProxyTextureID() == pgID::ZERO);
+        ckAssert(tex1->getProxyTextureID() == ckID::ZERO);
 
         tex1->setProxyTextureID(tex2->getID());
-        pgAssert(tex1->getProxyTextureID() == tex2->getID());
+        ckAssert(tex1->getProxyTextureID() == tex2->getID());
 
-        tex1->setProxyTextureID(pgID::ZERO);
-        pgAssert(tex1->getProxyTextureID() == pgID::ZERO);
+        tex1->setProxyTextureID(ckID::ZERO);
+        ckAssert(tex1->getProxyTextureID() == ckID::ZERO);
 
-        pgAssertThrow(tex1->setProxyTextureID(tex1->getID()), pgTex::ExceptionInvalidArgument);
-        pgAssertThrow(tex1->setProxyTextureID(pgID::genID()), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(tex1->setProxyTextureID(tex1->getID()), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->setProxyTextureID(ckID::genID()), ckDrawMgr::ExceptionNotFound);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

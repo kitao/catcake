@@ -29,218 +29,218 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 #include "test.h"
 
 
 #define MODULE_TEST_START \
-    s_used_memory_size = pgMemMgr::getCurUsedMemorySize(); \
+    s_used_memory_size = ckMemMgr::getCurUsedMemorySize(); \
     \
     do
 
 #define MODULE_TEST_END \
     while (false); \
     \
-    pgAssert(pgMemMgr::getCurUsedMemorySize() == s_used_memory_size);
+    ckAssert(ckMemMgr::getCurUsedMemorySize() == s_used_memory_size);
 
 static u32 s_used_memory_size;
 
 
-pgMain()
+ckMain()
 {
     /*
-        pgMem
+        ckMem
     */
     {
-        pgMemMgrTest();
-        pgMemUtilTest();
+        ckMemMgrTest();
+        ckMemUtilTest();
     }
 
-    pgMemMgr::createFirst();
+    ckMemMgr::createFirst();
 
     /*
-        pgMath
+        ckMath
     */
     MODULE_TEST_START
     {
-        pgMathTest();
-        pgVecTest();
-        pgMatTest();
-        pgQuatTest();
-        pgFixTest();
+        ckMathTest();
+        ckVecTest();
+        ckMatTest();
+        ckQuatTest();
+        ckFixTest();
     }
     MODULE_TEST_END
 
     /*
-        pgGen
+        ckGen
     */
     MODULE_TEST_START
     {
-        pgIDTest();
-        pgTypeTest();
-        pgFlagTest();
-        pgListTest();
-        pgTreeTest();
-        pgBufTest();
-        pgMapTest();
-        pgStrTest();
-        pgMsgTest();
+        ckIDTest();
+        ckTypeTest();
+        ckFlagTest();
+        ckListTest();
+        ckTreeTest();
+        ckBufTest();
+        ckMapTest();
+        ckStrTest();
+        ckMsgTest();
     }
     MODULE_TEST_END
 
     /*
-        pgCdt
+        ckCdt
     */
     MODULE_TEST_START
     {
-        pgCdtAABBTest();
-        pgCdtSphTest();
-        pgCdtBoxTest();
-        pgCdtTriTest();
-        pgCdtRayTest();
-        pgCdtTest();
+        ckCdtAABBTest();
+        ckCdtSphTest();
+        ckCdtBoxTest();
+        ckCdtTriTest();
+        ckCdtRayTest();
+        ckCdtTest();
     }
     MODULE_TEST_END
 
     /*
-        pgSysMgr
+        ckSysMgr
     */
     MODULE_TEST_START
     {
-        pgSysMgrTest();
+        ckSysMgrTest();
     }
     MODULE_TEST_END
 
-    pgSysMgr::createAfterMem("Pogolyn Test", 320, 240, pgSysMgr::FLAG_VARIABLE_SIZE);
+    ckSysMgr::createAfterMem("Catcake Test", 320, 240, ckSysMgr::FLAG_VARIABLE_SIZE);
 
     /*
-        pgTask
+        ckTask
     */
     MODULE_TEST_START
     {
-        pgTaskMgrTest();
-        pgTaskTest();
+        ckTaskMgrTest();
+        ckTaskTest();
     }
     MODULE_TEST_END
     {
-        pgTaskUtilTest(); // This function leaks memory due to some tests.
+        ckTaskUtilTest(); // This function leaks memory due to some tests.
     }
 
-    pgTaskMgr::createAfterSys(60);
+    ckTaskMgr::createAfterSys(60);
 
     /*
-        pgKey
+        ckKey
     */
     MODULE_TEST_START
     {
-        pgKeyMgrTest();
+        ckKeyMgrTest();
     }
     MODULE_TEST_END
 
-    pgKeyMgr::createAfterTask();
+    ckKeyMgr::createAfterTask();
 
     /*
-        pgRes
+        ckRes
     */
     MODULE_TEST_START
     {
-        pgResMgrTest();
-        pgResTest();
+        ckResMgrTest();
+        ckResTest();
     }
     MODULE_TEST_END
 
-    pgResMgr::createAfterTask();
+    ckResMgr::createAfterTask();
 
     /*
-        pgConf
+        ckConf
     */
     MODULE_TEST_START
     {
-        pgConfMgrTest();
-        pgConfTest1();
-        pgEntTest();
+        ckConfMgrTest();
+        ckConfTest1();
+        ckEntTest();
     }
     MODULE_TEST_END
 
-    pgConfMgr::createAfterRes();
+    ckConfMgr::createAfterRes();
 
     /*
-        pgDraw
+        ckDraw
     */
     MODULE_TEST_START
     {
-        pgColTest();
-        pgDrawMgrTest();
-        pgScrTest();
-        pgTexTest();
-        pgFontTest();
-        pgShdTest();
-        pgLitTest();
-        pgLtsTest();
-        pgNodeTest();
-        pgPrimTest();
-        pgSprtTest();
-        pgMdlDataTest();
-        pgMdlTest();
-        pgMotDataTest();
-        pgMotTest();
-        pgRendTest();
+        ckColTest();
+        ckDrawMgrTest();
+        ckScrTest();
+        ckTexTest();
+        ckFontTest();
+        ckShdTest();
+        ckLitTest();
+        ckLtsTest();
+        ckNodeTest();
+        ckPrimTest();
+        ckSprtTest();
+        ckMdlDataTest();
+        ckMdlTest();
+        ckMotDataTest();
+        ckMotTest();
+        ckRendTest();
 
-        pgRend_ShaderTest();
-        pgRend_LightTest();
+        ckRend_ShaderTest();
+        ckRend_LightTest();
     }
     MODULE_TEST_END
 
-    pgDrawMgr::createAfterRes();
+    ckDrawMgr::createAfterRes();
 
     /*
-        pgSnd
+        ckSnd
     */
     MODULE_TEST_START
     {
-        pgSndMgrTest();
+        ckSndMgrTest();
     }
     MODULE_TEST_END
 
-    pgSndMgr::createAfterRes();
+    ckSndMgr::createAfterRes();
 
     /*
-        pgDbg
+        ckDbg
     */
     MODULE_TEST_START
     {
-        pgDbgMgrTest();
+        ckDbgMgrTest();
     }
     MODULE_TEST_END
 
-    pgDbgMgr::createLast();
+    ckDbgMgr::createLast();
 
     /*
-        pgUtil
+        ckUtil
     */
     MODULE_TEST_START
     {
-        pgUtilTest();
+        ckUtilTest();
     }
     MODULE_TEST_END
 
-    pgTaskMgr::destroyFirst();
-    pgDbgMgr::destroySecond();
-    pgSndMgr::destroyBeforeRes();
-    pgDrawMgr::destroyBeforeRes();
-    pgKeyMgr::destroyBeforeSys();
-    pgConfMgr::destroyBeforeRes();
-    pgResMgr::destroyBeforeSys();
-    pgSysMgr::destroyBeforeMem();
-    pgMemMgr::destroyLast();
+    ckTaskMgr::destroyFirst();
+    ckDbgMgr::destroySecond();
+    ckSndMgr::destroyBeforeRes();
+    ckDrawMgr::destroyBeforeRes();
+    ckKeyMgr::destroyBeforeSys();
+    ckConfMgr::destroyBeforeRes();
+    ckResMgr::destroyBeforeSys();
+    ckSysMgr::destroyBeforeMem();
+    ckMemMgr::destroyLast();
 
     /*
-        pgConf
+        ckConf
     */
-    pgConfTest2();
+    ckConfTest2();
 
     /*
-        pgSysUtil
+        ckSysUtil
     */
-    pgSysUtilTest();
+    ckSysUtilTest();
 }

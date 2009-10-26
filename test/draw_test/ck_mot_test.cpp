@@ -32,22 +32,22 @@
 #include "test.h"
 
 
-static void createTestModelData(pgID mdl_data_id)
+static void createTestModelData(ckID mdl_data_id)
 {
-    pgMdlData mdl_data;
+    ckMdlData mdl_data;
 
-    mdl_data.initAsWriter(2, 1, pgID::ZERO, false);
+    mdl_data.initAsWriter(2, 1, ckID::ZERO, false);
 
-    mdl_data.setNodeLocal(0, pgMat::UNIT.translate(1.0f, 2.0f, 3.0f));
-    mdl_data.setNodeLocal(1, pgMat::UNIT.translate(10.f, 20.f, 30.f));
+    mdl_data.setNodeLocal(0, ckMat::UNIT.translate(1.0f, 2.0f, 3.0f));
+    mdl_data.setNodeLocal(1, ckMat::UNIT.translate(10.f, 20.f, 30.f));
 
     mdl_data.registerAsResource(mdl_data_id);
 }
 
 
-static void createTestMotionData(pgID mot_data_id)
+static void createTestMotionData(ckID mot_data_id)
 {
-    pgMotData mot_data;
+    ckMotData mot_data;
 
     mot_data.initAsWriter(3, 2, 5);
 
@@ -60,231 +60,231 @@ static void createTestMotionData(pgID mot_data_id)
     mot_data.setKeyFramePlayFrame(3, 0);
     mot_data.setKeyFramePlayFrame(4, 2);
 
-    mot_data.setNodeLocal(0, 0, pgMat::UNIT.translate(10.0f, 20.0f, 30.0f));
-    mot_data.setNodeLocal(1, 0, pgMat::UNIT.translate(11.0f, 21.0f, 31.0f));
-    mot_data.setNodeLocal(2, 0, pgMat::UNIT.translate(12.0f, 22.0f, 32.0f));
+    mot_data.setNodeLocal(0, 0, ckMat::UNIT.translate(10.0f, 20.0f, 30.0f));
+    mot_data.setNodeLocal(1, 0, ckMat::UNIT.translate(11.0f, 21.0f, 31.0f));
+    mot_data.setNodeLocal(2, 0, ckMat::UNIT.translate(12.0f, 22.0f, 32.0f));
 
-    mot_data.setNodeLocal(0, 1, pgMat::UNIT.translate(50.0f, 60.0f, 70.0f).rotateX_s32(40));
-    mot_data.setNodeLocal(1, 1, pgMat::UNIT.translate(51.0f, 61.0f, 71.0f).rotateY_s32(40));
-    mot_data.setNodeLocal(2, 1, pgMat::UNIT.translate(52.0f, 62.0f, 72.0f).rotateZ_s32(40));
+    mot_data.setNodeLocal(0, 1, ckMat::UNIT.translate(50.0f, 60.0f, 70.0f).rotateX_s32(40));
+    mot_data.setNodeLocal(1, 1, ckMat::UNIT.translate(51.0f, 61.0f, 71.0f).rotateY_s32(40));
+    mot_data.setNodeLocal(2, 1, ckMat::UNIT.translate(52.0f, 62.0f, 72.0f).rotateZ_s32(40));
 
-    mot_data.setNodeLocal(0, 2, pgMat::UNIT.translate(0.0f, 10.0f, 20.0f).rotateX_s32(60));
-    mot_data.setNodeLocal(1, 2, pgMat::UNIT.translate(1.0f, 11.0f, 21.0f).rotateY_s32(60));
-    mot_data.setNodeLocal(2, 2, pgMat::UNIT.translate(2.0f, 12.0f, 22.0f).rotateZ_s32(60));
+    mot_data.setNodeLocal(0, 2, ckMat::UNIT.translate(0.0f, 10.0f, 20.0f).rotateX_s32(60));
+    mot_data.setNodeLocal(1, 2, ckMat::UNIT.translate(1.0f, 11.0f, 21.0f).rotateY_s32(60));
+    mot_data.setNodeLocal(2, 2, ckMat::UNIT.translate(2.0f, 12.0f, 22.0f).rotateZ_s32(60));
 
-    mot_data.setNodeLocal(0, 3, pgMat::UNIT.translate(-100.0f, -200.0f, -300.0f).rotateX_s32(-90));
-    mot_data.setNodeLocal(1, 3, pgMat::UNIT.translate(-110.0f, -210.0f, -310.0f).rotateY_s32(-90));
-    mot_data.setNodeLocal(2, 3, pgMat::UNIT.translate(-120.0f, -220.0f, -320.0f).rotateZ_s32(-90));
+    mot_data.setNodeLocal(0, 3, ckMat::UNIT.translate(-100.0f, -200.0f, -300.0f).rotateX_s32(-90));
+    mot_data.setNodeLocal(1, 3, ckMat::UNIT.translate(-110.0f, -210.0f, -310.0f).rotateY_s32(-90));
+    mot_data.setNodeLocal(2, 3, ckMat::UNIT.translate(-120.0f, -220.0f, -320.0f).rotateZ_s32(-90));
 
-    mot_data.setNodeLocal(0, 4, pgMat::UNIT.translate(-200.0f, -300.0f, -400.0f).rotateX_s32(-10));
-    mot_data.setNodeLocal(1, 4, pgMat::UNIT.translate(-210.0f, -310.0f, -410.0f).rotateY_s32(-10));
-    mot_data.setNodeLocal(2, 4, pgMat::UNIT.translate(-220.0f, -320.0f, -420.0f).rotateZ_s32(-10));
+    mot_data.setNodeLocal(0, 4, ckMat::UNIT.translate(-200.0f, -300.0f, -400.0f).rotateX_s32(-10));
+    mot_data.setNodeLocal(1, 4, ckMat::UNIT.translate(-210.0f, -310.0f, -410.0f).rotateY_s32(-10));
+    mot_data.setNodeLocal(2, 4, ckMat::UNIT.translate(-220.0f, -320.0f, -420.0f).rotateZ_s32(-10));
 
     mot_data.registerAsResource(mot_data_id);
 }
 
 
-void pgMotTest()
+void ckMotTest()
 {
     /*
-        pgMot()
-        ~pgMot()
-        void init(pgMdl* mdl, pgID mot_data_id)
+        ckMot()
+        ~ckMot()
+        void init(ckMdl* mdl, ckID mot_data_id)
         u16 getMotionIndex() const
         PlayMode getPlayMode() const
         r32 getPlaySpeed() const
         u16 getInterpFrame() const
         bool isPlaying() const
-        void play(pgMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame)
+        void play(ckMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame)
         void stop()
         r32 getNextUpdateFrame() const
-        void update(pgMdl* mdl)
+        void update(ckMdl* mdl)
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        createTestModelData(pgID_("TEST_MODEL_DATA"));
-        createTestMotionData(pgID_("TEST_MOTION_DATA"));
+        createTestModelData(ckID_("TEST_MODEL_DATA"));
+        createTestMotionData(ckID_("TEST_MOTION_DATA"));
 
-        pgMot mot;
+        ckMot mot;
 
-        pgAssertThrow(mot.getMotionIndex(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.getPlayMode(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.getPlaySpeed(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.getInterpFrame(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.isPlaying(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.play(NULL, 0, pgMot::PLAY_NORMAL, 1.0f, 0), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.stop(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.getNextUpdateFrame(), pgMot::ExceptionNotInitialized);
-        pgAssertThrow(mot.update(NULL), pgMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.getMotionIndex(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.getPlayMode(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.getPlaySpeed(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.getInterpFrame(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.isPlaying(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.play(NULL, 0, ckMot::PLAY_NORMAL, 1.0f, 0), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.stop(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.getNextUpdateFrame(), ckMot::ExceptionNotInitialized);
+        ckAssertThrow(mot.update(NULL), ckMot::ExceptionNotInitialized);
 
         {
-            pgMdl mdl;
-            mdl.init(pgID_("TEST_MODEL_DATA"), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+            ckMdl mdl;
+            mdl.init(ckID_("TEST_MODEL_DATA"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(1.0f, 2.0f, 3.0f)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(10.0f, 20.0f, 30.0f)));
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(1.0f, 2.0f, 3.0f)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(10.0f, 20.0f, 30.0f)));
 
-            mot.init(&mdl, pgID_("TEST_MOTION_DATA"));
+            mot.init(&mdl, ckID_("TEST_MOTION_DATA"));
 
-            pgAssert(mot.getMotionIndex() == 0);
-            pgAssert(mot.getPlayMode() == pgMot::PLAY_NORMAL);
-            pgAssert(isEqual(mot.getPlaySpeed(), 1.0f));
-            pgAssert(mot.getInterpFrame() == 0);
-            pgAssert(!mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
+            ckAssert(mot.getMotionIndex() == 0);
+            ckAssert(mot.getPlayMode() == ckMot::PLAY_NORMAL);
+            ckAssert(isEqual(mot.getPlaySpeed(), 1.0f));
+            ckAssert(mot.getInterpFrame() == 0);
+            ckAssert(!mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
 
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(1.0f, 2.0f, 3.0f)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(10.0f, 20.0f, 30.0f)));
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(1.0f, 2.0f, 3.0f)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(10.0f, 20.0f, 30.0f)));
 
-            mot.play(&mdl, 0, pgMot::PLAY_NORMAL, 1.0f, 0);
+            mot.play(&mdl, 0, ckMot::PLAY_NORMAL, 1.0f, 0);
 
-            pgAssert(mot.getMotionIndex() == 0);
-            pgAssert(mot.getPlayMode() == pgMot::PLAY_NORMAL);
-            pgAssert(isEqual(mot.getPlaySpeed(), 1.0f));
-            pgAssert(mot.getInterpFrame() == 0);
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
+            ckAssert(mot.getMotionIndex() == 0);
+            ckAssert(mot.getPlayMode() == ckMot::PLAY_NORMAL);
+            ckAssert(isEqual(mot.getPlaySpeed(), 1.0f));
+            ckAssert(mot.getInterpFrame() == 0);
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
 
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(1.0f, 2.0f, 3.0f)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(10.0f, 20.0f, 30.0f)));
-
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 1.0f));
-
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(11.0f, 22.0f, 33.0f)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(21.0f, 41.0f, 61.0f)));
-
-            mot.update(&mdl);
-            mot.update(&mdl);
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 4.0f));
-
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(41.0f, 52.0f, 63.0f).rotateX_s32(30)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(51.0f, 71.0f, 91.0f).rotateY_s32(30)));
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(1.0f, 2.0f, 3.0f)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(10.0f, 20.0f, 30.0f)));
 
             mot.update(&mdl);
 
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 5.0f));
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 1.0f));
 
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(51.0f, 62.0f, 73.0f).rotateX_s32(40)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(61.0f, 81.0f, 101.0f).rotateY_s32(40)));
-
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 6.0f));
-
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(26.0f, 37.0f, 48.0f).rotateX_s32(50)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(36.0f, 56.0f, 76.0f).rotateY_s32(50)));
-
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 7.0f));
-
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(1.0f, 12.0f, 23.0f).rotateX_s32(60)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(11.0f, 31.0f, 51.0f).rotateY_s32(60)));
-
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 8.0f));
-
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(1.0f, 12.0f, 23.0f).rotateX_s32(60)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(11.0f, 31.0f, 51.0f).rotateY_s32(60)));
-
-            mot.update(&mdl);
-
-            pgAssert(!mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
-
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(1.0f, 12.0f, 23.0f).rotateX_s32(60)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(11.0f, 31.0f, 51.0f).rotateY_s32(60)));
-
-            mot.update(&mdl);
-
-            pgAssert(!mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
-
-            mot.play(&mdl, 1, pgMot::PLAY_LOOP, 0.5f, 2);
-
-            pgAssert(mot.getMotionIndex() == 1);
-            pgAssert(mot.getPlayMode() == pgMot::PLAY_LOOP);
-            pgAssert(isEqual(mot.getPlaySpeed(), 0.5f));
-            pgAssert(mot.getInterpFrame() == 2);
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
-
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.5f));
-
-            mot.update(&mdl);
-
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 1.0f));
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(11.0f, 22.0f, 33.0f)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(21.0f, 41.0f, 61.0f)));
 
             mot.update(&mdl);
             mot.update(&mdl);
+            mot.update(&mdl);
 
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 2.0f));
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 4.0f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(41.0f, 52.0f, 63.0f).rotateX_s32(30)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(51.0f, 71.0f, 91.0f).rotateY_s32(30)));
 
             mot.update(&mdl);
 
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.5f));
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 5.0f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(51.0f, 62.0f, 73.0f).rotateX_s32(40)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(61.0f, 81.0f, 101.0f).rotateY_s32(40)));
+
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 6.0f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(26.0f, 37.0f, 48.0f).rotateX_s32(50)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(36.0f, 56.0f, 76.0f).rotateY_s32(50)));
+
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 7.0f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(1.0f, 12.0f, 23.0f).rotateX_s32(60)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(11.0f, 31.0f, 51.0f).rotateY_s32(60)));
+
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 8.0f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(1.0f, 12.0f, 23.0f).rotateX_s32(60)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(11.0f, 31.0f, 51.0f).rotateY_s32(60)));
+
+            mot.update(&mdl);
+
+            ckAssert(!mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(1.0f, 12.0f, 23.0f).rotateX_s32(60)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(11.0f, 31.0f, 51.0f).rotateY_s32(60)));
+
+            mot.update(&mdl);
+
+            ckAssert(!mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
+
+            mot.play(&mdl, 1, ckMot::PLAY_LOOP, 0.5f, 2);
+
+            ckAssert(mot.getMotionIndex() == 1);
+            ckAssert(mot.getPlayMode() == ckMot::PLAY_LOOP);
+            ckAssert(isEqual(mot.getPlaySpeed(), 0.5f));
+            ckAssert(mot.getInterpFrame() == 2);
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
+
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.5f));
+
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 1.0f));
 
             mot.update(&mdl);
             mot.update(&mdl);
 
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 1.5f));
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 2.0f));
 
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(-149.0f, -248.0f, -347.0f).rotateX_s32(-50)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(-150.0f, -240.0f, -330.0f).rotateY_s32(-50)));
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.5f));
+
+            mot.update(&mdl);
+            mot.update(&mdl);
+
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 1.5f));
+
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(-149.0f, -248.0f, -347.0f).rotateX_s32(-50)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(-150.0f, -240.0f, -330.0f).rotateY_s32(-50)));
 
             mot.stop();
-            pgAssert(!mot.isPlaying());
+            ckAssert(!mot.isPlaying());
 
-            mot.play(&mdl, 1, pgMot::PLAY_KEEP, 1.0f, 3);
+            mot.play(&mdl, 1, ckMot::PLAY_KEEP, 1.0f, 3);
 
-            pgAssert(mot.getMotionIndex() == 1);
-            pgAssert(mot.getPlayMode() == pgMot::PLAY_KEEP);
-            pgAssert(isEqual(mot.getPlaySpeed(), 1.0f));
-            pgAssert(mot.getInterpFrame() == 3);
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
+            ckAssert(mot.getMotionIndex() == 1);
+            ckAssert(mot.getPlayMode() == ckMot::PLAY_KEEP);
+            ckAssert(isEqual(mot.getPlaySpeed(), 1.0f));
+            ckAssert(mot.getInterpFrame() == 3);
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 0.0f));
 
             for (s32 i = 0; i < 16; i++)
             {
                 mot.update(&mdl);
             }
 
-            pgAssert(mot.isPlaying());
-            pgAssert(isEqual(mot.getNextUpdateFrame(), 2.0f));
+            ckAssert(mot.isPlaying());
+            ckAssert(isEqual(mot.getNextUpdateFrame(), 2.0f));
 
-            pgAssert(isEqual(mdl.getNodeDraw(0)->local(), pgMat::UNIT.translate(-199.0f, -298.0f, -397.0f).rotateX_s32(-10)));
-            pgAssert(isEqual(mdl.getNodeDraw(1)->local(), pgMat::UNIT.translate(-200.0f, -290.0f, -380.0f).rotateY_s32(-10)));
+            ckAssert(isEqual(mdl.getNodeDraw(0)->local(), ckMat::UNIT.translate(-199.0f, -298.0f, -397.0f).rotateX_s32(-10)));
+            ckAssert(isEqual(mdl.getNodeDraw(1)->local(), ckMat::UNIT.translate(-200.0f, -290.0f, -380.0f).rotateY_s32(-10)));
         }
 
-        pgAssertThrow(mot.play(NULL, 0, pgMot::PLAY_NORMAL, 1.0f, 0), pgMot::ExceptionInvalidArgument);
-        pgAssertThrow(mot.play(reinterpret_cast<pgMdl*>(123), 2, pgMot::PLAY_NORMAL, 0.1f, 0), pgMot::ExceptionInvalidArgument);
-        pgAssertThrow(mot.play(reinterpret_cast<pgMdl*>(123), 2, pgMot::PLAY_NORMAL, -0.1f, 0), pgMot::ExceptionInvalidArgument);
-        pgAssertThrow(mot.update(NULL), pgMot::ExceptionInvalidArgument);
-        pgAssertThrow(mot.init(NULL, pgID::genID()), pgMot::ExceptionInvalidArgument);
-        pgAssertThrow(mot.init(reinterpret_cast<pgMdl*>(123), pgID::ZERO), pgMot::ExceptionInvalidArgument);
+        ckAssertThrow(mot.play(NULL, 0, ckMot::PLAY_NORMAL, 1.0f, 0), ckMot::ExceptionInvalidArgument);
+        ckAssertThrow(mot.play(reinterpret_cast<ckMdl*>(123), 2, ckMot::PLAY_NORMAL, 0.1f, 0), ckMot::ExceptionInvalidArgument);
+        ckAssertThrow(mot.play(reinterpret_cast<ckMdl*>(123), 2, ckMot::PLAY_NORMAL, -0.1f, 0), ckMot::ExceptionInvalidArgument);
+        ckAssertThrow(mot.update(NULL), ckMot::ExceptionInvalidArgument);
+        ckAssertThrow(mot.init(NULL, ckID::genID()), ckMot::ExceptionInvalidArgument);
+        ckAssertThrow(mot.init(reinterpret_cast<ckMdl*>(123), ckID::ZERO), ckMot::ExceptionInvalidArgument);
 
-        pgResMgr::removeResource(pgID_("TEST_MODEL_DATA"));
-        pgResMgr::removeResource(pgID_("TEST_MOTION_DATA"));
+        ckResMgr::removeResource(ckID_("TEST_MODEL_DATA"));
+        ckResMgr::removeResource(ckID_("TEST_MOTION_DATA"));
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

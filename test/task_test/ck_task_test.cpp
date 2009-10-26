@@ -38,16 +38,16 @@ static u8 s_update_flag;
 static u8 s_message_flag;
 
 
-class TaskTestClass : public pgTask
+class TaskTestClass : public ckTask
 {
 public:
-    TaskTestClass(pgTask::TaskOrder order, u8 no) : pgTask(order)
+    TaskTestClass(ckTask::TaskOrder order, u8 no) : ckTask(order)
     {
         /*
-            pgTask(TaskOrder order)
+            ckTask(TaskOrder order)
         */
 
-        pgAssert(no < 8);
+        ckAssert(no < 8);
 
         m_no_flag = 1 << no;
         m_update_type = 0;
@@ -55,10 +55,10 @@ public:
         s_ctor_flag |= m_no_flag;
     }
 
-    TaskTestClass(pgTask* parent, u8 no) : pgTask(parent)
+    TaskTestClass(ckTask* parent, u8 no) : ckTask(parent)
     {
         /*
-            pgTask(pgTask* parent)
+            ckTask(ckTask* parent)
         */
 
         m_no_flag = 1 << no;
@@ -70,7 +70,7 @@ public:
     virtual ~TaskTestClass()
     {
         /*
-            virtual ~pgTask()
+            virtual ~ckTask()
         */
 
         s_dtor_flag |= m_no_flag;
@@ -87,35 +87,35 @@ public:
             virtual void onUpdate()
         */
 
-        pgAssert(m_no_flag > s_update_flag);
+        ckAssert(m_no_flag > s_update_flag);
 
         s_update_flag |= m_no_flag;
 
         switch (m_update_type)
         {
         case 0:
-            pgSysMgr::sleepUsec(10000);
+            ckSysMgr::sleepUsec(10000);
             break;
 
         case 1:
-            pgDeleteTask(this);
+            ckDeleteTask(this);
             return;
 
         case 2:
-            pgTaskMgr::deleteOrder(pgTask::ORDER_MINUS_3, pgTask::ORDER_PLUS_3);
+            ckTaskMgr::deleteOrder(ckTask::ORDER_MINUS_3, ckTask::ORDER_PLUS_3);
             break;
         }
     }
 
-    virtual void onMessage(pgID msg_id, pgMsg<4>& msg)
+    virtual void onMessage(ckID msg_id, ckMsg<4>& msg)
     {
         /*
-            virtual void onMessage(pgID msg_id, pgMsg<4>& msg)
+            virtual void onMessage(ckID msg_id, ckMsg<4>& msg)
         */
 
-        pgAssert(msg_id == pgID_("TEST"));
-        pgAssert(msg.getParam<u16>(0) == 123 && msg.getParam<u16>(1) == 456 && msg.getParam<u16>(2) == 789 && msg.getParam<s8>(3) == -10);
-        pgAssert(m_no_flag > s_message_flag);
+        ckAssert(msg_id == ckID_("TEST"));
+        ckAssert(msg.getParam<u16>(0) == 123 && msg.getParam<u16>(1) == 456 && msg.getParam<u16>(2) == 789 && msg.getParam<s8>(3) == -10);
+        ckAssert(m_no_flag > s_message_flag);
 
         s_message_flag |= m_no_flag;
     }
@@ -126,21 +126,21 @@ private:
 };
 
 
-void pgTaskTest()
+void ckTaskTest()
 {
     /*
         bool hasOrder() const
         TaskOrder getOrder() const
         bool hasParent() const
-        pgTask* getParentN() const
-        pgTask* getPrevAllN() const
-        pgTask* getNextAllN() const
-        pgTask* getPrevSiblingN() const
-        pgTask* getNextSiblingN() const
-        pgTask* getLastDescendant() const
+        ckTask* getParentN() const
+        ckTask* getPrevAllN() const
+        ckTask* getNextAllN() const
+        ckTask* getPrevSiblingN() const
+        ckTask* getNextSiblingN() const
+        ckTask* getLastDescendant() const
         bool hasChild() const
-        pgTask* getFirstChildN() const
-        pgTask* getLastChildN() const
+        ckTask* getFirstChildN() const
+        ckTask* getLastChildN() const
         const char* getName() const
         u64 getExecuteUsecTime() const
         bool isActive() const
@@ -152,100 +152,100 @@ void pgTaskTest()
         s_update_flag = 0x00;
         s_message_flag = 0x00;
 
-        pgTaskMgr::createAfterSys(60);
+        ckTaskMgr::createAfterSys(60);
 
-        pgTask* task1 = pgNewTask(TaskTestClass)(pgTask::ORDER_MINUS_4, 0);
-        pgTask* task2 = pgNewTask(TaskTestClass)(pgTask::ORDER_MINUS_3, 1);
-        pgTask* task3 = pgNewTask(TaskTestClass)(task2, 2);
-        pgTask* task4 = pgNewTask(TaskTestClass)(task3, 3);
-        pgTask* task5 = pgNewTask(TaskTestClass)(task3, 4);
-        pgTask* task6 = pgNewTask(TaskTestClass)(task2, 5);
-        pgTask* task7 = pgNewTask(TaskTestClass)(task6, 6);
-        pgTask* task8 = pgNewTask(TaskTestClass)(pgTask::ORDER_MINUS_2, 7);
+        ckTask* task1 = ckNewTask(TaskTestClass)(ckTask::ORDER_MINUS_4, 0);
+        ckTask* task2 = ckNewTask(TaskTestClass)(ckTask::ORDER_MINUS_3, 1);
+        ckTask* task3 = ckNewTask(TaskTestClass)(task2, 2);
+        ckTask* task4 = ckNewTask(TaskTestClass)(task3, 3);
+        ckTask* task5 = ckNewTask(TaskTestClass)(task3, 4);
+        ckTask* task6 = ckNewTask(TaskTestClass)(task2, 5);
+        ckTask* task7 = ckNewTask(TaskTestClass)(task6, 6);
+        ckTask* task8 = ckNewTask(TaskTestClass)(ckTask::ORDER_MINUS_2, 7);
 
-        pgAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0x00 && s_message_flag == 0x00);
+        ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0x00 && s_message_flag == 0x00);
 
-        pgAssert(task1->hasOrder() && task1->getOrder() == pgTask::ORDER_MINUS_4);
-        pgAssert(!task1->hasParent() && !task1->getParentN());
-        pgAssert(!task1->getPrevAllN() && !task1->getNextAllN());
-        pgAssert(!task1->getPrevSiblingN() && !task1->getNextSiblingN());
-        pgAssert(task1->getLastDescendant() == task1);
-        pgAssert(!task1->hasChild() && !task1->getFirstChildN() && !task1->getLastChildN());
-        pgAssert(isEqual(task1->getName(), __FILE__));
-        pgAssert(task1->getExecuteUsecTime() == 0);
-        pgAssert(task1->isActive());
+        ckAssert(task1->hasOrder() && task1->getOrder() == ckTask::ORDER_MINUS_4);
+        ckAssert(!task1->hasParent() && !task1->getParentN());
+        ckAssert(!task1->getPrevAllN() && !task1->getNextAllN());
+        ckAssert(!task1->getPrevSiblingN() && !task1->getNextSiblingN());
+        ckAssert(task1->getLastDescendant() == task1);
+        ckAssert(!task1->hasChild() && !task1->getFirstChildN() && !task1->getLastChildN());
+        ckAssert(isEqual(task1->getName(), __FILE__));
+        ckAssert(task1->getExecuteUsecTime() == 0);
+        ckAssert(task1->isActive());
 
-        pgAssert(task2->hasOrder() && task2->getOrder() == pgTask::ORDER_MINUS_3);
-        pgAssert(!task2->hasParent() && !task2->getParentN());
-        pgAssert(!task2->getPrevAllN() && task2->getNextAllN() == task3);
-        pgAssert(!task2->getPrevSiblingN() && !task2->getNextSiblingN());
-        pgAssert(task2->getLastDescendant() == task7);
-        pgAssert(task2->hasChild() && task2->getFirstChildN() == task3 && task2->getLastChildN() == task6);
-        pgAssert(isEqual(task2->getName(), __FILE__));
-        pgAssert(task2->getExecuteUsecTime() == 0);
-        pgAssert(task2->isActive());
+        ckAssert(task2->hasOrder() && task2->getOrder() == ckTask::ORDER_MINUS_3);
+        ckAssert(!task2->hasParent() && !task2->getParentN());
+        ckAssert(!task2->getPrevAllN() && task2->getNextAllN() == task3);
+        ckAssert(!task2->getPrevSiblingN() && !task2->getNextSiblingN());
+        ckAssert(task2->getLastDescendant() == task7);
+        ckAssert(task2->hasChild() && task2->getFirstChildN() == task3 && task2->getLastChildN() == task6);
+        ckAssert(isEqual(task2->getName(), __FILE__));
+        ckAssert(task2->getExecuteUsecTime() == 0);
+        ckAssert(task2->isActive());
 
-        pgAssert(!task3->hasOrder());
-        pgAssertThrow(task3->getOrder(), pgTask::ExceptionInvalidCall);
-        pgAssert(task3->hasParent() && task3->getParentN() == task2);
-        pgAssert(task3->getPrevAllN() == task2 && task3->getNextAllN() == task4);
-        pgAssert(!task3->getPrevSiblingN() && task3->getNextSiblingN() == task6);
-        pgAssert(task3->getLastDescendant() == task5);
-        pgAssert(task3->hasChild() && task3->getFirstChildN() == task4 && task3->getLastChildN() == task5);
-        pgAssert(isEqual(task3->getName(), __FILE__));
-        pgAssert(task3->getExecuteUsecTime() == 0);
-        pgAssert(task3->isActive());
+        ckAssert(!task3->hasOrder());
+        ckAssertThrow(task3->getOrder(), ckTask::ExceptionInvalidCall);
+        ckAssert(task3->hasParent() && task3->getParentN() == task2);
+        ckAssert(task3->getPrevAllN() == task2 && task3->getNextAllN() == task4);
+        ckAssert(!task3->getPrevSiblingN() && task3->getNextSiblingN() == task6);
+        ckAssert(task3->getLastDescendant() == task5);
+        ckAssert(task3->hasChild() && task3->getFirstChildN() == task4 && task3->getLastChildN() == task5);
+        ckAssert(isEqual(task3->getName(), __FILE__));
+        ckAssert(task3->getExecuteUsecTime() == 0);
+        ckAssert(task3->isActive());
 
-        pgAssert(!task4->hasOrder());
-        pgAssertThrow(task4->getOrder(), pgTask::ExceptionInvalidCall);
-        pgAssert(task4->hasParent() && task4->getParentN() == task3);
-        pgAssert(task4->getPrevAllN() == task3 && task4->getNextAllN() == task5);
-        pgAssert(!task4->getPrevSiblingN() && task4->getNextSiblingN() == task5);
-        pgAssert(task4->getLastDescendant() == task4);
-        pgAssert(!task4->hasChild() && !task4->getFirstChildN() && !task4->getLastChildN());
-        pgAssert(isEqual(task4->getName(), __FILE__));
-        pgAssert(task4->getExecuteUsecTime() == 0);
-        pgAssert(task4->isActive());
+        ckAssert(!task4->hasOrder());
+        ckAssertThrow(task4->getOrder(), ckTask::ExceptionInvalidCall);
+        ckAssert(task4->hasParent() && task4->getParentN() == task3);
+        ckAssert(task4->getPrevAllN() == task3 && task4->getNextAllN() == task5);
+        ckAssert(!task4->getPrevSiblingN() && task4->getNextSiblingN() == task5);
+        ckAssert(task4->getLastDescendant() == task4);
+        ckAssert(!task4->hasChild() && !task4->getFirstChildN() && !task4->getLastChildN());
+        ckAssert(isEqual(task4->getName(), __FILE__));
+        ckAssert(task4->getExecuteUsecTime() == 0);
+        ckAssert(task4->isActive());
 
-        pgAssert(!task7->hasOrder());
-        pgAssertThrow(task7->getOrder(), pgTask::ExceptionInvalidCall);
-        pgAssert(task7->hasParent() && task7->getParentN() == task6);
-        pgAssert(task7->getPrevAllN() == task6 && !task7->getNextAllN());
-        pgAssert(!task7->getPrevSiblingN() && !task7->getNextSiblingN());
-        pgAssert(task7->getLastDescendant() == task7);
-        pgAssert(!task7->hasChild() && !task7->getFirstChildN() && !task7->getLastChildN());
-        pgAssert(isEqual(task7->getName(), __FILE__));
-        pgAssert(task7->getExecuteUsecTime() == 0);
-        pgAssert(task7->isActive());
+        ckAssert(!task7->hasOrder());
+        ckAssertThrow(task7->getOrder(), ckTask::ExceptionInvalidCall);
+        ckAssert(task7->hasParent() && task7->getParentN() == task6);
+        ckAssert(task7->getPrevAllN() == task6 && !task7->getNextAllN());
+        ckAssert(!task7->getPrevSiblingN() && !task7->getNextSiblingN());
+        ckAssert(task7->getLastDescendant() == task7);
+        ckAssert(!task7->hasChild() && !task7->getFirstChildN() && !task7->getLastChildN());
+        ckAssert(isEqual(task7->getName(), __FILE__));
+        ckAssert(task7->getExecuteUsecTime() == 0);
+        ckAssert(task7->isActive());
 
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xff && s_message_flag == 0x00);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xff && s_message_flag == 0x00);
 
-        pgAssert(task1->getExecuteUsecTime() > 0);
-        pgAssert(task2->getExecuteUsecTime() > 0);
-        pgAssert(task3->getExecuteUsecTime() > 0);
-        pgAssert(task4->getExecuteUsecTime() > 0);
-        pgAssert(task5->getExecuteUsecTime() > 0);
-        pgAssert(task6->getExecuteUsecTime() > 0);
-        pgAssert(task7->getExecuteUsecTime() > 0);
-        pgAssert(task8->getExecuteUsecTime() > 0);
+        ckAssert(task1->getExecuteUsecTime() > 0);
+        ckAssert(task2->getExecuteUsecTime() > 0);
+        ckAssert(task3->getExecuteUsecTime() > 0);
+        ckAssert(task4->getExecuteUsecTime() > 0);
+        ckAssert(task5->getExecuteUsecTime() > 0);
+        ckAssert(task6->getExecuteUsecTime() > 0);
+        ckAssert(task7->getExecuteUsecTime() > 0);
+        ckAssert(task8->getExecuteUsecTime() > 0);
 
         task3->setActive(false);
-        pgAssert(!task3->isActive());
+        ckAssert(!task3->isActive());
 
         s_update_flag = 0;
 
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xe3 && s_message_flag == 0x00);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xe3 && s_message_flag == 0x00);
 
-        pgMsg<4> msg;
+        ckMsg<4> msg;
         msg.setParam<u16>(0, 123);
         msg.setParam<u16>(1, 456);
         msg.setParam<u16>(2, 789);
         msg.setParam<s8>(3, -10);
 
-        pgTaskMgr::sendMessage(pgID_("TEST"), msg);
-        pgAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xe3 && s_message_flag == 0xff);
+        ckTaskMgr::sendMessage(ckID_("TEST"), msg);
+        ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xe3 && s_message_flag == 0xff);
 
         task3->setActive(true);
         dynamic_cast<TaskTestClass*>(task3)->setUpdateType(1);
@@ -253,9 +253,9 @@ void pgTaskTest()
 
         s_update_flag = 0;
 
-        pgTaskMgr::updateForSystem();
-        pgAssert(s_ctor_flag == 0xff && s_dtor_flag == 0xfe && s_update_flag == 0x27 && s_message_flag == 0xff);
+        ckTaskMgr::updateForSystem();
+        ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0xfe && s_update_flag == 0x27 && s_message_flag == 0xff);
 
-        pgTaskMgr::destroyFirst();
+        ckTaskMgr::destroyFirst();
     }
 }

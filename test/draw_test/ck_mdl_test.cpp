@@ -32,72 +32,72 @@
 #include "test.h"
 
 
-void pgMdlTest()
+void ckMdlTest()
 {
     /*
-        pgMdl()
-        ~pgMdl()
-        void init(pgID mdl_data_id, pgID scr_id)
-        void init(pgID mdl_data_id, pgDraw* parent)
-        const pgMdlData* getModelData() const
-        pgID getTextureID() const
-        void setTextureID(pgID tex_id)
-        pgID getLightSetID() const
-        void setLightSetID(pgID lts_id)
-        pgDraw* getRootDraw()
-        pgDraw* getNodeDraw(u16 node_index)
+        ckMdl()
+        ~ckMdl()
+        void init(ckID mdl_data_id, ckID scr_id)
+        void init(ckID mdl_data_id, ckDraw* parent)
+        const ckMdlData* getModelData() const
+        ckID getTextureID() const
+        void setTextureID(ckID tex_id)
+        ckID getLightSetID() const
+        void setLightSetID(ckID lts_id)
+        ckDraw* getRootDraw()
+        ckDraw* getNodeDraw(u16 node_index)
     */
     {
-        pgUtil::import3DS(TEST_DATA_DIR "valid.3ds", pgID_("rgb.png"), false, false, 1.0f);
+        ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID_("rgb.png"), false, false, 1.0f);
 
-        pgDrawMgr::createAfterRes();
-        pgResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
+        ckDrawMgr::createAfterRes();
+        ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
 
-        pgMdl mdl;
+        ckMdl mdl;
 
-        pgAssertThrow(mdl.getModelData(), pgMdl::ExceptionNotInitialized);
-        pgAssertThrow(mdl.getTextureID(), pgMdl::ExceptionNotInitialized);
-        pgAssertThrow(mdl.setTextureID(pgID::ZERO), pgMdl::ExceptionNotInitialized);
-        pgAssertThrow(mdl.getLightSetID(), pgMdl::ExceptionNotInitialized);
-        pgAssertThrow(mdl.setLightSetID(pgID::ZERO), pgMdl::ExceptionNotInitialized);
-        pgAssertThrow(mdl.getRootDraw(), pgMdl::ExceptionNotInitialized);
-        pgAssertThrow(mdl.getNodeDraw(0), pgMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.getModelData(), ckMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.getTextureID(), ckMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.setTextureID(ckID::ZERO), ckMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.getLightSetID(), ckMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.setLightSetID(ckID::ZERO), ckMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.getRootDraw(), ckMdl::ExceptionNotInitialized);
+        ckAssertThrow(mdl.getNodeDraw(0), ckMdl::ExceptionNotInitialized);
 
-        mdl.init(pgID_("valid.3ds"), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        mdl.init(pgID_("valid.3ds"), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+        mdl.init(ckID_("valid.3ds"), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        mdl.init(ckID_("valid.3ds"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-        pgAssert(mdl.getModelData()->getNodeNum() == 3);
-        pgAssert(mdl.getTextureID() == pgID_("rgb.png"));
-        pgAssert(mdl.getLightSetID() == pgID::ZERO);
-        pgAssert(mdl.getRootDraw()->getType() == pgDraw::TYPE_NODE);
+        ckAssert(mdl.getModelData()->getNodeNum() == 3);
+        ckAssert(mdl.getTextureID() == ckID_("rgb.png"));
+        ckAssert(mdl.getLightSetID() == ckID::ZERO);
+        ckAssert(mdl.getRootDraw()->getType() == ckDraw::TYPE_NODE);
 
-        pgAssert(mdl.getNodeDraw(0)->getType() == pgDraw::TYPE_PRIM);
-        pgAssert(mdl.getNodeDraw(1)->getType() == pgDraw::TYPE_PRIM);
-        pgAssert(mdl.getNodeDraw(2)->getType() == pgDraw::TYPE_PRIM);
+        ckAssert(mdl.getNodeDraw(0)->getType() == ckDraw::TYPE_PRIM);
+        ckAssert(mdl.getNodeDraw(1)->getType() == ckDraw::TYPE_PRIM);
+        ckAssert(mdl.getNodeDraw(2)->getType() == ckDraw::TYPE_PRIM);
 
-        pgAssert(mdl.getNodeDraw(0)->getBlendMode() == pgDraw::BLEND_OFF);
-        pgAssert(mdl.getNodeDraw(1)->getBlendMode() == pgDraw::BLEND_HALF);
-        pgAssert(mdl.getNodeDraw(2)->getBlendMode() == pgDraw::BLEND_ADD);
+        ckAssert(mdl.getNodeDraw(0)->getBlendMode() == ckDraw::BLEND_OFF);
+        ckAssert(mdl.getNodeDraw(1)->getBlendMode() == ckDraw::BLEND_HALF);
+        ckAssert(mdl.getNodeDraw(2)->getBlendMode() == ckDraw::BLEND_ADD);
 
-        pgAssert(mdl.getRootDraw()->getTextureID() == pgID_("rgb.png"));
-        pgAssert(mdl.getNodeDraw(0)->getTextureID() == pgID_("rgb.png"));
-        pgAssert(mdl.getNodeDraw(1)->getTextureID() == pgID_("rgb.png"));
-        pgAssert(mdl.getNodeDraw(2)->getTextureID() == pgID_("rgb.png"));
+        ckAssert(mdl.getRootDraw()->getTextureID() == ckID_("rgb.png"));
+        ckAssert(mdl.getNodeDraw(0)->getTextureID() == ckID_("rgb.png"));
+        ckAssert(mdl.getNodeDraw(1)->getTextureID() == ckID_("rgb.png"));
+        ckAssert(mdl.getNodeDraw(2)->getTextureID() == ckID_("rgb.png"));
 
-        mdl.setTextureID(pgID::ZERO);
-        pgAssert(mdl.getRootDraw()->getTextureID() == pgID::ZERO);
-        pgAssert(mdl.getNodeDraw(0)->getTextureID() == pgID::ZERO);
-        pgAssert(mdl.getNodeDraw(1)->getTextureID() == pgID::ZERO);
-        pgAssert(mdl.getNodeDraw(2)->getTextureID() == pgID::ZERO);
+        mdl.setTextureID(ckID::ZERO);
+        ckAssert(mdl.getRootDraw()->getTextureID() == ckID::ZERO);
+        ckAssert(mdl.getNodeDraw(0)->getTextureID() == ckID::ZERO);
+        ckAssert(mdl.getNodeDraw(1)->getTextureID() == ckID::ZERO);
+        ckAssert(mdl.getNodeDraw(2)->getTextureID() == ckID::ZERO);
 
-        mdl.setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(mdl.getLightSetID() == pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+        mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(mdl.getLightSetID() == ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-        pgAssertThrow(mdl.getNodeDraw(3), pgMdl::ExceptionInvalidArgument);
+        ckAssertThrow(mdl.getNodeDraw(3), ckMdl::ExceptionInvalidArgument);
 
-        pgResMgr::removeResource(pgID_("rgb.png"));
-        pgDrawMgr::destroyBeforeRes();
+        ckResMgr::removeResource(ckID_("rgb.png"));
+        ckDrawMgr::destroyBeforeRes();
 
-        pgResMgr::removeResource(pgID_("valid.3ds"));
+        ckResMgr::removeResource(ckID_("valid.3ds"));
     }
 }

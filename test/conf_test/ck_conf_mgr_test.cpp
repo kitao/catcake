@@ -32,7 +32,7 @@
 #include "test.h"
 
 
-void pgConfMgrTest()
+void ckConfMgrTest()
 {
     /*
         static bool isCreated()
@@ -40,77 +40,77 @@ void pgConfMgrTest()
         static void destroyBeforeRes()
     */
     {
-        pgAssert(!pgConfMgr::isCreated());
+        ckAssert(!ckConfMgr::isCreated());
 
-        pgConfMgr::createAfterRes();
-        pgConfMgr::createAfterRes();
+        ckConfMgr::createAfterRes();
+        ckConfMgr::createAfterRes();
 
-        pgAssert(pgSysMgr::isCreated());
+        ckAssert(ckSysMgr::isCreated());
 
-        pgConfMgr::destroyBeforeRes();
-        pgConfMgr::destroyBeforeRes();
+        ckConfMgr::destroyBeforeRes();
+        ckConfMgr::destroyBeforeRes();
 
-        pgAssert(!pgConfMgr::isCreated());
+        ckAssert(!ckConfMgr::isCreated());
     }
 
     /*
-        static bool hasConfig(pgID id)
-        static pgConf* getConfig(pgID id)
-        static pgConf* newConfig(pgID id, const void* data, u32 data_size)
-        static void deleteConfig(pgID id)
-        static pgConf* getFirstConfigN()
-        static pgConf* getLastConfigN()
+        static bool hasConfig(ckID id)
+        static ckConf* getConfig(ckID id)
+        static ckConf* newConfig(ckID id, const void* data, u32 data_size)
+        static void deleteConfig(ckID id)
+        static ckConf* getFirstConfigN()
+        static ckConf* getLastConfigN()
     */
     {
-        pgAssertThrow(pgConfMgr::hasConfig(pgID::ZERO), pgConfMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgConfMgr::getConfig(pgID::ZERO), pgConfMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgConfMgr::newConfig(pgID::ZERO, NULL, 0), pgConfMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgConfMgr::deleteConfig(pgID::ZERO), pgConfMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgConfMgr::getFirstConfigN(), pgConfMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgConfMgr::getLastConfigN(), pgConfMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckConfMgr::hasConfig(ckID::ZERO), ckConfMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckConfMgr::getConfig(ckID::ZERO), ckConfMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckConfMgr::newConfig(ckID::ZERO, NULL, 0), ckConfMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckConfMgr::deleteConfig(ckID::ZERO), ckConfMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckConfMgr::getFirstConfigN(), ckConfMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckConfMgr::getLastConfigN(), ckConfMgr::ExceptionNotInitialized);
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgConfMgr::createAfterRes();
+        ckConfMgr::createAfterRes();
 
-        pgAssert(!pgConfMgr::getFirstConfigN() && !pgConfMgr::getLastConfigN());
+        ckAssert(!ckConfMgr::getFirstConfigN() && !ckConfMgr::getLastConfigN());
 
-        pgID id1 = pgID::genID();
-        pgConf* conf1 = pgConfMgr::newConfig(id1, "dummy", 5);
-        pgAssert(pgConfMgr::hasConfig(id1));
-        pgAssert(pgConfMgr::getConfig(id1) == conf1);
-        pgAssert(pgConfMgr::getFirstConfigN() == conf1 && pgConfMgr::getLastConfigN() == conf1);
+        ckID id1 = ckID::genID();
+        ckConf* conf1 = ckConfMgr::newConfig(id1, "dummy", 5);
+        ckAssert(ckConfMgr::hasConfig(id1));
+        ckAssert(ckConfMgr::getConfig(id1) == conf1);
+        ckAssert(ckConfMgr::getFirstConfigN() == conf1 && ckConfMgr::getLastConfigN() == conf1);
 
-        pgAssertThrow(pgConfMgr::newConfig(id1, "dummy", 5), pgConfMgr::ExceptionSameIDExists);
+        ckAssertThrow(ckConfMgr::newConfig(id1, "dummy", 5), ckConfMgr::ExceptionSameIDExists);
 
-        pgID id2 = pgID::genID();
-        pgConf* conf2 = pgConfMgr::newConfig(id2, "dummy", 5);
-        pgAssert(pgConfMgr::hasConfig(id2));
-        pgAssert(pgConfMgr::getConfig(id2) == conf2);
-        pgAssert(pgConfMgr::getFirstConfigN() == conf1 && pgConfMgr::getLastConfigN() == conf2);
+        ckID id2 = ckID::genID();
+        ckConf* conf2 = ckConfMgr::newConfig(id2, "dummy", 5);
+        ckAssert(ckConfMgr::hasConfig(id2));
+        ckAssert(ckConfMgr::getConfig(id2) == conf2);
+        ckAssert(ckConfMgr::getFirstConfigN() == conf1 && ckConfMgr::getLastConfigN() == conf2);
 
-        pgConfMgr::deleteConfig(id1);
-        pgAssert(!pgConfMgr::hasConfig(id1));
-        pgAssert(pgConfMgr::getFirstConfigN() == conf2 && pgConfMgr::getLastConfigN() == conf2);
+        ckConfMgr::deleteConfig(id1);
+        ckAssert(!ckConfMgr::hasConfig(id1));
+        ckAssert(ckConfMgr::getFirstConfigN() == conf2 && ckConfMgr::getLastConfigN() == conf2);
 
-        pgAssertThrow(pgConfMgr::getConfig(id1), pgConfMgr::ExceptionNotFound);
+        ckAssertThrow(ckConfMgr::getConfig(id1), ckConfMgr::ExceptionNotFound);
 
-        pgConfMgr::deleteConfig(id2);
-        pgAssert(!pgConfMgr::hasConfig(id2));
-        pgAssert(!pgConfMgr::getFirstConfigN() && !pgConfMgr::getLastConfigN());
+        ckConfMgr::deleteConfig(id2);
+        ckAssert(!ckConfMgr::hasConfig(id2));
+        ckAssert(!ckConfMgr::getFirstConfigN() && !ckConfMgr::getLastConfigN());
 
-        pgConfMgr::newConfig(id1, "dummy", 5);
-        pgConfMgr::newConfig(id2, "dummy", 5);
+        ckConfMgr::newConfig(id1, "dummy", 5);
+        ckConfMgr::newConfig(id2, "dummy", 5);
 
-        pgAssertThrow(pgConfMgr::hasConfig(pgID::ZERO), pgConfMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgConfMgr::getConfig(pgID::ZERO), pgConfMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgConfMgr::newConfig(pgID::ZERO, "dummy", 5), pgConfMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgConfMgr::newConfig(pgID::genID(), NULL, 5), pgConfMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgConfMgr::newConfig(pgID::genID(), "dummy", 0), pgConfMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgConfMgr::deleteConfig(pgID::ZERO), pgConfMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckConfMgr::hasConfig(ckID::ZERO), ckConfMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckConfMgr::getConfig(ckID::ZERO), ckConfMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckConfMgr::newConfig(ckID::ZERO, "dummy", 5), ckConfMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckConfMgr::newConfig(ckID::genID(), NULL, 5), ckConfMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckConfMgr::newConfig(ckID::genID(), "dummy", 0), ckConfMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckConfMgr::deleteConfig(ckID::ZERO), ckConfMgr::ExceptionInvalidArgument);
 
-        pgConfMgr::destroyBeforeRes();
+        ckConfMgr::destroyBeforeRes();
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
     }
 }

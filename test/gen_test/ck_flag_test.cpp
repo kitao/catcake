@@ -40,31 +40,31 @@ enum TestFlag
 };
 
 
-void pgFlagTest()
+void ckFlagTest()
 {
     /*
-        pgFlag()
-        bool operator==(pgFlag<D, T> flag) const
-        bool operator!=(pgFlag<D, T> flag) const
+        ckFlag()
+        bool operator==(ckFlag<D, T> flag) const
+        bool operator!=(ckFlag<D, T> flag) const
         D getValue() const
     */
     {
-        pgFlag<u8, TestFlag> flag1;
-        pgAssert(flag1.getValue() == 0);
+        ckFlag<u8, TestFlag> flag1;
+        ckAssert(flag1.getValue() == 0);
 
-        pgFlag<u8, TestFlag> flag2;
+        ckFlag<u8, TestFlag> flag2;
 
         flag2.setOn(FLAG_TEST8);
-        pgAssert(flag2.getValue() != flag1.getValue());
+        ckAssert(flag2.getValue() != flag1.getValue());
 
-        pgFlag<u8, TestFlag> flag3 = flag2;
-        pgAssert(flag3.getValue() == flag2.getValue());
+        ckFlag<u8, TestFlag> flag3 = flag2;
+        ckAssert(flag3.getValue() == flag2.getValue());
 
-        pgAssert(flag2 == flag3);
-        pgAssert(!(flag1 == flag2));
+        ckAssert(flag2 == flag3);
+        ckAssert(!(flag1 == flag2));
 
-        pgAssert(flag1 != flag2);
-        pgAssert(!(flag2 != flag3));
+        ckAssert(flag1 != flag2);
+        ckAssert(!(flag2 != flag3));
     }
 
     /*
@@ -76,31 +76,31 @@ void pgFlagTest()
         void clear()
     */
     {
-        pgFlag<u16, TestFlag> flag;
+        ckFlag<u16, TestFlag> flag;
 
         flag.setOn(FLAG_TEST1);
         flag.setOn(FLAG_TEST5);
-        pgAssert(flag.getValue() == 0x011);
+        ckAssert(flag.getValue() == 0x011);
 
         flag.setOff(FLAG_TEST2);
         flag.setOff(FLAG_TEST5);
-        pgAssert(flag.getValue() == 0x001);
+        ckAssert(flag.getValue() == 0x001);
 
         flag.set(FLAG_TEST2, true);
         flag.set(FLAG_TEST9, true);
-        pgAssert(flag.getValue() == 0x103);
+        ckAssert(flag.getValue() == 0x103);
 
         flag.set(FLAG_TEST1, false);
         flag.set(FLAG_TEST3, false);
-        pgAssert(flag.getValue() == 0x102);
+        ckAssert(flag.getValue() == 0x102);
 
-        pgAssert(flag.isOn(FLAG_TEST2));
-        pgAssert(!flag.isOn(FLAG_TEST1));
+        ckAssert(flag.isOn(FLAG_TEST2));
+        ckAssert(!flag.isOn(FLAG_TEST1));
 
-        pgAssert(flag.isOff(FLAG_TEST3));
-        pgAssert(!flag.isOff(FLAG_TEST9));
+        ckAssert(flag.isOff(FLAG_TEST3));
+        ckAssert(!flag.isOff(FLAG_TEST9));
 
         flag.clear();
-        pgAssert(flag.getValue() == 0);
+        ckAssert(flag.getValue() == 0);
     }
 }

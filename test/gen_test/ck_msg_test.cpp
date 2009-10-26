@@ -32,42 +32,42 @@
 #include "test.h"
 
 
-void pgMsgTest()
+void ckMsgTest()
 {
     /*
-        pgMsg()
+        ckMsg()
         template<class T> T getParam(u8 index)
         template<class T> void setParam(u8 index, T param)
     */
     {
-        pgMsg<2> msg1;
-        pgAssertThrow(msg1.getParam<u8>(0), pgMsg<2>::ExceptionInvalidCall);
-        pgAssertThrow(msg1.getParam<s16>(1), pgMsg<2>::ExceptionInvalidCall);
-        pgAssertThrow(msg1.getParam<r32>(2), pgMsg<2>::ExceptionInvalidArgument);
+        ckMsg<2> msg1;
+        ckAssertThrow(msg1.getParam<u8>(0), ckMsg<2>::ExceptionInvalidCall);
+        ckAssertThrow(msg1.getParam<s16>(1), ckMsg<2>::ExceptionInvalidCall);
+        ckAssertThrow(msg1.getParam<r32>(2), ckMsg<2>::ExceptionInvalidArgument);
 
         msg1.setParam<s8>(0, -123);
-        pgAssert(msg1.getParam<s8>(0) == -123);
-        pgAssertThrow(msg1.getParam<s16>(0), pgMsg<2>::ExceptionInvalidType);
+        ckAssert(msg1.getParam<s8>(0) == -123);
+        ckAssertThrow(msg1.getParam<s16>(0), ckMsg<2>::ExceptionInvalidType);
 
         msg1.setParam<r32>(1, 1.234f);
-        pgAssert(isEqual(msg1.getParam<r32>(1), 1.234f));
-        pgAssertThrow(msg1.getParam<r64>(0), pgMsg<2>::ExceptionInvalidType);
+        ckAssert(isEqual(msg1.getParam<r32>(1), 1.234f));
+        ckAssertThrow(msg1.getParam<r64>(0), ckMsg<2>::ExceptionInvalidType);
 
-        pgMsg<2> msg2 = msg1;
-        pgAssert(msg2.getParam<s8>(0) == -123);
-        pgAssert(isEqual(msg2.getParam<r32>(1), 1.234f));
-        pgAssertThrow(msg2.getParam<u64>(2), pgMsg<2>::ExceptionInvalidArgument);
+        ckMsg<2> msg2 = msg1;
+        ckAssert(msg2.getParam<s8>(0) == -123);
+        ckAssert(isEqual(msg2.getParam<r32>(1), 1.234f));
+        ckAssertThrow(msg2.getParam<u64>(2), ckMsg<2>::ExceptionInvalidArgument);
 
         msg2.setParam<s16>(0, -12345);
-        pgAssert(msg2.getParam<s16>(0) == -12345);
-        pgAssertThrow(msg2.getParam<u8>(0), pgMsg<2>::ExceptionInvalidType);
+        ckAssert(msg2.getParam<s16>(0) == -12345);
+        ckAssertThrow(msg2.getParam<u8>(0), ckMsg<2>::ExceptionInvalidType);
 
         msg2.setParam<u32>(1, 54321);
-        pgAssert(msg2.getParam<u32>(1) == 54321);
-        pgAssertThrow(msg2.getParam<s16>(1), pgMsg<2>::ExceptionInvalidType);
+        ckAssert(msg2.getParam<u32>(1) == 54321);
+        ckAssertThrow(msg2.getParam<s16>(1), ckMsg<2>::ExceptionInvalidType);
 
         msg1 = msg2;
-        pgAssert(msg2.getParam<s16>(0) == -12345);
-        pgAssert(msg2.getParam<u32>(1) == 54321);
+        ckAssert(msg2.getParam<s16>(0) == -12345);
+        ckAssert(msg2.getParam<u32>(1) == 54321);
     }
 }

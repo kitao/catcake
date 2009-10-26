@@ -32,7 +32,7 @@
 #include "test.h"
 
 
-void pgMemMgrTest()
+void ckMemMgrTest()
 {
     /*
         static void memset(void* buf, u8 value, u32 size)
@@ -46,35 +46,35 @@ void pgMemMgrTest()
             buf1[i] = 0;
         }
 
-        pgMemMgr::memset(buf1, 123, 50);
-        pgMemMgr::memset(buf1 + 50, 234, 50);
+        ckMemMgr::memset(buf1, 123, 50);
+        ckMemMgr::memset(buf1 + 50, 234, 50);
 
         for (s32 i = 0; i < 100; i++)
         {
-            pgAssert(buf1[i] == (i < 50) ? 123 : 234);
+            ckAssert(buf1[i] == (i < 50) ? 123 : 234);
         }
 
-        pgAssertThrow(pgMemMgr::memset(NULL, 123, 10), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::memset(buf1, 123, 0), pgMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::memset(NULL, 123, 10), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::memset(buf1, 123, 0), ckMemMgr::ExceptionInvalidArgument);
 
         u8 buf2[100];
 
-        pgMemMgr::memset(buf2, 123, 100);
-        pgMemMgr::memcpy(buf2, buf1 + 50, 50);
+        ckMemMgr::memset(buf2, 123, 100);
+        ckMemMgr::memcpy(buf2, buf1 + 50, 50);
 
         for (s32 i = 0; i < 100; i++)
         {
-            pgAssert(buf2[i] == (i < 50) ? 234 : 123);
+            ckAssert(buf2[i] == (i < 50) ? 234 : 123);
         }
 
-        pgAssertThrow(pgMemMgr::memcpy(NULL, buf2, 10), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::memcpy(buf1, NULL, 10), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::memcpy(buf1, buf2, 0), pgMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::memcpy(NULL, buf2, 10), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::memcpy(buf1, NULL, 10), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::memcpy(buf1, buf2, 0), ckMemMgr::ExceptionInvalidArgument);
     }
 
     /*
         static bool isCreated()
-        static void createFirst(u32 pogolyn_version = POGOLYN_VERSION)
+        static void createFirst(u32 catcake_version = CATCAKE_VERSION)
         static void destroyLast()
         static u32 getCurUsedMemorySize()
         static u32 getMaxUsedMemorySize()
@@ -90,113 +90,113 @@ void pgMemMgrTest()
         static void freeForSystem(void* ptr)
     */
     {
-        pgAssertThrow(pgMemMgr::getCurUsedMemorySize(), pgMemMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgMemMgr::getMaxUsedMemorySize(), pgMemMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgMemMgr::getFirstMemoryBlockN(), pgMemMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgMemMgr::getNextMemoryBlockN(NULL), pgMemMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgMemMgr::mallocForSystem(100, 0, __FILE__), pgMemMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgMemMgr::reallocForSystem(NULL, 0, 0, __FILE__), pgMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::getCurUsedMemorySize(), ckMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::getMaxUsedMemorySize(), ckMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::getFirstMemoryBlockN(), ckMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::getNextMemoryBlockN(NULL), ckMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::mallocForSystem(100, 0, __FILE__), ckMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::reallocForSystem(NULL, 0, 0, __FILE__), ckMemMgr::ExceptionNotInitialized);
 
-        pgMemMgr::freeForSystem(NULL);
+        ckMemMgr::freeForSystem(NULL);
 
-        pgAssert(!pgMemMgr::isCreated());
+        ckAssert(!ckMemMgr::isCreated());
 
-        pgAssertThrow(pgMemMgr::createFirst(POGOLYN_VERSION + 1), pgMemMgr::ExceptionInvalidVersionOfHeader);
+        ckAssertThrow(ckMemMgr::createFirst(CATCAKE_VERSION + 1), ckMemMgr::ExceptionInvalidVersionOfHeader);
 
-        pgMemMgr::createFirst();
-        pgMemMgr::createFirst();
+        ckMemMgr::createFirst();
+        ckMemMgr::createFirst();
 
-        pgAssert(pgMemMgr::isCreated());
+        ckAssert(ckMemMgr::isCreated());
 
-        const void* mem0 = pgMemMgr::getFirstMemoryBlockN();
-        pgAssert(mem0);
+        const void* mem0 = ckMemMgr::getFirstMemoryBlockN();
+        ckAssert(mem0);
 
-        u32 size0 = pgMemMgr::getCurUsedMemorySize();
-        pgAssert(size0 > 0);
+        u32 size0 = ckMemMgr::getCurUsedMemorySize();
+        ckAssert(size0 > 0);
 
-        pgAssert(pgMemMgr::getMaxUsedMemorySize() == size0);
+        ckAssert(ckMemMgr::getMaxUsedMemorySize() == size0);
 
-        pgAssert(!pgMemMgr::getNextMemoryBlockN(mem0));
+        ckAssert(!ckMemMgr::getNextMemoryBlockN(mem0));
 
         static const char name1[] = "mem1";
-        void* mem1 = pgMemMgr::mallocForSystem(111, 0, name1);
-        u32 size1 = 111 + pgMemMgr::getMemoryBlockHeaderSize();
-        pgMemMgr::memset(mem1, 255, 111);
+        void* mem1 = ckMemMgr::mallocForSystem(111, 0, name1);
+        u32 size1 = 111 + ckMemMgr::getMemoryBlockHeaderSize();
+        ckMemMgr::memset(mem1, 255, 111);
 
-        pgAssert(pgMemMgr::getFirstMemoryBlockN() == mem0);
-        pgAssert(pgMemMgr::getNextMemoryBlockN(mem0) == mem1);
-        pgAssert(!pgMemMgr::getNextMemoryBlockN(mem1));
-        pgAssert(pgMemMgr::getMemoryBlockName(mem1) == name1);
-        pgAssert(pgMemMgr::getMemoryBlockSize(mem1) == size1);
-        pgAssert(pgMemMgr::getMemoryBlockArraySize(mem1) == 0);
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == size0 + size1);
-        pgAssert(pgMemMgr::getMaxUsedMemorySize() == size0 + size1);
+        ckAssert(ckMemMgr::getFirstMemoryBlockN() == mem0);
+        ckAssert(ckMemMgr::getNextMemoryBlockN(mem0) == mem1);
+        ckAssert(!ckMemMgr::getNextMemoryBlockN(mem1));
+        ckAssert(ckMemMgr::getMemoryBlockName(mem1) == name1);
+        ckAssert(ckMemMgr::getMemoryBlockSize(mem1) == size1);
+        ckAssert(ckMemMgr::getMemoryBlockArraySize(mem1) == 0);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == size0 + size1);
+        ckAssert(ckMemMgr::getMaxUsedMemorySize() == size0 + size1);
 
         static const char name2[] = "mem2";
-        void* mem2 = pgMemMgr::mallocForSystem(222, 123, name2);
-        u32 size2 = 222 + pgMemMgr::getMemoryBlockHeaderSize();
-        pgMemMgr::memset(mem2, 255, 222);
+        void* mem2 = ckMemMgr::mallocForSystem(222, 123, name2);
+        u32 size2 = 222 + ckMemMgr::getMemoryBlockHeaderSize();
+        ckMemMgr::memset(mem2, 255, 222);
 
-        pgAssert(pgMemMgr::getFirstMemoryBlockN() == mem0);
-        pgAssert(pgMemMgr::getNextMemoryBlockN(mem0) == mem1);
-        pgAssert(pgMemMgr::getNextMemoryBlockN(mem1) == mem2);
-        pgAssert(!pgMemMgr::getNextMemoryBlockN(mem2));
-        pgAssert(pgMemMgr::getMemoryBlockName(mem2) == name2);
-        pgAssert(pgMemMgr::getMemoryBlockSize(mem2) == size2);
-        pgAssert(pgMemMgr::getMemoryBlockArraySize(mem2) == 123);
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == size0 + size1 + size2);
-        pgAssert(pgMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2);
+        ckAssert(ckMemMgr::getFirstMemoryBlockN() == mem0);
+        ckAssert(ckMemMgr::getNextMemoryBlockN(mem0) == mem1);
+        ckAssert(ckMemMgr::getNextMemoryBlockN(mem1) == mem2);
+        ckAssert(!ckMemMgr::getNextMemoryBlockN(mem2));
+        ckAssert(ckMemMgr::getMemoryBlockName(mem2) == name2);
+        ckAssert(ckMemMgr::getMemoryBlockSize(mem2) == size2);
+        ckAssert(ckMemMgr::getMemoryBlockArraySize(mem2) == 123);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == size0 + size1 + size2);
+        ckAssert(ckMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2);
 
         static const char name2_realloc[] = "mem2_realloc";
-        mem2 = pgMemMgr::reallocForSystem(mem2, 300, 234, name2_realloc);
-        u32 size2_realloc = 300 + pgMemMgr::getMemoryBlockHeaderSize();
+        mem2 = ckMemMgr::reallocForSystem(mem2, 300, 234, name2_realloc);
+        u32 size2_realloc = 300 + ckMemMgr::getMemoryBlockHeaderSize();
 
-        pgAssert(pgMemMgr::getFirstMemoryBlockN() == mem0);
-        pgAssert(pgMemMgr::getNextMemoryBlockN(mem0) == mem1);
-        pgAssert(pgMemMgr::getNextMemoryBlockN(mem1) == mem2);
-        pgAssert(!pgMemMgr::getNextMemoryBlockN(mem2));
-        pgAssert(pgMemMgr::getMemoryBlockName(mem2) == name2_realloc);
-        pgAssert(pgMemMgr::getMemoryBlockSize(mem2) == size2_realloc);
-        pgAssert(pgMemMgr::getMemoryBlockArraySize(mem2) == 234);
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == size0 + size1 + size2_realloc);
-        pgAssert(pgMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2_realloc);
-        pgAssert(*(static_cast<u8*>(mem2) + 221) == 255);
+        ckAssert(ckMemMgr::getFirstMemoryBlockN() == mem0);
+        ckAssert(ckMemMgr::getNextMemoryBlockN(mem0) == mem1);
+        ckAssert(ckMemMgr::getNextMemoryBlockN(mem1) == mem2);
+        ckAssert(!ckMemMgr::getNextMemoryBlockN(mem2));
+        ckAssert(ckMemMgr::getMemoryBlockName(mem2) == name2_realloc);
+        ckAssert(ckMemMgr::getMemoryBlockSize(mem2) == size2_realloc);
+        ckAssert(ckMemMgr::getMemoryBlockArraySize(mem2) == 234);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == size0 + size1 + size2_realloc);
+        ckAssert(ckMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2_realloc);
+        ckAssert(*(static_cast<u8*>(mem2) + 221) == 255);
 
-        mem2 = pgMemMgr::reallocForSystem(mem2, 222, 123, name2);
+        mem2 = ckMemMgr::reallocForSystem(mem2, 222, 123, name2);
 
-        pgMemMgr::freeForSystem(mem1);
+        ckMemMgr::freeForSystem(mem1);
 
-        pgAssert(pgMemMgr::getFirstMemoryBlockN() == mem0);
-        pgAssert(pgMemMgr::getNextMemoryBlockN(mem0) == mem2);
-        pgAssert(!pgMemMgr::getNextMemoryBlockN(mem2));
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == size0 + size2);
-        pgAssert(pgMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2_realloc);
+        ckAssert(ckMemMgr::getFirstMemoryBlockN() == mem0);
+        ckAssert(ckMemMgr::getNextMemoryBlockN(mem0) == mem2);
+        ckAssert(!ckMemMgr::getNextMemoryBlockN(mem2));
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == size0 + size2);
+        ckAssert(ckMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2_realloc);
 
-        pgMemMgr::freeForSystem(mem2);
+        ckMemMgr::freeForSystem(mem2);
 
-        pgAssert(pgMemMgr::getFirstMemoryBlockN() == mem0);
-        pgAssert(!pgMemMgr::getNextMemoryBlockN(mem0));
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == size0);
-        pgAssert(pgMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2_realloc);
+        ckAssert(ckMemMgr::getFirstMemoryBlockN() == mem0);
+        ckAssert(!ckMemMgr::getNextMemoryBlockN(mem0));
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == size0);
+        ckAssert(ckMemMgr::getMaxUsedMemorySize() == size0 + size1 + size2_realloc);
 
-        pgAssertThrow(pgMemMgr::getNextMemoryBlockN(NULL), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::getMemoryBlockName(NULL), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::getMemoryBlockSize(NULL), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::getMemoryBlockArraySize(NULL), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::mallocForSystem(0, 100, __FILE__), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::mallocForSystem(100, 100, NULL), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::reallocForSystem(NULL, 100, 0, __FILE__), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::reallocForSystem(reinterpret_cast<void*>(100), 0, 0, __FILE__), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::reallocForSystem(reinterpret_cast<void*>(100), 100, 0, NULL), pgMemMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgMemMgr::freeForSystem(NULL), pgMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::getNextMemoryBlockN(NULL), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::getMemoryBlockName(NULL), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::getMemoryBlockSize(NULL), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::getMemoryBlockArraySize(NULL), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::mallocForSystem(0, 100, __FILE__), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::mallocForSystem(100, 100, NULL), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::reallocForSystem(NULL, 100, 0, __FILE__), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::reallocForSystem(reinterpret_cast<void*>(100), 0, 0, __FILE__), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::reallocForSystem(reinterpret_cast<void*>(100), 100, 0, NULL), ckMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::freeForSystem(NULL), ckMemMgr::ExceptionInvalidArgument);
 
-        pgMemMgr::mallocForSystem(123, 0, __FILE__);
-        pgMemMgr::mallocForSystem(456, 78, __FILE__);
+        ckMemMgr::mallocForSystem(123, 0, __FILE__);
+        ckMemMgr::mallocForSystem(456, 78, __FILE__);
 
-        pgMemMgr::destroyLast();
-        pgMemMgr::destroyLast();
+        ckMemMgr::destroyLast();
+        ckMemMgr::destroyLast();
 
-        pgAssert(!pgMemMgr::isCreated());
+        ckAssert(!ckMemMgr::isCreated());
     }
 
     /*
@@ -204,39 +204,39 @@ void pgMemMgrTest()
         static u32 getTempBufferSizeForSystem()
     */
     {
-        pgAssertThrow(pgMemMgr::allocTempBufferForSystem(0), pgMemMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgMemMgr::getTempBufferSizeForSystem(), pgMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::allocTempBufferForSystem(0), ckMemMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckMemMgr::getTempBufferSizeForSystem(), ckMemMgr::ExceptionNotInitialized);
 
-        pgMemMgr::createFirst();
+        ckMemMgr::createFirst();
 
-        pgAssert(pgMemMgr::getTempBufferSizeForSystem() == 1024);
+        ckAssert(ckMemMgr::getTempBufferSizeForSystem() == 1024);
 
-        pgAssertThrow(pgMemMgr::allocTempBufferForSystem(0), pgMemMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckMemMgr::allocTempBufferForSystem(0), ckMemMgr::ExceptionInvalidArgument);
 
-        void* buf1 = pgMemMgr::allocTempBufferForSystem(1000);
-        pgMemMgr::memset(buf1, 255, 1000);
+        void* buf1 = ckMemMgr::allocTempBufferForSystem(1000);
+        ckMemMgr::memset(buf1, 255, 1000);
 
-        pgAssert(buf1 != NULL);
-        pgAssert(pgMemMgr::getTempBufferSizeForSystem() == 1024);
+        ckAssert(buf1 != NULL);
+        ckAssert(ckMemMgr::getTempBufferSizeForSystem() == 1024);
 
-        void* buf2 = pgMemMgr::allocTempBufferForSystem(2000);
-        pgMemMgr::memset(buf2, 255, 2000);
+        void* buf2 = ckMemMgr::allocTempBufferForSystem(2000);
+        ckMemMgr::memset(buf2, 255, 2000);
 
-        pgAssert(buf2 != NULL);
-        pgAssert(pgMemMgr::getTempBufferSizeForSystem() == 2048);
+        ckAssert(buf2 != NULL);
+        ckAssert(ckMemMgr::getTempBufferSizeForSystem() == 2048);
 
-        void* buf3 = pgMemMgr::allocTempBufferForSystem(3000);
-        pgMemMgr::memset(buf3, 255, 3000);
+        void* buf3 = ckMemMgr::allocTempBufferForSystem(3000);
+        ckMemMgr::memset(buf3, 255, 3000);
 
-        pgAssert(buf3 != NULL);
-        pgAssert(pgMemMgr::getTempBufferSizeForSystem() == 4096);
+        ckAssert(buf3 != NULL);
+        ckAssert(ckMemMgr::getTempBufferSizeForSystem() == 4096);
 
-        void* buf4 = pgMemMgr::allocTempBufferForSystem(100);
-        pgMemMgr::memset(buf4, 255, 100);
+        void* buf4 = ckMemMgr::allocTempBufferForSystem(100);
+        ckMemMgr::memset(buf4, 255, 100);
 
-        pgAssert(buf4 == buf3);
-        pgAssert(pgMemMgr::getTempBufferSizeForSystem() == 4096);
+        ckAssert(buf4 == buf3);
+        ckAssert(ckMemMgr::getTempBufferSizeForSystem() == 4096);
 
-        pgMemMgr::destroyLast();
+        ckMemMgr::destroyLast();
     }
 }

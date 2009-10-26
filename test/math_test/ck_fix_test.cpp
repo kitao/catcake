@@ -32,209 +32,209 @@
 #include "test.h"
 
 
-void pgFixTest()
+void ckFixTest()
 {
     /*
-        pgFix()
-        pgFix(s32 n)
-        pgFix(r32 r)
+        ckFix()
+        ckFix(s32 n)
+        ckFix(r32 r)
         s32 toS32() const
         r32 toR32() const
     */
     {
-        pgFix fix1;
+        ckFix fix1;
 
-        pgFix fix2 = 123;
-        pgAssert(fix2.toS32() == 123);
+        ckFix fix2 = 123;
+        ckAssert(fix2.toS32() == 123);
 
-        pgFix fix3 = 0.123f;
-        pgAssert(isEqual(fix3.toR32(), 0.123f));
+        ckFix fix3 = 0.123f;
+        ckAssert(isEqual(fix3.toR32(), 0.123f));
 
-        pgFix fix4 = fix2;
-        pgAssert(fix4.toS32() == 123);
+        ckFix fix4 = fix2;
+        ckAssert(fix4.toS32() == 123);
 
-        pgAssertThrow(pgFix(33000), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(-33000), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(33000.0f), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(-33000.0f), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(0.00001f), pgFix::ExceptionUnderflow);
+        ckAssertThrow(ckFix(33000), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(-33000), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(33000.0f), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(-33000.0f), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(0.00001f), ckFix::ExceptionUnderflow);
     }
 
     /*
-        bool operator==(pgFix fix) const
-        bool operator!=(pgFix fix) const
-        bool operator<(pgFix fix) const
-        bool operator>(pgFix fix) const
-        bool operator<=(pgFix fix) const
-        bool operator>=(pgFix fix) const
+        bool operator==(ckFix fix) const
+        bool operator!=(ckFix fix) const
+        bool operator<(ckFix fix) const
+        bool operator>(ckFix fix) const
+        bool operator<=(ckFix fix) const
+        bool operator>=(ckFix fix) const
     */
     {
-        pgFix fix1 = 123;
-        pgFix fix2 = 321;
+        ckFix fix1 = 123;
+        ckFix fix2 = 321;
 
-        pgAssert(fix1 == fix1);
-        pgAssert(!(fix1 == fix2));
+        ckAssert(fix1 == fix1);
+        ckAssert(!(fix1 == fix2));
 
-        pgAssert(fix1 != fix2);
-        pgAssert(!(fix1 != fix1));
+        ckAssert(fix1 != fix2);
+        ckAssert(!(fix1 != fix1));
 
-        pgAssert(fix1 < fix2);
-        pgAssert(!(fix1 < fix1));
-        pgAssert(!(fix2 < fix1));
+        ckAssert(fix1 < fix2);
+        ckAssert(!(fix1 < fix1));
+        ckAssert(!(fix2 < fix1));
 
-        pgAssert(fix2 > fix1);
-        pgAssert(!(fix1 > fix1));
-        pgAssert(!(fix1 > fix2));
+        ckAssert(fix2 > fix1);
+        ckAssert(!(fix1 > fix1));
+        ckAssert(!(fix1 > fix2));
 
-        pgAssert(fix1 <= fix2);
-        pgAssert(fix1 <= fix1);
-        pgAssert(!(fix2 <= fix1));
+        ckAssert(fix1 <= fix2);
+        ckAssert(fix1 <= fix1);
+        ckAssert(!(fix2 <= fix1));
 
-        pgAssert(fix2 >= fix1);
-        pgAssert(fix1 >= fix1);
-        pgAssert(!(fix1 >= fix2));
+        ckAssert(fix2 >= fix1);
+        ckAssert(fix1 >= fix1);
+        ckAssert(!(fix1 >= fix2));
     }
 
     /*
-        pgFix operator+(pgFix fix) const
-        friend pgFix operator+(s32 n, pgFix fix)
-        friend pgFix operator+(r32 r, pgFix fix)
-        void operator+=(pgFix fix)
+        ckFix operator+(ckFix fix) const
+        friend ckFix operator+(s32 n, ckFix fix)
+        friend ckFix operator+(r32 r, ckFix fix)
+        void operator+=(ckFix fix)
     */
     {
-        pgFix fix1 = 123;
-        pgFix fix2 = 321;
+        ckFix fix1 = 123;
+        ckFix fix2 = 321;
 
-        pgAssert(fix1 + fix2 == 444);
-        pgAssert(123 + fix2 == 444);
-        pgAssert(123.0f + fix2 == 444);
+        ckAssert(fix1 + fix2 == 444);
+        ckAssert(123 + fix2 == 444);
+        ckAssert(123.0f + fix2 == 444);
 
         fix1 += 321;
-        pgAssert(fix1 == 444);
+        ckAssert(fix1 == 444);
 
-        pgAssertThrow(pgFix(20000) + pgFix(20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(-20000) + pgFix(-20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(20000 + pgFix(20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(-20000 + pgFix(-20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(20000.0f + pgFix(20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(-20000.0f + pgFix(-20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(0.00001f + pgFix(20000), pgFix::ExceptionUnderflow);
+        ckAssertThrow(ckFix(20000) + ckFix(20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(-20000) + ckFix(-20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(20000 + ckFix(20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(-20000 + ckFix(-20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(20000.0f + ckFix(20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(-20000.0f + ckFix(-20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(0.00001f + ckFix(20000), ckFix::ExceptionUnderflow);
 
-        pgFix fix3 = 20000;
-        pgAssertThrow(fix3 += 20000, pgFix::ExceptionOverflow);
+        ckFix fix3 = 20000;
+        ckAssertThrow(fix3 += 20000, ckFix::ExceptionOverflow);
 
-        pgFix fix4 = -20000;
-        pgAssertThrow(fix4 += -20000, pgFix::ExceptionOverflow);
+        ckFix fix4 = -20000;
+        ckAssertThrow(fix4 += -20000, ckFix::ExceptionOverflow);
     }
 
     /*
-        pgFix operator-() const
-        pgFix operator-(pgFix fix) const
-        friend pgFix operator-(s32 n, pgFix fix)
-        friend pgFix operator-(r32 r, pgFix fix)
-        void operator-=(pgFix fix)
+        ckFix operator-() const
+        ckFix operator-(ckFix fix) const
+        friend ckFix operator-(s32 n, ckFix fix)
+        friend ckFix operator-(r32 r, ckFix fix)
+        void operator-=(ckFix fix)
     */
     {
-        pgFix fix1 = 200;
-        pgFix fix2 = 300;
+        ckFix fix1 = 200;
+        ckFix fix2 = 300;
 
-        pgAssert(-fix1 == -200);
-        pgAssert(fix1 - fix2 == -100);
-        pgAssert(200 - fix2 == -100);
-        pgAssert(200.0f - fix2 == -100);
+        ckAssert(-fix1 == -200);
+        ckAssert(fix1 - fix2 == -100);
+        ckAssert(200 - fix2 == -100);
+        ckAssert(200.0f - fix2 == -100);
 
         fix1 -= 300;
-        pgAssert(fix1 == -100);
+        ckAssert(fix1 == -100);
 
-        pgAssertThrow(-pgFix(-32768), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(20000) - pgFix(-20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(-20000) - pgFix(20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(20000 - pgFix(-20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(-20000 - pgFix(20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(20000.0f - pgFix(-20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(-20000.0f - pgFix(20000), pgFix::ExceptionOverflow);
-        pgAssertThrow(0.00001f - pgFix(20000), pgFix::ExceptionUnderflow);
+        ckAssertThrow(-ckFix(-32768), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(20000) - ckFix(-20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(-20000) - ckFix(20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(20000 - ckFix(-20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(-20000 - ckFix(20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(20000.0f - ckFix(-20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(-20000.0f - ckFix(20000), ckFix::ExceptionOverflow);
+        ckAssertThrow(0.00001f - ckFix(20000), ckFix::ExceptionUnderflow);
 
-        pgFix fix3 = 20000;
-        pgAssertThrow(fix3 -= -20000, pgFix::ExceptionOverflow);
+        ckFix fix3 = 20000;
+        ckAssertThrow(fix3 -= -20000, ckFix::ExceptionOverflow);
 
-        pgFix fix4 = -20000;
-        pgAssertThrow(fix4 -= 20000, pgFix::ExceptionOverflow);
+        ckFix fix4 = -20000;
+        ckAssertThrow(fix4 -= 20000, ckFix::ExceptionOverflow);
     }
 
     /*
-        pgFix operator*(pgFix fix) const
-        friend pgFix operator*(s32 n, pgFix fix)
-        friend pgFix operator*(r32 r, pgFix fix)
-        void operator*=(pgFix fix)
+        ckFix operator*(ckFix fix) const
+        friend ckFix operator*(s32 n, ckFix fix)
+        friend ckFix operator*(r32 r, ckFix fix)
+        void operator*=(ckFix fix)
     */
     {
-        pgFix fix1 = 22.2f;
-        pgFix fix2 = 0.5f;
+        ckFix fix1 = 22.2f;
+        ckFix fix2 = 0.5f;
 
-        pgAssert(isEqual((fix1 * fix2).toR32(), 11.1f));
-        pgAssert(222 * fix2 == 111);
-        pgAssert(isEqual((22.2f * fix2).toR32(), 11.1f));
+        ckAssert(isEqual((fix1 * fix2).toR32(), 11.1f));
+        ckAssert(222 * fix2 == 111);
+        ckAssert(isEqual((22.2f * fix2).toR32(), 11.1f));
 
         fix1 *= fix2;
-        pgAssert(isEqual(fix1.toR32(), 11.1f));
+        ckAssert(isEqual(fix1.toR32(), 11.1f));
 
-        pgAssertThrow(pgFix(200) * pgFix(200), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(-200) * pgFix(200), pgFix::ExceptionOverflow);
-        pgAssertThrow(200 * pgFix(200), pgFix::ExceptionOverflow);
-        pgAssertThrow(-200 * pgFix(200), pgFix::ExceptionOverflow);
-        pgAssertThrow(200.0f * pgFix(200), pgFix::ExceptionOverflow);
-        pgAssertThrow(-200.0f * pgFix(200), pgFix::ExceptionOverflow);
-        pgAssertThrow(0.001f * pgFix(0.001f), pgFix::ExceptionUnderflow);
+        ckAssertThrow(ckFix(200) * ckFix(200), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(-200) * ckFix(200), ckFix::ExceptionOverflow);
+        ckAssertThrow(200 * ckFix(200), ckFix::ExceptionOverflow);
+        ckAssertThrow(-200 * ckFix(200), ckFix::ExceptionOverflow);
+        ckAssertThrow(200.0f * ckFix(200), ckFix::ExceptionOverflow);
+        ckAssertThrow(-200.0f * ckFix(200), ckFix::ExceptionOverflow);
+        ckAssertThrow(0.001f * ckFix(0.001f), ckFix::ExceptionUnderflow);
 
-        pgFix fix3 = 200;
-        pgAssertThrow(fix3 *= 200, pgFix::ExceptionOverflow);
+        ckFix fix3 = 200;
+        ckAssertThrow(fix3 *= 200, ckFix::ExceptionOverflow);
 
-        pgFix fix4 = -200;
-        pgAssertThrow(fix4 *= 200, pgFix::ExceptionOverflow);
+        ckFix fix4 = -200;
+        ckAssertThrow(fix4 *= 200, ckFix::ExceptionOverflow);
     }
 
     /*
-        pgFix operator/(pgFix fix) const
-        PG_API friend pgFix operator/(s32 n, pgFix fix)
-        PG_API friend pgFix operator/(r32 r, pgFix fix)
-        void operator/=(pgFix fix)
+        ckFix operator/(ckFix fix) const
+        CK_API friend ckFix operator/(s32 n, ckFix fix)
+        CK_API friend ckFix operator/(r32 r, ckFix fix)
+        void operator/=(ckFix fix)
     */
     {
-        pgFix fix1 = 22.2f;
-        pgFix fix2 = 0.5f;
+        ckFix fix1 = 22.2f;
+        ckFix fix2 = 0.5f;
 
-        pgAssert(isEqual((fix1 / fix2).toR32(), 44.4f));
-        pgAssert(222 / fix2 == 444);
-        pgAssert(isEqual((22.2f / fix2).toR32(), 44.4f));
+        ckAssert(isEqual((fix1 / fix2).toR32(), 44.4f));
+        ckAssert(222 / fix2 == 444);
+        ckAssert(isEqual((22.2f / fix2).toR32(), 44.4f));
 
         fix1 /= fix2;
-        pgAssert(isEqual(fix1.toR32(), 44.4f));
+        ckAssert(isEqual(fix1.toR32(), 44.4f));
 
-        pgAssertThrow(pgFix(400) / pgFix(0.01f), pgFix::ExceptionOverflow);
-        pgAssertThrow(pgFix(-400) / pgFix(0.01f), pgFix::ExceptionOverflow);
-        pgAssertThrow(400 / pgFix(0.01f), pgFix::ExceptionOverflow);
-        pgAssertThrow(-400 / pgFix(0.01f), pgFix::ExceptionOverflow);
-        pgAssertThrow(400.0f / pgFix(0.01f), pgFix::ExceptionOverflow);
-        pgAssertThrow(-400.0f / pgFix(0.01f), pgFix::ExceptionOverflow);
-        pgAssertThrow(0.001f / pgFix(1000), pgFix::ExceptionUnderflow);
+        ckAssertThrow(ckFix(400) / ckFix(0.01f), ckFix::ExceptionOverflow);
+        ckAssertThrow(ckFix(-400) / ckFix(0.01f), ckFix::ExceptionOverflow);
+        ckAssertThrow(400 / ckFix(0.01f), ckFix::ExceptionOverflow);
+        ckAssertThrow(-400 / ckFix(0.01f), ckFix::ExceptionOverflow);
+        ckAssertThrow(400.0f / ckFix(0.01f), ckFix::ExceptionOverflow);
+        ckAssertThrow(-400.0f / ckFix(0.01f), ckFix::ExceptionOverflow);
+        ckAssertThrow(0.001f / ckFix(1000), ckFix::ExceptionUnderflow);
 
-        pgFix fix3 = 400;
-        pgAssertThrow(fix3 /= 0.01f, pgFix::ExceptionOverflow);
+        ckFix fix3 = 400;
+        ckAssertThrow(fix3 /= 0.01f, ckFix::ExceptionOverflow);
 
-        pgFix fix4 = -400;
-        pgAssertThrow(fix4 /= 0.01f, pgFix::ExceptionOverflow);
+        ckFix fix4 = -400;
+        ckAssertThrow(fix4 /= 0.01f, ckFix::ExceptionOverflow);
     }
 
     /*
         s32 getValue() const
-        static pgFix fromValue(s32 value)
+        static ckFix fromValue(s32 value)
     */
     {
-        pgFix fix = 123;
+        ckFix fix = 123;
 
-        pgAssert(fix.getValue() == 123 << 16);
+        ckAssert(fix.getValue() == 123 << 16);
 
-        pgAssert(pgFix::fromValue(fix.getValue()) == fix);
+        ckAssert(ckFix::fromValue(fix.getValue()) == fix);
     }
 }

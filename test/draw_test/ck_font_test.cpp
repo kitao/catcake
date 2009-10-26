@@ -32,79 +32,79 @@
 #include "test.h"
 
 
-void pgFontTest()
+void ckFontTest()
 {
     /*
-        pgFont()
-        ~pgFont()
+        ckFont()
+        ~ckFont()
         void init(u16 width, u16 height)
-        pgID getTextureID() const
+        ckID getTextureID() const
         u16 getWidth() const
         u16 getHeight() const
         const void* getImage() const
         u32 getImageSize() const
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgFont font;
+        ckFont font;
 
-        pgAssertThrow(font.getTextureID(), pgFont::ExceptionNotInitialized);
-        pgAssertThrow(font.getWidth(), pgFont::ExceptionNotInitialized);
-        pgAssertThrow(font.getHeight(), pgFont::ExceptionNotInitialized);
-        pgAssertThrow(font.getImage(), pgFont::ExceptionNotInitialized);
-        pgAssertThrow(font.getImageSize(), pgFont::ExceptionNotInitialized);
+        ckAssertThrow(font.getTextureID(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.getWidth(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.getHeight(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.getImage(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.getImageSize(), ckFont::ExceptionNotInitialized);
 
         font.init(12, 34);
 
-        pgTex* tex1 = pgDrawMgr::getTexture(font.getTextureID());
-        pgAssert(font.getWidth() == 12 && font.getHeight() == 34);
-        pgAssert(font.getImage() == tex1->getImage());
-        pgAssert(font.getImageSize() == tex1->getImageSize());
+        ckTex* tex1 = ckDrawMgr::getTexture(font.getTextureID());
+        ckAssert(font.getWidth() == 12 && font.getHeight() == 34);
+        ckAssert(font.getImage() == tex1->getImage());
+        ckAssert(font.getImageSize() == tex1->getImageSize());
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {
-            pgAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
+            ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
         }
 
         font.init(56, 78);
 
-        pgTex* tex2 = pgDrawMgr::getTexture(font.getTextureID());
-        pgAssert(font.getWidth() == 56 && font.getHeight() == 78);
-        pgAssert(font.getImage() == tex2->getImage());
-        pgAssert(font.getImageSize() == tex2->getImageSize());
+        ckTex* tex2 = ckDrawMgr::getTexture(font.getTextureID());
+        ckAssert(font.getWidth() == 56 && font.getHeight() == 78);
+        ckAssert(font.getImage() == tex2->getImage());
+        ckAssert(font.getImageSize() == tex2->getImageSize());
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {
-            pgAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
+            ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
         }
 
-        pgAssertThrow(font.init(0, 10), pgFont::ExceptionInvalidArgument);
-        pgAssertThrow(font.init(10, 0), pgFont::ExceptionInvalidArgument);
-        pgAssertThrow(font.init(pgDrawMgr::getMaxTextureLength() + 1, 10), pgFont::ExceptionInvalidArgument);
-        pgAssertThrow(font.init(10, pgDrawMgr::getMaxTextureLength() + 1), pgFont::ExceptionInvalidArgument);
+        ckAssertThrow(font.init(0, 10), ckFont::ExceptionInvalidArgument);
+        ckAssertThrow(font.init(10, 0), ckFont::ExceptionInvalidArgument);
+        ckAssertThrow(font.init(ckDrawMgr::getMaxTextureLength() + 1, 10), ckFont::ExceptionInvalidArgument);
+        ckAssertThrow(font.init(10, ckDrawMgr::getMaxTextureLength() + 1), ckFont::ExceptionInvalidArgument);
 
         {
-            pgFont font;
-            pgAssertThrow(font.init(0, 10), pgFont::ExceptionInvalidArgument);
-        }
-
-        {
-            pgFont font;
-            pgAssertThrow(font.init(10, 0), pgFont::ExceptionInvalidArgument);
+            ckFont font;
+            ckAssertThrow(font.init(0, 10), ckFont::ExceptionInvalidArgument);
         }
 
         {
-            pgFont font;
-            pgAssertThrow(font.init(pgDrawMgr::getMaxTextureLength() + 1, 10), pgFont::ExceptionInvalidArgument);
+            ckFont font;
+            ckAssertThrow(font.init(10, 0), ckFont::ExceptionInvalidArgument);
         }
 
         {
-            pgFont font;
-            pgAssertThrow(font.init(10, pgDrawMgr::getMaxTextureLength() + 1), pgFont::ExceptionInvalidArgument);
+            ckFont font;
+            ckAssertThrow(font.init(ckDrawMgr::getMaxTextureLength() + 1, 10), ckFont::ExceptionInvalidArgument);
         }
 
-        pgDrawMgr::destroyBeforeRes();
+        {
+            ckFont font;
+            ckAssertThrow(font.init(10, ckDrawMgr::getMaxTextureLength() + 1), ckFont::ExceptionInvalidArgument);
+        }
+
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
@@ -112,30 +112,30 @@ void pgFontTest()
         void clearImage()
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgFont font;
+        ckFont font;
 
-        pgAssertThrow(font.editImage(), pgFont::ExceptionNotInitialized);
-        pgAssertThrow(font.clearImage(), pgFont::ExceptionNotInitialized);
+        ckAssertThrow(font.editImage(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.clearImage(), ckFont::ExceptionNotInitialized);
 
         font.init(12, 34);
 
-        pgMemMgr::memset(font.editImage(), 123, font.getImageSize());
+        ckMemMgr::memset(font.editImage(), 123, font.getImageSize());
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {
-            pgAssert(*(static_cast<const u8*>(font.getImage()) + i) == 123);
+            ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 123);
         }
 
         font.clearImage();
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {
-            pgAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
+            ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
         }
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
@@ -143,29 +143,29 @@ void pgFontTest()
         u16 drawString(s16 x, s16 y, const wchar_t* str, ...)
     */
     {
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgResMgr::loadResource(TEST_DATA_DIR "adler.ttf", true);
-        pgDrawMgr::setFont(pgID_("adler.ttf"), 0);
+        ckResMgr::loadResource(TEST_DATA_DIR "adler.ttf", true);
+        ckDrawMgr::setFont(ckID_("adler.ttf"), 0);
 
-        pgFont font;
+        ckFont font;
 
-        pgAssertThrow(font.drawString(0, 0, static_cast<const char*>(NULL)), pgFont::ExceptionNotInitialized);
-        pgAssertThrow(font.drawString(0, 0, static_cast<const wchar_t*>(NULL)), pgFont::ExceptionNotInitialized);
+        ckAssertThrow(font.drawString(0, 0, static_cast<const char*>(NULL)), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.drawString(0, 0, static_cast<const wchar_t*>(NULL)), ckFont::ExceptionNotInitialized);
 
         font.init(12, 34);
 
-        pgAssert(font.drawString(-100, -200, "%d", 123) > 0);
-        pgAssert(font.drawString(-100, -200, "TEST %s %d", "MESSAGE", 123) == pgDrawMgr::calcFontDrawWidth("TEST MESSAGE 123"));
+        ckAssert(font.drawString(-100, -200, "%d", 123) > 0);
+        ckAssert(font.drawString(-100, -200, "TEST %s %d", "MESSAGE", 123) == ckDrawMgr::calcFontDrawWidth("TEST MESSAGE 123"));
 
-        pgAssert(font.drawString(-100, -200, L"%d", 123) > 0);
-        pgAssert(font.drawString(-100, -200, L"TEST %ls %d", L"MESSAGE", 123) == pgDrawMgr::calcFontDrawWidth(L"TEST MESSAGE 123")); // TODO: failed on Linux
+        ckAssert(font.drawString(-100, -200, L"%d", 123) > 0);
+        ckAssert(font.drawString(-100, -200, L"TEST %ls %d", L"MESSAGE", 123) == ckDrawMgr::calcFontDrawWidth(L"TEST MESSAGE 123")); // TODO: failed on Linux
 
-        pgAssertThrow(font.drawString(0, 0, static_cast<const char*>(NULL)), pgFont::ExceptionInvalidArgument);
-        pgAssertThrow(font.drawString(0, 0, static_cast<const wchar_t*>(NULL)), pgFont::ExceptionInvalidArgument);
+        ckAssertThrow(font.drawString(0, 0, static_cast<const char*>(NULL)), ckFont::ExceptionInvalidArgument);
+        ckAssertThrow(font.drawString(0, 0, static_cast<const wchar_t*>(NULL)), ckFont::ExceptionInvalidArgument);
 
-        pgResMgr::removeResource(pgID_("adler.ttf"));
+        ckResMgr::removeResource(ckID_("adler.ttf"));
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

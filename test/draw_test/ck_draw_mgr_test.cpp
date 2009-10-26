@@ -32,176 +32,176 @@
 #include "test.h"
 
 
-void pgDrawMgrTest()
+void ckDrawMgrTest()
 {
     /*
-        static const pgID INVISIBLE_SCREEN_ID
-        static const pgID DEFAULT_3D_SCREEN_ID
-        static const pgID DEFAULT_2D_SCREEN_ID
+        static const ckID INVISIBLE_SCREEN_ID
+        static const ckID DEFAULT_3D_SCREEN_ID
+        static const ckID DEFAULT_2D_SCREEN_ID
     */
     {
-        pgAssert(pgDrawMgr::INVISIBLE_SCREEN_ID == pgID_("INVISIBLE_SCREEN"));
-        pgAssert(pgDrawMgr::DEFAULT_3D_SCREEN_ID == pgID_("DEFAULT_3D_SCREEN"));
-        pgAssert(pgDrawMgr::DEFAULT_2D_SCREEN_ID == pgID_("DEFAULT_2D_SCREEN"));
+        ckAssert(ckDrawMgr::INVISIBLE_SCREEN_ID == ckID_("INVISIBLE_SCREEN"));
+        ckAssert(ckDrawMgr::DEFAULT_3D_SCREEN_ID == ckID_("DEFAULT_3D_SCREEN"));
+        ckAssert(ckDrawMgr::DEFAULT_2D_SCREEN_ID == ckID_("DEFAULT_2D_SCREEN"));
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgScr* scr0d = pgDrawMgr::getScreen(pgDrawMgr::INVISIBLE_SCREEN_ID);
+        ckScr* scr0d = ckDrawMgr::getScreen(ckDrawMgr::INVISIBLE_SCREEN_ID);
 
-        pgAssert(scr0d->getID() == pgDrawMgr::INVISIBLE_SCREEN_ID);
-        pgAssert(scr0d->getLeftInFramebuffer() == 0 && scr0d->getTopInFramebuffer() == 0 && //
-            scr0d->getWidthInFramebuffer() == pgSysMgr::getFramebufferWidth() && //
-            scr0d->getHeightInFramebuffer() == pgSysMgr::getFramebufferHeight());
-        pgAssert(isEqual(scr0d->getViewWidth(), pgSysMgr::getFramebufferWidth()) && //
-            isEqual(scr0d->getViewHeight(), pgSysMgr::getFramebufferHeight()));
-        pgAssert(!scr0d->isActive());
-        pgAssert(scr0d->isClearColor() && scr0d->isClearDepth());
-        pgAssert(scr0d->getClearColor() == pgCol(255, 0, 0, 0));
-        pgAssert(scr0d->isPerspective());
-        pgAssert(isEqual(scr0d->getFocusDist(), static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST)));
-        pgAssert(isEqual(scr0d->getNearClipDist(), static_cast<r32>(pgScr::DEFAULT_NEAR_CLIP_DIST)) && //
-            isEqual(scr0d->getFarClipDist(), static_cast<r32>(pgScr::DEFAULT_FAR_CLIP_DIST)));
-        pgAssert(isEqual(scr0d->view(), pgMat::UNIT.translate(0, 0, static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST))));
-        pgAssert(!scr0d->hasScreenTexture());
-        pgAssert(scr0d->getGuestScreenID(0) == pgID::ZERO && scr0d->getGuestScreenID(1) == pgID::ZERO && //
-            scr0d->getGuestScreenID(2) == pgID::ZERO && scr0d->getGuestScreenID(3) == pgID::ZERO);
+        ckAssert(scr0d->getID() == ckDrawMgr::INVISIBLE_SCREEN_ID);
+        ckAssert(scr0d->getLeftInFramebuffer() == 0 && scr0d->getTopInFramebuffer() == 0 && //
+            scr0d->getWidthInFramebuffer() == ckSysMgr::getFramebufferWidth() && //
+            scr0d->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
+        ckAssert(isEqual(scr0d->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
+            isEqual(scr0d->getViewHeight(), ckSysMgr::getFramebufferHeight()));
+        ckAssert(!scr0d->isActive());
+        ckAssert(scr0d->isClearColor() && scr0d->isClearDepth());
+        ckAssert(scr0d->getClearColor() == ckCol(255, 0, 0, 0));
+        ckAssert(scr0d->isPerspective());
+        ckAssert(isEqual(scr0d->getFocusDist(), static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST)));
+        ckAssert(isEqual(scr0d->getNearClipDist(), static_cast<r32>(ckScr::DEFAULT_NEAR_CLIP_DIST)) && //
+            isEqual(scr0d->getFarClipDist(), static_cast<r32>(ckScr::DEFAULT_FAR_CLIP_DIST)));
+        ckAssert(isEqual(scr0d->view(), ckMat::UNIT.translate(0, 0, static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST))));
+        ckAssert(!scr0d->hasScreenTexture());
+        ckAssert(scr0d->getGuestScreenID(0) == ckID::ZERO && scr0d->getGuestScreenID(1) == ckID::ZERO && //
+            scr0d->getGuestScreenID(2) == ckID::ZERO && scr0d->getGuestScreenID(3) == ckID::ZERO);
 
-        pgScr* scr3d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckScr* scr3d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-        pgAssert(scr3d->getID() == pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgAssert(scr3d->getLeftInFramebuffer() == 0 && scr3d->getTopInFramebuffer() == 0 && //
-            scr3d->getWidthInFramebuffer() == pgSysMgr::getFramebufferWidth() && //
-            scr3d->getHeightInFramebuffer() == pgSysMgr::getFramebufferHeight());
-        pgAssert(isEqual(scr3d->getViewWidth(), pgSysMgr::getFramebufferWidth()) && //
-            isEqual(scr3d->getViewHeight(), pgSysMgr::getFramebufferHeight()));
-        pgAssert(scr3d->isActive());
-        pgAssert(scr3d->isClearColor() && scr3d->isClearDepth());
-        pgAssert(scr3d->getClearColor() == pgCol::ZERO);
-        pgAssert(scr3d->isPerspective());
-        pgAssert(isEqual(scr3d->getFocusDist(), static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST)));
-        pgAssert(isEqual(scr3d->getNearClipDist(), static_cast<r32>(pgScr::DEFAULT_NEAR_CLIP_DIST)) && //
-            isEqual(scr3d->getFarClipDist(), static_cast<r32>(pgScr::DEFAULT_FAR_CLIP_DIST)));
-        pgAssert(isEqual(scr3d->view(), pgMat::UNIT.translate(0, 0, static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST))));
-        pgAssert(!scr3d->hasScreenTexture());
-        pgAssert(scr3d->getGuestScreenID(0) == pgID::ZERO && scr3d->getGuestScreenID(1) == pgID::ZERO && //
-            scr3d->getGuestScreenID(2) == pgID::ZERO && scr3d->getGuestScreenID(3) == pgID::ZERO);
+        ckAssert(scr3d->getID() == ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckAssert(scr3d->getLeftInFramebuffer() == 0 && scr3d->getTopInFramebuffer() == 0 && //
+            scr3d->getWidthInFramebuffer() == ckSysMgr::getFramebufferWidth() && //
+            scr3d->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
+        ckAssert(isEqual(scr3d->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
+            isEqual(scr3d->getViewHeight(), ckSysMgr::getFramebufferHeight()));
+        ckAssert(scr3d->isActive());
+        ckAssert(scr3d->isClearColor() && scr3d->isClearDepth());
+        ckAssert(scr3d->getClearColor() == ckCol::ZERO);
+        ckAssert(scr3d->isPerspective());
+        ckAssert(isEqual(scr3d->getFocusDist(), static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST)));
+        ckAssert(isEqual(scr3d->getNearClipDist(), static_cast<r32>(ckScr::DEFAULT_NEAR_CLIP_DIST)) && //
+            isEqual(scr3d->getFarClipDist(), static_cast<r32>(ckScr::DEFAULT_FAR_CLIP_DIST)));
+        ckAssert(isEqual(scr3d->view(), ckMat::UNIT.translate(0, 0, static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST))));
+        ckAssert(!scr3d->hasScreenTexture());
+        ckAssert(scr3d->getGuestScreenID(0) == ckID::ZERO && scr3d->getGuestScreenID(1) == ckID::ZERO && //
+            scr3d->getGuestScreenID(2) == ckID::ZERO && scr3d->getGuestScreenID(3) == ckID::ZERO);
 
-        pgScr* scr2d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckScr* scr2d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
-        pgAssert(scr2d->getID() == pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgAssert(scr2d->getLeftInFramebuffer() == 0 && scr2d->getTopInFramebuffer() == 0 && //
-            scr2d->getWidthInFramebuffer() == pgSysMgr::getFramebufferWidth() && //
-            scr2d->getHeightInFramebuffer() == pgSysMgr::getFramebufferHeight());
-        pgAssert(isEqual(scr2d->getViewWidth(), pgSysMgr::getFramebufferWidth()) && //
-            isEqual(scr2d->getViewHeight(), pgSysMgr::getFramebufferHeight()));
-        pgAssert(scr2d->isActive());
-        pgAssert(!scr2d->isClearColor() && scr2d->isClearDepth());
-        pgAssert(scr2d->getClearColor() == pgCol(255, 0, 0, 0));
-        pgAssert(!scr2d->isPerspective());
-        pgAssert(isEqual(scr2d->getFocusDist(), static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST)));
-        pgAssert(isEqual(scr2d->getNearClipDist(), static_cast<r32>(pgScr::DEFAULT_NEAR_CLIP_DIST)) && //
-            isEqual(scr2d->getFarClipDist(), static_cast<r32>(pgScr::DEFAULT_FAR_CLIP_DIST)));
-        pgAssert(isEqual(scr2d->view(), pgMat::UNIT.translate(0, 0, static_cast<r32>(pgScr::DEFAULT_FOCUS_DIST))));
-        pgAssert(!scr3d->hasScreenTexture());
-        pgAssert(scr2d->getGuestScreenID(0) == pgID::ZERO && scr2d->getGuestScreenID(1) == pgID::ZERO && //
-            scr2d->getGuestScreenID(2) == pgID::ZERO && scr2d->getGuestScreenID(3) == pgID::ZERO);
+        ckAssert(scr2d->getID() == ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckAssert(scr2d->getLeftInFramebuffer() == 0 && scr2d->getTopInFramebuffer() == 0 && //
+            scr2d->getWidthInFramebuffer() == ckSysMgr::getFramebufferWidth() && //
+            scr2d->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
+        ckAssert(isEqual(scr2d->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
+            isEqual(scr2d->getViewHeight(), ckSysMgr::getFramebufferHeight()));
+        ckAssert(scr2d->isActive());
+        ckAssert(!scr2d->isClearColor() && scr2d->isClearDepth());
+        ckAssert(scr2d->getClearColor() == ckCol(255, 0, 0, 0));
+        ckAssert(!scr2d->isPerspective());
+        ckAssert(isEqual(scr2d->getFocusDist(), static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST)));
+        ckAssert(isEqual(scr2d->getNearClipDist(), static_cast<r32>(ckScr::DEFAULT_NEAR_CLIP_DIST)) && //
+            isEqual(scr2d->getFarClipDist(), static_cast<r32>(ckScr::DEFAULT_FAR_CLIP_DIST)));
+        ckAssert(isEqual(scr2d->view(), ckMat::UNIT.translate(0, 0, static_cast<r32>(ckScr::DEFAULT_FOCUS_DIST))));
+        ckAssert(!scr3d->hasScreenTexture());
+        ckAssert(scr2d->getGuestScreenID(0) == ckID::ZERO && scr2d->getGuestScreenID(1) == ckID::ZERO && //
+            scr2d->getGuestScreenID(2) == ckID::ZERO && scr2d->getGuestScreenID(3) == ckID::ZERO);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
-        static const pgID DEFAULT_LIGHT_SET_ID
+        static const ckID DEFAULT_LIGHT_SET_ID
     */
     {
-        pgAssert(pgDrawMgr::DEFAULT_LIGHT_SET_ID == pgID_("DEFAULT_LIGHT_SET"));
+        ckAssert(ckDrawMgr::DEFAULT_LIGHT_SET_ID == ckID_("DEFAULT_LIGHT_SET"));
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgLts* lts = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckLts* lts = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-        pgAssert(lts->getID() == pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(lts->getAmbientColor() == pgCol::ZERO);
-        pgAssert(!lts->isParaLightActive(0) && !lts->isParaLightActive(1) && !lts->isParaLightActive(2));
-        pgAssert(lts->getPointLightNum() == 0);
+        ckAssert(lts->getID() == ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(lts->getAmbientColor() == ckCol::ZERO);
+        ckAssert(!lts->isParaLightActive(0) && !lts->isParaLightActive(1) && !lts->isParaLightActive(2));
+        ckAssert(lts->getPointLightNum() == 0);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
-        static const pgID DEFAULT_SHADER_ID
+        static const ckID DEFAULT_SHADER_ID
     */
     {
-        pgAssert(pgDrawMgr::DEFAULT_SHADER_ID == pgID_("DEFAULT_SHADER"));
+        ckAssert(ckDrawMgr::DEFAULT_SHADER_ID == ckID_("DEFAULT_SHADER"));
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgShd* shd = pgDrawMgr::getShader(pgDrawMgr::DEFAULT_SHADER_ID);
+        ckShd* shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
 
-        pgAssert(shd->getID() == pgDrawMgr::DEFAULT_SHADER_ID);
-        pgAssert(shd->getUniformNum() == 9);
-        pgAssert(shd->getAttribNum() == 0);
-        pgAssert(shd->getTextureNum() == 1);
-        pgAssert(pgDrawMgr::isShaderAvailable() == shd->isValid());
+        ckAssert(shd->getID() == ckDrawMgr::DEFAULT_SHADER_ID);
+        ckAssert(shd->getUniformNum() == 9);
+        ckAssert(shd->getAttribNum() == 0);
+        ckAssert(shd->getTextureNum() == 1);
+        ckAssert(ckDrawMgr::isShaderAvailable() == shd->isValid());
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
         static const u32 MAX_RENDER_INTERVAL_MSEC_TIME
     */
     {
-        pgAssert(pgDrawMgr::MAX_RENDER_INTERVAL_MSEC_TIME == 100);
+        ckAssert(ckDrawMgr::MAX_RENDER_INTERVAL_MSEC_TIME == 100);
     }
 
     /*
         static bool isShaderAvailable()
     */
     {
-        pgAssert(pgDrawMgr::isShaderAvailable() == pgDrawMgr::isShaderAvailable());
+        ckAssert(ckDrawMgr::isShaderAvailable() == ckDrawMgr::isShaderAvailable());
     }
 
     /*
         static u16 getMaxTextureLength()
     */
     {
-        pgAssert(pgDrawMgr::getMaxTextureLength() == 2048);
+        ckAssert(ckDrawMgr::getMaxTextureLength() == 2048);
     }
 
     /*
         static u16 getValidTextureLength(u16 length)
     */
     {
-        pgAssert(pgDrawMgr::getValidTextureLength(0) == 8);
-        pgAssert(pgDrawMgr::getValidTextureLength(4) == 8);
-        pgAssert(pgDrawMgr::getValidTextureLength(8) == 8);
-        pgAssert(pgDrawMgr::getValidTextureLength(9) == 16);
-        pgAssert(pgDrawMgr::getValidTextureLength(32) == 32);
-        pgAssert(pgDrawMgr::getValidTextureLength(33) == 64);
-        pgAssert(pgDrawMgr::getValidTextureLength(64) == 64);
-        pgAssert(pgDrawMgr::getValidTextureLength(65) == 128);
-        pgAssert(pgDrawMgr::getValidTextureLength(128) == 128);
-        pgAssert(pgDrawMgr::getValidTextureLength(129) == 256);
-        pgAssert(pgDrawMgr::getValidTextureLength(256) == 256);
-        pgAssert(pgDrawMgr::getValidTextureLength(257) == 512);
-        pgAssert(pgDrawMgr::getValidTextureLength(512) == 512);
-        pgAssert(pgDrawMgr::getValidTextureLength(513) == 1024);
-        pgAssert(pgDrawMgr::getValidTextureLength(1024) == 1024);
-        pgAssert(pgDrawMgr::getValidTextureLength(1025) == 2048);
-        pgAssert(pgDrawMgr::getValidTextureLength(2048) == 2048);
-        pgAssert(pgDrawMgr::getValidTextureLength(2049) == 2048);
-        pgAssert(pgDrawMgr::getValidTextureLength(10000) == 2048);
+        ckAssert(ckDrawMgr::getValidTextureLength(0) == 8);
+        ckAssert(ckDrawMgr::getValidTextureLength(4) == 8);
+        ckAssert(ckDrawMgr::getValidTextureLength(8) == 8);
+        ckAssert(ckDrawMgr::getValidTextureLength(9) == 16);
+        ckAssert(ckDrawMgr::getValidTextureLength(32) == 32);
+        ckAssert(ckDrawMgr::getValidTextureLength(33) == 64);
+        ckAssert(ckDrawMgr::getValidTextureLength(64) == 64);
+        ckAssert(ckDrawMgr::getValidTextureLength(65) == 128);
+        ckAssert(ckDrawMgr::getValidTextureLength(128) == 128);
+        ckAssert(ckDrawMgr::getValidTextureLength(129) == 256);
+        ckAssert(ckDrawMgr::getValidTextureLength(256) == 256);
+        ckAssert(ckDrawMgr::getValidTextureLength(257) == 512);
+        ckAssert(ckDrawMgr::getValidTextureLength(512) == 512);
+        ckAssert(ckDrawMgr::getValidTextureLength(513) == 1024);
+        ckAssert(ckDrawMgr::getValidTextureLength(1024) == 1024);
+        ckAssert(ckDrawMgr::getValidTextureLength(1025) == 2048);
+        ckAssert(ckDrawMgr::getValidTextureLength(2048) == 2048);
+        ckAssert(ckDrawMgr::getValidTextureLength(2049) == 2048);
+        ckAssert(ckDrawMgr::getValidTextureLength(10000) == 2048);
     }
 
     /*
-        static u16 getTexturePixelSize(pgTex::TexFormat format)
+        static u16 getTexturePixelSize(ckTex::TexFormat format)
     */
     {
-        pgAssert(pgDrawMgr::getTexturePixelSize(pgTex::FORMAT_RGB) == 3);
-        pgAssert(pgDrawMgr::getTexturePixelSize(pgTex::FORMAT_RGBA) == 4);
-        pgAssert(pgDrawMgr::getTexturePixelSize(pgTex::FORMAT_ALPHA) == 1);
-        pgAssert(pgDrawMgr::getTexturePixelSize(pgTex::FORMAT_PNG_RGB) == 3);
-        pgAssert(pgDrawMgr::getTexturePixelSize(pgTex::FORMAT_PNG_RGBA) == 4);
-        pgAssert(pgDrawMgr::getTexturePixelSize(pgTex::FORMAT_PNG_ALPHA) == 1);
+        ckAssert(ckDrawMgr::getTexturePixelSize(ckTex::FORMAT_RGB) == 3);
+        ckAssert(ckDrawMgr::getTexturePixelSize(ckTex::FORMAT_RGBA) == 4);
+        ckAssert(ckDrawMgr::getTexturePixelSize(ckTex::FORMAT_ALPHA) == 1);
+        ckAssert(ckDrawMgr::getTexturePixelSize(ckTex::FORMAT_PNG_RGB) == 3);
+        ckAssert(ckDrawMgr::getTexturePixelSize(ckTex::FORMAT_PNG_RGBA) == 4);
+        ckAssert(ckDrawMgr::getTexturePixelSize(ckTex::FORMAT_PNG_ALPHA) == 1);
     }
 
     /*
@@ -210,17 +210,17 @@ void pgDrawMgrTest()
         static void destroyBeforeRes()
     */
     {
-        pgAssert(!pgDrawMgr::isCreated());
+        ckAssert(!ckDrawMgr::isCreated());
 
-        pgDrawMgr::createAfterRes();
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgAssert(pgDrawMgr::isCreated());
+        ckAssert(ckDrawMgr::isCreated());
 
-        pgDrawMgr::destroyBeforeRes();
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgAssert(!pgDrawMgr::isCreated());
+        ckAssert(!ckDrawMgr::isCreated());
     }
 
     /*
@@ -230,363 +230,363 @@ void pgDrawMgrTest()
         static bool renderForSystem()
     */
     {
-        pgAssertThrow(pgDrawMgr::setRender(false), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::isRender(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::deleteAllVramObjForSystem(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::renderForSystem(), pgDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::setRender(false), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::isRender(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::deleteAllVramObjForSystem(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::renderForSystem(), ckDrawMgr::ExceptionNotInitialized);
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgDrawMgr::deleteAllVramObjForSystem();
+        ckDrawMgr::deleteAllVramObjForSystem();
 
-        pgAssert(pgDrawMgr::isRender());
+        ckAssert(ckDrawMgr::isRender());
 
-        pgDrawMgr::setRender(false);
-        pgAssert(!pgDrawMgr::isRender());
+        ckDrawMgr::setRender(false);
+        ckAssert(!ckDrawMgr::isRender());
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        pgDrawMgr::deleteScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgDrawMgr::deleteScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckDrawMgr::deleteScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDrawMgr::deleteScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
-        pgDrawMgr::setRender(true);
-        pgAssert(pgDrawMgr::isRender());
+        ckDrawMgr::setRender(true);
+        ckAssert(ckDrawMgr::isRender());
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
-        static bool hasScreen(pgID scr_id)
-        static pgScr* getScreen(pgID scr_id)
-        static pgScr* newScreen(pgID scr_id)
-        static void deleteScreen(pgID scr_id)
-        static pgScr* getFirstScreenN()
-        static pgScr* getLastScreenN()
+        static bool hasScreen(ckID scr_id)
+        static ckScr* getScreen(ckID scr_id)
+        static ckScr* newScreen(ckID scr_id)
+        static void deleteScreen(ckID scr_id)
+        static ckScr* getFirstScreenN()
+        static ckScr* getLastScreenN()
     */
     {
-        pgAssertThrow(pgDrawMgr::hasScreen(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getScreen(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::newScreen(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::deleteScreen(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFirstScreenN(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getLastScreenN(), pgDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::hasScreen(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getScreen(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::newScreen(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::deleteScreen(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFirstScreenN(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getLastScreenN(), ckDrawMgr::ExceptionNotInitialized);
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgScr* scr0d = pgDrawMgr::getScreen(pgDrawMgr::INVISIBLE_SCREEN_ID);
-        pgAssert(scr0d->getID() == pgDrawMgr::INVISIBLE_SCREEN_ID);
-        pgAssert(pgDrawMgr::hasScreen(pgDrawMgr::INVISIBLE_SCREEN_ID));
+        ckScr* scr0d = ckDrawMgr::getScreen(ckDrawMgr::INVISIBLE_SCREEN_ID);
+        ckAssert(scr0d->getID() == ckDrawMgr::INVISIBLE_SCREEN_ID);
+        ckAssert(ckDrawMgr::hasScreen(ckDrawMgr::INVISIBLE_SCREEN_ID));
 
-        pgScr* scr3d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgAssert(scr3d->getID() == pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgAssert(pgDrawMgr::hasScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID));
+        ckScr* scr3d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckAssert(scr3d->getID() == ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckAssert(ckDrawMgr::hasScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID));
 
-        pgScr* scr2d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgAssert(scr2d->getID() == pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgAssert(pgDrawMgr::hasScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID));
+        ckScr* scr2d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckAssert(scr2d->getID() == ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckAssert(ckDrawMgr::hasScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID));
 
-        pgAssertThrow(pgDrawMgr::getScreen(pgID::genID()), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::getScreen(ckID::genID()), ckDrawMgr::ExceptionNotFound);
 
-        pgID id = pgID_("TEST_SCREEN");
-        pgScr* scr = pgDrawMgr::newScreen(id);
-        pgAssert(scr->getID() == id);
-        pgAssert(pgDrawMgr::hasScreen(id));
-        pgAssert(pgDrawMgr::getFirstScreenN() == scr0d && pgDrawMgr::getLastScreenN() == scr);
+        ckID id = ckID_("TEST_SCREEN");
+        ckScr* scr = ckDrawMgr::newScreen(id);
+        ckAssert(scr->getID() == id);
+        ckAssert(ckDrawMgr::hasScreen(id));
+        ckAssert(ckDrawMgr::getFirstScreenN() == scr0d && ckDrawMgr::getLastScreenN() == scr);
 
-        pgAssertThrow(pgDrawMgr::newScreen(id), pgDrawMgr::ExceptionSameIDExists);
+        ckAssertThrow(ckDrawMgr::newScreen(id), ckDrawMgr::ExceptionSameIDExists);
 
-        pgNode node;
+        ckNode node;
         node.init(id);
 
-        pgDrawMgr::deleteScreen(id);
-        pgAssert(!pgDrawMgr::hasScreen(id));
-        pgAssert(pgDrawMgr::getFirstScreenN() == scr0d && pgDrawMgr::getLastScreenN() == scr2d);
+        ckDrawMgr::deleteScreen(id);
+        ckAssert(!ckDrawMgr::hasScreen(id));
+        ckAssert(ckDrawMgr::getFirstScreenN() == scr0d && ckDrawMgr::getLastScreenN() == scr2d);
 
-        pgAssert(node.getScreenID() == pgDrawMgr::INVISIBLE_SCREEN_ID);
+        ckAssert(node.getScreenID() == ckDrawMgr::INVISIBLE_SCREEN_ID);
 
-        pgAssertThrow(pgDrawMgr::deleteScreen(id), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::deleteScreen(id), ckDrawMgr::ExceptionNotFound);
 
-        pgDrawMgr::deleteScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgAssert(!pgDrawMgr::hasScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID));
-        pgAssert(pgDrawMgr::getFirstScreenN() == scr0d && pgDrawMgr::getLastScreenN() == scr2d);
+        ckDrawMgr::deleteScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckAssert(!ckDrawMgr::hasScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID));
+        ckAssert(ckDrawMgr::getFirstScreenN() == scr0d && ckDrawMgr::getLastScreenN() == scr2d);
 
-        pgDrawMgr::deleteScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-        pgAssert(!pgDrawMgr::hasScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID));
-        pgAssert(pgDrawMgr::getFirstScreenN() == scr0d && pgDrawMgr::getLastScreenN() == scr0d);
+        ckDrawMgr::deleteScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        ckAssert(!ckDrawMgr::hasScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID));
+        ckAssert(ckDrawMgr::getFirstScreenN() == scr0d && ckDrawMgr::getLastScreenN() == scr0d);
 
-        pgAssertThrow(pgDrawMgr::hasScreen(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::getScreen(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newScreen(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::deleteScreen(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::deleteScreen(pgDrawMgr::INVISIBLE_SCREEN_ID), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::hasScreen(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::getScreen(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newScreen(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::deleteScreen(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::deleteScreen(ckDrawMgr::INVISIBLE_SCREEN_ID), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgDrawMgr::newScreen(id);
+        ckDrawMgr::newScreen(id);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
     }
 
     /*
-        static bool hasTexture(pgID tex_id)
-        static pgTex* getTexture(pgID tex_id)
-        static pgTex* newTexture(pgID tex_id, u16 width, u16 height, pgTex::TexFormat format)
-        static pgTex* newTexture(pgID tex_id, u16 width, u16 height, pgTex::TexFormat format, const void* image, u32 image_size)
-        static void deleteTexture(pgID tex_id)
-        static pgTex* getFirstTextureN()
-        static pgTex* getLastTextureN()
+        static bool hasTexture(ckID tex_id)
+        static ckTex* getTexture(ckID tex_id)
+        static ckTex* newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format)
+        static ckTex* newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format, const void* image, u32 image_size)
+        static void deleteTexture(ckID tex_id)
+        static ckTex* getFirstTextureN()
+        static ckTex* getLastTextureN()
     */
     {
-        pgAssertThrow(pgDrawMgr::hasTexture(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getTexture(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::ZERO, 0, 0, pgTex::FORMAT_RGB), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::ZERO, 0, 0, pgTex::FORMAT_RGB, NULL, 0), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::deleteTexture(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFirstTextureN(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getLastTextureN(), pgDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::hasTexture(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getTexture(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::ZERO, 0, 0, ckTex::FORMAT_RGB), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::ZERO, 0, 0, ckTex::FORMAT_RGB, NULL, 0), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::deleteTexture(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFirstTextureN(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getLastTextureN(), ckDrawMgr::ExceptionNotInitialized);
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgID id1 = pgID::genID();
-        pgAssertThrow(pgDrawMgr::getTexture(id1), pgDrawMgr::ExceptionNotFound);
+        ckID id1 = ckID::genID();
+        ckAssertThrow(ckDrawMgr::getTexture(id1), ckDrawMgr::ExceptionNotFound);
 
-        pgAssert(!pgDrawMgr::getFirstTextureN() && !pgDrawMgr::getLastTextureN());
+        ckAssert(!ckDrawMgr::getFirstTextureN() && !ckDrawMgr::getLastTextureN());
 
-        pgTex* tex1 = pgDrawMgr::newTexture(id1, 10, 10, pgTex::FORMAT_RGB);
-        pgAssert(tex1->getID() == id1);
-        pgAssert(pgDrawMgr::hasTexture(id1));
-        pgAssert(pgDrawMgr::getFirstTextureN() == tex1 && pgDrawMgr::getLastTextureN() == tex1);
+        ckTex* tex1 = ckDrawMgr::newTexture(id1, 10, 10, ckTex::FORMAT_RGB);
+        ckAssert(tex1->getID() == id1);
+        ckAssert(ckDrawMgr::hasTexture(id1));
+        ckAssert(ckDrawMgr::getFirstTextureN() == tex1 && ckDrawMgr::getLastTextureN() == tex1);
 
-        pgID id2 = pgID::genID();
-        pgTex* tex2 = pgDrawMgr::newTexture(id2, 100, 100, pgTex::FORMAT_RGBA, "dummy", 40000);
-        pgAssert(tex2->getID() == id2);
-        pgAssert(pgDrawMgr::hasTexture(id2));
-        pgAssert(pgDrawMgr::getFirstTextureN() == tex1 && pgDrawMgr::getLastTextureN() == tex2);
+        ckID id2 = ckID::genID();
+        ckTex* tex2 = ckDrawMgr::newTexture(id2, 100, 100, ckTex::FORMAT_RGBA, "dummy", 40000);
+        ckAssert(tex2->getID() == id2);
+        ckAssert(ckDrawMgr::hasTexture(id2));
+        ckAssert(ckDrawMgr::getFirstTextureN() == tex1 && ckDrawMgr::getLastTextureN() == tex2);
 
-        pgDrawMgr::deleteTexture(id1);
-        pgAssert(!pgDrawMgr::hasTexture(id1));
-        pgAssert(pgDrawMgr::getFirstTextureN() == tex2 && pgDrawMgr::getLastTextureN() == tex2);
+        ckDrawMgr::deleteTexture(id1);
+        ckAssert(!ckDrawMgr::hasTexture(id1));
+        ckAssert(ckDrawMgr::getFirstTextureN() == tex2 && ckDrawMgr::getLastTextureN() == tex2);
 
-        pgAssertThrow(pgDrawMgr::deleteTexture(id1), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::deleteTexture(id1), ckDrawMgr::ExceptionNotFound);
 
-        pgDrawMgr::deleteTexture(id2);
-        pgAssert(!pgDrawMgr::hasTexture(id2));
-        pgAssert(!pgDrawMgr::getFirstTextureN() && !pgDrawMgr::getLastTextureN());
+        ckDrawMgr::deleteTexture(id2);
+        ckAssert(!ckDrawMgr::hasTexture(id2));
+        ckAssert(!ckDrawMgr::getFirstTextureN() && !ckDrawMgr::getLastTextureN());
 
-        pgDrawMgr::newTexture(id1, 10, 20, pgTex::FORMAT_ALPHA);
-        pgDrawMgr::newTexture(id2, 30, 40, pgTex::FORMAT_RGB, "dummy", 3600);
+        ckDrawMgr::newTexture(id1, 10, 20, ckTex::FORMAT_ALPHA);
+        ckDrawMgr::newTexture(id2, 30, 40, ckTex::FORMAT_RGB, "dummy", 3600);
 
-        pgAssertThrow(pgDrawMgr::hasTexture(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::getTexture(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::hasTexture(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::getTexture(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::ZERO, 100, 100, pgTex::FORMAT_RGB), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 0, 100, pgTex::FORMAT_RGB), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 0, pgTex::FORMAT_RGB), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 2049, 100, pgTex::FORMAT_RGB), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 2049, pgTex::FORMAT_RGB), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_PNG_RGB), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_PNG_RGBA), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_PNG_ALPHA), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::ZERO, 100, 100, ckTex::FORMAT_RGB), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 0, 100, ckTex::FORMAT_RGB), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 0, ckTex::FORMAT_RGB), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 2049, 100, ckTex::FORMAT_RGB), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 2049, ckTex::FORMAT_RGB), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_PNG_RGB), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_PNG_RGBA), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_PNG_ALPHA), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::ZERO, 100, 100, pgTex::FORMAT_RGB, "dummy", 30000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 0, 100, pgTex::FORMAT_RGB, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 0, pgTex::FORMAT_RGB, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 2049, 100, pgTex::FORMAT_RGB, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 2049, pgTex::FORMAT_RGB, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_PNG_RGB, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_PNG_RGBA, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_PNG_ALPHA, "dummy", 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_RGB, NULL, 3000), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newTexture(pgID::genID(), 100, 100, pgTex::FORMAT_RGB, "dummy", 1), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::ZERO, 100, 100, ckTex::FORMAT_RGB, "dummy", 30000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 0, 100, ckTex::FORMAT_RGB, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 0, ckTex::FORMAT_RGB, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 2049, 100, ckTex::FORMAT_RGB, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 2049, ckTex::FORMAT_RGB, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_PNG_RGB, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_PNG_RGBA, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_PNG_ALPHA, "dummy", 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_RGB, NULL, 3000), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newTexture(ckID::genID(), 100, 100, ckTex::FORMAT_RGB, "dummy", 1), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgAssertThrow(pgDrawMgr::deleteTexture(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::deleteTexture(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
     }
 
     /*
-        static u16 getFontIndexNum(pgID font_id)
-        static pgID getFontID()
+        static u16 getFontIndexNum(ckID font_id)
+        static ckID getFontID()
         static u16 getFontIndex()
-        static void setFont(pgID font_id, u16 font_index)
+        static void setFont(ckID font_id, u16 font_index)
         static u16 getFontSize()
         static u16 setFontSize(u16 font_size)
         static u16 calcFontDrawWidth(const char* str, ...)
         static u16 calcFontDrawWidth(const wchar_t* str, ...)
     */
     {
-        pgAssertThrow(pgDrawMgr::getFontIndexNum(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFontID(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFontIndex(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::setFont(pgID::ZERO, 0), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFontSize(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::setFontSize(0), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::calcFontDrawWidth(static_cast<const char*>(NULL)), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::calcFontDrawWidth(static_cast<const wchar_t*>(NULL)), pgDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFontIndexNum(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFontID(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFontIndex(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::setFont(ckID::ZERO, 0), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFontSize(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::setFontSize(0), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::calcFontDrawWidth(static_cast<const char*>(NULL)), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::calcFontDrawWidth(static_cast<const wchar_t*>(NULL)), ckDrawMgr::ExceptionNotInitialized);
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgResMgr::loadResource(TEST_DATA_DIR "adler.ttf", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "adler.ttc", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "adler.otf", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "adler.ttf", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "adler.ttc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "adler.otf", true);
 
-        pgAssert(pgDrawMgr::getFontIndexNum(pgID_("adler.ttf")) == 1);
-        pgAssert(pgDrawMgr::getFontIndexNum(pgID_("adler.ttc")) == 3);
-        pgAssert(pgDrawMgr::getFontIndexNum(pgID_("adler.otf")) == 1);
+        ckAssert(ckDrawMgr::getFontIndexNum(ckID_("adler.ttf")) == 1);
+        ckAssert(ckDrawMgr::getFontIndexNum(ckID_("adler.ttc")) == 3);
+        ckAssert(ckDrawMgr::getFontIndexNum(ckID_("adler.otf")) == 1);
 
-        pgAssert(pgDrawMgr::getFontID() == pgID::ZERO);
-        pgAssert(pgDrawMgr::getFontIndex() == 0);
-        pgAssert(pgDrawMgr::getFontSize() == 16);
+        ckAssert(ckDrawMgr::getFontID() == ckID::ZERO);
+        ckAssert(ckDrawMgr::getFontIndex() == 0);
+        ckAssert(ckDrawMgr::getFontSize() == 16);
 
-        pgAssertThrow(pgDrawMgr::calcFontDrawWidth("TEST %s %d", "MESSAGE", 123), pgDrawMgr::ExceptionInvalidCall);
-        pgAssertThrow(pgDrawMgr::calcFontDrawWidth(L"TEST %s %d", L"MESSAGE", 123), pgDrawMgr::ExceptionInvalidCall);
+        ckAssertThrow(ckDrawMgr::calcFontDrawWidth("TEST %s %d", "MESSAGE", 123), ckDrawMgr::ExceptionInvalidCall);
+        ckAssertThrow(ckDrawMgr::calcFontDrawWidth(L"TEST %s %d", L"MESSAGE", 123), ckDrawMgr::ExceptionInvalidCall);
 
-        pgDrawMgr::setFont(pgID_("adler.ttc"), 2);
-        pgAssert(pgDrawMgr::getFontID() == pgID_("adler.ttc"));
-        pgAssert(pgDrawMgr::getFontIndex() == 2);
-        pgAssert(pgDrawMgr::getFontSize() == 16);
+        ckDrawMgr::setFont(ckID_("adler.ttc"), 2);
+        ckAssert(ckDrawMgr::getFontID() == ckID_("adler.ttc"));
+        ckAssert(ckDrawMgr::getFontIndex() == 2);
+        ckAssert(ckDrawMgr::getFontSize() == 16);
 
-        pgDrawMgr::setFontSize(123);
-        pgAssert(pgDrawMgr::getFontSize() == 123);
+        ckDrawMgr::setFontSize(123);
+        ckAssert(ckDrawMgr::getFontSize() == 123);
 
-        pgAssert(pgDrawMgr::calcFontDrawWidth("TEST") > 40);
-        pgAssert(pgDrawMgr::calcFontDrawWidth(L"TEST") > 40);
-        pgAssert(pgDrawMgr::calcFontDrawWidth("TEST") == pgDrawMgr::calcFontDrawWidth(L"TEST"));
+        ckAssert(ckDrawMgr::calcFontDrawWidth("TEST") > 40);
+        ckAssert(ckDrawMgr::calcFontDrawWidth(L"TEST") > 40);
+        ckAssert(ckDrawMgr::calcFontDrawWidth("TEST") == ckDrawMgr::calcFontDrawWidth(L"TEST"));
 
-        pgAssertThrow(pgDrawMgr::getFontIndexNum(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::getFontIndexNum(pgID_("DUMMY")), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::setFont(pgID::ZERO, 0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::setFont(pgID_("adler.ttc"), 3), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::setFontSize(0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::calcFontDrawWidth(static_cast<const char*>(NULL)), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::calcFontDrawWidth(static_cast<const wchar_t*>(NULL)), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::getFontIndexNum(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::getFontIndexNum(ckID_("DUMMY")), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::setFont(ckID::ZERO, 0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::setFont(ckID_("adler.ttc"), 3), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::setFontSize(0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::calcFontDrawWidth(static_cast<const char*>(NULL)), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::calcFontDrawWidth(static_cast<const wchar_t*>(NULL)), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgResMgr::removeResource(pgID_("adler.ttf"));
-        pgResMgr::removeResource(pgID_("adler.ttc"));
+        ckResMgr::removeResource(ckID_("adler.ttf"));
+        ckResMgr::removeResource(ckID_("adler.ttc"));
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgResMgr::removeResource(pgID_("adler.otf"));
+        ckResMgr::removeResource(ckID_("adler.otf"));
     }
 
     /*
-        static bool hasShader(pgID shd_id)
-        static pgShd* getShader(pgID shd_id)
-        static pgShd* newShader(pgID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num)
-        static void deleteShader(pgID shd_id)
-        static pgShd* getFirstShaderN()
-        static pgShd* getLastShaderN()
+        static bool hasShader(ckID shd_id)
+        static ckShd* getShader(ckID shd_id)
+        static ckShd* newShader(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num)
+        static void deleteShader(ckID shd_id)
+        static ckShd* getFirstShaderN()
+        static ckShd* getLastShaderN()
     */
     {
-        pgAssertThrow(pgDrawMgr::hasShader(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getShader(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::ZERO, NULL, NULL, 0, 0, 0), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::deleteShader(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFirstShaderN(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getLastShaderN(), pgDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::hasShader(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getShader(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::ZERO, NULL, NULL, 0, 0, 0), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::deleteShader(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFirstShaderN(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getLastShaderN(), ckDrawMgr::ExceptionNotInitialized);
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgShd* def_shd = pgDrawMgr::getShader(pgDrawMgr::DEFAULT_SHADER_ID);
-        pgAssert(def_shd->getID() == pgDrawMgr::DEFAULT_SHADER_ID);
-        pgAssert(pgDrawMgr::hasShader(pgDrawMgr::DEFAULT_SHADER_ID));
-        pgAssert(pgDrawMgr::getFirstShaderN() == def_shd && pgDrawMgr::getLastShaderN() == def_shd);
+        ckShd* def_shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
+        ckAssert(def_shd->getID() == ckDrawMgr::DEFAULT_SHADER_ID);
+        ckAssert(ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_SHADER_ID));
+        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd && ckDrawMgr::getLastShaderN() == def_shd);
 
-        pgID id = pgID_("TEST_SHADER");
-        pgShd* shd = pgDrawMgr::newShader(id, "dummy", "dummy", 100, 100, 3);
-        pgAssert(shd->getID() == id);
-        pgAssert(pgDrawMgr::hasShader(id));
-        pgAssert(pgDrawMgr::getFirstShaderN() == def_shd && pgDrawMgr::getLastShaderN() == shd);
+        ckID id = ckID_("TEST_SHADER");
+        ckShd* shd = ckDrawMgr::newShader(id, "dummy", "dummy", 100, 100, 3);
+        ckAssert(shd->getID() == id);
+        ckAssert(ckDrawMgr::hasShader(id));
+        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd && ckDrawMgr::getLastShaderN() == shd);
 
-        pgAssertThrow(pgDrawMgr::newShader(id, "dummy", "dummy", 0, 0, 0), pgDrawMgr::ExceptionSameIDExists);
+        ckAssertThrow(ckDrawMgr::newShader(id, "dummy", "dummy", 0, 0, 0), ckDrawMgr::ExceptionSameIDExists);
 
-        pgDrawMgr::deleteShader(id);
-        pgAssert(!pgDrawMgr::hasShader(id));
-        pgAssert(pgDrawMgr::getFirstShaderN() == def_shd && pgDrawMgr::getLastShaderN() == def_shd);
+        ckDrawMgr::deleteShader(id);
+        ckAssert(!ckDrawMgr::hasShader(id));
+        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd && ckDrawMgr::getLastShaderN() == def_shd);
 
-        pgAssertThrow(pgDrawMgr::deleteShader(id), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::deleteShader(id), ckDrawMgr::ExceptionNotFound);
 
-        pgDrawMgr::deleteShader(pgDrawMgr::DEFAULT_SHADER_ID);
-        pgAssert(!pgDrawMgr::hasShader(pgDrawMgr::DEFAULT_SHADER_ID));
-        pgAssert(!pgDrawMgr::getFirstShaderN() && !pgDrawMgr::getLastShaderN());
+        ckDrawMgr::deleteShader(ckDrawMgr::DEFAULT_SHADER_ID);
+        ckAssert(!ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_SHADER_ID));
+        ckAssert(!ckDrawMgr::getFirstShaderN() && !ckDrawMgr::getLastShaderN());
 
-        pgAssertThrow(pgDrawMgr::hasShader(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::getShader(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::ZERO, "dummy", "dummy", 0, 0, 0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::genID(), NULL, "dummy", 0, 0, 0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::genID(), "dummy", NULL, 0, 0, 0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::genID(), "dummy", "dummy", 101, 0, 0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::genID(), "dummy", "dummy", 0, 101, 0), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newShader(pgID::genID(), "dummy", "dummy", 0, 0, 4), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::hasShader(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::getShader(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::ZERO, "dummy", "dummy", 0, 0, 0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::genID(), NULL, "dummy", 0, 0, 0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::genID(), "dummy", NULL, 0, 0, 0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::genID(), "dummy", "dummy", 101, 0, 0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::genID(), "dummy", "dummy", 0, 101, 0), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newShader(ckID::genID(), "dummy", "dummy", 0, 0, 4), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
     }
 
     /*
-        static bool hasLightSet(pgID lts_id)
-        static pgLts* getLightSet(pgID lts_id)
-        static pgLts* newLightSet(pgID lts_id)
-        static void deleteLightSet(pgID lts_id)
-        static pgLts* getFirstLightSetN()
-        static pgLts* getLastLightSetN()
+        static bool hasLightSet(ckID lts_id)
+        static ckLts* getLightSet(ckID lts_id)
+        static ckLts* newLightSet(ckID lts_id)
+        static void deleteLightSet(ckID lts_id)
+        static ckLts* getFirstLightSetN()
+        static ckLts* getLastLightSetN()
     */
     {
-        pgAssertThrow(pgDrawMgr::hasLightSet(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getLightSet(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::newLightSet(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::deleteLightSet(pgID::ZERO), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getFirstLightSetN(), pgDrawMgr::ExceptionNotInitialized);
-        pgAssertThrow(pgDrawMgr::getLastLightSetN(), pgDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::hasLightSet(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getLightSet(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::newLightSet(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::deleteLightSet(ckID::ZERO), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getFirstLightSetN(), ckDrawMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckDrawMgr::getLastLightSetN(), ckDrawMgr::ExceptionNotInitialized);
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        pgLts* lts0 = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(lts0->getID() == pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(pgDrawMgr::hasLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID));
-        pgAssert(pgDrawMgr::getFirstLightSetN() == lts0 && pgDrawMgr::getLastLightSetN() == lts0);
+        ckLts* lts0 = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(lts0->getID() == ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(ckDrawMgr::hasLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID));
+        ckAssert(ckDrawMgr::getFirstLightSetN() == lts0 && ckDrawMgr::getLastLightSetN() == lts0);
 
-        pgID id = pgID_("TEST_LIGHT_SET");
-        pgLts* lts = pgDrawMgr::newLightSet(id);
-        pgAssert(lts->getID() == id);
-        pgAssert(pgDrawMgr::hasLightSet(id));
-        pgAssert(pgDrawMgr::getFirstLightSetN() == lts0 && pgDrawMgr::getLastLightSetN() == lts);
+        ckID id = ckID_("TEST_LIGHT_SET");
+        ckLts* lts = ckDrawMgr::newLightSet(id);
+        ckAssert(lts->getID() == id);
+        ckAssert(ckDrawMgr::hasLightSet(id));
+        ckAssert(ckDrawMgr::getFirstLightSetN() == lts0 && ckDrawMgr::getLastLightSetN() == lts);
 
-        pgAssertThrow(pgDrawMgr::newLightSet(id), pgDrawMgr::ExceptionSameIDExists);
+        ckAssertThrow(ckDrawMgr::newLightSet(id), ckDrawMgr::ExceptionSameIDExists);
 
-        pgDrawMgr::deleteLightSet(id);
-        pgAssert(!pgDrawMgr::hasLightSet(id));
-        pgAssert(pgDrawMgr::getFirstLightSetN() == lts0 && pgDrawMgr::getLastLightSetN() == lts0);
+        ckDrawMgr::deleteLightSet(id);
+        ckAssert(!ckDrawMgr::hasLightSet(id));
+        ckAssert(ckDrawMgr::getFirstLightSetN() == lts0 && ckDrawMgr::getLastLightSetN() == lts0);
 
-        pgAssertThrow(pgDrawMgr::deleteLightSet(id), pgDrawMgr::ExceptionNotFound);
+        ckAssertThrow(ckDrawMgr::deleteLightSet(id), ckDrawMgr::ExceptionNotFound);
 
-        pgDrawMgr::deleteLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-        pgAssert(!pgDrawMgr::hasLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID));
-        pgAssert(!pgDrawMgr::getFirstLightSetN() && !pgDrawMgr::getLastLightSetN());
+        ckDrawMgr::deleteLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+        ckAssert(!ckDrawMgr::hasLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID));
+        ckAssert(!ckDrawMgr::getFirstLightSetN() && !ckDrawMgr::getLastLightSetN());
 
-        pgAssertThrow(pgDrawMgr::hasLightSet(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::getLightSet(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::newLightSet(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
-        pgAssertThrow(pgDrawMgr::deleteLightSet(pgID::ZERO), pgDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::hasLightSet(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::getLightSet(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::newLightSet(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckDrawMgr::deleteLightSet(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);
 
-        pgDrawMgr::newLightSet(pgID::genID());
-        pgDrawMgr::newLightSet(pgID::genID());
+        ckDrawMgr::newLightSet(ckID::genID());
+        ckDrawMgr::newLightSet(ckID::genID());
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
     }
 }

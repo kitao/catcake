@@ -32,140 +32,140 @@
 #include "test.h"
 
 
-template<class T> void assertAlone(pgTree<T>& tree)
+template<class T> void assertAlone(ckTree<T>& tree)
 {
     /*
         bool hasParent() const
-        pgTree<T>* getParentN() const
-        pgTree<T>* getPrevAllN() const
-        pgTree<T>* getNextAllN() const
-        pgTree<T>* getPrevSiblingN() const
-        pgTree<T>* getNextSiblingN() const
+        ckTree<T>* getParentN() const
+        ckTree<T>* getPrevAllN() const
+        ckTree<T>* getNextAllN() const
+        ckTree<T>* getPrevSiblingN() const
+        ckTree<T>* getNextSiblingN() const
         bool hasChild() const
-        pgTree<T>* getFirstChildN() const
-        pgTree<T>* getLastChildN() const
-        pgTree<T>* getLastDescendant() const
+        ckTree<T>* getFirstChildN() const
+        ckTree<T>* getLastChildN() const
+        ckTree<T>* getLastDescendant() const
     */
 
-    pgAssert(!tree.hasParent() && !tree.getParentN());
-    pgAssert(!tree.getPrevAllN() && !tree.getNextAllN());
-    pgAssert(!tree.hasChild() && !tree.getFirstChildN() && !tree.getLastChildN());
-    pgAssert(tree.getLastDescendant() == &tree);
+    ckAssert(!tree.hasParent() && !tree.getParentN());
+    ckAssert(!tree.getPrevAllN() && !tree.getNextAllN());
+    ckAssert(!tree.hasChild() && !tree.getFirstChildN() && !tree.getLastChildN());
+    ckAssert(tree.getLastDescendant() == &tree);
 
-    pgAssertThrow(tree.getPrevSiblingN(), typename pgTree<T>::ExceptionInvalidCall);
-    pgAssertThrow(tree.getNextSiblingN(), typename pgTree<T>::ExceptionInvalidCall);
+    ckAssertThrow(tree.getPrevSiblingN(), typename ckTree<T>::ExceptionInvalidCall);
+    ckAssertThrow(tree.getNextSiblingN(), typename ckTree<T>::ExceptionInvalidCall);
 }
 
 
-template<class T> void assertChild(pgTree<T>& parent)
+template<class T> void assertChild(ckTree<T>& parent)
 {
-    pgAssert(!parent.hasChild() && !parent.getFirstChildN() && !parent.getLastChildN());
-    pgAssert(parent.getLastDescendant() == &parent);
+    ckAssert(!parent.hasChild() && !parent.getFirstChildN() && !parent.getLastChildN());
+    ckAssert(parent.getLastDescendant() == &parent);
 }
 
 
-template<class T> void assertChild(pgTree<T>& parent, pgTree<T>& child)
+template<class T> void assertChild(ckTree<T>& parent, ckTree<T>& child)
 {
-    pgAssert(parent.hasChild() && parent.getFirstChildN() == &child && parent.getLastChildN() == &child);
-    pgAssert(child.hasParent() && child.getParentN() == &parent && !child.getPrevSiblingN() && !child.getNextSiblingN());
+    ckAssert(parent.hasChild() && parent.getFirstChildN() == &child && parent.getLastChildN() == &child);
+    ckAssert(child.hasParent() && child.getParentN() == &parent && !child.getPrevSiblingN() && !child.getNextSiblingN());
 }
 
 
-template<class T> void assertChild(pgTree<T>& parent, pgTree<T>& child1, pgTree<T>& child2)
+template<class T> void assertChild(ckTree<T>& parent, ckTree<T>& child1, ckTree<T>& child2)
 {
-    pgAssert(parent.hasChild() && parent.getFirstChildN() == &child1 && parent.getLastChildN() == &child2);
-    pgAssert(child1.hasParent() && child1.getParentN() == &parent && !child1.getPrevSiblingN() && child1.getNextSiblingN() == &child2);
-    pgAssert(child2.hasParent() && child2.getParentN() == &parent && child2.getPrevSiblingN() == &child1 && !child2.getNextSiblingN());
+    ckAssert(parent.hasChild() && parent.getFirstChildN() == &child1 && parent.getLastChildN() == &child2);
+    ckAssert(child1.hasParent() && child1.getParentN() == &parent && !child1.getPrevSiblingN() && child1.getNextSiblingN() == &child2);
+    ckAssert(child2.hasParent() && child2.getParentN() == &parent && child2.getPrevSiblingN() == &child1 && !child2.getNextSiblingN());
 }
 
 
-template<class T> void assertChild(pgTree<T>& parent, pgTree<T>& child1, pgTree<T>& child2, pgTree<T>& child3)
+template<class T> void assertChild(ckTree<T>& parent, ckTree<T>& child1, ckTree<T>& child2, ckTree<T>& child3)
 {
-    pgAssert(parent.hasChild() && parent.getFirstChildN() == &child1 && parent.getLastChildN() == &child3);
-    pgAssert(child1.hasParent() && child1.getParentN() == &parent && !child1.getPrevSiblingN() && child1.getNextSiblingN() == &child2);
-    pgAssert(child2.hasParent() && child2.getParentN() == &parent && child2.getPrevSiblingN() == &child1 && child2.getNextSiblingN() == &child3);
-    pgAssert(child3.hasParent() && child3.getParentN() == &parent && child3.getPrevSiblingN() == &child2 && !child3.getNextSiblingN());
+    ckAssert(parent.hasChild() && parent.getFirstChildN() == &child1 && parent.getLastChildN() == &child3);
+    ckAssert(child1.hasParent() && child1.getParentN() == &parent && !child1.getPrevSiblingN() && child1.getNextSiblingN() == &child2);
+    ckAssert(child2.hasParent() && child2.getParentN() == &parent && child2.getPrevSiblingN() == &child1 && child2.getNextSiblingN() == &child3);
+    ckAssert(child3.hasParent() && child3.getParentN() == &parent && child3.getPrevSiblingN() == &child2 && !child3.getNextSiblingN());
 }
 
 
-template<class T> void assertOrder(pgTree<T>& tree1, pgTree<T>& tree2)
+template<class T> void assertOrder(ckTree<T>& tree1, ckTree<T>& tree2)
 {
-    pgAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
-    pgAssert(tree2.getPrevAllN() == &tree1 && !tree2.getNextAllN());
+    ckAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
+    ckAssert(tree2.getPrevAllN() == &tree1 && !tree2.getNextAllN());
 }
 
 
-template<class T> void assertOrder(pgTree<T>& tree1, pgTree<T>& tree2, pgTree<T>& tree3)
+template<class T> void assertOrder(ckTree<T>& tree1, ckTree<T>& tree2, ckTree<T>& tree3)
 {
-    pgAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
-    pgAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
-    pgAssert(tree3.getPrevAllN() == &tree2 && !tree3.getNextAllN());
+    ckAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
+    ckAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
+    ckAssert(tree3.getPrevAllN() == &tree2 && !tree3.getNextAllN());
 }
 
 
-template<class T> void assertOrder(pgTree<T>& tree1, pgTree<T>& tree2, pgTree<T>& tree3, pgTree<T>& tree4)
+template<class T> void assertOrder(ckTree<T>& tree1, ckTree<T>& tree2, ckTree<T>& tree3, ckTree<T>& tree4)
 {
-    pgAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
-    pgAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
-    pgAssert(tree3.getPrevAllN() == &tree2 && tree3.getNextAllN() == &tree4);
-    pgAssert(tree4.getPrevAllN() == &tree3 && !tree4.getNextAllN());
+    ckAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
+    ckAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
+    ckAssert(tree3.getPrevAllN() == &tree2 && tree3.getNextAllN() == &tree4);
+    ckAssert(tree4.getPrevAllN() == &tree3 && !tree4.getNextAllN());
 }
 
 
-template<class T> void assertOrder(pgTree<T>& tree1, pgTree<T>& tree2, pgTree<T>& tree3, pgTree<T>& tree4, pgTree<T>& tree5)
+template<class T> void assertOrder(ckTree<T>& tree1, ckTree<T>& tree2, ckTree<T>& tree3, ckTree<T>& tree4, ckTree<T>& tree5)
 {
-    pgAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
-    pgAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
-    pgAssert(tree3.getPrevAllN() == &tree2 && tree3.getNextAllN() == &tree4);
-    pgAssert(tree4.getPrevAllN() == &tree3 && tree4.getNextAllN() == &tree5);
-    pgAssert(tree5.getPrevAllN() == &tree4 && !tree5.getNextAllN());
+    ckAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
+    ckAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
+    ckAssert(tree3.getPrevAllN() == &tree2 && tree3.getNextAllN() == &tree4);
+    ckAssert(tree4.getPrevAllN() == &tree3 && tree4.getNextAllN() == &tree5);
+    ckAssert(tree5.getPrevAllN() == &tree4 && !tree5.getNextAllN());
 }
 
 
-template<class T> void assertOrder(pgTree<T>& tree1, pgTree<T>& tree2, pgTree<T>& tree3, pgTree<T>& tree4, pgTree<T>& tree5, pgTree<T>& tree6)
+template<class T> void assertOrder(ckTree<T>& tree1, ckTree<T>& tree2, ckTree<T>& tree3, ckTree<T>& tree4, ckTree<T>& tree5, ckTree<T>& tree6)
 {
-    pgAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
-    pgAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
-    pgAssert(tree3.getPrevAllN() == &tree2 && tree3.getNextAllN() == &tree4);
-    pgAssert(tree4.getPrevAllN() == &tree3 && tree4.getNextAllN() == &tree5);
-    pgAssert(tree5.getPrevAllN() == &tree4 && tree5.getNextAllN() == &tree6);
-    pgAssert(tree6.getPrevAllN() == &tree5 && !tree6.getNextAllN());
+    ckAssert(!tree1.getPrevAllN() && tree1.getNextAllN() == &tree2);
+    ckAssert(tree2.getPrevAllN() == &tree1 && tree2.getNextAllN() == &tree3);
+    ckAssert(tree3.getPrevAllN() == &tree2 && tree3.getNextAllN() == &tree4);
+    ckAssert(tree4.getPrevAllN() == &tree3 && tree4.getNextAllN() == &tree5);
+    ckAssert(tree5.getPrevAllN() == &tree4 && tree5.getNextAllN() == &tree6);
+    ckAssert(tree6.getPrevAllN() == &tree5 && !tree6.getNextAllN());
 }
 
 
-template<class T> void assertLastDescendant(pgTree<T>& tree1, pgTree<T>& tree2)
+template<class T> void assertLastDescendant(ckTree<T>& tree1, ckTree<T>& tree2)
 {
-    pgAssert(tree1.getLastDescendant() == &tree2);
+    ckAssert(tree1.getLastDescendant() == &tree2);
 }
 
 
-void pgTreeTest()
+void ckTreeTest()
 {
     /*
-        pgTree()
-        ~pgTree()
+        ckTree()
+        ~ckTree()
         void init(T* self)
         T* getSelf() const
-        void addFirst(pgTree<T>* child)
+        void addFirst(ckTree<T>* child)
     */
     {
-        pgTree<u32> tree1;
+        ckTree<u32> tree1;
         assertAlone(tree1);
 
-        pgAssertThrow(tree1.init(NULL), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.getSelf(), pgTree<u32>::ExceptionNotInitialized);
+        ckAssertThrow(tree1.init(NULL), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.getSelf(), ckTree<u32>::ExceptionNotInitialized);
 
         u32 v1 = 1;
 
         tree1.init(&v1);
-        pgAssert(tree1.getSelf() == &v1);
+        ckAssert(tree1.getSelf() == &v1);
 
         {
-            pgTree<u32> tree2;
+            ckTree<u32> tree2;
             u32 v2 = 2;
 
             tree2.init(&v2);
-            pgAssert(tree2.getSelf() == &v2);
+            ckAssert(tree2.getSelf() == &v2);
 
             tree1.addFirst(&tree2);
             assertChild(tree1, tree2);
@@ -174,9 +174,9 @@ void pgTreeTest()
             assertLastDescendant(tree1, tree2);
             assertLastDescendant(tree2, tree2);
 
-            pgAssertThrow(tree2.addFirst(NULL), pgTree<u32>::ExceptionInvalidArgument);
-            pgAssertThrow(tree2.addFirst(&tree2), pgTree<u32>::ExceptionInvalidArgument);
-            pgAssertThrow(tree2.addFirst(&tree1), pgTree<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(tree2.addFirst(NULL), ckTree<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(tree2.addFirst(&tree2), ckTree<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(tree2.addFirst(&tree1), ckTree<u32>::ExceptionInvalidArgument);
         }
 
         assertAlone(tree1);
@@ -184,13 +184,13 @@ void pgTreeTest()
     }
 
     /*
-        void addLast(pgTree<T>* child)
+        void addLast(ckTree<T>* child)
     */
     {
-        pgTree<u32> tree2;
+        ckTree<u32> tree2;
 
         {
-            pgTree<u32> tree1;
+            ckTree<u32> tree1;
 
             tree1.addLast(&tree2);
             assertChild(tree1, tree2);
@@ -199,9 +199,9 @@ void pgTreeTest()
             assertLastDescendant(tree1, tree2);
             assertLastDescendant(tree2, tree2);
 
-            pgAssertThrow(tree2.addLast(NULL), pgTree<u32>::ExceptionInvalidArgument);
-            pgAssertThrow(tree2.addLast(&tree2), pgTree<u32>::ExceptionInvalidArgument);
-            pgAssertThrow(tree2.addLast(&tree1), pgTree<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(tree2.addLast(NULL), ckTree<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(tree2.addLast(&tree2), ckTree<u32>::ExceptionInvalidArgument);
+            ckAssertThrow(tree2.addLast(&tree1), ckTree<u32>::ExceptionInvalidArgument);
         }
 
         assertAlone(tree2);
@@ -213,7 +213,7 @@ void pgTreeTest()
         void clear()
     */
     {
-        pgTree<u32> tree1, tree2, tree3, tree4, tree5, tree6;
+        ckTree<u32> tree1, tree2, tree3, tree4, tree5, tree6;
 
         tree1.addFirst(&tree2);
         assertChild(tree1, tree2);
@@ -315,11 +315,11 @@ void pgTreeTest()
     }
 
     /*
-        void joinBefore(pgTree<T>* tree)
-        void joinAfter(pgTree<T>* tree)
+        void joinBefore(ckTree<T>* tree)
+        void joinAfter(ckTree<T>* tree)
     */
     {
-        pgTree<u32> tree1, tree2, tree3, tree4, tree5, tree6;
+        ckTree<u32> tree1, tree2, tree3, tree4, tree5, tree6;
 
         tree1.addFirst(&tree4);
         tree2.joinBefore(&tree4);
@@ -398,13 +398,13 @@ void pgTreeTest()
         assertLastDescendant(tree5, tree6);
         assertLastDescendant(tree6, tree6);
 
-        pgAssertThrow(tree1.joinBefore(NULL), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.joinBefore(&tree1), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.joinBefore(&tree5), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.joinBefore(&tree3), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.joinAfter(NULL), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.joinAfter(&tree1), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree2.joinAfter(&tree5), pgTree<u32>::ExceptionInvalidArgument);
-        pgAssertThrow(tree1.joinAfter(&tree3), pgTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinBefore(NULL), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinBefore(&tree1), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinBefore(&tree5), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinBefore(&tree3), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinAfter(NULL), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinAfter(&tree1), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree2.joinAfter(&tree5), ckTree<u32>::ExceptionInvalidArgument);
+        ckAssertThrow(tree1.joinAfter(&tree3), ckTree<u32>::ExceptionInvalidArgument);
     }
 }

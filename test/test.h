@@ -33,37 +33,37 @@
 #define TEST_H_
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
 #define TEST_DATA_DIR "../../../../test/test_data/"
 
 
-#define pgAssert(expression) \
+#define ckAssert(expression) \
     do \
     { \
         if (!(expression)) \
         { \
-            pgError("Assertion Failed: %s(%d)", __FILE__, __LINE__); \
+            ckError("Assertion Failed: %s(%d)", __FILE__, __LINE__); \
         } \
     } \
     while (false)
 
 
-#ifdef PG_NO_THROW_EXCEPTION
-#define pgAssertThrow(...)
+#ifdef CK_NO_THROW_EXCEPTION
+#define ckAssertThrow(...)
 #else
-#define pgAssertThrow(expression, ...) \
+#define ckAssertThrow(expression, ...) \
     do \
     { \
-        pgTry \
+        ckTry \
         { \
             expression; \
-            pgAssert(false); \
+            ckAssert(false); \
         } \
-        pgCatch(__VA_ARGS__ e) \
+        ckCatch(__VA_ARGS__ e) \
         { \
-            pgSysMgr::printf("Caught Exception: %s in %s(%d)\n", e.getException(), e.getFile(), e.getLine()); \
+            ckSysMgr::printf("Caught Exception: %s in %s(%d)\n", e.getException(), e.getFile(), e.getLine()); \
         } \
     } \
     while (false)
@@ -93,116 +93,116 @@ template<class T> bool isEqual(const T* str1, const T* str2)
     TestUtil
 */
 bool isEqual(r32 a, r32 b);
-bool isEqual(const pgVec& vec1, const pgVec& vec2);
-bool isEqual(const pgMat& mat1, const pgMat& mat2);
+bool isEqual(const ckVec& vec1, const ckVec& vec2);
+bool isEqual(const ckMat& mat1, const ckMat& mat2);
 
 /*
     MemTest
 */
-void pgMemMgrTest();
-void pgMemUtilTest();
+void ckMemMgrTest();
+void ckMemUtilTest();
 
 /*
     MathTest
 */
-void pgMathTest();
-void pgVecTest();
-void pgMatTest();
-void pgQuatTest();
-void pgFixTest();
+void ckMathTest();
+void ckVecTest();
+void ckMatTest();
+void ckQuatTest();
+void ckFixTest();
 
 /*
     GenTest
 */
-void pgIDTest();
-void pgTypeTest();
-void pgFlagTest();
-void pgListTest();
-void pgTreeTest();
-void pgBufTest();
-void pgMapTest();
-void pgStrTest();
-void pgMsgTest();
+void ckIDTest();
+void ckTypeTest();
+void ckFlagTest();
+void ckListTest();
+void ckTreeTest();
+void ckBufTest();
+void ckMapTest();
+void ckStrTest();
+void ckMsgTest();
 
 /*
     CdtTest
 */
-void pgCdtAABBTest();
-void pgCdtSphTest();
-void pgCdtBoxTest();
-void pgCdtTriTest();
-void pgCdtRayTest();
-void pgCdtTest();
+void ckCdtAABBTest();
+void ckCdtSphTest();
+void ckCdtBoxTest();
+void ckCdtTriTest();
+void ckCdtRayTest();
+void ckCdtTest();
 
 /*
     SysTest
 */
-void pgSysMgrTest();
-void pgSysUtilTest();
+void ckSysMgrTest();
+void ckSysUtilTest();
 
 /*
     TaskTest
 */
-void pgTaskMgrTest();
-void pgTaskUtilTest();
-void pgTaskTest();
+void ckTaskMgrTest();
+void ckTaskUtilTest();
+void ckTaskTest();
 
 /*
     KeyTest
 */
-void pgKeyMgrTest();
+void ckKeyMgrTest();
 
 /*
     ResTest
 */
-void pgResMgrTest();
-void pgResTest();
+void ckResMgrTest();
+void ckResTest();
 
 /*
     ConfTest
 */
-void pgConfMgrTest();
-void pgConfTest1();
-void pgConfTest2();
-void pgEntTest();
+void ckConfMgrTest();
+void ckConfTest1();
+void ckConfTest2();
+void ckEntTest();
 
 /*
     DrawTest
 */
-void pgColTest();
-void pgDrawMgrTest();
-void pgScrTest();
-void pgTexTest();
-void pgFontTest();
-void pgShdTest();
-void pgLitTest();
-void pgLtsTest();
-void pgNodeTest();
-void pgPrimTest();
-void pgSprtTest();
-void pgMdlDataTest();
-void pgMdlTest();
-void pgMotDataTest();
-void pgMotTest();
-void pgRendTest();
+void ckColTest();
+void ckDrawMgrTest();
+void ckScrTest();
+void ckTexTest();
+void ckFontTest();
+void ckShdTest();
+void ckLitTest();
+void ckLtsTest();
+void ckNodeTest();
+void ckPrimTest();
+void ckSprtTest();
+void ckMdlDataTest();
+void ckMdlTest();
+void ckMotDataTest();
+void ckMotTest();
+void ckRendTest();
 
-void pgRend_ShaderTest();
-void pgRend_LightTest();
+void ckRend_ShaderTest();
+void ckRend_LightTest();
 
 /*
     SndTest
 */
-void pgSndMgrTest();
+void ckSndMgrTest();
 
 /*
     DbgTest
 */
-void pgDbgMgrTest();
+void ckDbgMgrTest();
 
 /*
     UtilTest
 */
-void pgUtilTest();
+void ckUtilTest();
 
 
 #endif // TEST_H_

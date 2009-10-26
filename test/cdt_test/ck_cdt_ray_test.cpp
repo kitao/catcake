@@ -32,32 +32,32 @@
 #include "test.h"
 
 
-void pgCdtRayTest()
+void ckCdtRayTest()
 {
     /*
         Ray()
         const AABB& getAABB() const
-        const pgVec& getFrom() const
-        const pgVec& getTo() const
-        void setPos(const pgVec& from, const pgVec& to)
+        const ckVec& getFrom() const
+        const ckVec& getTo() const
+        void setPos(const ckVec& from, const ckVec& to)
     */
     {
-        pgCdt::Ray ray;
-        pgAssert(isEqual(ray.getFrom(), pgVec::ZERO) && isEqual(ray.getTo(), pgVec::ZERO));
+        ckCdt::Ray ray;
+        ckAssert(isEqual(ray.getFrom(), ckVec::ZERO) && isEqual(ray.getTo(), ckVec::ZERO));
 
-        pgCdt::AABB aabb = ray.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        ckCdt::AABB aabb = ray.getAABB();
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
 
-        ray.setPos(pgVec(-1.0f, 2.0f, -3.0f), pgVec(4.0f, -5.0f, 6.0f));
-        pgAssert(isEqual(ray.getFrom(), pgVec(-1.0f, 2.0f, -3.0f)) && isEqual(ray.getTo(), pgVec(4.0f, -5.0f, 6.0f)));
-
-        aabb = ray.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-1.0f, -5.0f, -3.0f)) && isEqual(aabb.getMax(), pgVec(4.0f, 2.0f, 6.0f)));
-
-        ray.setPos(pgVec::ZERO, pgVec::ZERO);
-        pgAssert(isEqual(ray.getFrom(), pgVec::ZERO) && isEqual(ray.getTo(), pgVec::ZERO));
+        ray.setPos(ckVec(-1.0f, 2.0f, -3.0f), ckVec(4.0f, -5.0f, 6.0f));
+        ckAssert(isEqual(ray.getFrom(), ckVec(-1.0f, 2.0f, -3.0f)) && isEqual(ray.getTo(), ckVec(4.0f, -5.0f, 6.0f)));
 
         aabb = ray.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-1.0f, -5.0f, -3.0f)) && isEqual(aabb.getMax(), ckVec(4.0f, 2.0f, 6.0f)));
+
+        ray.setPos(ckVec::ZERO, ckVec::ZERO);
+        ckAssert(isEqual(ray.getFrom(), ckVec::ZERO) && isEqual(ray.getTo(), ckVec::ZERO));
+
+        aabb = ray.getAABB();
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
     }
 }

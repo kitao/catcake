@@ -32,33 +32,33 @@
 #include "test.h"
 
 
-void pgCdtTriTest()
+void ckCdtTriTest()
 {
     /*
         Tri()
         const AABB& getAABB() const
-        const pgVec& getPos1() const
-        const pgVec& getPos2() const
-        const pgVec& getPos3() const
-        void setPos(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3)
+        const ckVec& getPos1() const
+        const ckVec& getPos2() const
+        const ckVec& getPos3() const
+        void setPos(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3)
     */
     {
-        pgCdt::Tri tri;
-        pgAssert(isEqual(tri.getPos1(), pgVec::ZERO) && isEqual(tri.getPos2(), pgVec::ZERO) && isEqual(tri.getPos3(), pgVec::ZERO));
+        ckCdt::Tri tri;
+        ckAssert(isEqual(tri.getPos1(), ckVec::ZERO) && isEqual(tri.getPos2(), ckVec::ZERO) && isEqual(tri.getPos3(), ckVec::ZERO));
 
-        pgCdt::AABB aabb = tri.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        ckCdt::AABB aabb = tri.getAABB();
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
 
-        tri.setPos(pgVec(1.0f, 2.0f, 3.0f), pgVec(-2.0f, -3.0f, -4.0f), pgVec(-1.0f, 20.0f, -3.0f));
-        pgAssert(isEqual(tri.getPos1(), pgVec(1.0f, 2.0f, 3.0f)) && isEqual(tri.getPos2(), pgVec(-2.0f, -3.0f, -4.0f)) && isEqual(tri.getPos3(), pgVec(-1.0f, 20.0f, -3.0f)));
-
-        aabb = tri.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-2.0f, -3.0f, -4.0f)) && isEqual(aabb.getMax(), pgVec(1.0f, 20.0f, 3.0f)));
-
-        tri.setPos(pgVec::ZERO, pgVec::ZERO, pgVec::ZERO);
-        pgAssert(isEqual(tri.getPos1(), pgVec::ZERO) && isEqual(tri.getPos2(), pgVec::ZERO) && isEqual(tri.getPos3(), pgVec::ZERO));
+        tri.setPos(ckVec(1.0f, 2.0f, 3.0f), ckVec(-2.0f, -3.0f, -4.0f), ckVec(-1.0f, 20.0f, -3.0f));
+        ckAssert(isEqual(tri.getPos1(), ckVec(1.0f, 2.0f, 3.0f)) && isEqual(tri.getPos2(), ckVec(-2.0f, -3.0f, -4.0f)) && isEqual(tri.getPos3(), ckVec(-1.0f, 20.0f, -3.0f)));
 
         aabb = tri.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-2.0f, -3.0f, -4.0f)) && isEqual(aabb.getMax(), ckVec(1.0f, 20.0f, 3.0f)));
+
+        tri.setPos(ckVec::ZERO, ckVec::ZERO, ckVec::ZERO);
+        ckAssert(isEqual(tri.getPos1(), ckVec::ZERO) && isEqual(tri.getPos2(), ckVec::ZERO) && isEqual(tri.getPos3(), ckVec::ZERO));
+
+        aabb = tri.getAABB();
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
     }
 }

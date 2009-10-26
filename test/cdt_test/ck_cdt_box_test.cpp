@@ -32,64 +32,64 @@
 #include "test.h"
 
 
-void pgCdtBoxTest()
+void ckCdtBoxTest()
 {
     /*
         const AABB& getAABB() const
-        const pgMat& getWorld() const
-        void setWorld(const pgMat& world)
+        const ckMat& getWorld() const
+        void setWorld(const ckMat& world)
         r32 getWidth() const
         r32 getHeight() const
         r32 getDepth() const
-        const pgVec& getHalfSize() const
+        const ckVec& getHalfSize() const
         void setSize(r32 width, r32 height, r32 depth)
     */
     {
-        pgCdt::Box box;
-        pgAssert(isEqual(box.getWorld(), pgMat::UNIT));
-        pgAssert(isEqual(box.getWidth(), 0.0f) && isEqual(box.getHeight(), 0.0f) && isEqual(box.getDepth(), 0.0f));
-        pgAssert(isEqual(box.getHalfSize(), pgVec::ZERO));
+        ckCdt::Box box;
+        ckAssert(isEqual(box.getWorld(), ckMat::UNIT));
+        ckAssert(isEqual(box.getWidth(), 0.0f) && isEqual(box.getHeight(), 0.0f) && isEqual(box.getDepth(), 0.0f));
+        ckAssert(isEqual(box.getHalfSize(), ckVec::ZERO));
 
-        pgCdt::AABB aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec::ZERO) && isEqual(aabb.getMax(), pgVec::ZERO));
+        ckCdt::AABB aabb = box.getAABB();
+        ckAssert(isEqual(aabb.getMin(), ckVec::ZERO) && isEqual(aabb.getMax(), ckVec::ZERO));
 
-        pgMat mat = pgMat::UNIT.rotateX_s32(90).rotateY_s32(90).translate(1.0f, 2.0f, 3.0f);
+        ckMat mat = ckMat::UNIT.rotateX_s32(90).rotateY_s32(90).translate(1.0f, 2.0f, 3.0f);
         box.setWorld(mat);
-        pgAssert(isEqual(box.getWorld(), mat));
+        ckAssert(isEqual(box.getWorld(), mat));
 
         aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(3.0f, 1.0f, 2.0f)) && isEqual(aabb.getMax(), pgVec(3.0f, 1.0f, 2.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(3.0f, 1.0f, 2.0f)) && isEqual(aabb.getMax(), ckVec(3.0f, 1.0f, 2.0f)));
 
         box.setSize(10.0f, 20.0f, 30.0f);
-        pgAssert(isEqual(box.getWidth(), 10.0f) && isEqual(box.getHeight(), 20.0f) && isEqual(box.getDepth(), 30.0f));
-        pgAssert(isEqual(box.getHalfSize(), pgVec(5.0f, 10.0f, 15.0f)));
+        ckAssert(isEqual(box.getWidth(), 10.0f) && isEqual(box.getHeight(), 20.0f) && isEqual(box.getDepth(), 30.0f));
+        ckAssert(isEqual(box.getHalfSize(), ckVec(5.0f, 10.0f, 15.0f)));
 
         aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-12.0f, -4.0f, -8.0f)) && isEqual(aabb.getMax(), pgVec(18.0f, 6.0f, 12.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-12.0f, -4.0f, -8.0f)) && isEqual(aabb.getMax(), ckVec(18.0f, 6.0f, 12.0f)));
 
         box.setSize(0.0f, 0.0f, 0.0f);
-        pgAssert(isEqual(box.getWidth(), 0.0f) && isEqual(box.getHeight(), 0.0f) && isEqual(box.getDepth(), 0.0f));
-        pgAssert(isEqual(box.getHalfSize(), pgVec::ZERO));
+        ckAssert(isEqual(box.getWidth(), 0.0f) && isEqual(box.getHeight(), 0.0f) && isEqual(box.getDepth(), 0.0f));
+        ckAssert(isEqual(box.getHalfSize(), ckVec::ZERO));
 
         aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(3.0f, 1.0f, 2.0f)) && isEqual(aabb.getMax(), pgVec(3.0f, 1.0f, 2.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(3.0f, 1.0f, 2.0f)) && isEqual(aabb.getMax(), ckVec(3.0f, 1.0f, 2.0f)));
 
         box.setSize(10.0f, 20.0f, 30.0f);
 
-        box.setWorld(pgMat::UNIT.rotateX_s32(45));
+        box.setWorld(ckMat::UNIT.rotateX_s32(45));
         aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-5.0f, -17.6777f, -17.6777f)) && isEqual(aabb.getMax(), pgVec(5.0f, 17.6777f, 17.6777f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-5.0f, -17.6777f, -17.6777f)) && isEqual(aabb.getMax(), ckVec(5.0f, 17.6777f, 17.6777f)));
 
-        box.setWorld(pgMat::UNIT.rotateY_s32(45));
+        box.setWorld(ckMat::UNIT.rotateY_s32(45));
         aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-14.1421f, -10.0f, -14.1421f)) && isEqual(aabb.getMax(), pgVec(14.1421f, 10.0f, 14.1421f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-14.1421f, -10.0f, -14.1421f)) && isEqual(aabb.getMax(), ckVec(14.1421f, 10.0f, 14.1421f)));
 
-        box.setWorld(pgMat::UNIT.rotateZ_s32(45));
+        box.setWorld(ckMat::UNIT.rotateZ_s32(45));
         aabb = box.getAABB();
-        pgAssert(isEqual(aabb.getMin(), pgVec(-10.6067f, -10.6067f, -15.0f)) && isEqual(aabb.getMax(), pgVec(10.60670f, 10.6067f, 15.0f)));
+        ckAssert(isEqual(aabb.getMin(), ckVec(-10.6067f, -10.6067f, -15.0f)) && isEqual(aabb.getMax(), ckVec(10.60670f, 10.6067f, 15.0f)));
 
-        pgAssertThrow(box.setSize(-0.1f, 0.0f, 0.0f), pgCdt::Box::ExceptionInvalidArgument);
-        pgAssertThrow(box.setSize(0.0f, -0.1f, 0.0f), pgCdt::Box::ExceptionInvalidArgument);
-        pgAssertThrow(box.setSize(0.0f, 0.0f, -0.1f), pgCdt::Box::ExceptionInvalidArgument);
+        ckAssertThrow(box.setSize(-0.1f, 0.0f, 0.0f), ckCdt::Box::ExceptionInvalidArgument);
+        ckAssertThrow(box.setSize(0.0f, -0.1f, 0.0f), ckCdt::Box::ExceptionInvalidArgument);
+        ckAssertThrow(box.setSize(0.0f, 0.0f, -0.1f), ckCdt::Box::ExceptionInvalidArgument);
     }
 }

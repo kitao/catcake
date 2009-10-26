@@ -32,102 +32,102 @@
 #include "test.h"
 
 
-void pgRend_ShaderTest()
+void ckRend_ShaderTest()
 {
     /*
-        void init(pgPrim* prim, pgID shd_id)
-        void init(pgPrim* prim, r32* rend_data, pgID shd_id)
-        pgID getShaderID()
-        pgID get2ndTextureID()
-        void set2ndTextureID(pgID tex_id)
-        pgID get3rdTextureID()
-        void set3rdTextureID(pgID tex_id)
+        void init(ckPrim* prim, ckID shd_id)
+        void init(ckPrim* prim, r32* rend_data, ckID shd_id)
+        ckID getShaderID()
+        ckID get2ndTextureID()
+        void set2ndTextureID(ckID tex_id)
+        ckID get3rdTextureID()
+        void set3rdTextureID(ckID tex_id)
         r32& uniform(u8 uni_index)
-        void setUniformVec(u8 uni_index, const pgVec& vec)
-        void setUniformCol3x255(u8 uni_index, pgCol col)
-        void setUniformCol4x255(u8 uni_index, pgCol col)
+        void setUniformVec(u8 uni_index, const ckVec& vec)
+        void setUniformCol3x255(u8 uni_index, ckCol col)
+        void setUniformCol4x255(u8 uni_index, ckCol col)
         r32& attrib(u16 data_index, u8 att_index)
-        void setAttribVec(u16 data_index, u8 att_index, const pgVec& vec)
-        void setAttribCol3x255(u16 data_index, u8 att_index, pgCol col)
-        void setAttribCol4x255(u16 data_index, u8 att_index, pgCol col)
+        void setAttribVec(u16 data_index, u8 att_index, const ckVec& vec)
+        void setAttribCol3x255(u16 data_index, u8 att_index, ckCol col)
+        void setAttribCol4x255(u16 data_index, u8 att_index, ckCol col)
     */
     {
         static const char s_vert_code[] = "void main() { gl_Position = 0.0; }";
         static const char s_frag_code[] = "void main() { gl_FragColor = 1.0; }";
 
-        pgDrawMgr::createAfterRes();
-        pgDrawMgr::newTexture(pgID_("TEST"), 16, 16, pgTex::FORMAT_RGB);
+        ckDrawMgr::createAfterRes();
+        ckDrawMgr::newTexture(ckID_("TEST"), 16, 16, ckTex::FORMAT_RGB);
 
-        pgShd* shd1 = pgDrawMgr::newShader(pgID::genID(), s_vert_code, s_frag_code, 0, 0, 0);
-        pgShd* shd2 = pgDrawMgr::newShader(pgID::genID(), s_vert_code, s_frag_code, 4, 5, 0);
+        ckShd* shd1 = ckDrawMgr::newShader(ckID::genID(), s_vert_code, s_frag_code, 0, 0, 0);
+        ckShd* shd2 = ckDrawMgr::newShader(ckID::genID(), s_vert_code, s_frag_code, 4, 5, 0);
 
-        pgRend_Shader rend_shd;
+        ckRend_Shader rend_shd;
 
-        pgAssertThrow(rend_shd.getShaderID(), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.get2ndTextureID(), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.set2ndTextureID(pgID::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.get3rdTextureID(), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.set3rdTextureID(pgID::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.uniform(0), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.setUniformVec(0, pgVec::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.setUniformCol3x255(0, pgCol::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.setUniformCol4x255(0, pgCol::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.attrib(0, 0), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.setAttribVec(0, 0, pgVec::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.setAttribCol3x255(0, 0, pgCol::ZERO), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(rend_shd.setAttribCol4x255(0, 0, pgCol::ZERO), pgRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.getShaderID(), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.get2ndTextureID(), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.set2ndTextureID(ckID::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.get3rdTextureID(), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.set3rdTextureID(ckID::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.uniform(0), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setUniformVec(0, ckVec::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setUniformCol3x255(0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setUniformCol4x255(0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.attrib(0, 0), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setAttribVec(0, 0, ckVec::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setAttribCol3x255(0, 0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setAttribCol4x255(0, 0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
 
-        pgPrim prim;
+        ckPrim prim;
 
-        prim.init(pgPrim::MODE_LINES, 2, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+        prim.init(ckPrim::MODE_LINES, 2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
         rend_shd.init(&prim, shd1->getID());
 
-        pgAssert(rend_shd.getShaderID() == shd1->getID());
-        pgAssert(rend_shd.get2ndTextureID() == pgID::ZERO);
-        pgAssert(rend_shd.get3rdTextureID() == pgID::ZERO);
+        ckAssert(rend_shd.getShaderID() == shd1->getID());
+        ckAssert(rend_shd.get2ndTextureID() == ckID::ZERO);
+        ckAssert(rend_shd.get3rdTextureID() == ckID::ZERO);
 
-        pgAssertThrow(rend_shd.uniform(0), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setUniformVec(0, pgVec::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setUniformCol3x255(0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setUniformCol4x255(0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.attrib(2, 0), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.attrib(0, 0), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribVec(2, 0, pgVec::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribVec(0, 0, pgVec::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol3x255(2, 0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol3x255(2, 0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol4x255(0, 0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol4x255(0, 0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.uniform(0), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformVec(0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol3x255(0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol4x255(0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.attrib(2, 0), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.attrib(0, 0), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribVec(2, 0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribVec(0, 0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3x255(2, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3x255(2, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4x255(0, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4x255(0, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        prim.init(pgPrim::MODE_LINES, 3, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+        prim.init(ckPrim::MODE_LINES, 3, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
         rend_shd.init(&prim, shd2->getID());
 
-        pgAssert(rend_shd.getShaderID() == shd2->getID());
-        pgAssert(rend_shd.get2ndTextureID() == pgID::ZERO);
-        pgAssert(rend_shd.get3rdTextureID() == pgID::ZERO);
+        ckAssert(rend_shd.getShaderID() == shd2->getID());
+        ckAssert(rend_shd.get2ndTextureID() == ckID::ZERO);
+        ckAssert(rend_shd.get3rdTextureID() == ckID::ZERO);
 
-        rend_shd.set2ndTextureID(pgID::ZERO);
-        pgAssert(rend_shd.get2ndTextureID() == pgID::ZERO);
+        rend_shd.set2ndTextureID(ckID::ZERO);
+        ckAssert(rend_shd.get2ndTextureID() == ckID::ZERO);
 
-        rend_shd.set3rdTextureID(pgID::ZERO);
-        pgAssert(rend_shd.get3rdTextureID() == pgID::ZERO);
+        rend_shd.set3rdTextureID(ckID::ZERO);
+        ckAssert(rend_shd.get3rdTextureID() == ckID::ZERO);
 
         for (s32 i = 0; i < 4; i++)
         {
             rend_shd.uniform(0) = static_cast<r32>(i);
-            pgAssert(isEqual(rend_shd.uniform(0), static_cast<r32>(i)));
+            ckAssert(isEqual(rend_shd.uniform(0), static_cast<r32>(i)));
         }
 
-        rend_shd.setUniformVec(1, pgVec(10.0f, 20.0f, 30.0f));
-        pgAssert(isEqual(rend_shd.uniform(1), 10.0f) && isEqual(rend_shd.uniform(2), 20.0f) && isEqual(rend_shd.uniform(3), 30.0f));
+        rend_shd.setUniformVec(1, ckVec(10.0f, 20.0f, 30.0f));
+        ckAssert(isEqual(rend_shd.uniform(1), 10.0f) && isEqual(rend_shd.uniform(2), 20.0f) && isEqual(rend_shd.uniform(3), 30.0f));
 
-        rend_shd.setUniformCol3x255(1, pgCol(11, 22, 33));
-        pgAssert(isEqual(rend_shd.uniform(1), 11.0f) && isEqual(rend_shd.uniform(2), 22.0f) && isEqual(rend_shd.uniform(3), 33.0f));
+        rend_shd.setUniformCol3x255(1, ckCol(11, 22, 33));
+        ckAssert(isEqual(rend_shd.uniform(1), 11.0f) && isEqual(rend_shd.uniform(2), 22.0f) && isEqual(rend_shd.uniform(3), 33.0f));
 
-        rend_shd.setUniformCol4x255(0, pgCol(1, 2, 3, 4));
-        pgAssert(isEqual(rend_shd.uniform(0), 1.0f) && isEqual(rend_shd.uniform(1), 2.0f) && //
+        rend_shd.setUniformCol4x255(0, ckCol(1, 2, 3, 4));
+        ckAssert(isEqual(rend_shd.uniform(0), 1.0f) && isEqual(rend_shd.uniform(1), 2.0f) && //
             isEqual(rend_shd.uniform(2), 3.0f) && isEqual(rend_shd.uniform(3), 4.0f));
 
         for (s32 i = 0; i < 3; i++)
@@ -135,54 +135,54 @@ void pgRend_ShaderTest()
             for (s32 j = 0; j < 5; j++)
             {
                 rend_shd.attrib(i, j) = static_cast<r32>(i + j);
-                pgAssert(isEqual(rend_shd.attrib(i, j), static_cast<r32>(i + j)));
+                ckAssert(isEqual(rend_shd.attrib(i, j), static_cast<r32>(i + j)));
             }
 
-            rend_shd.setAttribVec(i, 2, pgVec(10.0f + i, 11.0f + i, 12.0f + i));
-            pgAssert(isEqual(rend_shd.attrib(i, 2), 10.0f + i) && isEqual(rend_shd.attrib(i, 3), 11.0f + i) && isEqual(rend_shd.attrib(i, 4), 12.0f + i));
+            rend_shd.setAttribVec(i, 2, ckVec(10.0f + i, 11.0f + i, 12.0f + i));
+            ckAssert(isEqual(rend_shd.attrib(i, 2), 10.0f + i) && isEqual(rend_shd.attrib(i, 3), 11.0f + i) && isEqual(rend_shd.attrib(i, 4), 12.0f + i));
 
-            rend_shd.setAttribCol3x255(i, 2, pgCol(i + 2, i + 3, i + 4));
-            pgAssert(isEqual(rend_shd.attrib(i, 2), 2.0f + i) && isEqual(rend_shd.attrib(i, 3), 3.0f + i) && isEqual(rend_shd.attrib(i, 4), 4.0f + i));
+            rend_shd.setAttribCol3x255(i, 2, ckCol(i + 2, i + 3, i + 4));
+            ckAssert(isEqual(rend_shd.attrib(i, 2), 2.0f + i) && isEqual(rend_shd.attrib(i, 3), 3.0f + i) && isEqual(rend_shd.attrib(i, 4), 4.0f + i));
 
-            rend_shd.setAttribCol4x255(i, 1, pgCol(i + 5, i + 6, i + 7, i + 8));
-            pgAssert(isEqual(rend_shd.attrib(i, 1), 5.0f + i) && isEqual(rend_shd.attrib(i, 2), 6.0f + i) && //
+            rend_shd.setAttribCol4x255(i, 1, ckCol(i + 5, i + 6, i + 7, i + 8));
+            ckAssert(isEqual(rend_shd.attrib(i, 1), 5.0f + i) && isEqual(rend_shd.attrib(i, 2), 6.0f + i) && //
                 isEqual(rend_shd.attrib(i, 3), 7.0f + i) && isEqual(rend_shd.attrib(i, 4), 8.0f + i));
         }
 
-        pgAssertThrow(rend_shd.uniform(4), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setUniformVec(2, pgVec::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setUniformCol3x255(2, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setUniformCol4x255(1, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.attrib(3, 0), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.attrib(0, 5), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribVec(3, 0, pgVec::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribVec(0, 3, pgVec::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol3x255(3, 0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol3x255(0, 3, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol4x255(3, 0, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.setAttribCol4x255(0, 2, pgCol::ZERO), pgRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.uniform(4), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformVec(2, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol3x255(2, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol4x255(1, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.attrib(3, 0), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.attrib(0, 5), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribVec(3, 0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribVec(0, 3, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3x255(3, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3x255(0, 3, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4x255(3, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4x255(0, 2, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
 
-        pgDrawMgr::renderForSystem();
+        ckDrawMgr::renderForSystem();
 
-        pgAssertThrow(rend_shd.set2ndTextureID(pgID::genID()), pgDrawMgr::ExceptionNotFound);
-        pgAssertThrow(rend_shd.set3rdTextureID(pgID::genID()), pgDrawMgr::ExceptionNotFound);
-        pgAssertThrow(rend_shd.init(NULL, shd1->getID()), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.init(&prim, pgID::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.init(&prim, pgID::genID()), pgDrawMgr::ExceptionNotFound);
-        pgAssertThrow(rend_shd.init(&prim, NULL, shd2->getID()), pgRend::ExceptionInvalidCall);
+        ckAssertThrow(rend_shd.set2ndTextureID(ckID::genID()), ckDrawMgr::ExceptionNotFound);
+        ckAssertThrow(rend_shd.set3rdTextureID(ckID::genID()), ckDrawMgr::ExceptionNotFound);
+        ckAssertThrow(rend_shd.init(NULL, shd1->getID()), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.init(&prim, ckID::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.init(&prim, ckID::genID()), ckDrawMgr::ExceptionNotFound);
+        ckAssertThrow(rend_shd.init(&prim, NULL, shd2->getID()), ckRend::ExceptionInvalidCall);
 
-        pgPrim::PrimData prim_data[3];
+        ckPrim::PrimData prim_data[3];
         r32 rend_data[3];
 
-        prim.init(pgPrim::MODE_LINES, prim_data, 3, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+        prim.init(ckPrim::MODE_LINES, prim_data, 3, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
         rend_shd.init(&prim, rend_data, shd2->getID());
 
-        pgAssertThrow(rend_shd.init(NULL, rend_data, shd2->getID()), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.init(&prim, NULL, shd2->getID()), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.init(&prim, rend_data, pgID::ZERO), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(rend_shd.init(&prim, rend_data, pgID::genID()), pgDrawMgr::ExceptionNotFound);
-        pgAssertThrow(rend_shd.init(&prim, shd2->getID()), pgRend::ExceptionInvalidCall);
+        ckAssertThrow(rend_shd.init(NULL, rend_data, shd2->getID()), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.init(&prim, NULL, shd2->getID()), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.init(&prim, rend_data, ckID::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.init(&prim, rend_data, ckID::genID()), ckDrawMgr::ExceptionNotFound);
+        ckAssertThrow(rend_shd.init(&prim, shd2->getID()), ckRend::ExceptionInvalidCall);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

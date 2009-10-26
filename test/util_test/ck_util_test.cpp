@@ -32,21 +32,21 @@
 #include "test.h"
 
 
-void pgUtilTest()
+void ckUtilTest()
 {
     /*
         static u32 strlen(const char* str)
         static u32 wcslen(const wchar_t* str)
     */
     {
-        pgAssert(pgUtil::strlen("") == 0);
-        pgAssert(pgUtil::strlen("TEST") == 4);
+        ckAssert(ckUtil::strlen("") == 0);
+        ckAssert(ckUtil::strlen("TEST") == 4);
 
-        pgAssert(pgUtil::wcslen(L"") == 0);
-        pgAssert(pgUtil::wcslen(L"TEST") == 4);
+        ckAssert(ckUtil::wcslen(L"") == 0);
+        ckAssert(ckUtil::wcslen(L"TEST") == 4);
 
-        pgAssertThrow(pgUtil::strlen(NULL), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::wcslen(NULL), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::strlen(NULL), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::wcslen(NULL), ckUtil::ExceptionInvalidArgument);
     }
 
     /*
@@ -55,15 +55,15 @@ void pgUtilTest()
     {
         wchar_t buf1[5], buf2[3];
 
-        pgUtil::charToWchar(buf1, 5, "TEST");
-        pgAssert(buf1[0] == L'T' && buf1[1] == L'E' && buf1[2] == L'S' && buf1[3] == L'T' && buf1[4] == L'\0');
+        ckUtil::charToWchar(buf1, 5, "TEST");
+        ckAssert(buf1[0] == L'T' && buf1[1] == L'E' && buf1[2] == L'S' && buf1[3] == L'T' && buf1[4] == L'\0');
 
-        pgUtil::charToWchar(buf2, 3, "TEST");
-        pgAssert(buf2[0] == L'T' && buf2[1] == L'E' && buf2[2] == L'\0');
+        ckUtil::charToWchar(buf2, 3, "TEST");
+        ckAssert(buf2[0] == L'T' && buf2[1] == L'E' && buf2[2] == L'\0');
 
-        pgAssertThrow(pgUtil::charToWchar(NULL, 5, "TEST"), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::charToWchar(buf1, 0, "TEST"), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::charToWchar(buf1, 5, NULL), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::charToWchar(NULL, 5, "TEST"), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::charToWchar(buf1, 0, "TEST"), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::charToWchar(buf1, 5, NULL), ckUtil::ExceptionInvalidArgument);
     }
 
     /*
@@ -77,28 +77,28 @@ void pgUtilTest()
         const char* str4 = "C:/ABC/DEF.GHI";
         const char* str5 = "C:\\abc\\def\\ghi.jkl";
 
-        pgAssert(pgUtil::getBasename(str1) == str1 + 0);
-        pgAssert(pgUtil::getBasename(str2) == str2 + 0);
-        pgAssert(pgUtil::getBasename(str3) == str3 + 2);
-        pgAssert(pgUtil::getBasename(str4) == str4 + 7);
-        pgAssert(pgUtil::getBasename(str5) == str5 + 11);
+        ckAssert(ckUtil::getBasename(str1) == str1 + 0);
+        ckAssert(ckUtil::getBasename(str2) == str2 + 0);
+        ckAssert(ckUtil::getBasename(str3) == str3 + 2);
+        ckAssert(ckUtil::getBasename(str4) == str4 + 7);
+        ckAssert(ckUtil::getBasename(str5) == str5 + 11);
 
-        pgAssert(pgUtil::getExtension(str1) == str1 + 4);
-        pgAssert(pgUtil::getExtension(str2) == str2 + 4);
-        pgAssert(pgUtil::getExtension(str3) == str3 + 6);
-        pgAssert(pgUtil::getExtension(str4) == str4 + 11);
-        pgAssert(pgUtil::getExtension(str5) == str5 + 15);
+        ckAssert(ckUtil::getExtension(str1) == str1 + 4);
+        ckAssert(ckUtil::getExtension(str2) == str2 + 4);
+        ckAssert(ckUtil::getExtension(str3) == str3 + 6);
+        ckAssert(ckUtil::getExtension(str4) == str4 + 11);
+        ckAssert(ckUtil::getExtension(str5) == str5 + 15);
 
-        pgAssertThrow(pgUtil::getBasename(NULL), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::getExtension(NULL), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::getBasename(NULL), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::getExtension(NULL), ckUtil::ExceptionInvalidArgument);
     }
 
     /*
-        static void calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing)
+        static void calcNormalAsTriangles(ckVec* normal, const ckPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing)
     */
     {
-        pgPrim::PrimData prim_data[7];
-        pgVec normal[7];
+        ckPrim::PrimData prim_data[7];
+        ckVec normal[7];
 
         prim_data[0].pos.set(0.0f, 0.0f, 0.0f);
         prim_data[1].pos.set(0.0f, 0.0f, 10.0f);
@@ -108,135 +108,135 @@ void pgUtilTest()
         prim_data[5].pos.set(30.0f, 30.0f, 10.0f);
         prim_data[6].pos.set(30.0f, 30.0f, 10.0f);
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 2, false);
-        pgAssert(isEqual(normal[0], pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 2, false);
+        ckAssert(isEqual(normal[0], ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 2, true);
-        pgAssert(isEqual(normal[0], pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 2, true);
+        ckAssert(isEqual(normal[0], ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 3, false);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 3, false);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 3, true);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 3, true);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 5, false);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[3], pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[4], pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 5, false);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[3], ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[4], ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 5, true);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[3], pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[4], pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 5, true);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[3], ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[4], ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 6, false);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[3], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[4], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[5], -pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 6, false);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[3], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[4], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[5], -ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 6, true);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[3], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[4], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[5], -pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 6, true);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[3], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[4], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[5], -ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 7, false);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[3], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[4], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[5], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[6], pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 7, false);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[3], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[4], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[5], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[6], ckVec::Z_UNIT));
 
-        pgUtil::calcNormalAsTriangles(normal, prim_data, 7, true);
-        pgAssert(isEqual(normal[0], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[1], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[2], pgVec::Y_UNIT));
-        pgAssert(isEqual(normal[3], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[4], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[5], -pgVec::Z_UNIT));
-        pgAssert(isEqual(normal[6], pgVec::Z_UNIT));
+        ckUtil::calcNormalAsTriangles(normal, prim_data, 7, true);
+        ckAssert(isEqual(normal[0], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[1], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[2], ckVec::Y_UNIT));
+        ckAssert(isEqual(normal[3], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[4], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[5], -ckVec::Z_UNIT));
+        ckAssert(isEqual(normal[6], ckVec::Z_UNIT));
 
-        pgAssertThrow(pgUtil::calcNormalAsTriangles(NULL, prim_data, 1, false), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::calcNormalAsTriangles(normal, NULL, 1, false), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::calcNormalAsTriangles(normal, prim_data, 0, false), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::calcNormalAsTriangles(NULL, prim_data, 1, false), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::calcNormalAsTriangles(normal, NULL, 1, false), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::calcNormalAsTriangles(normal, prim_data, 0, false), ckUtil::ExceptionInvalidArgument);
     }
 
     /*
-        static bool readPNGInfo(u16* width, u16* height, pgTex::TexFormat* format, const void* data, u32 data_size)
+        static bool readPNGInfo(u16* width, u16* height, ckTex::TexFormat* format, const void* data, u32 data_size)
         static bool readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size)
     */
     {
         u16 width, height;
-        pgTex::TexFormat format;
-        pgRes res;
+        ckTex::TexFormat format;
+        ckRes res;
 
-        pgResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "rgba.png", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "gray.png", true);
-        pgResMgr::loadResource(TEST_DATA_DIR "gray_alpha.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "rgba.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "gray.png", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "gray_alpha.png", true);
 
-        res = pgResMgr::getResource(pgID_("rgb.png"));
+        res = ckResMgr::getResource(ckID_("rgb.png"));
 
-        pgUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
-        pgAssert(width == 71 && height == 14 && format == pgTex::FORMAT_PNG_RGB);
+        ckUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
+        ckAssert(width == 71 && height == 14 && format == ckTex::FORMAT_PNG_RGB);
 
-        res = pgResMgr::getResource(pgID_("rgba.png"));
+        res = ckResMgr::getResource(ckID_("rgba.png"));
 
-        pgUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
-        pgAssert(width == 71 && height == 14 && format == pgTex::FORMAT_PNG_RGBA);
+        ckUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
+        ckAssert(width == 71 && height == 14 && format == ckTex::FORMAT_PNG_RGBA);
 
-        res = pgResMgr::getResource(pgID_("gray.png"));
+        res = ckResMgr::getResource(ckID_("gray.png"));
 
-        pgUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
-        pgAssert(width == 71 && height == 14 && format == pgTex::FORMAT_PNG_ALPHA);
+        ckUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
+        ckAssert(width == 71 && height == 14 && format == ckTex::FORMAT_PNG_ALPHA);
 
-        res = pgResMgr::getResource(pgID_("gray_alpha.png"));
+        res = ckResMgr::getResource(ckID_("gray_alpha.png"));
 
-        pgUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
-        pgAssert(width == 71 && height == 14 && format == pgTex::FORMAT_PNG_RGBA);
+        ckUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), res.getDataSize());
+        ckAssert(width == 71 && height == 14 && format == ckTex::FORMAT_PNG_RGBA);
 
-        u32 buf_line_size = width * pgDrawMgr::getTexturePixelSize(format);
+        u32 buf_line_size = width * ckDrawMgr::getTexturePixelSize(format);
         u32 buf_size = buf_line_size;
-        void* buf = pgMalloc(buf_size);
+        void* buf = ckMalloc(buf_size);
 
-        pgUtil::readPNGImage(buf, buf_size, buf_line_size, res.getData<void>(), res.getDataSize());
+        ckUtil::readPNGImage(buf, buf_size, buf_line_size, res.getData<void>(), res.getDataSize());
 
-        pgAssertThrow(pgUtil::readPNGInfo(NULL, &height, &format, res.getData<void>(), res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGInfo(&width, NULL, &format, res.getData<void>(), res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGInfo(&width, &height, NULL, res.getData<void>(), res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGInfo(&width, &height, &format, NULL, res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), 0), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGInfo(NULL, &height, &format, res.getData<void>(), res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGInfo(&width, NULL, &format, res.getData<void>(), res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGInfo(&width, &height, NULL, res.getData<void>(), res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGInfo(&width, &height, &format, NULL, res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGInfo(&width, &height, &format, res.getData<void>(), 0), ckUtil::ExceptionInvalidArgument);
 
-        pgAssertThrow(pgUtil::readPNGImage(NULL, buf_size, buf_line_size, res.getData<void>(), res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGImage(buf, 0, buf_line_size, res.getData<void>(), res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGImage(buf, buf_size, 0, res.getData<void>(), res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGImage(buf, buf_size, buf_line_size, NULL, res.getDataSize()), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::readPNGImage(buf, buf_size, buf_line_size, res.getData<void>(), 0), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGImage(NULL, buf_size, buf_line_size, res.getData<void>(), res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGImage(buf, 0, buf_line_size, res.getData<void>(), res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGImage(buf, buf_size, 0, res.getData<void>(), res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGImage(buf, buf_size, buf_line_size, NULL, res.getDataSize()), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::readPNGImage(buf, buf_size, buf_line_size, res.getData<void>(), 0), ckUtil::ExceptionInvalidArgument);
 
-        pgResMgr::removeResource(pgID_("rgb.png"));
-        pgResMgr::removeResource(pgID_("rgba.png"));
-        pgResMgr::removeResource(pgID_("gray.png"));
-        pgResMgr::removeResource(pgID_("gray_alpha.png"));
+        ckResMgr::removeResource(ckID_("rgb.png"));
+        ckResMgr::removeResource(ckID_("rgba.png"));
+        ckResMgr::removeResource(ckID_("gray.png"));
+        ckResMgr::removeResource(ckID_("gray_alpha.png"));
 
-        pgFree(buf);
+        ckFree(buf);
     }
 
     /*
@@ -244,133 +244,133 @@ void pgUtilTest()
     */
     {
 #ifdef WIN32
-        pgUtil::loadWindowsFont("Arial.ttf");
-        pgResMgr::removeResource(pgID_("Arial.ttf"));
+        ckUtil::loadWindowsFont("Arial.ttf");
+        ckResMgr::removeResource(ckID_("Arial.ttf"));
 #endif
-        pgAssertThrow(pgUtil::loadWindowsFont(NULL), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::loadWindowsFont("dummy_font_name"), pgResMgr::ExceptionCannotOpenFile);
+        ckAssertThrow(ckUtil::loadWindowsFont(NULL), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::loadWindowsFont("dummy_font_name"), ckResMgr::ExceptionCannotOpenFile);
     }
 
     /*
-        static void loadShader(pgID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num)
+        static void loadShader(ckID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num)
     */
     {
-        pgID id = pgID::genID();
+        ckID id = ckID::genID();
 
-        pgUtil::loadShader(id, TEST_DATA_DIR "test.vert", TEST_DATA_DIR "test.frag", 100, 100, 3);
-        pgAssert(pgDrawMgr::getShader(id));
+        ckUtil::loadShader(id, TEST_DATA_DIR "test.vert", TEST_DATA_DIR "test.frag", 100, 100, 3);
+        ckAssert(ckDrawMgr::getShader(id));
 
-        pgDrawMgr::deleteShader(id);
+        ckDrawMgr::deleteShader(id);
     }
 
     /*
         static void loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale)
-        static void loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* png_file, r32 scale)
+        static void loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* png_file, r32 scale)
     */
     {
-        pgRes res;
-        pgMdlData mdl_data;
+        ckRes res;
+        ckMdlData mdl_data;
 
-        pgUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 10.0f);
+        ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 10.0f);
 
-        res = pgResMgr::getResource(pgID_("valid.pxm"));
+        res = ckResMgr::getResource(ckID_("valid.pxm"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
-        pgAssert(mdl_data.getNodeNum() == 2);
-        pgAssert(mdl_data.getVertNum() == 14 * 6 * 6 * 2);
-        pgAssert(mdl_data.hasNormal());
-        pgAssert(mdl_data.getTextureID() == pgID::ZERO);
+        ckAssert(mdl_data.getNodeNum() == 2);
+        ckAssert(mdl_data.getVertNum() == 14 * 6 * 6 * 2);
+        ckAssert(mdl_data.hasNormal());
+        ckAssert(mdl_data.getTextureID() == ckID::ZERO);
 
-        pgAssert(mdl_data.getNodeParentIndex(0) == 1 && mdl_data.getNodeParentIndex(1) == 1);
-        pgAssert(isEqual(mdl_data.getNodeLocal(0), pgMat::UNIT.translate(10.0f, 20.0f, 30.0f)) && isEqual(mdl_data.getNodeLocal(1), pgMat::UNIT));
-        pgAssert(mdl_data.getNodePrimMode(0) == pgPrim::MODE_TRIANGLES && mdl_data.getNodePrimMode(1) == pgPrim::MODE_TRIANGLES);
-        pgAssert(mdl_data.getNodeVertIndex(0) == 0 && mdl_data.getNodeVertIndex(1) == 504);
-        pgAssert(mdl_data.getNodeVertNum(0) == 504 && mdl_data.getNodeVertNum(1) == 504);
-        pgAssert(mdl_data.getNodeBlendMode(0) == pgDraw::BLEND_OFF && mdl_data.getNodeBlendMode(1) == pgDraw::BLEND_OFF);
+        ckAssert(mdl_data.getNodeParentIndex(0) == 1 && mdl_data.getNodeParentIndex(1) == 1);
+        ckAssert(isEqual(mdl_data.getNodeLocal(0), ckMat::UNIT.translate(10.0f, 20.0f, 30.0f)) && isEqual(mdl_data.getNodeLocal(1), ckMat::UNIT));
+        ckAssert(mdl_data.getNodePrimMode(0) == ckPrim::MODE_TRIANGLES && mdl_data.getNodePrimMode(1) == ckPrim::MODE_TRIANGLES);
+        ckAssert(mdl_data.getNodeVertIndex(0) == 0 && mdl_data.getNodeVertIndex(1) == 504);
+        ckAssert(mdl_data.getNodeVertNum(0) == 504 && mdl_data.getNodeVertNum(1) == 504);
+        ckAssert(mdl_data.getNodeBlendMode(0) == ckDraw::BLEND_OFF && mdl_data.getNodeBlendMode(1) == ckDraw::BLEND_OFF);
 
-        pgAssert(isEqual(mdl_data.getVertPos(0), pgVec(30.01f, 10.01f, -60.01f)));
-        pgAssert(mdl_data.getVertCol(0) == pgCol(0, 0, 0));
-        pgAssert(isEqual(mdl_data.getVertU(0), 0.0f) && isEqual(mdl_data.getVertV(0), 0.0f));
+        ckAssert(isEqual(mdl_data.getVertPos(0), ckVec(30.01f, 10.01f, -60.01f)));
+        ckAssert(mdl_data.getVertCol(0) == ckCol(0, 0, 0));
+        ckAssert(isEqual(mdl_data.getVertU(0), 0.0f) && isEqual(mdl_data.getVertV(0), 0.0f));
 
-        pgResMgr::removeResource(pgID_("valid.pxm"));
+        ckResMgr::removeResource(ckID_("valid.pxm"));
 
-        pgUtil::loadPixelArtModelAs(pgID_("test"), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f);
+        ckUtil::loadPixelArtModelAs(ckID_("test"), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f);
 
-        res = pgResMgr::getResource(pgID_("test"));
+        res = ckResMgr::getResource(ckID_("test"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
-        pgResMgr::removeResource(pgID_("test"));
+        ckResMgr::removeResource(ckID_("test"));
 
-        pgAssertThrow(pgUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 0.0f), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::loadPixelArtModel(TEST_DATA_DIR "invalid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image1.png", 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image2.png", 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::loadPixelArtModelAs(pgID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 0.0f), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::loadPixelArtModelAs(pgID::genID(), TEST_DATA_DIR "invalid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::loadPixelArtModelAs(pgID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image1.png", 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::loadPixelArtModelAs(pgID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image2.png", 1.0f), pgUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "invalid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image1.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image2.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "invalid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image1.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image2.png", 1.0f), ckUtil::ExceptionInvalidData);
     }
 
     /*
-        static void import3DS(const char* filename, pgID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
-        static void import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+        static void import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+        static void import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
     */
     {
-        pgRes res;
-        pgMdlData mdl_data;
+        ckRes res;
+        ckMdlData mdl_data;
 
-        pgUtil::import3DS(TEST_DATA_DIR "valid.3ds", pgID_("test_tex"), false, false, 1.0f);
+        ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID_("test_tex"), false, false, 1.0f);
 
-        res = pgResMgr::getResource(pgID_("valid.3ds"));
+        res = ckResMgr::getResource(ckID_("valid.3ds"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
-        pgAssert(mdl_data.getNodeNum() == 3);
-        pgAssert(mdl_data.getVertNum() == 108);
-        pgAssert(!mdl_data.hasNormal());
-        pgAssert(mdl_data.getTextureID() == pgID_("test_tex"));
+        ckAssert(mdl_data.getNodeNum() == 3);
+        ckAssert(mdl_data.getVertNum() == 108);
+        ckAssert(!mdl_data.hasNormal());
+        ckAssert(mdl_data.getTextureID() == ckID_("test_tex"));
 
-        pgAssert(mdl_data.getNodeParentIndex(0) == 0 && mdl_data.getNodeParentIndex(1) == 0 && mdl_data.getNodeParentIndex(2) == 0);
-        pgAssert(isEqual(mdl_data.getNodeLocal(0), pgMat::UNIT) && isEqual(mdl_data.getNodeLocal(1), pgMat::UNIT) && isEqual(mdl_data.getNodeLocal(2), pgMat::UNIT));
-        pgAssert(mdl_data.getNodePrimMode(0) == pgPrim::MODE_TRIANGLES && mdl_data.getNodePrimMode(1) == pgPrim::MODE_TRIANGLES && mdl_data.getNodePrimMode(2) == pgPrim::MODE_TRIANGLES);
-        pgAssert(mdl_data.getNodeVertIndex(0) == 0 && mdl_data.getNodeVertIndex(1) == 36 && mdl_data.getNodeVertIndex(2) == 72);
-        pgAssert(mdl_data.getNodeVertNum(0) == 36 && mdl_data.getNodeVertNum(1) == 36 && mdl_data.getNodeVertNum(2) == 36);
-        pgAssert(mdl_data.getNodeBlendMode(0) == pgDraw::BLEND_OFF && mdl_data.getNodeBlendMode(1) == pgDraw::BLEND_HALF && mdl_data.getNodeBlendMode(2) == pgDraw::BLEND_ADD);
+        ckAssert(mdl_data.getNodeParentIndex(0) == 0 && mdl_data.getNodeParentIndex(1) == 0 && mdl_data.getNodeParentIndex(2) == 0);
+        ckAssert(isEqual(mdl_data.getNodeLocal(0), ckMat::UNIT) && isEqual(mdl_data.getNodeLocal(1), ckMat::UNIT) && isEqual(mdl_data.getNodeLocal(2), ckMat::UNIT));
+        ckAssert(mdl_data.getNodePrimMode(0) == ckPrim::MODE_TRIANGLES && mdl_data.getNodePrimMode(1) == ckPrim::MODE_TRIANGLES && mdl_data.getNodePrimMode(2) == ckPrim::MODE_TRIANGLES);
+        ckAssert(mdl_data.getNodeVertIndex(0) == 0 && mdl_data.getNodeVertIndex(1) == 36 && mdl_data.getNodeVertIndex(2) == 72);
+        ckAssert(mdl_data.getNodeVertNum(0) == 36 && mdl_data.getNodeVertNum(1) == 36 && mdl_data.getNodeVertNum(2) == 36);
+        ckAssert(mdl_data.getNodeBlendMode(0) == ckDraw::BLEND_OFF && mdl_data.getNodeBlendMode(1) == ckDraw::BLEND_HALF && mdl_data.getNodeBlendMode(2) == ckDraw::BLEND_ADD);
 
-        pgAssert(isEqual(mdl_data.getVertPos(0), pgVec(75.0f, -75.0f, 150.0f)) && isEqual(mdl_data.getVertPos(36), pgVec(-125.0f, -75.0f, 150.0f)) && isEqual(mdl_data.getVertPos(72), pgVec(-125.0f, -75.0f, 350.0f)));
-        pgAssert(mdl_data.getVertCol(0) == pgCol::FULL && mdl_data.getVertCol(36) == pgCol::FULL && mdl_data.getVertCol(72) == pgCol::FULL);
-        pgAssert( //
+        ckAssert(isEqual(mdl_data.getVertPos(0), ckVec(75.0f, -75.0f, 150.0f)) && isEqual(mdl_data.getVertPos(36), ckVec(-125.0f, -75.0f, 150.0f)) && isEqual(mdl_data.getVertPos(72), ckVec(-125.0f, -75.0f, 350.0f)));
+        ckAssert(mdl_data.getVertCol(0) == ckCol::FULL && mdl_data.getVertCol(36) == ckCol::FULL && mdl_data.getVertCol(72) == ckCol::FULL);
+        ckAssert( //
             isEqual(mdl_data.getVertU(0), 0.0f) && isEqual(mdl_data.getVertV(0), 0.0f) && //
             isEqual(mdl_data.getVertU(36), 0.0f) && isEqual(mdl_data.getVertV(36), 0.0f) && //
             isEqual(mdl_data.getVertU(72), 0.0f) && isEqual(mdl_data.getVertV(72), 0.0f));
 
-        pgResMgr::removeResource(pgID_("valid.3ds"));
+        ckResMgr::removeResource(ckID_("valid.3ds"));
 
-        pgUtil::import3DS(TEST_DATA_DIR "valid.3ds", pgID::ZERO, true, true, 2.0f);
+        ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID::ZERO, true, true, 2.0f);
 
-        res = pgResMgr::getResource(pgID_("valid.3ds"));
+        res = ckResMgr::getResource(ckID_("valid.3ds"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
-        pgAssert(mdl_data.hasNormal());
-        pgAssert(isEqual(mdl_data.getVertPos(0), pgVec(150.0f, -150.0f, 300.0f)) && isEqual(mdl_data.getVertPos(36), pgVec(-250.0f, -150.0f, 300.0f)) && isEqual(mdl_data.getVertPos(72), pgVec(-250.0f, -150.0f, 700.0f)));
-        pgAssert(isEqual(mdl_data.getVertN(0), pgVec(0.0f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(36), pgVec(0.f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(72), pgVec(0.f, -1.0f, 0.0f)));
+        ckAssert(mdl_data.hasNormal());
+        ckAssert(isEqual(mdl_data.getVertPos(0), ckVec(150.0f, -150.0f, 300.0f)) && isEqual(mdl_data.getVertPos(36), ckVec(-250.0f, -150.0f, 300.0f)) && isEqual(mdl_data.getVertPos(72), ckVec(-250.0f, -150.0f, 700.0f)));
+        ckAssert(isEqual(mdl_data.getVertN(0), ckVec(0.0f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(36), ckVec(0.f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(72), ckVec(0.f, -1.0f, 0.0f)));
 
-        pgResMgr::removeResource(pgID_("valid.3ds"));
+        ckResMgr::removeResource(ckID_("valid.3ds"));
 
-        pgUtil::import3DSAs(pgID_("test"), TEST_DATA_DIR "valid.3ds", pgID::ZERO, true, false, 3.0f);
+        ckUtil::import3DSAs(ckID_("test"), TEST_DATA_DIR "valid.3ds", ckID::ZERO, true, false, 3.0f);
 
-        res = pgResMgr::getResource(pgID_("test"));
+        res = ckResMgr::getResource(ckID_("test"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
-        pgAssert(mdl_data.hasNormal());
-        pgAssert(isEqual(mdl_data.getVertN(0), pgVec(0.0f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(36), pgVec(0.f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(72), pgVec(0.f, -1.0f, 0.0f)));
+        ckAssert(mdl_data.hasNormal());
+        ckAssert(isEqual(mdl_data.getVertN(0), ckVec(0.0f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(36), ckVec(0.f, -1.0f, 0.f)) && isEqual(mdl_data.getVertN(72), ckVec(0.f, -1.0f, 0.0f)));
 
-        pgResMgr::removeResource(pgID_("test"));
+        ckResMgr::removeResource(ckID_("test"));
 
-        pgAssertThrow(pgUtil::import3DS(TEST_DATA_DIR "valid.3ds", pgID::ZERO, false, true, 1.0f), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::import3DS(TEST_DATA_DIR "invalid.3ds", pgID::ZERO, false, false, 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::import3DS(TEST_DATA_DIR "valid.3ds", pgID::ZERO, false, false, 0.0f), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::import3DSAs(pgID::genID(), TEST_DATA_DIR "valid.3ds", pgID::ZERO, false, true, 1.0f), pgUtil::ExceptionInvalidArgument);
-        pgAssertThrow(pgUtil::import3DSAs(pgID::genID(), TEST_DATA_DIR "invalid.3ds", pgID::ZERO, false, false, 1.0f), pgUtil::ExceptionInvalidData);
-        pgAssertThrow(pgUtil::import3DSAs(pgID::genID(), TEST_DATA_DIR "valid.3ds", pgID::ZERO, false, false, 0.0f), pgUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, true, 1.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DS(TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DSAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, true, 1.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DSAs(ckID::genID(), TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::import3DSAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
     }
 }

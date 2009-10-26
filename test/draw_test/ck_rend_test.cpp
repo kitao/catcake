@@ -36,30 +36,30 @@ static u8 s_render_count1;
 static u8 s_render_count2;
 
 
-class RendTestClass1 : public pgRend
+class RendTestClass1 : public ckRend
 {
 public:
     RendTestClass1()
     {
-        pgAssertThrow(getPrim(), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(getRendBody<RendBody>(), pgRend::ExceptionNotInitialized);
-        pgAssertThrow(getRendData<RendData>(0), pgRend::ExceptionNotInitialized);
+        ckAssertThrow(getPrim(), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(getRendBody<RendBody>(), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(getRendData<RendData>(0), ckRend::ExceptionNotInitialized);
     }
 
-    void init(pgPrim* prim, r32 key)
+    void init(ckPrim* prim, r32 key)
     {
         /*
-            void init(pgPrim* prim, u32 body_size, u32 data_size)
-            pgPrim* getPrim() const
+            void init(ckPrim* prim, u32 body_size, u32 data_size)
+            ckPrim* getPrim() const
             template<class T> T* getRendBody()
             template<class T> T* getRendData(u16 index)
         */
-        pgAssertThrow(pgRend::init(NULL, 0, 0), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(pgRend::init(prim, 0, 0, NULL), pgRend::ExceptionInvalidCall);
+        ckAssertThrow(ckRend::init(NULL, 0, 0), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(ckRend::init(prim, 0, 0, NULL), ckRend::ExceptionInvalidCall);
 
-        pgRend::init(prim, sizeof(RendBody), sizeof(RendData));
+        ckRend::init(prim, sizeof(RendBody), sizeof(RendData));
 
-        pgAssert(getPrim() == prim);
+        ckAssert(getPrim() == prim);
 
         RendBody* rend_body = getRendBody<RendBody>();
 
@@ -68,30 +68,30 @@ public:
         for (s32 i = 0; i < prim->getMaxDataNum(); i++)
         {
             RendData* rend_data = getRendData<RendData>(i);
-            pgAssert(isEqual(rend_data->vec, pgVec(1.0f, 2.0f, 3.0f)));
+            ckAssert(isEqual(rend_data->vec, ckVec(1.0f, 2.0f, 3.0f)));
         }
 
-        pgAssertThrow(getRendData<RendData>(prim->getMaxDataNum()), pgRend::ExceptionInvalidArgument);
+        ckAssertThrow(getRendData<RendData>(prim->getMaxDataNum()), ckRend::ExceptionInvalidArgument);
     }
 
-    void init(pgPrim* prim, void* rend_data)
+    void init(ckPrim* prim, void* rend_data)
     {
         /*
-            void init(pgPrim* prim, u32 body_size, u32 data_size, void* rend_data)
+            void init(ckPrim* prim, u32 body_size, u32 data_size, void* rend_data)
         */
-        pgAssertThrow(pgRend::init(NULL, 0, 1, rend_data), pgRend::ExceptionInvalidArgument);
-        pgAssertThrow(pgRend::init(prim, 0, 0), pgRend::ExceptionInvalidCall);
-        pgAssertThrow(pgRend::init(prim, 0, 1, NULL), pgRend::ExceptionInvalidArgument);
+        ckAssertThrow(ckRend::init(NULL, 0, 1, rend_data), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(ckRend::init(prim, 0, 0), ckRend::ExceptionInvalidCall);
+        ckAssertThrow(ckRend::init(prim, 0, 1, NULL), ckRend::ExceptionInvalidArgument);
 
-        pgRend::init(prim, sizeof(RendBody), sizeof(RendData), rend_data);
+        ckRend::init(prim, sizeof(RendBody), sizeof(RendData), rend_data);
     }
 
-    pgVec& bodyVec()
+    ckVec& bodyVec()
     {
         return getRendBody<RendBody>()->vec;
     }
 
-    pgVec& dataVec(u8 index)
+    ckVec& dataVec(u8 index)
     {
         return getRendData<RendData>(index)->vec;
     }
@@ -99,17 +99,17 @@ public:
 private:
     struct RendBody
     {
-        pgVec vec;
+        ckVec vec;
     };
 
     struct RendData
     {
-        pgVec vec;
+        ckVec vec;
     };
 
-    virtual pgID getClassID()
+    virtual ckID getClassID()
     {
-        return pgID_("RendTestClass1");
+        return ckID_("RendTestClass1");
     }
 
     virtual void initData(void* data, u16 data_num)
@@ -122,148 +122,148 @@ private:
         }
     }
 
-    virtual void render(const pgMat& view)
+    virtual void render(const ckMat& view)
     {
         s_render_count1++;
     }
 };
 
 
-class RendTestClass2 : public pgRend
+class RendTestClass2 : public ckRend
 {
 public:
-    void init(pgPrim* prim)
+    void init(ckPrim* prim)
     {
-        pgRend::init(prim, 0, 0);
+        ckRend::init(prim, 0, 0);
     }
 
 private:
-    virtual pgID getClassID()
+    virtual ckID getClassID()
     {
-        return pgID_("RendTestClass2");
+        return ckID_("RendTestClass2");
     }
 
     virtual void initData(void* data, u16 data_num) {}
 
-    virtual void render(const pgMat& view)
+    virtual void render(const ckMat& view)
     {
         s_render_count2++;
     }
 };
 
 
-void pgRendTest()
+void ckRendTest()
 {
     /*
-        virtual ~pgRend()
+        virtual ~ckRend()
         bool isActive() const
         void setActive(bool is_active)
 
-        pgRend()
+        ckRend()
     */
     {
         s_render_count1 = 0;
         s_render_count2 = 0;
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
         {
-            pgPrim prim;
+            ckPrim prim;
             RendTestClass1 rend1;
 
-            pgAssertThrow(rend1.init(&prim, 0.0f), pgPrim::ExceptionNotInitialized);
+            ckAssertThrow(rend1.init(&prim, 0.0f), ckPrim::ExceptionNotInitialized);
 
-            pgAssertThrow(rend1.isActive(), pgRend::ExceptionNotInitialized);
-            pgAssertThrow(rend1.setActive(false), pgRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.isActive(), ckRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.setActive(false), ckRend::ExceptionNotInitialized);
 
-            prim.init(pgPrim::MODE_TRIANGLE_STRIP, 3, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+            prim.init(ckPrim::MODE_TRIANGLE_STRIP, 3, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 0 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 0 && s_render_count2 == 0);
 
             rend1.init(&prim, 10.0f);
             rend1.init(&prim, 20.0f);
 
-            pgAssert(rend1.isActive());
+            ckAssert(rend1.isActive());
 
             rend1.dataVec(2);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 1 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 1 && s_render_count2 == 0);
 
-            pgAssertThrow(rend1.dataVec(3), pgRend::ExceptionInvalidArgument);
+            ckAssertThrow(rend1.dataVec(3), ckRend::ExceptionInvalidArgument);
 
             rend1.setActive(false);
-            pgAssert(!rend1.isActive());
+            ckAssert(!rend1.isActive());
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 1 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 1 && s_render_count2 == 0);
 
-            prim.init(pgPrim::MODE_TRIANGLE_STRIP, 5, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+            prim.init(ckPrim::MODE_TRIANGLE_STRIP, 5, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 1 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 1 && s_render_count2 == 0);
 
-            pgAssertThrow(rend1.isActive(), pgRend::ExceptionNotInitialized);
-            pgAssertThrow(rend1.setActive(false), pgRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.isActive(), ckRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.setActive(false), ckRend::ExceptionNotInitialized);
 
             rend1.init(&prim, 30.0f);
 
-            pgAssert(rend1.isActive());
+            ckAssert(rend1.isActive());
 
             rend1.dataVec(4);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 2 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 2 && s_render_count2 == 0);
 
-            pgAssertThrow(rend1.dataVec(5), pgRend::ExceptionInvalidArgument);
+            ckAssertThrow(rend1.dataVec(5), ckRend::ExceptionInvalidArgument);
 
             RendTestClass2 rend2;
             rend2.init(&prim);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 2 && s_render_count2 == 1);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 2 && s_render_count2 == 1);
 
             rend1.init(&prim, 40.0f);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 3 && s_render_count2 == 1);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 3 && s_render_count2 == 1);
 
-            pgPrim::PrimData prim_data[3];
-            pgVec rend_data[3];
+            ckPrim::PrimData prim_data[3];
+            ckVec rend_data[3];
 
-            prim.init(pgPrim::MODE_TRIANGLE_STRIP, prim_data, 3, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+            prim.init(ckPrim::MODE_TRIANGLE_STRIP, prim_data, 3, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
             rend1.init(&prim, rend_data);
             rend1.init(&prim, rend_data);
         }
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 
     /*
         void reallocData(u16 max_data_num);
-        void copyData(u16 dest_index, const pgPrim* src_prim, u16 src_index);
+        void copyData(u16 dest_index, const ckPrim* src_prim, u16 src_index);
     */
     {
         s_render_count1 = 0;
         s_render_count2 = 0;
 
-        pgDrawMgr::createAfterRes();
+        ckDrawMgr::createAfterRes();
 
-        u32 used_memory_size = pgMemMgr::getCurUsedMemorySize();
+        u32 used_memory_size = ckMemMgr::getCurUsedMemorySize();
 
         RendTestClass1 rend1, rend2;
         RendTestClass2 rend3;
 
         {
-            pgPrim prim1;
+            ckPrim prim1;
 
-            prim1.init(pgPrim::MODE_TRIANGLE_STRIP, 10, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+            prim1.init(ckPrim::MODE_TRIANGLE_STRIP, 10, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
             rend1.init(&prim1, 123.0f);
 
             for (s32 i = 0; i < 10; i++)
@@ -277,11 +277,11 @@ void pgRendTest()
             {
                 if (i < 10)
                 {
-                    pgAssert(isEqual(rend1.dataVec(i), pgVec(1.0f + i, 2.0f + i, 3.0f + i)));
+                    ckAssert(isEqual(rend1.dataVec(i), ckVec(1.0f + i, 2.0f + i, 3.0f + i)));
                 }
                 else
                 {
-                    pgAssert(isEqual(rend1.dataVec(i), pgVec(1.0f, 2.0f, 3.0)));
+                    ckAssert(isEqual(rend1.dataVec(i), ckVec(1.0f, 2.0f, 3.0)));
                 }
             }
 
@@ -289,43 +289,43 @@ void pgRendTest()
 
             for (s32 i = 0; i < 5; i++)
             {
-                pgAssert(isEqual(rend1.dataVec(i), pgVec(1.0f + i, 2.0f + i, 3.0f + i)));
+                ckAssert(isEqual(rend1.dataVec(i), ckVec(1.0f + i, 2.0f + i, 3.0f + i)));
             }
 
             prim1.reallocData(10);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 1 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 1 && s_render_count2 == 0);
 
-            pgPrim prim2;
+            ckPrim prim2;
 
-            prim2.init(pgPrim::MODE_POINTS, 20, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+            prim2.init(ckPrim::MODE_POINTS, 20, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
             rend2.init(&prim2, 234.0f);
 
             for (s32 i = 0; i < 5; i++)
             {
-                pgAssert(isEqual(rend1.dataVec(i + 5), pgVec(1.0f, 2.0f, 3.0)));
+                ckAssert(isEqual(rend1.dataVec(i + 5), ckVec(1.0f, 2.0f, 3.0)));
 
                 prim1.copyData(i + 5, &prim1, i);
-                pgAssert(isEqual(rend1.dataVec(i), rend1.dataVec(i + 5)));
+                ckAssert(isEqual(rend1.dataVec(i), rend1.dataVec(i + 5)));
 
                 prim2.copyData(i + 10, &prim1, i);
-                pgAssert(isEqual(rend1.dataVec(i), rend2.dataVec(i + 10)));
+                ckAssert(isEqual(rend1.dataVec(i), rend2.dataVec(i + 10)));
             }
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 3 && s_render_count2 == 0);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 3 && s_render_count2 == 0);
 
             rend3.init(&prim2);
 
-            pgDrawMgr::renderForSystem();
-            pgAssert(s_render_count1 == 4 && s_render_count2 == 1);
+            ckDrawMgr::renderForSystem();
+            ckAssert(s_render_count1 == 4 && s_render_count2 == 1);
 
-            pgAssertThrow(prim1.copyData(0, &prim2, 0), pgRend::ExceptionInvalidArgument);
+            ckAssertThrow(prim1.copyData(0, &prim2, 0), ckRend::ExceptionInvalidArgument);
         }
 
-        pgAssert(pgMemMgr::getCurUsedMemorySize() == used_memory_size);
+        ckAssert(ckMemMgr::getCurUsedMemorySize() == used_memory_size);
 
-        pgDrawMgr::destroyBeforeRes();
+        ckDrawMgr::destroyBeforeRes();
     }
 }

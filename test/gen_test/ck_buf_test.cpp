@@ -59,11 +59,11 @@ private:
 };
 
 
-void pgBufTest()
+void ckBufTest()
 {
     /*
-        pgBuf()
-        ~pgBuf()
+        ckBuf()
+        ~ckBuf()
         void init(u16 size)
         u16 getSize() const
         u16 getUsedSize() const
@@ -76,26 +76,26 @@ void pgBufTest()
         s_ctor_count = 0;
         s_dtor_count = 0;
 
-        pgBuf<BufTestClass> buf;
-        pgAssert(s_ctor_count == 0 && s_dtor_count == 0);
+        ckBuf<BufTestClass> buf;
+        ckAssert(s_ctor_count == 0 && s_dtor_count == 0);
 
-        pgAssertThrow(buf.init(0), pgBuf<BufTestClass>::ExceptionInvalidArgument);
-        pgAssertThrow(buf.newElement(), pgBuf<BufTestClass>::ExceptionNotInitialized);
-        pgAssertThrow(buf.deleteElement(NULL), pgBuf<BufTestClass>::ExceptionNotInitialized);
-        pgAssertThrow(buf.clear(), pgBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.init(0), ckBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.newElement(), ckBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.deleteElement(NULL), ckBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.clear(), ckBuf<BufTestClass>::ExceptionNotInitialized);
 
         buf.init(5);
-        pgAssert(s_ctor_count == 0 && s_dtor_count == 0);
-        pgAssert(buf.getSize() == 5 && buf.getUsedSize() == 0 && buf.getFreeSize() == 5);
+        ckAssert(s_ctor_count == 0 && s_dtor_count == 0);
+        ckAssert(buf.getSize() == 5 && buf.getUsedSize() == 0 && buf.getFreeSize() == 5);
 
         buf.newElement();
         buf.newElement();
-        pgAssert(s_ctor_count == 2 && s_dtor_count == 0);
-        pgAssert(buf.getSize() == 5 && buf.getUsedSize() == 2 && buf.getFreeSize() == 3);
+        ckAssert(s_ctor_count == 2 && s_dtor_count == 0);
+        ckAssert(buf.getSize() == 5 && buf.getUsedSize() == 2 && buf.getFreeSize() == 3);
 
         buf.init(10);
-        pgAssert(s_ctor_count == 2 && s_dtor_count == 2);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 0 && buf.getFreeSize() == 10);
+        ckAssert(s_ctor_count == 2 && s_dtor_count == 2);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 0 && buf.getFreeSize() == 10);
 
         BufTestClass* test_data[10];
 
@@ -107,47 +107,47 @@ void pgBufTest()
             }
             else
             {
-                pgAssertThrow(buf.newElement(), pgBuf<BufTestClass>::ExceptionOutOfBuffer);
+                ckAssertThrow(buf.newElement(), ckBuf<BufTestClass>::ExceptionOutOfBuffer);
             }
         }
 
-        pgAssert(s_ctor_count == 12 && s_dtor_count == 2);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 10 && buf.getFreeSize() == 0);
+        ckAssert(s_ctor_count == 12 && s_dtor_count == 2);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 10 && buf.getFreeSize() == 0);
 
         for (s32 i = 0; i < 10; i += 2)
         {
             buf.deleteElement(test_data[i]);
         }
 
-        pgAssert(s_ctor_count == 12 && s_dtor_count == 7);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
+        ckAssert(s_ctor_count == 12 && s_dtor_count == 7);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
 
-        pgAssertThrow(buf.deleteElement(test_data[1] - 2), pgBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.deleteElement(test_data[1] - 2), ckBuf<BufTestClass>::ExceptionInvalidArgument);
 
-        pgAssert(s_ctor_count == 12 && s_dtor_count == 7);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
+        ckAssert(s_ctor_count == 12 && s_dtor_count == 7);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
 
-        pgAssertThrow(buf.deleteElement(test_data[9] + 1), pgBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.deleteElement(test_data[9] + 1), ckBuf<BufTestClass>::ExceptionInvalidArgument);
 
-        pgAssert(s_ctor_count == 12 && s_dtor_count == 7);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
+        ckAssert(s_ctor_count == 12 && s_dtor_count == 7);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
 
-        pgAssertThrow(buf.deleteElement(test_data[2]), pgBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.deleteElement(test_data[2]), ckBuf<BufTestClass>::ExceptionInvalidArgument);
 
-        pgAssert(s_ctor_count == 12 && s_dtor_count == 7);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
+        ckAssert(s_ctor_count == 12 && s_dtor_count == 7);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 5 && buf.getFreeSize() == 5);
 
         for (s32 i = 0; i < 5; i++)
         {
             test_data[i] = buf.newElement();
         }
 
-        pgAssert(s_ctor_count == 17 && s_dtor_count == 7);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 10 && buf.getFreeSize() == 0);
+        ckAssert(s_ctor_count == 17 && s_dtor_count == 7);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 10 && buf.getFreeSize() == 0);
 
         buf.clear();
-        pgAssert(s_ctor_count == 17 && s_dtor_count == 17);
-        pgAssert(buf.getSize() == 10 && buf.getUsedSize() == 0 && buf.getFreeSize() == 10);
+        ckAssert(s_ctor_count == 17 && s_dtor_count == 17);
+        ckAssert(buf.getSize() == 10 && buf.getUsedSize() == 0 && buf.getFreeSize() == 10);
     }
 
     /*
@@ -157,12 +157,12 @@ void pgBufTest()
         T* getNextN(const T* elem) const
     */
     {
-        pgBuf<BufTestClass> buf;
+        ckBuf<BufTestClass> buf;
 
-        pgAssertThrow(buf.getFirstN(), pgBuf<BufTestClass>::ExceptionNotInitialized);
-        pgAssertThrow(buf.getLastN(), pgBuf<BufTestClass>::ExceptionNotInitialized);
-        pgAssertThrow(buf.getPrevN(NULL), pgBuf<BufTestClass>::ExceptionNotInitialized);
-        pgAssertThrow(buf.getNextN(NULL), pgBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.getFirstN(), ckBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.getLastN(), ckBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.getPrevN(NULL), ckBuf<BufTestClass>::ExceptionNotInitialized);
+        ckAssertThrow(buf.getNextN(NULL), ckBuf<BufTestClass>::ExceptionNotInitialized);
 
         buf.init(10);
 
@@ -181,28 +181,28 @@ void pgBufTest()
         buf.deleteElement(test_data[7]);
         buf.deleteElement(test_data[9]);
 
-        pgAssert(buf.getFirstN() == test_data[1]);
-        pgAssert(buf.getLastN() == test_data[8]);
+        ckAssert(buf.getFirstN() == test_data[1]);
+        ckAssert(buf.getLastN() == test_data[8]);
 
-        pgAssert(!buf.getPrevN(test_data[1]));
-        pgAssert(buf.getNextN(test_data[1]) == test_data[5]);
+        ckAssert(!buf.getPrevN(test_data[1]));
+        ckAssert(buf.getNextN(test_data[1]) == test_data[5]);
 
-        pgAssert(buf.getPrevN(test_data[5]) == test_data[1]);
-        pgAssert(buf.getNextN(test_data[5]) == test_data[8]);
+        ckAssert(buf.getPrevN(test_data[5]) == test_data[1]);
+        ckAssert(buf.getNextN(test_data[5]) == test_data[8]);
 
-        pgAssert(buf.getPrevN(test_data[8]) == test_data[5]);
-        pgAssert(!buf.getNextN(test_data[8]));
+        ckAssert(buf.getPrevN(test_data[8]) == test_data[5]);
+        ckAssert(!buf.getNextN(test_data[8]));
 
-        pgAssertThrow(buf.getPrevN(test_data[1] - 2), pgBuf<BufTestClass>::ExceptionInvalidArgument);
-        pgAssertThrow(buf.getPrevN(test_data[8] + 2), pgBuf<BufTestClass>::ExceptionInvalidArgument);
-        pgAssertThrow(buf.getPrevN(test_data[2]), pgBuf<BufTestClass>::ExceptionInvalidArgument);
-        pgAssertThrow(buf.getNextN(test_data[1] - 2), pgBuf<BufTestClass>::ExceptionInvalidArgument);
-        pgAssertThrow(buf.getNextN(test_data[8] + 2), pgBuf<BufTestClass>::ExceptionInvalidArgument);
-        pgAssertThrow(buf.getNextN(test_data[9]), pgBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.getPrevN(test_data[1] - 2), ckBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.getPrevN(test_data[8] + 2), ckBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.getPrevN(test_data[2]), ckBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.getNextN(test_data[1] - 2), ckBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.getNextN(test_data[8] + 2), ckBuf<BufTestClass>::ExceptionInvalidArgument);
+        ckAssertThrow(buf.getNextN(test_data[9]), ckBuf<BufTestClass>::ExceptionInvalidArgument);
 
         buf.clear();
 
-        pgAssert(!buf.getFirstN());
-        pgAssert(!buf.getLastN());
+        ckAssert(!buf.getFirstN());
+        ckAssert(!buf.getLastN());
     }
 }

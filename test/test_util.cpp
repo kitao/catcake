@@ -34,17 +34,17 @@
 
 bool isEqual(r32 a, r32 b)
 {
-    return (pgMath::abs(a - b) < pgMath::EPSILON);
+    return (ckMath::abs(a - b) < ckMath::EPSILON);
 }
 
 
-bool isEqual(const pgVec& vec1, const pgVec& vec2)
+bool isEqual(const ckVec& vec1, const ckVec& vec2)
 {
     return (isEqual(vec1.x, vec2.x) && isEqual(vec1.y, vec2.y) && isEqual(vec1.z, vec2.z));
 }
 
 
-bool isEqual(const pgMat& mat1, const pgMat& mat2)
+bool isEqual(const ckMat& mat1, const ckMat& mat2)
 {
     return ( //
         isEqual(mat1.x_axis, mat2.x_axis) && //

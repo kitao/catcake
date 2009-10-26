@@ -29,11 +29,11 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_res_all.h"
-#include "pg_conf_all.h"
-#include "pg_util_all.h"
+#include "ck_res_all.h"
+#include "ck_conf_all.h"
+#include "ck_util_all.h"
 
 
 enum DirectionType
@@ -61,7 +61,7 @@ public:
 
         m_image_data_line_size = PIXEL_SIZE * width;
         m_image_data_size = PIXEL_SIZE * width * height;
-        m_image_data = static_cast<u8*>(pgMalloc(m_image_data_size));
+        m_image_data = static_cast<u8*>(ckMalloc(m_image_data_size));
 
         m_cur_direction = DIRECTION_FRONT;
 
@@ -70,7 +70,7 @@ public:
 
     ~PixelImage()
     {
-        pgFree(m_image_data);
+        ckFree(m_image_data);
     }
 
     u16 getSideLength() const
@@ -112,11 +112,11 @@ public:
         m_cur_direction_data = m_cur_pattern_data + PIXEL_SIZE * m_side_length * m_cur_direction;
     }
 
-    pgCol getPixelColor(u16 x, u16 y)
+    ckCol getPixelColor(u16 x, u16 y)
     {
         u8* col = m_cur_direction_data + m_image_data_line_size * y + PIXEL_SIZE * x;
 
-        return pgCol(*(col + 0), *(col + 1), *(col + 2));
+        return ckCol(*(col + 0), *(col + 1), *(col + 2));
     }
 
 private:
@@ -145,16 +145,16 @@ public:
         m_pattern_num = pattern_num;
 
         m_cube_data_size = sizeof(Cube) * m_sq_side_length * m_side_length * m_pattern_num;
-        m_cube_data = static_cast<Cube*>(pgMalloc(m_cube_data_size));
+        m_cube_data = static_cast<Cube*>(ckMalloc(m_cube_data_size));
 
-        pgMemMgr::memset(m_cube_data, 1, m_cube_data_size);
+        ckMemMgr::memset(m_cube_data, 1, m_cube_data_size);
 
         setCurPattern(0);
     }
 
     ~PixelCube()
     {
-        pgFree(m_cube_data);
+        ckFree(m_cube_data);
     }
 
     void setCurPattern(u16 pattern)
@@ -165,15 +165,15 @@ public:
 
     void eraseCube(DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
     {
-        pgMemMgr::memset(getCube(direction, image_x, image_y, image_z), 0, sizeof(Cube));
+        ckMemMgr::memset(getCube(direction, image_x, image_y, image_z), 0, sizeof(Cube));
     }
 
-    pgCol getCubeColor(DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
+    ckCol getCubeColor(DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
     {
         return getCube(direction, image_x, image_y, image_z)->col;
     }
 
-    void setCubeColor(DirectionType direction, u16 image_x, u16 image_y, u16 image_z, pgCol col)
+    void setCubeColor(DirectionType direction, u16 image_x, u16 image_y, u16 image_z, ckCol col)
     {
         getCube(direction, image_x, image_y, image_z)->col = col;
     }
@@ -185,7 +185,7 @@ public:
 
     void eraseFace(DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
     {
-        pgMemMgr::memset(getCube(direction, image_x, image_y, image_z)->face + direction, 0, sizeof(Face));
+        ckMemMgr::memset(getCube(direction, image_x, image_y, image_z)->face + direction, 0, sizeof(Face));
     }
 
     void expandFace(DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
@@ -247,7 +247,7 @@ public:
         }
     }
 
-    void calcVertPos(pgVec* vert, DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
+    void calcVertPos(ckVec* vert, DirectionType direction, u16 image_x, u16 image_y, u16 image_z)
     {
         Cube* cube = getCube(direction, image_x, image_y, image_z);
         Face* face = cube->face + direction;
@@ -275,7 +275,7 @@ public:
         calcCubePos(&cube_x, &cube_y, &cube_z, direction, image_x2 + width2, image_y2, image_z2);
         vert[5].set(cube_x, cube_y, cube_z);
 
-        pgVec offset = pgVec(1.0f, 1.0f, 1.0f) * (static_cast<r32>(m_side_length - 1) * 0.5f);
+        ckVec offset = ckVec(1.0f, 1.0f, 1.0f) * (static_cast<r32>(m_side_length - 1) * 0.5f);
 
         vert[0] -= offset;
         vert[1] -= offset;
@@ -296,7 +296,7 @@ private:
     struct Cube
     {
         Face face[DIRECTION_NUM];
-        pgCol col;
+        ckCol col;
     };
 
     void calcCubePos(r32* cube_x, r32* cube_y, r32* cube_z, DirectionType direction, r32 image_x, r32 image_y, r32 image_z)
@@ -370,7 +370,7 @@ private:
 };
 
 
-static void calcNodeLocalRecursively(pgMdlData* mdl_data, u16 node_index)
+static void calcNodeLocalRecursively(ckMdlData* mdl_data, u16 node_index)
 {
     u16 node_num = mdl_data->getNodeNum();
 
@@ -386,7 +386,7 @@ static void calcNodeLocalRecursively(pgMdlData* mdl_data, u16 node_index)
 
     if (parent_index != node_index)
     {
-        pgMat local = mdl_data->getNodeLocal(node_index);
+        ckMat local = mdl_data->getNodeLocal(node_index);
         local.trans -= mdl_data->getNodeLocal(parent_index).trans;
 
         mdl_data->setNodeLocal(node_index, local);
@@ -394,75 +394,75 @@ static void calcNodeLocalRecursively(pgMdlData* mdl_data, u16 node_index)
 }
 
 
-void pgUtil::loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale)
+void ckUtil::loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale)
 {
-    return loadPixelArtModelAs(pgID::genID(pgUtil::getBasename(pxm_file)), pxm_file, png_file, scale);
+    return loadPixelArtModelAs(ckID::genID(ckUtil::getBasename(pxm_file)), pxm_file, png_file, scale);
 }
 
 
-void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* png_file, r32 scale)
+void ckUtil::loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* png_file, r32 scale)
 {
     if (scale <= 0.0f)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     /*
         read parameters
     */
-    pgID conf_res_id = pgID::genID();
+    ckID conf_res_id = ckID::genID();
 
-    pgResMgr::loadResourceAs(conf_res_id, pxm_file, false);
+    ckResMgr::loadResourceAs(conf_res_id, pxm_file, false);
 
-    pgRes conf_res = pgResMgr::getResource(conf_res_id);
-    pgConf* conf = pgConfMgr::newConfig(pgID::genID(), conf_res.getData<void>(), conf_res.getDataSize());
+    ckRes conf_res = ckResMgr::getResource(conf_res_id);
+    ckConf* conf = ckConfMgr::newConfig(ckID::genID(), conf_res.getData<void>(), conf_res.getDataSize());
 
-    pgResMgr::removeResource(conf_res_id);
+    ckResMgr::removeResource(conf_res_id);
 
-    pgEnt* color_ent = conf->getEntryFromFirstN("transparent_color");
+    ckEnt* color_ent = conf->getEntryFromFirstN("transparent_color");
 
     if (!color_ent || color_ent->getValueNum() < 3)
     {
-        pgConfMgr::deleteConfig(conf->getID());
-        pgThrow(ExceptionInvalidData);
+        ckConfMgr::deleteConfig(conf->getID());
+        ckThrow(ExceptionInvalidData);
     }
 
-    pgCol transparent_color = pgCol(color_ent->getValue_s32(0), color_ent->getValue_s32(1), color_ent->getValue_s32(2));
+    ckCol transparent_color = ckCol(color_ent->getValue_s32(0), color_ent->getValue_s32(1), color_ent->getValue_s32(2));
 
     /*
         load an image
     */
-    pgID png_res_id = pgID::genID();
+    ckID png_res_id = ckID::genID();
 
-    pgResMgr::loadResourceAs(png_res_id, png_file, false);
+    ckResMgr::loadResourceAs(png_res_id, png_file, false);
 
-    pgRes png_res = pgResMgr::getResource(png_res_id);
+    ckRes png_res = ckResMgr::getResource(png_res_id);
 
     const u8* png_data = png_res.getData<u8>();
     const u32 png_data_size = png_res.getDataSize();
 
     u16 image_width, image_height;
-    pgTex::TexFormat tex_format;
+    ckTex::TexFormat tex_format;
 
-    if (!pgUtil::readPNGInfo(&image_width, &image_height, &tex_format, png_data, png_data_size) || tex_format != pgTex::FORMAT_PNG_RGB || //
+    if (!ckUtil::readPNGInfo(&image_width, &image_height, &tex_format, png_data, png_data_size) || tex_format != ckTex::FORMAT_PNG_RGB || //
         image_width == 0 || image_height == 0 || image_width % DIRECTION_NUM != 0 || image_height % (image_width / DIRECTION_NUM) != 0)
     {
-        pgConfMgr::deleteConfig(conf->getID());
-        pgResMgr::removeResource(png_res_id);
+        ckConfMgr::deleteConfig(conf->getID());
+        ckResMgr::removeResource(png_res_id);
 
-        pgThrow(ExceptionInvalidData);
+        ckThrow(ExceptionInvalidData);
     }
 
     PixelImage pixel_image(image_width, image_height);
 
-    if (!pgUtil::readPNGImage(pixel_image.getImageData(), pixel_image.getImageDataSize(), pixel_image.getImageDataLineSize(), png_data, png_data_size))
+    if (!ckUtil::readPNGImage(pixel_image.getImageData(), pixel_image.getImageDataSize(), pixel_image.getImageDataLineSize(), png_data, png_data_size))
     {
-        pgConfMgr::deleteConfig(conf->getID());
-        pgResMgr::removeResource(png_res_id);
-        pgThrow(ExceptionInvalidData);
+        ckConfMgr::deleteConfig(conf->getID());
+        ckResMgr::removeResource(png_res_id);
+        ckThrow(ExceptionInvalidData);
     }
 
-    pgResMgr::removeResource(png_res_id);
+    ckResMgr::removeResource(png_res_id);
 
     /*
         setup a pixel cube
@@ -489,7 +489,7 @@ void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* 
             {
                 for (s32 image_y = 0; image_y < side_length; image_y++)
                 {
-                    pgCol pixel_color = pixel_image.getPixelColor(image_x, image_y);
+                    ckCol pixel_color = pixel_image.getPixelColor(image_x, image_y);
 
                     if (pixel_color == transparent_color)
                     {
@@ -513,7 +513,7 @@ void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* 
             {
                 for (s32 image_y = 0; image_y < side_length; image_y++)
                 {
-                    pgCol pixel_color = pixel_image.getPixelColor(image_x, image_y);
+                    ckCol pixel_color = pixel_image.getPixelColor(image_x, image_y);
 
                     if (pixel_color == transparent_color)
                     {
@@ -564,12 +564,12 @@ void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* 
     /*
         setup a model data
     */
-    pgMdlData mdl_data;
-    mdl_data.initAsWriter(pattern_num, vert_num, pgID::ZERO, true);
+    ckMdlData mdl_data;
+    mdl_data.initAsWriter(pattern_num, vert_num, ckID::ZERO, true);
 
     u16 vert_index = 0;
-    pgEnt* parent_ent = conf->getEntryFromFirstN("node_parent");
-    pgEnt* center_ent = conf->getEntryFromFirstN("node_center");
+    ckEnt* parent_ent = conf->getEntryFromFirstN("node_parent");
+    ckEnt* center_ent = conf->getEntryFromFirstN("node_center");
 
     for (s32 pattern = 0; pattern < pattern_num; pattern++)
     {
@@ -586,25 +586,25 @@ void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* 
             mdl_data.setNodeParentIndex_noParent(pattern);
         }
 
-        pgVec center = pgVec::ZERO;
+        ckVec center = ckVec::ZERO;
 
         if (center_ent && center_ent->getValueNum() >= 3)
         {
             center.set(center_ent->getValue_r32(0), center_ent->getValue_r32(1), center_ent->getValue_r32(2));
             center *= scale;
 
-            pgMat local = pgMat::UNIT;
+            ckMat local = ckMat::UNIT;
             local.trans = center;
 
             mdl_data.setNodeLocal(pattern, local);
         }
         else
         {
-            mdl_data.setNodeLocal(pattern, pgMat::UNIT);
+            mdl_data.setNodeLocal(pattern, ckMat::UNIT);
         }
 
-        mdl_data.setNodePrimMode(pattern, pgPrim::MODE_TRIANGLES);
-        mdl_data.setNodeBlendMode(pattern, pgDraw::BLEND_OFF);
+        mdl_data.setNodePrimMode(pattern, ckPrim::MODE_TRIANGLES);
+        mdl_data.setNodeBlendMode(pattern, ckDraw::BLEND_OFF);
 
         u16 start_vert_index = vert_index;
 
@@ -618,10 +618,10 @@ void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* 
                     {
                         if (pixel_cube.hasFace(direction, image_x, image_y, image_z))
                         {
-                            pgVec vert[6];
+                            ckVec vert[6];
                             pixel_cube.calcVertPos(vert, direction, image_x, image_y, image_z);
 
-                            pgCol col = pixel_cube.getCubeColor(direction, image_x, image_y, image_z);
+                            ckCol col = pixel_cube.getCubeColor(direction, image_x, image_y, image_z);
 
                             for (s32 i = 0; i < 6; i++)
                             {
@@ -648,7 +648,7 @@ void pgUtil::loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* 
         calcNodeLocalRecursively(&mdl_data, i);
     }
 
-    pgConfMgr::deleteConfig(conf->getID());
+    ckConfMgr::deleteConfig(conf->getID());
 
     mdl_data.calcNormalAsTriangles(false);
     mdl_data.registerAsResource(res_id);

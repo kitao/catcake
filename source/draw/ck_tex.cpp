@@ -29,87 +29,87 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_util_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_util_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgTex* pgTex::getPrevN() const
+ckTex* ckTex::getPrevN() const
 {
-    pgDrawMgr* ins = pgDrawMgr::instance();
-    const pgID* id = ins->m_tex_map.getPrevKeyN(m_id);
+    ckDrawMgr* ins = ckDrawMgr::instance();
+    const ckID* id = ins->m_tex_map.getPrevKeyN(m_id);
 
     return id ? *ins->m_tex_map.get(*id) : NULL;
 }
 
 
-pgTex* pgTex::getNextN() const
+ckTex* ckTex::getNextN() const
 {
-    pgDrawMgr* ins = pgDrawMgr::instance();
-    const pgID* id = ins->m_tex_map.getNextKeyN(m_id);
+    ckDrawMgr* ins = ckDrawMgr::instance();
+    const ckID* id = ins->m_tex_map.getNextKeyN(m_id);
 
     return id ? *ins->m_tex_map.get(*id) : NULL;
 }
 
 
-pgID pgTex::getID() const
+ckID ckTex::getID() const
 {
     return m_id;
 }
 
 
-u16 pgTex::getWidth() const
+u16 ckTex::getWidth() const
 {
     return m_width;
 }
 
 
-u16 pgTex::getHeight() const
+u16 ckTex::getHeight() const
 {
     return m_height;
 }
 
 
-pgTex::TexFormat pgTex::getFormat() const
+ckTex::TexFormat ckTex::getFormat() const
 {
     return m_format.getType();
 }
 
 
-pgTex::TexMode pgTex::getMode() const
+ckTex::TexMode ckTex::getMode() const
 {
     return m_mode.getType();
 }
 
 
-const void* pgTex::getImage() const
+const void* ckTex::getImage() const
 {
     return m_image;
 }
 
 
-u32 pgTex::getImageSize() const
+u32 ckTex::getImageSize() const
 {
     return m_image_size;
 }
 
 
-void* pgTex::editImage()
+void* ckTex::editImage()
 {
     if (m_mode != MODE_READ_WRITE)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
-    m_flag.setOn(pgTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
 
     return const_cast<void*>(m_image);
 }
 
 
-void pgTex::clearImage(pgCol col)
+void ckTex::clearImage(ckCol col)
 {
     u8* image = static_cast<u8*>(editImage());
 
@@ -149,7 +149,7 @@ void pgTex::clearImage(pgCol col)
         break;
 
     case FORMAT_ALPHA:
-        pgMemMgr::memset(image, col.a, m_width * m_height);
+        ckMemMgr::memset(image, col.a, m_width * m_height);
         break;
 
     default:
@@ -158,23 +158,23 @@ void pgTex::clearImage(pgCol col)
 }
 
 
-void pgTex::resizeImage(u16 width, u16 height)
+void ckTex::resizeImage(u16 width, u16 height)
 {
     if (m_mode != MODE_READ_WRITE)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
-    if (width == 0 || height == 0 || width > pgDrawMgr::getMaxTextureLength() || height > pgDrawMgr::getMaxTextureLength())
+    if (width == 0 || height == 0 || width > ckDrawMgr::getMaxTextureLength() || height > ckDrawMgr::getMaxTextureLength())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_width = width;
     m_height = height;
 
-    u16 valid_width = pgDrawMgr::getValidTextureLength(width);
-    u16 valid_height = pgDrawMgr::getValidTextureLength(height);
+    u16 valid_width = ckDrawMgr::getValidTextureLength(width);
+    u16 valid_height = ckDrawMgr::getValidTextureLength(height);
 
     if (width != valid_width || height != valid_height)
     {
@@ -199,28 +199,28 @@ void pgTex::resizeImage(u16 width, u16 height)
 
     if (m_image)
     {
-        pgFree(const_cast<void*>(m_image));
+        ckFree(const_cast<void*>(m_image));
     }
 
-    m_image_size = pgDrawMgr::getTexturePixelSize(m_format.getType()) * m_width * m_height;
-    m_image = pgMalloc(m_image_size);
+    m_image_size = ckDrawMgr::getTexturePixelSize(m_format.getType()) * m_width * m_height;
+    m_image = ckMalloc(m_image_size);
 
-    m_flag.setOn(pgTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
 }
 
 
-void pgTex::setVolatile()
+void ckTex::setVolatile()
 {
     if (m_mode != MODE_READ_ONLY && m_mode != MODE_READ_WRITE)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     getTexObj(); // upload the image to the vram
 
     if (m_mode == MODE_READ_WRITE)
     {
-        pgFree(const_cast<void*>(m_image));
+        ckFree(const_cast<void*>(m_image));
         m_image = NULL;
         m_image_size = 0;
     }
@@ -229,24 +229,24 @@ void pgTex::setVolatile()
 }
 
 
-pgID pgTex::getProxyTextureID() const
+ckID ckTex::getProxyTextureID() const
 {
-    return m_proxy_tex ? m_proxy_tex->getID() : pgID::ZERO;
+    return m_proxy_tex ? m_proxy_tex->getID() : ckID::ZERO;
 }
 
 
-void pgTex::setProxyTextureID(pgID tex_id)
+void ckTex::setProxyTextureID(ckID tex_id)
 {
     if (tex_id == m_id)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    m_proxy_tex = (tex_id == pgID::ZERO) ? NULL : pgDrawMgr::getTexture(tex_id);
+    m_proxy_tex = (tex_id == ckID::ZERO) ? NULL : ckDrawMgr::getTexture(tex_id);
 }
 
 
-pgTex::pgTex(pgID tex_id, u16 width, u16 height, TexFormat format, TexMode mode, const void* image, u32 image_size)
+ckTex::ckTex(ckID tex_id, u16 width, u16 height, TexFormat format, TexMode mode, const void* image, u32 image_size)
 {
     m_id = tex_id;
     m_width = width;
@@ -258,8 +258,8 @@ pgTex::pgTex(pgID tex_id, u16 width, u16 height, TexFormat format, TexMode mode,
 
     m_flag.clear();
 
-    u16 valid_width = pgDrawMgr::getValidTextureLength(width);
-    u16 valid_height = pgDrawMgr::getValidTextureLength(height);
+    u16 valid_width = ckDrawMgr::getValidTextureLength(width);
+    u16 valid_height = ckDrawMgr::getValidTextureLength(height);
 
     if (width != valid_width || height != valid_height)
     {
@@ -288,8 +288,8 @@ pgTex::pgTex(pgID tex_id, u16 width, u16 height, TexFormat format, TexMode mode,
         break;
 
     case MODE_READ_WRITE:
-        m_image_size = pgDrawMgr::getTexturePixelSize(m_format.getType()) * m_width * m_height;
-        m_image = pgMalloc(m_image_size);
+        m_image_size = ckDrawMgr::getTexturePixelSize(m_format.getType()) * m_width * m_height;
+        m_image = ckMalloc(m_image_size);
         break;
 
     case MODE_FRAMEBUFFER:
@@ -303,47 +303,47 @@ pgTex::pgTex(pgID tex_id, u16 width, u16 height, TexFormat format, TexMode mode,
         break;
 
     default:
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    m_flag.setOn(pgTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
 
-    pgDrawMgr::instance()->m_tex_map.add(tex_id, this);
+    ckDrawMgr::instance()->m_tex_map.add(tex_id, this);
 }
 
 
-pgTex::~pgTex()
+ckTex::~ckTex()
 {
-    pgDrawMgr::instance()->m_tex_map.remove(m_id);
+    ckDrawMgr::instance()->m_tex_map.remove(m_id);
 
     if (m_tex_obj != 0)
     {
-        pgLowLevelAPI::unregisterTexture(m_tex_obj);
+        ckLowLevelAPI::unregisterTexture(m_tex_obj);
     }
 
     if (m_mode == MODE_READ_WRITE)
     {
-        pgFree(const_cast<void*>(m_image));
+        ckFree(const_cast<void*>(m_image));
     }
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgTex)
+CK_DEFINE_OPERATOR_EQUAL(ckTex)
 
 
-u32 pgTex::getTexObj()
+u32 ckTex::getTexObj()
 {
     if (m_flag.isOn(FLAG_UPLOAD))
     {
         if (m_mode == MODE_VOLATILE)
         {
-            pgThrow(ExceptionVolatileTextureUploaded);
+            ckThrow(ExceptionVolatileTextureUploaded);
         }
         else if (m_mode != MODE_FRAMEBUFFER)
         {
             if (m_tex_obj != 0)
             {
-                pgLowLevelAPI::unregisterTexture(m_tex_obj);
+                ckLowLevelAPI::unregisterTexture(m_tex_obj);
             }
 
             if (m_format == FORMAT_PNG_RGB || m_format == FORMAT_PNG_RGBA || m_format == FORMAT_PNG_ALPHA)
@@ -356,8 +356,8 @@ u32 pgTex::getTexObj()
             }
             else
             {
-                m_tex_obj = pgLowLevelAPI::registerTexture( //
-                    m_width, m_height, static_cast<pgLowLevelAPI::TextureFormat>(m_format.getType()), m_image);
+                m_tex_obj = ckLowLevelAPI::registerTexture( //
+                    m_width, m_height, static_cast<ckLowLevelAPI::TextureFormat>(m_format.getType()), m_image);
             }
         }
 
@@ -368,29 +368,29 @@ u32 pgTex::getTexObj()
 }
 
 
-void pgTex::expandAndRegisterTexture_ptx()
+void ckTex::expandAndRegisterTexture_ptx()
 {
-    u16 valid_width = pgDrawMgr::getValidTextureLength(m_width);
-    u16 valid_height = pgDrawMgr::getValidTextureLength(m_height);
-    u16 pixel_size = pgDrawMgr::getTexturePixelSize(m_format.getType());
+    u16 valid_width = ckDrawMgr::getValidTextureLength(m_width);
+    u16 valid_height = ckDrawMgr::getValidTextureLength(m_height);
+    u16 pixel_size = ckDrawMgr::getTexturePixelSize(m_format.getType());
     u16 src_line_size = m_width * pixel_size;
     u16 dest_line_size = valid_width * pixel_size;
 
-    void* new_image = pgMalloc(valid_width * valid_height * pixel_size);
+    void* new_image = ckMalloc(valid_width * valid_height * pixel_size);
 
     const u8* src = static_cast<const u8*>(m_image);
     u8* dest = static_cast<u8*>(new_image);
 
     for (u32 i = 0; i < m_height; i++)
     {
-        pgMemMgr::memcpy(dest, src, src_line_size);
+        ckMemMgr::memcpy(dest, src, src_line_size);
 
         src += src_line_size - pixel_size;
         dest += src_line_size;
 
         for (u32 j = m_width; j < valid_width; j++)
         {
-            pgMemMgr::memcpy(dest, src, pixel_size);
+            ckMemMgr::memcpy(dest, src, pixel_size);
 
             dest += pixel_size;
         }
@@ -402,29 +402,29 @@ void pgTex::expandAndRegisterTexture_ptx()
 
     for (u32 i = m_height; i < valid_height; i++)
     {
-        pgMemMgr::memcpy(dest, src, dest_line_size);
+        ckMemMgr::memcpy(dest, src, dest_line_size);
 
         dest += dest_line_size;
     }
 
-    m_tex_obj = pgLowLevelAPI::registerTexture( //
-        valid_width, valid_height, static_cast<pgLowLevelAPI::TextureFormat>(m_format.getType()), new_image);
+    m_tex_obj = ckLowLevelAPI::registerTexture( //
+        valid_width, valid_height, static_cast<ckLowLevelAPI::TextureFormat>(m_format.getType()), new_image);
 
-    pgFree(new_image);
+    ckFree(new_image);
 }
 
 
-void pgTex::expandAndRegisterTexture_png()
+void ckTex::expandAndRegisterTexture_png()
 {
-    u16 valid_width = pgDrawMgr::getValidTextureLength(m_width);
-    u16 valid_height = pgDrawMgr::getValidTextureLength(m_height);
-    u16 pixel_size = pgDrawMgr::getTexturePixelSize(m_format.getType());
+    u16 valid_width = ckDrawMgr::getValidTextureLength(m_width);
+    u16 valid_height = ckDrawMgr::getValidTextureLength(m_height);
+    u16 pixel_size = ckDrawMgr::getTexturePixelSize(m_format.getType());
     u16 src_line_size = m_width * pixel_size;
     u16 dest_line_size = valid_width * pixel_size;
 
-    void* new_image = pgMalloc(valid_width * valid_height * pixel_size);
+    void* new_image = ckMalloc(valid_width * valid_height * pixel_size);
 
-    pgUtil::readPNGImage(new_image, valid_width * valid_height * pixel_size, dest_line_size, m_image, m_image_size);
+    ckUtil::readPNGImage(new_image, valid_width * valid_height * pixel_size, dest_line_size, m_image, m_image_size);
 
     u8* src = static_cast<u8*>(new_image) + src_line_size - pixel_size;
     u8* dest = src + pixel_size;
@@ -435,7 +435,7 @@ void pgTex::expandAndRegisterTexture_png()
         {
             for (u32 j = m_width; j < valid_width; j++)
             {
-                pgMemMgr::memcpy(dest, src, pixel_size);
+                ckMemMgr::memcpy(dest, src, pixel_size);
 
                 dest += pixel_size;
             }
@@ -450,13 +450,13 @@ void pgTex::expandAndRegisterTexture_png()
 
     for (u32 i = m_height; i < valid_height; i++)
     {
-        pgMemMgr::memcpy(dest, src, dest_line_size);
+        ckMemMgr::memcpy(dest, src, dest_line_size);
 
         dest += dest_line_size;
     }
 
-    m_tex_obj = pgLowLevelAPI::registerTexture( //
-        valid_width, valid_height, static_cast<pgLowLevelAPI::TextureFormat>(m_format.getType() - FORMAT_PNG_RGB), new_image);
+    m_tex_obj = ckLowLevelAPI::registerTexture( //
+        valid_width, valid_height, static_cast<ckLowLevelAPI::TextureFormat>(m_format.getType() - FORMAT_PNG_RGB), new_image);
 
-    pgFree(new_image);
+    ckFree(new_image);
 }

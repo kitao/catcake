@@ -29,21 +29,21 @@
 */
 
 
-#include "pg_dbg_all.h"
+#include "ck_dbg_all.h"
 
 
-void pgDbgMgr::drawLine(const pgVec& pos1, const pgVec& pos2, pgCol col, pgID scr_id)
+void ckDbgMgr::drawLine(const ckVec& pos1, const ckVec& pos2, ckCol col, ckID scr_id)
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_cur_draw_prim_num >= ins->m_max_draw_prim_num)
@@ -51,10 +51,10 @@ void pgDbgMgr::drawLine(const pgVec& pos1, const pgVec& pos2, pgCol col, pgID sc
         ins->reallocDrawPrim();
     }
 
-    pgPrim* prim = &ins->m_draw_prim[ins->m_cur_draw_prim_num];
+    ckPrim* prim = &ins->m_draw_prim[ins->m_cur_draw_prim_num];
 
     prim->setScreenID(scr_id);
-    prim->setPrimMode(pgPrim::MODE_LINES);
+    prim->setPrimMode(ckPrim::MODE_LINES);
     prim->setCurDataNum(2);
     prim->setSortCenter((pos1 + pos2) / 2.0f);
 
@@ -68,18 +68,18 @@ void pgDbgMgr::drawLine(const pgVec& pos1, const pgVec& pos2, pgCol col, pgID sc
 }
 
 
-void pgDbgMgr::drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, pgCol col, pgID scr_id)
+void ckDbgMgr::drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, ckCol col, ckID scr_id)
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_cur_draw_prim_num >= ins->m_max_draw_prim_num)
@@ -87,10 +87,10 @@ void pgDbgMgr::drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& po
         ins->reallocDrawPrim();
     }
 
-    pgPrim* prim = &ins->m_draw_prim[ins->m_cur_draw_prim_num];
+    ckPrim* prim = &ins->m_draw_prim[ins->m_cur_draw_prim_num];
 
     prim->setScreenID(scr_id);
-    prim->setPrimMode(pgPrim::MODE_TRIANGLES);
+    prim->setPrimMode(ckPrim::MODE_TRIANGLES);
     prim->setCurDataNum(3);
     prim->setSortCenter((pos1 + pos2 + pos3) / 3.0f);
 
@@ -106,18 +106,18 @@ void pgDbgMgr::drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& po
 }
 
 
-void pgDbgMgr::drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, const pgVec& pos4, pgCol col, pgID scr_id)
+void ckDbgMgr::drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, const ckVec& pos4, ckCol col, ckID scr_id)
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_cur_draw_prim_num >= ins->m_max_draw_prim_num)
@@ -125,10 +125,10 @@ void pgDbgMgr::drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& po
         ins->reallocDrawPrim();
     }
 
-    pgPrim* prim = &ins->m_draw_prim[ins->m_cur_draw_prim_num];
+    ckPrim* prim = &ins->m_draw_prim[ins->m_cur_draw_prim_num];
 
     prim->setScreenID(scr_id);
-    prim->setPrimMode(pgPrim::MODE_TRIANGLE_STRIP);
+    prim->setPrimMode(ckPrim::MODE_TRIANGLE_STRIP);
     prim->setCurDataNum(4);
     prim->setSortCenter((pos1 + pos2 + pos3 + pos4) / 4.0f);
 
@@ -146,30 +146,30 @@ void pgDbgMgr::drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& po
 }
 
 
-void pgDbgMgr::drawBox(const pgMat& center, const pgVec& size, pgCol poly_col, pgCol line_col, pgID scr_id)
+void ckDbgMgr::drawBox(const ckMat& center, const ckVec& size, ckCol poly_col, ckCol line_col, ckID scr_id)
 {
     if (!m_instance)
     {
         return;
     }
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgVec vec_x = center.x_axis * (size.x / 2.0f);
-    pgVec vec_y = center.y_axis * (size.y / 2.0f);
-    pgVec vec_z = center.z_axis * (size.z / 2.0f);
+    ckVec vec_x = center.x_axis * (size.x / 2.0f);
+    ckVec vec_y = center.y_axis * (size.y / 2.0f);
+    ckVec vec_z = center.z_axis * (size.z / 2.0f);
 
-    pgVec pos1 = center.trans + vec_x + vec_y + vec_z;
-    pgVec pos2 = center.trans - vec_x + vec_y + vec_z;
-    pgVec pos3 = center.trans + vec_x - vec_y + vec_z;
-    pgVec pos4 = center.trans - vec_x - vec_y + vec_z;
-    pgVec pos5 = center.trans + vec_x + vec_y - vec_z;
-    pgVec pos6 = center.trans - vec_x + vec_y - vec_z;
-    pgVec pos7 = center.trans + vec_x - vec_y - vec_z;
-    pgVec pos8 = center.trans - vec_x - vec_y - vec_z;
+    ckVec pos1 = center.trans + vec_x + vec_y + vec_z;
+    ckVec pos2 = center.trans - vec_x + vec_y + vec_z;
+    ckVec pos3 = center.trans + vec_x - vec_y + vec_z;
+    ckVec pos4 = center.trans - vec_x - vec_y + vec_z;
+    ckVec pos5 = center.trans + vec_x + vec_y - vec_z;
+    ckVec pos6 = center.trans - vec_x + vec_y - vec_z;
+    ckVec pos7 = center.trans + vec_x - vec_y - vec_z;
+    ckVec pos8 = center.trans - vec_x - vec_y - vec_z;
 
     if (poly_col.a > 0)
     {
@@ -201,34 +201,34 @@ void pgDbgMgr::drawBox(const pgMat& center, const pgVec& size, pgCol poly_col, p
 }
 
 
-void pgDbgMgr::drawSphere(const pgVec& center, r32 radius, pgCol poly_col, pgCol line_col, pgID scr_id)
+void ckDbgMgr::drawSphere(const ckVec& center, r32 radius, ckCol poly_col, ckCol line_col, ckID scr_id)
 {
     if (!m_instance)
     {
         return;
     }
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgScr* scr = pgDrawMgr::getScreen(scr_id);
+    ckScr* scr = ckDrawMgr::getScreen(scr_id);
 
-    const pgVec& view_x = scr->view().x_axis;
-    const pgVec& view_y = scr->view().y_axis;
-    const pgVec& view_z = scr->view().z_axis;
+    const ckVec& view_x = scr->view().x_axis;
+    const ckVec& view_y = scr->view().y_axis;
+    const ckVec& view_z = scr->view().z_axis;
 
-    pgVec front = center + view_z * radius;
-    pgVec back = center - view_z * radius;
+    ckVec front = center + view_z * radius;
+    ckVec back = center - view_z * radius;
 
-    pgVec pos1;
-    pgVec pos2 = center + view_x * (pgMath::cos_s32(24 * 14) * radius) + view_y * (pgMath::sin_s32(24 * 14) * radius);
+    ckVec pos1;
+    ckVec pos2 = center + view_x * (ckMath::cos_s32(24 * 14) * radius) + view_y * (ckMath::sin_s32(24 * 14) * radius);
 
     for (s32 i = 0; i < 15; i++)
     {
         pos1 = pos2;
-        pos2 = center + view_x * (pgMath::cos_s32(24 * i) * radius) + view_y * (pgMath::sin_s32(24 * i) * radius);
+        pos2 = center + view_x * (ckMath::cos_s32(24 * i) * radius) + view_y * (ckMath::sin_s32(24 * i) * radius);
 
         if (poly_col.a > 0)
         {
@@ -244,21 +244,21 @@ void pgDbgMgr::drawSphere(const pgVec& center, r32 radius, pgCol poly_col, pgCol
 }
 
 
-void pgDbgMgr::drawAxis(const pgMat& world, r32 size, pgID scr_id)
+void ckDbgMgr::drawAxis(const ckMat& world, r32 size, ckID scr_id)
 {
     if (!m_instance)
     {
         return;
     }
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     size /= 2.0f;
 
-    drawLine(world.trans, world.trans + world.x_axis * size, pgCol(255, 0, 0), scr_id);
-    drawLine(world.trans, world.trans + world.y_axis * size, pgCol(0, 255, 0), scr_id);
-    drawLine(world.trans, world.trans + world.z_axis * size, pgCol(0, 0, 255), scr_id);
+    drawLine(world.trans, world.trans + world.x_axis * size, ckCol(255, 0, 0), scr_id);
+    drawLine(world.trans, world.trans + world.y_axis * size, ckCol(0, 255, 0), scr_id);
+    drawLine(world.trans, world.trans + world.z_axis * size, ckCol(0, 0, 255), scr_id);
 }

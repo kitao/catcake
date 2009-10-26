@@ -31,36 +31,36 @@
 
 #include <stdarg.h>
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_task_all.h"
-#include "pg_res_all.h"
-#include "pg_util_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_sys_all.h"
+#include "ck_task_all.h"
+#include "ck_res_all.h"
+#include "ck_util_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-const pgID pgDrawMgr::INVISIBLE_SCREEN_ID = pgID_("INVISIBLE_SCREEN");
-const pgID pgDrawMgr::DEFAULT_3D_SCREEN_ID = pgID_("DEFAULT_3D_SCREEN");
-const pgID pgDrawMgr::DEFAULT_2D_SCREEN_ID = pgID_("DEFAULT_2D_SCREEN");
-const pgID pgDrawMgr::DEFAULT_LIGHT_SET_ID = pgID_("DEFAULT_LIGHT_SET");
-const pgID pgDrawMgr::DEFAULT_SHADER_ID = pgID_("DEFAULT_SHADER");
+const ckID ckDrawMgr::INVISIBLE_SCREEN_ID = ckID_("INVISIBLE_SCREEN");
+const ckID ckDrawMgr::DEFAULT_3D_SCREEN_ID = ckID_("DEFAULT_3D_SCREEN");
+const ckID ckDrawMgr::DEFAULT_2D_SCREEN_ID = ckID_("DEFAULT_2D_SCREEN");
+const ckID ckDrawMgr::DEFAULT_LIGHT_SET_ID = ckID_("DEFAULT_LIGHT_SET");
+const ckID ckDrawMgr::DEFAULT_SHADER_ID = ckID_("DEFAULT_SHADER");
 
-pgDrawMgr* pgDrawMgr::m_instance = NULL;
+ckDrawMgr* ckDrawMgr::m_instance = NULL;
 
 
 static const char s_default_vert_code[] = //
-    "uniform mat4 pg_local_to_screen;" //
+    "uniform mat4 ck_local_to_screen;" //
     "" //
-    "attribute vec4 pg_vertex;" //
-    "attribute vec4 pg_color;" //
-    "attribute vec2 pg_texcoord;" //
+    "attribute vec4 ck_vertex;" //
+    "attribute vec4 ck_color;" //
+    "attribute vec2 ck_texcoord;" //
     "" //
-    "uniform float pg_uni_00, pg_uni_01, pg_uni_02, pg_uni_03;" // final color
+    "uniform float ck_uni_00, ck_uni_01, ck_uni_02, ck_uni_03;" // final color
     "" //
-    "uniform float pg_uni_04, pg_uni_05;" // u param
-    "uniform float pg_uni_06, pg_uni_07;" // v param
+    "uniform float ck_uni_04, ck_uni_05;" // u param
+    "uniform float ck_uni_06, ck_uni_07;" // v param
     "" //
     "varying vec4 vary_color;" //
     "varying vec2 vary_texcoord;" //
@@ -68,19 +68,19 @@ static const char s_default_vert_code[] = //
     "" //
     "void main()" //
     "{" //
-    "    gl_Position = pg_local_to_screen * pg_vertex;" //
+    "    gl_Position = ck_local_to_screen * ck_vertex;" //
     "" //
-    "    vary_color = pg_color * vec4(pg_uni_00, pg_uni_01, pg_uni_02, pg_uni_03) / 255.0;" //
+    "    vary_color = ck_color * vec4(ck_uni_00, ck_uni_01, ck_uni_02, ck_uni_03) / 255.0;" //
     "" //
-    "    vary_texcoord.s = pg_texcoord.s * pg_uni_04 + pg_uni_05;" //
-    "    vary_texcoord.t = pg_texcoord.t * pg_uni_06 + pg_uni_07;" //
+    "    vary_texcoord.s = ck_texcoord.s * ck_uni_04 + ck_uni_05;" //
+    "    vary_texcoord.t = ck_texcoord.t * ck_uni_06 + ck_uni_07;" //
     "}";
 
 
 static const char s_default_frag_code[] = //
-    "uniform int pg_uni_08;" // texture format
+    "uniform int ck_uni_08;" // texture format
     "" //
-    "uniform sampler2D pg_tex_00;" //
+    "uniform sampler2D ck_tex_00;" //
     "" //
     "varying vec4 vary_color;" //
     "varying vec2 vary_texcoord;" //
@@ -88,19 +88,19 @@ static const char s_default_frag_code[] = //
     "" //
     "void main()" //
     "{" //
-    "    if (pg_uni_08 == 1)" //
+    "    if (ck_uni_08 == 1)" //
     "    {" //
-    "        gl_FragColor.rgb = texture2D(pg_tex_00, vary_texcoord.st).rgb * vary_color.rgb;" //
+    "        gl_FragColor.rgb = texture2D(ck_tex_00, vary_texcoord.st).rgb * vary_color.rgb;" //
     "        gl_FragColor.a = vary_color.a;" //
     "    }" //
-    "    else if (pg_uni_08 == 2)" //
+    "    else if (ck_uni_08 == 2)" //
     "    {" //
-    "        gl_FragColor = texture2D(pg_tex_00, vary_texcoord.st) * vary_color;" //
+    "        gl_FragColor = texture2D(ck_tex_00, vary_texcoord.st) * vary_color;" //
     "    }" //
-    "    else if (pg_uni_08 == 3)" //
+    "    else if (ck_uni_08 == 3)" //
     "    {" //
     "        gl_FragColor.rgb = vary_color.rgb;" //
-    "        gl_FragColor.a = texture2D(pg_tex_00, vary_texcoord.st).a * vary_color.a;" //
+    "        gl_FragColor.a = texture2D(ck_tex_00, vary_texcoord.st).a * vary_color.a;" //
     "    }" //
     "    else" //
     "    {" //
@@ -109,340 +109,340 @@ static const char s_default_frag_code[] = //
     "}";
 
 
-bool pgDrawMgr::isShaderAvailable()
+bool ckDrawMgr::isShaderAvailable()
 {
-    return pgLowLevelAPI::isShaderAvailable();
+    return ckLowLevelAPI::isShaderAvailable();
 }
 
 
-u16 pgDrawMgr::getMaxTextureLength()
+u16 ckDrawMgr::getMaxTextureLength()
 {
-    return pgLowLevelAPI::getMaxTextureLength();
+    return ckLowLevelAPI::getMaxTextureLength();
 }
 
 
-u16 pgDrawMgr::getValidTextureLength(u16 length)
+u16 ckDrawMgr::getValidTextureLength(u16 length)
 {
-    return pgLowLevelAPI::getValidTextureLength(length);
+    return ckLowLevelAPI::getValidTextureLength(length);
 }
 
 
-u16 pgDrawMgr::getTexturePixelSize(pgTex::TexFormat format)
+u16 ckDrawMgr::getTexturePixelSize(ckTex::TexFormat format)
 {
     switch (format)
     {
-    case pgTex::FORMAT_PNG_RGB:
-        format = pgTex::FORMAT_RGB;
+    case ckTex::FORMAT_PNG_RGB:
+        format = ckTex::FORMAT_RGB;
         break;
 
-    case pgTex::FORMAT_PNG_RGBA:
-        format = pgTex::FORMAT_RGBA;
+    case ckTex::FORMAT_PNG_RGBA:
+        format = ckTex::FORMAT_RGBA;
         break;
 
-    case pgTex::FORMAT_PNG_ALPHA:
-        format = pgTex::FORMAT_ALPHA;
+    case ckTex::FORMAT_PNG_ALPHA:
+        format = ckTex::FORMAT_ALPHA;
         break;
 
     default:
         break;
     }
 
-    return pgLowLevelAPI::getTexturePixelSize(static_cast<pgLowLevelAPI::TextureFormat>(format));
+    return ckLowLevelAPI::getTexturePixelSize(static_cast<ckLowLevelAPI::TextureFormat>(format));
 }
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgDrawMgr)
+CK_DEFINE_MANAGER_IS_CREATED(ckDrawMgr)
 
 
-void pgDrawMgr::createAfterRes()
+void ckDrawMgr::createAfterRes()
 {
     destroyBeforeRes();
 
-    m_instance = pgNew(pgDrawMgr);
+    m_instance = ckNew(ckDrawMgr);
 
     newScreen(INVISIBLE_SCREEN_ID);
     newScreen(DEFAULT_3D_SCREEN_ID);
     newScreen(DEFAULT_2D_SCREEN_ID);
 
-    pgScr* scr0d = getScreen(INVISIBLE_SCREEN_ID);
+    ckScr* scr0d = getScreen(INVISIBLE_SCREEN_ID);
     scr0d->setActive(false);
 
-    pgScr* scr3d = getScreen(DEFAULT_3D_SCREEN_ID);
-    scr3d->setClearColor(pgCol::ZERO);
+    ckScr* scr3d = getScreen(DEFAULT_3D_SCREEN_ID);
+    scr3d->setClearColor(ckCol::ZERO);
 
-    pgScr* scr2d = getScreen(DEFAULT_2D_SCREEN_ID);
+    ckScr* scr2d = getScreen(DEFAULT_2D_SCREEN_ID);
     scr2d->setClearMode(false, true);
     scr2d->setPerspective(false);
 
     newLightSet(DEFAULT_LIGHT_SET_ID);
 
-    pgLowLevelAPI::resetDrawState();
+    ckLowLevelAPI::resetDrawState();
 
     newShader(DEFAULT_SHADER_ID, s_default_vert_code, s_default_frag_code, 9, 0, 1);
 }
 
 
-PG_DEFINE_MANAGER_DESTROY(pgDrawMgr, BeforeRes)
+CK_DEFINE_MANAGER_DESTROY(ckDrawMgr, BeforeRes)
 
 
-bool pgDrawMgr::isRender()
+bool ckDrawMgr::isRender()
 {
     return instance()->m_is_render;
 }
 
 
-void pgDrawMgr::setRender(bool is_render)
+void ckDrawMgr::setRender(bool is_render)
 {
     instance()->m_is_render = is_render;
 }
 
 
-bool pgDrawMgr::hasScreen(pgID scr_id)
+bool ckDrawMgr::hasScreen(ckID scr_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_scr_map.getN(scr_id) ? true : false;
 }
 
 
-pgScr* pgDrawMgr::getScreen(pgID scr_id)
+ckScr* ckDrawMgr::getScreen(ckID scr_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgScr** scr = ins->m_scr_map.getN(scr_id);
+    ckScr** scr = ins->m_scr_map.getN(scr_id);
 
     if (!scr)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return *scr;
 }
 
 
-pgScr* pgDrawMgr::newScreen(pgID scr_id)
+ckScr* ckDrawMgr::newScreen(ckID scr_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_scr_map.getN(scr_id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    return pgNew(pgScr)(scr_id);
+    return ckNew(ckScr)(scr_id);
 }
 
 
-void pgDrawMgr::deleteScreen(pgID scr_id)
+void ckDrawMgr::deleteScreen(ckID scr_id)
 {
     instance();
 
-    if (scr_id == pgID::ZERO || scr_id == INVISIBLE_SCREEN_ID)
+    if (scr_id == ckID::ZERO || scr_id == INVISIBLE_SCREEN_ID)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgDelete(getScreen(scr_id), pgScr);
+    ckDelete(getScreen(scr_id), ckScr);
 }
 
 
-pgScr* pgDrawMgr::getFirstScreenN()
+ckScr* ckDrawMgr::getFirstScreenN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* scr_id = ins->m_scr_map.getFirstKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* scr_id = ins->m_scr_map.getFirstKeyN();
 
     return scr_id ? *ins->m_scr_map.get(*scr_id) : NULL;
 }
 
 
-pgScr* pgDrawMgr::getLastScreenN()
+ckScr* ckDrawMgr::getLastScreenN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* scr_id = ins->m_scr_map.getLastKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* scr_id = ins->m_scr_map.getLastKeyN();
 
     return scr_id ? *ins->m_scr_map.get(*scr_id) : NULL;
 }
 
 
-bool pgDrawMgr::hasTexture(pgID tex_id)
+bool ckDrawMgr::hasTexture(ckID tex_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (tex_id == pgID::ZERO)
+    if (tex_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_tex_map.getN(tex_id) ? true : false;
 }
 
 
-pgTex* pgDrawMgr::getTexture(pgID tex_id)
+ckTex* ckDrawMgr::getTexture(ckID tex_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (tex_id == pgID::ZERO)
+    if (tex_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgTex** tex = ins->m_tex_map.getN(tex_id);
+    ckTex** tex = ins->m_tex_map.getN(tex_id);
 
     if (!tex)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return *tex;
 }
 
 
-pgTex* pgDrawMgr::newTexture(pgID tex_id, u16 width, u16 height, pgTex::TexFormat format)
+ckTex* ckDrawMgr::newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (tex_id == pgID::ZERO || width == 0 || height == 0 || width > getMaxTextureLength() || height > getMaxTextureLength() || //
-        (format != pgTex::FORMAT_RGB && format != pgTex::FORMAT_RGBA && format != pgTex::FORMAT_ALPHA))
+    if (tex_id == ckID::ZERO || width == 0 || height == 0 || width > getMaxTextureLength() || height > getMaxTextureLength() || //
+        (format != ckTex::FORMAT_RGB && format != ckTex::FORMAT_RGBA && format != ckTex::FORMAT_ALPHA))
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_tex_map.getN(tex_id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    return pgNew(pgTex)(tex_id, width, height, format, pgTex::MODE_READ_WRITE, NULL, 0);
+    return ckNew(ckTex)(tex_id, width, height, format, ckTex::MODE_READ_WRITE, NULL, 0);
 }
 
 
-pgTex* pgDrawMgr::newTexture(pgID tex_id, u16 width, u16 height, pgTex::TexFormat format, const void* image, u32 image_size)
+ckTex* ckDrawMgr::newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format, const void* image, u32 image_size)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (tex_id == pgID::ZERO || width == 0 || height == 0 || width > getMaxTextureLength() || height > getMaxTextureLength() || //
-        format == pgTex::FORMAT_PNG_RGB || format == pgTex::FORMAT_PNG_RGBA || format == pgTex::FORMAT_PNG_ALPHA || //
+    if (tex_id == ckID::ZERO || width == 0 || height == 0 || width > getMaxTextureLength() || height > getMaxTextureLength() || //
+        format == ckTex::FORMAT_PNG_RGB || format == ckTex::FORMAT_PNG_RGBA || format == ckTex::FORMAT_PNG_ALPHA || //
         !image || image_size != static_cast<u32>(getTexturePixelSize(format) * width * height))
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_tex_map.getN(tex_id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    return pgNew(pgTex)(tex_id, width, height, format, pgTex::MODE_READ_ONLY, image, image_size);
+    return ckNew(ckTex)(tex_id, width, height, format, ckTex::MODE_READ_ONLY, image, image_size);
 }
 
 
-void pgDrawMgr::deleteTexture(pgID tex_id)
+void ckDrawMgr::deleteTexture(ckID tex_id)
 {
     instance();
 
-    if (tex_id == pgID::ZERO)
+    if (tex_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgTex* tex = getTexture(tex_id);
+    ckTex* tex = getTexture(tex_id);
 
-    pgDelete(tex, pgTex);
+    ckDelete(tex, ckTex);
 }
 
 
-pgTex* pgDrawMgr::getFirstTextureN()
+ckTex* ckDrawMgr::getFirstTextureN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* tex_id = ins->m_tex_map.getFirstKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* tex_id = ins->m_tex_map.getFirstKeyN();
 
     return tex_id ? *ins->m_tex_map.get(*tex_id) : NULL;
 }
 
 
-pgTex* pgDrawMgr::getLastTextureN()
+ckTex* ckDrawMgr::getLastTextureN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* tex_id = ins->m_tex_map.getLastKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* tex_id = ins->m_tex_map.getLastKeyN();
 
     return tex_id ? *ins->m_tex_map.get(*tex_id) : NULL;
 }
 
 
-u16 pgDrawMgr::getFontIndexNum(pgID font_id)
+u16 ckDrawMgr::getFontIndexNum(ckID font_id)
 {
     instance();
 
-    if (font_id == pgID::ZERO)
+    if (font_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgRes res;
+    ckRes res;
 
-    pgTry
+    ckTry
     {
-        res = pgResMgr::getResource(font_id);
+        res = ckResMgr::getResource(font_id);
     }
-    pgCatch(pgResMgr::ExceptionNotFound)
+    ckCatch(ckResMgr::ExceptionNotFound)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return *res.getExInfo<u32>();
 }
 
 
-pgID pgDrawMgr::getFontID()
+ckID ckDrawMgr::getFontID()
 {
     return instance()->m_font_id;
 }
 
 
-u16 pgDrawMgr::getFontIndex()
+u16 ckDrawMgr::getFontIndex()
 {
     return instance()->m_font_index;
 }
 
 
-void pgDrawMgr::setFont(pgID font_id, u16 font_index)
+void ckDrawMgr::setFont(ckID font_id, u16 font_index)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (font_id == pgID::ZERO)
+    if (font_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgRes res;
+    ckRes res;
 
-    pgTry
+    ckTry
     {
-        res = pgResMgr::getResource(font_id);
+        res = ckResMgr::getResource(font_id);
     }
-    pgCatch(pgResMgr::ExceptionNotFound)
+    ckCatch(ckResMgr::ExceptionNotFound)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (font_index >= *res.getExInfo<u32>())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     ins->m_font_id = font_id;
@@ -451,303 +451,303 @@ void pgDrawMgr::setFont(pgID font_id, u16 font_index)
 }
 
 
-u16 pgDrawMgr::getFontSize()
+u16 ckDrawMgr::getFontSize()
 {
     return instance()->m_font_size;
 }
 
 
-u16 pgDrawMgr::setFontSize(u16 font_size)
+u16 ckDrawMgr::setFontSize(u16 font_size)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
     if (font_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_font_size = font_size;
 }
 
 
-u16 pgDrawMgr::calcFontDrawWidth(const char* str, ...)
+u16 ckDrawMgr::calcFontDrawWidth(const char* str, ...)
 {
     instance();
 
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     char buf1[256];
-    PG_VSPRINTF(buf1, 256, str);
+    CK_VSPRINTF(buf1, 256, str);
 
     wchar_t buf2[256];
-    pgUtil::charToWchar(buf2, 256, buf1);
+    ckUtil::charToWchar(buf2, 256, buf1);
 
     return calcFontDrawWidth(buf2);
 }
 
 
-u16 pgDrawMgr::calcFontDrawWidth(const wchar_t* str, ...)
+u16 ckDrawMgr::calcFontDrawWidth(const wchar_t* str, ...)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (!ins->m_font_info)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     wchar_t buf[256];
-    PG_VSWPRINTF(buf, 256, str);
+    CK_VSWPRINTF(buf, 256, str);
 
-    s32 draw_width = pgLowLevelAPI::drawFreeTypeFont(NULL, 0, 0, ins->m_font_info, ins->m_font_index, ins->m_font_size, 0, 0, buf);
+    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(NULL, 0, 0, ins->m_font_info, ins->m_font_index, ins->m_font_size, 0, 0, buf);
 
     if (draw_width < 0)
     {
-        pgThrow(ExceptionCalcFontDrawWidthFailed);
+        ckThrow(ExceptionCalcFontDrawWidthFailed);
     }
 
     return draw_width;
 }
 
 
-bool pgDrawMgr::hasShader(pgID shd_id)
+bool ckDrawMgr::hasShader(ckID shd_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (shd_id == pgID::ZERO)
+    if (shd_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_shd_map.getN(shd_id) ? true : false;
 }
 
 
-pgShd* pgDrawMgr::getShader(pgID shd_id)
+ckShd* ckDrawMgr::getShader(ckID shd_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (shd_id == pgID::ZERO)
+    if (shd_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgShd** shd = ins->m_shd_map.getN(shd_id);
+    ckShd** shd = ins->m_shd_map.getN(shd_id);
 
     if (!shd)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return *shd;
 }
 
 
-pgShd* pgDrawMgr::newShader(pgID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num)
+ckShd* ckDrawMgr::newShader(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (shd_id == pgID::ZERO || !vert_code || !frag_code || uni_num > 100 || att_num > 100 || tex_num > 3)
+    if (shd_id == ckID::ZERO || !vert_code || !frag_code || uni_num > 100 || att_num > 100 || tex_num > 3)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_shd_map.getN(shd_id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    return pgNew(pgShd)(shd_id, vert_code, frag_code, uni_num, att_num, tex_num);
+    return ckNew(ckShd)(shd_id, vert_code, frag_code, uni_num, att_num, tex_num);
 }
 
 
-void pgDrawMgr::deleteShader(pgID shd_id)
+void ckDrawMgr::deleteShader(ckID shd_id)
 {
     instance();
 
-    if (shd_id == pgID::ZERO)
+    if (shd_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgDelete(getShader(shd_id), pgShd);
+    ckDelete(getShader(shd_id), ckShd);
 }
 
 
-pgShd* pgDrawMgr::getFirstShaderN()
+ckShd* ckDrawMgr::getFirstShaderN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* shd_id = ins->m_shd_map.getFirstKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* shd_id = ins->m_shd_map.getFirstKeyN();
 
     return shd_id ? *ins->m_shd_map.get(*shd_id) : NULL;
 }
 
 
-pgShd* pgDrawMgr::getLastShaderN()
+ckShd* ckDrawMgr::getLastShaderN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* shd_id = ins->m_shd_map.getLastKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* shd_id = ins->m_shd_map.getLastKeyN();
 
     return shd_id ? *ins->m_shd_map.get(*shd_id) : NULL;
 }
 
 
-bool pgDrawMgr::hasLightSet(pgID lts_id)
+bool ckDrawMgr::hasLightSet(ckID lts_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (lts_id == pgID::ZERO)
+    if (lts_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_lts_map.getN(lts_id) ? true : false;
 }
 
 
-pgLts* pgDrawMgr::getLightSet(pgID lts_id)
+ckLts* ckDrawMgr::getLightSet(ckID lts_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (lts_id == pgID::ZERO)
+    if (lts_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLts** lts = ins->m_lts_map.getN(lts_id);
+    ckLts** lts = ins->m_lts_map.getN(lts_id);
 
     if (!lts)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return *lts;
 }
 
 
-pgLts* pgDrawMgr::newLightSet(pgID lts_id)
+ckLts* ckDrawMgr::newLightSet(ckID lts_id)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (lts_id == pgID::ZERO)
+    if (lts_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_lts_map.getN(lts_id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    return pgNew(pgLts)(lts_id);
+    return ckNew(ckLts)(lts_id);
 }
 
 
-void pgDrawMgr::deleteLightSet(pgID lts_id)
+void ckDrawMgr::deleteLightSet(ckID lts_id)
 {
     instance();
 
-    if (lts_id == pgID::ZERO)
+    if (lts_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgDelete(getLightSet(lts_id), pgLts);
+    ckDelete(getLightSet(lts_id), ckLts);
 }
 
 
-pgLts* pgDrawMgr::getFirstLightSetN()
+ckLts* ckDrawMgr::getFirstLightSetN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* lts_id = ins->m_lts_map.getFirstKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* lts_id = ins->m_lts_map.getFirstKeyN();
 
     return lts_id ? *ins->m_lts_map.get(*lts_id) : NULL;
 }
 
 
-pgLts* pgDrawMgr::getLastLightSetN()
+ckLts* ckDrawMgr::getLastLightSetN()
 {
-    pgDrawMgr* ins = instance();
-    const pgID* lts_id = ins->m_lts_map.getLastKeyN();
+    ckDrawMgr* ins = instance();
+    const ckID* lts_id = ins->m_lts_map.getLastKeyN();
 
     return lts_id ? *ins->m_lts_map.get(*lts_id) : NULL;
 }
 
 
-void pgDrawMgr::deleteAllVramObjForSystem()
+void ckDrawMgr::deleteAllVramObjForSystem()
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    for (const pgID* tex_id = ins->m_tex_map.getFirstKeyN(); tex_id; tex_id = ins->m_tex_map.getNextKeyN(*tex_id))
+    for (const ckID* tex_id = ins->m_tex_map.getFirstKeyN(); tex_id; tex_id = ins->m_tex_map.getNextKeyN(*tex_id))
     {
-        pgTex* tex = getTexture(*tex_id);
+        ckTex* tex = getTexture(*tex_id);
 
         if (tex->m_tex_obj != 0)
         {
-            pgLowLevelAPI::unregisterTexture(tex->m_tex_obj);
+            ckLowLevelAPI::unregisterTexture(tex->m_tex_obj);
             tex->m_tex_obj = 0;
         }
 
-        tex->m_flag.setOn(pgTex::FLAG_UPLOAD);
+        tex->m_flag.setOn(ckTex::FLAG_UPLOAD);
     }
 
-    for (const pgID* shd_id = ins->m_shd_map.getFirstKeyN(); shd_id; shd_id = ins->m_shd_map.getNextKeyN(*shd_id))
+    for (const ckID* shd_id = ins->m_shd_map.getFirstKeyN(); shd_id; shd_id = ins->m_shd_map.getNextKeyN(*shd_id))
     {
-        pgShd* shd = getShader(*shd_id);
+        ckShd* shd = getShader(*shd_id);
 
         if (shd->m_shd_obj != 0)
         {
-            pgLowLevelAPI::unregisterShader(shd->m_shd_obj);
+            ckLowLevelAPI::unregisterShader(shd->m_shd_obj);
             shd->m_shd_obj = 0;
         }
 
-        shd->m_flag.setOn(pgShd::FLAG_UPLOAD);
+        shd->m_flag.setOn(ckShd::FLAG_UPLOAD);
     }
 }
 
 
-void pgDrawMgr::renderForSystem()
+void ckDrawMgr::renderForSystem()
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
     if (!ins->m_is_render)
     {
         return;
     }
 
-    pgLowLevelAPI::resetDrawState(); // TODO
+    ckLowLevelAPI::resetDrawState(); // TODO
 
-    for (const pgID* id = ins->m_scr_map.getFirstKeyN(); id; id = ins->m_scr_map.getNextKeyN(*id))
+    for (const ckID* id = ins->m_scr_map.getFirstKeyN(); id; id = ins->m_scr_map.getNextKeyN(*id))
     {
-        pgScr* scr = *ins->m_scr_map.get(*id);
+        ckScr* scr = *ins->m_scr_map.get(*id);
 
         if (!scr->isActive())
         {
             continue;
         }
 
-        pgLowLevelAPI::setViewport( //
+        ckLowLevelAPI::setViewport( //
             scr->m_left_in_framebuffer, scr->m_top_in_framebuffer, //
             scr->m_width_in_framebuffer, scr->m_height_in_framebuffer);
 
-        pgLowLevelAPI::clearFramebuffer(scr->isClearColor(), scr->isClearDepth(), reinterpret_cast<const u8*>(&scr->m_clear_col));
+        ckLowLevelAPI::clearFramebuffer(scr->isClearColor(), scr->isClearDepth(), reinterpret_cast<const u8*>(&scr->m_clear_col));
 
         scr->setupProjection();
 
-        pgDraw* sort_list = NULL;
+        ckDraw* sort_list = NULL;
 
         renderScreen(scr, &sort_list, scr->m_view);
 
-        for (u32 i = 0; i < pgScr::GUEST_SCREEN_NUM; i++)
+        for (u32 i = 0; i < ckScr::GUEST_SCREEN_NUM; i++)
         {
-            if (scr->m_guest_id[i] != pgID::ZERO)
+            if (scr->m_guest_id[i] != ckID::ZERO)
             {
                 renderScreen(*ins->m_scr_map.get(scr->m_guest_id[i]), &sort_list, scr->m_view);
             }
@@ -755,11 +755,11 @@ void pgDrawMgr::renderForSystem()
 
         if (sort_list)
         {
-            pgDraw* dummy;
+            ckDraw* dummy;
             sortList(&sort_list, &dummy, sort_list);
         }
 
-        for (pgDraw* draw = sort_list; draw; draw = draw->m_next_sort)
+        for (ckDraw* draw = sort_list; draw; draw = draw->m_next_sort)
         {
             draw->setupDrawState();
             draw->render(scr->m_view);
@@ -770,10 +770,10 @@ void pgDrawMgr::renderForSystem()
 }
 
 
-pgDrawMgr::pgDrawMgr()
+ckDrawMgr::ckDrawMgr()
 {
     m_is_render = true;
-    m_font_id = pgID::ZERO;
+    m_font_id = ckID::ZERO;
     m_font_index = 0;
     m_font_size = 16;
     m_font_info = NULL;
@@ -783,43 +783,43 @@ pgDrawMgr::pgDrawMgr()
     m_shd_map.init(SHADER_HASH_SIZE);
     m_lts_map.init(LIGHTSET_HASH_SIZE);
 
-    if (!pgLowLevelAPI::createFreeType())
+    if (!ckLowLevelAPI::createFreeType())
     {
-        pgThrow(ExceptionCreateFreeTypeFailed);
+        ckThrow(ExceptionCreateFreeTypeFailed);
     }
 
-    pgResMgr::addType("PNG", textureInitializer, textureFinalizer);
-    pgResMgr::addType("TTF", fontInitializer, fontFinalizer);
-    pgResMgr::addType("TTC", fontInitializer, fontFinalizer);
-    pgResMgr::addType("OTF", fontInitializer, fontFinalizer);
+    ckResMgr::addType("PNG", textureInitializer, textureFinalizer);
+    ckResMgr::addType("TTF", fontInitializer, fontFinalizer);
+    ckResMgr::addType("TTC", fontInitializer, fontFinalizer);
+    ckResMgr::addType("OTF", fontInitializer, fontFinalizer);
 }
 
 
-pgDrawMgr::~pgDrawMgr()
+ckDrawMgr::~ckDrawMgr()
 {
     getScreen(INVISIBLE_SCREEN_ID)->moveLast();
 
-    while (const pgID* scr_id = m_scr_map.getFirstKeyN())
+    while (const ckID* scr_id = m_scr_map.getFirstKeyN())
     {
-        pgDelete(getScreen(*scr_id), pgScr);
+        ckDelete(getScreen(*scr_id), ckScr);
     }
 
-    while (const pgID* tex_id = m_tex_map.getFirstKeyN())
+    while (const ckID* tex_id = m_tex_map.getFirstKeyN())
     {
         deleteTexture(*tex_id);
     }
 
-    while (const pgID* shd_id = m_shd_map.getFirstKeyN())
+    while (const ckID* shd_id = m_shd_map.getFirstKeyN())
     {
         deleteShader(*shd_id);
     }
 
-    while (const pgID* lts_id = m_lts_map.getFirstKeyN())
+    while (const ckID* lts_id = m_lts_map.getFirstKeyN())
     {
         deleteLightSet(*lts_id);
     }
 
-    for (const pgRes* res = pgResMgr::getFirstResourceN(); res; res = pgResMgr::getNextResourceN(res->getID()))
+    for (const ckRes* res = ckResMgr::getFirstResourceN(); res; res = ckResMgr::getNextResourceN(res->getID()))
     {
         if (res->getExtension() == "TTF" || res->getExtension() == "TTC" || res->getExtension() == "OTF")
         {
@@ -827,29 +827,29 @@ pgDrawMgr::~pgDrawMgr()
         }
     }
 
-    if (!pgLowLevelAPI::destroyFreeType())
+    if (!ckLowLevelAPI::destroyFreeType())
     {
-        pgThrow(ExceptionDestroyFreeTypeFailed);
+        ckThrow(ExceptionDestroyFreeTypeFailed);
     }
 
-    pgResMgr::removeType("PNG");
-    pgResMgr::removeType("TTF");
-    pgResMgr::removeType("TTC");
-    pgResMgr::removeType("OTF");
+    ckResMgr::removeType("PNG");
+    ckResMgr::removeType("TTF");
+    ckResMgr::removeType("TTC");
+    ckResMgr::removeType("OTF");
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgDrawMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckDrawMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgDrawMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckDrawMgr)
 
 
-void pgDrawMgr::renderScreen(pgScr* scr, pgDraw** sort_list, const pgMat& view)
+void ckDrawMgr::renderScreen(ckScr* scr, ckDraw** sort_list, const ckMat& view)
 {
-    for (pgTree<pgDraw>* tree = scr->m_root_draw.m_tree.getFirstChildN(); tree; tree = tree->getNextAllN())
+    for (ckTree<ckDraw>* tree = scr->m_root_draw.m_tree.getFirstChildN(); tree; tree = tree->getNextAllN())
     {
-        pgDraw* draw = tree->getSelf();
+        ckDraw* draw = tree->getSelf();
 
         if (draw->isVisible())
         {
@@ -862,21 +862,21 @@ void pgDrawMgr::renderScreen(pgScr* scr, pgDraw** sort_list, const pgMat& view)
         }
     }
 
-    for (pgTree<pgDraw>* tree = scr->m_root_draw.m_tree.getFirstChildN(); tree; tree = tree->getNextAllN())
+    for (ckTree<ckDraw>* tree = scr->m_root_draw.m_tree.getFirstChildN(); tree; tree = tree->getNextAllN())
     {
-        pgDraw* draw = tree->getSelf();
+        ckDraw* draw = tree->getSelf();
 
         if (draw->isVisible())
         {
-            if (draw->m_type != pgDraw::TYPE_NODE)
+            if (draw->m_type != ckDraw::TYPE_NODE)
             {
-                if (draw->m_draw_flag.isOn(pgDraw::FLAG_BOUND_CLIP) && //
+                if (draw->m_draw_flag.isOn(ckDraw::FLAG_BOUND_CLIP) && //
                     scr->canBoundClip_noCalcProjection(draw->m_world, draw->m_bound_max, draw->m_bound_min))
                 {
                     continue;
                 }
 
-                if (draw->isDrawFlag(pgDraw::FLAG_SORT))
+                if (draw->isDrawFlag(ckDraw::FLAG_SORT))
                 {
                     draw->setupSortValue(scr->view());
 
@@ -898,9 +898,9 @@ void pgDrawMgr::renderScreen(pgScr* scr, pgDraw** sort_list, const pgMat& view)
 }
 
 
-void pgDrawMgr::sortList(pgDraw** sorted_start, pgDraw** sorted_end, pgDraw* target_list)
+void ckDrawMgr::sortList(ckDraw** sorted_start, ckDraw** sorted_end, ckDraw* target_list)
 {
-    pgDraw* center = target_list;
+    ckDraw* center = target_list;
     target_list = target_list->m_next_sort;
 
     if (!target_list)
@@ -913,11 +913,11 @@ void pgDrawMgr::sortList(pgDraw** sorted_start, pgDraw** sorted_end, pgDraw* tar
         return;
     }
 
-    pgDraw* left_list = NULL;
-    pgDraw* right_list = NULL;
-    pgDraw* next_sort;
+    ckDraw* left_list = NULL;
+    ckDraw* right_list = NULL;
+    ckDraw* next_sort;
 
-    for (pgDraw* draw = target_list; draw; draw = next_sort)
+    for (ckDraw* draw = target_list; draw; draw = next_sort)
     {
         next_sort = draw->m_next_sort;
 
@@ -935,8 +935,8 @@ void pgDrawMgr::sortList(pgDraw** sorted_start, pgDraw** sorted_end, pgDraw* tar
 
     if (left_list)
     {
-        pgDraw* start;
-        pgDraw* end;
+        ckDraw* start;
+        ckDraw* end;
 
         sortList(&start, &end, left_list);
 
@@ -950,8 +950,8 @@ void pgDrawMgr::sortList(pgDraw** sorted_start, pgDraw** sorted_end, pgDraw* tar
 
     if (right_list)
     {
-        pgDraw* start;
-        pgDraw* end;
+        ckDraw* start;
+        ckDraw* end;
 
         sortList(&start, &end, right_list);
 
@@ -966,65 +966,65 @@ void pgDrawMgr::sortList(pgDraw** sorted_start, pgDraw** sorted_end, pgDraw* tar
 }
 
 
-void pgDrawMgr::textureInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
+void ckDrawMgr::textureInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_tex_map.getN(id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
     u16 width, height;
-    pgTex::TexFormat format;
+    ckTex::TexFormat format;
 
-    if (!pgUtil::readPNGInfo(&width, &height, &format, data, data_size))
+    if (!ckUtil::readPNGInfo(&width, &height, &format, data, data_size))
     {
-        pgThrow(ExceptionTextureInitializerFailed);
+        ckThrow(ExceptionTextureInitializerFailed);
     }
 
-    pgNew(pgTex)(id, width, height, format, pgTex::MODE_READ_ONLY, data, data_size);
+    ckNew(ckTex)(id, width, height, format, ckTex::MODE_READ_ONLY, data, data_size);
 }
 
 
-void pgDrawMgr::textureFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
+void ckDrawMgr::textureFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
 {
-    pgDrawMgr* ins = instance();
+    ckDrawMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgTex** tex = ins->m_tex_map.getN(id);
+    ckTex** tex = ins->m_tex_map.getN(id);
 
-    if (tex && (*tex)->getMode() != pgTex::MODE_VOLATILE)
+    if (tex && (*tex)->getMode() != ckTex::MODE_VOLATILE)
     {
         deleteTexture(id);
     }
 }
 
 
-void pgDrawMgr::fontInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
+void ckDrawMgr::fontInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
 {
-    *exinfo = pgLowLevelAPI::newFreeTypeFont(data, data_size);
+    *exinfo = ckLowLevelAPI::newFreeTypeFont(data, data_size);
 
     if (!*exinfo)
     {
-        pgThrow(ExceptionFontInitializerFailed);
+        ckThrow(ExceptionFontInitializerFailed);
     }
 }
 
 
-void pgDrawMgr::fontFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
+void ckDrawMgr::fontFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
 {
-    if (!pgLowLevelAPI::deleteFreeTypeFont(exinfo))
+    if (!ckLowLevelAPI::deleteFreeTypeFont(exinfo))
     {
-        pgThrow(ExceptionFontFinalizerFailed);
+        ckThrow(ExceptionFontFinalizerFailed);
     }
 }

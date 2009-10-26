@@ -29,42 +29,42 @@
 */
 
 
-#include "pg_cdt_all.h"
+#include "ck_cdt_all.h"
 
 
-pgCdt::Tri::Tri()
+ckCdt::Tri::Tri()
 {
-    m_pos1 = m_pos2 = m_pos3 = pgVec::ZERO;
+    m_pos1 = m_pos2 = m_pos3 = ckVec::ZERO;
 
     updateAABB();
 }
 
 
-const pgCdt::AABB& pgCdt::Tri::getAABB() const
+const ckCdt::AABB& ckCdt::Tri::getAABB() const
 {
     return m_aabb;
 }
 
 
-const pgVec& pgCdt::Tri::getPos1() const
+const ckVec& ckCdt::Tri::getPos1() const
 {
     return m_pos1;
 }
 
 
-const pgVec& pgCdt::Tri::getPos2() const
+const ckVec& ckCdt::Tri::getPos2() const
 {
     return m_pos2;
 }
 
 
-const pgVec& pgCdt::Tri::getPos3() const
+const ckVec& ckCdt::Tri::getPos3() const
 {
     return m_pos3;
 }
 
 
-void pgCdt::Tri::setPos(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3)
+void ckCdt::Tri::setPos(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3)
 {
     m_pos1 = pos1;
     m_pos2 = pos2;
@@ -74,14 +74,14 @@ void pgCdt::Tri::setPos(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3)
 }
 
 
-void pgCdt::Tri::updateAABB()
+void ckCdt::Tri::updateAABB()
 {
 #define MIN3(a, b, c) ((a < b && a < c) ? a : ((b < c) ? b : c))
 #define MAX3(a, b, c) ((a > b && a > c) ? a : ((b > c) ? b : c))
 
     m_aabb.setBound( //
-        pgVec(MIN3(m_pos1.x, m_pos2.x, m_pos3.x), MIN3(m_pos1.y, m_pos2.y, m_pos3.y), MIN3(m_pos1.z, m_pos2.z, m_pos3.z)), //
-        pgVec(MAX3(m_pos1.x, m_pos2.x, m_pos3.x), MAX3(m_pos1.y, m_pos2.y, m_pos3.y), MAX3(m_pos1.z, m_pos2.z, m_pos3.z)));
+        ckVec(MIN3(m_pos1.x, m_pos2.x, m_pos3.x), MIN3(m_pos1.y, m_pos2.y, m_pos3.y), MIN3(m_pos1.z, m_pos2.z, m_pos3.z)), //
+        ckVec(MAX3(m_pos1.x, m_pos2.x, m_pos3.x), MAX3(m_pos1.y, m_pos2.y, m_pos3.y), MAX3(m_pos1.z, m_pos2.z, m_pos3.z)));
 
 #undef MIN3
 #undef MAX3

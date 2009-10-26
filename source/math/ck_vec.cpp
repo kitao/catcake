@@ -29,21 +29,21 @@
 */
 
 
-#include "pg_math_all.h"
+#include "ck_math_all.h"
 
-#include "pg_mem_all.h"
-
-
-const pgVec pgVec::ZERO(0.0f, 0.0f, 0.0f);
-const pgVec pgVec::X_UNIT(1.0f, 0.0f, 0.0f);
-const pgVec pgVec::Y_UNIT(0.0f, 1.0f, 0.0f);
-const pgVec pgVec::Z_UNIT(0.0f, 0.0f, 1.0f);
+#include "ck_mem_all.h"
 
 
-pgVec::pgVec() {}
+const ckVec ckVec::ZERO(0.0f, 0.0f, 0.0f);
+const ckVec ckVec::X_UNIT(1.0f, 0.0f, 0.0f);
+const ckVec ckVec::Y_UNIT(0.0f, 1.0f, 0.0f);
+const ckVec ckVec::Z_UNIT(0.0f, 0.0f, 1.0f);
 
 
-pgVec::pgVec(r32 x_, r32 y_, r32 z_)
+ckVec::ckVec() {}
+
+
+ckVec::ckVec(r32 x_, r32 y_, r32 z_)
 {
     x = x_;
     y = y_;
@@ -51,7 +51,7 @@ pgVec::pgVec(r32 x_, r32 y_, r32 z_)
 }
 
 
-void pgVec::set(r32 x_, r32 y_, r32 z_)
+void ckVec::set(r32 x_, r32 y_, r32 z_)
 {
     x = x_;
     y = y_;
@@ -59,13 +59,13 @@ void pgVec::set(r32 x_, r32 y_, r32 z_)
 }
 
 
-pgVec pgVec::operator+(const pgVec& vec) const
+ckVec ckVec::operator+(const ckVec& vec) const
 {
-    return pgVec(x + vec.x, y + vec.y, z + vec.z);
+    return ckVec(x + vec.x, y + vec.y, z + vec.z);
 }
 
 
-void pgVec::operator+=(const pgVec& vec)
+void ckVec::operator+=(const ckVec& vec)
 {
     x += vec.x;
     y += vec.y;
@@ -73,19 +73,19 @@ void pgVec::operator+=(const pgVec& vec)
 }
 
 
-pgVec pgVec::operator-() const
+ckVec ckVec::operator-() const
 {
-    return pgVec(-x, -y, -z);
+    return ckVec(-x, -y, -z);
 }
 
 
-pgVec pgVec::operator-(const pgVec& vec) const
+ckVec ckVec::operator-(const ckVec& vec) const
 {
-    return pgVec(x - vec.x, y - vec.y, z - vec.z);
+    return ckVec(x - vec.x, y - vec.y, z - vec.z);
 }
 
 
-void pgVec::operator-=(const pgVec& vec)
+void ckVec::operator-=(const ckVec& vec)
 {
     x -= vec.x;
     y -= vec.y;
@@ -93,19 +93,19 @@ void pgVec::operator-=(const pgVec& vec)
 }
 
 
-pgVec pgVec::operator*(r32 s) const
+ckVec ckVec::operator*(r32 s) const
 {
-    return pgVec(x * s, y * s, z * s);
+    return ckVec(x * s, y * s, z * s);
 }
 
 
-pgVec operator*(r32 s, const pgVec& vec)
+ckVec operator*(r32 s, const ckVec& vec)
 {
-    return pgVec(vec.x * s, vec.y * s, vec.z * s);
+    return ckVec(vec.x * s, vec.y * s, vec.z * s);
 }
 
 
-void pgVec::operator*=(r32 s)
+void ckVec::operator*=(r32 s)
 {
     x *= s;
     y *= s;
@@ -113,15 +113,15 @@ void pgVec::operator*=(r32 s)
 }
 
 
-pgVec pgVec::operator/(r32 s) const
+ckVec ckVec::operator/(r32 s) const
 {
     r32 inv_s = 1.0f / s;
 
-    return pgVec(x * inv_s, y * inv_s, z * inv_s);
+    return ckVec(x * inv_s, y * inv_s, z * inv_s);
 }
 
 
-void pgVec::operator/=(r32 s)
+void ckVec::operator/=(r32 s)
 {
     r32 inv_s = 1.0f / s;
 
@@ -131,109 +131,109 @@ void pgVec::operator/=(r32 s)
 }
 
 
-r32 pgVec::length() const
+r32 ckVec::length() const
 {
-    return pgMath::sqrt(x * x + y * y + z * z);
+    return ckMath::sqrt(x * x + y * y + z * z);
 }
 
 
-r32 pgVec::sqLength() const
+r32 ckVec::sqLength() const
 {
     return x * x + y * y + z * z;
 }
 
 
-r32 pgVec::dist(const pgVec& vec) const
+r32 ckVec::dist(const ckVec& vec) const
 {
     return (*this - vec).length();
 }
 
 
-r32 pgVec::sqDist(const pgVec& vec) const
+r32 ckVec::sqDist(const ckVec& vec) const
 {
     return (*this - vec).sqLength();
 }
 
 
-r32 pgVec::dot(const pgVec& vec) const
+r32 ckVec::dot(const ckVec& vec) const
 {
     return x * vec.x + y * vec.y + z * vec.z;
 }
 
 
-pgVec pgVec::cross(const pgVec& vec) const
+ckVec ckVec::cross(const ckVec& vec) const
 {
-    return pgVec(y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x);
+    return ckVec(y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x);
 }
 
 
-pgVec pgVec::rotateX_r32(r32 deg) const
+ckVec ckVec::rotateX_r32(r32 deg) const
 {
-    r32 sin = pgMath::sin_r32(deg);
-    r32 cos = pgMath::cos_r32(deg);
+    r32 sin = ckMath::sin_r32(deg);
+    r32 cos = ckMath::cos_r32(deg);
 
-    return pgVec(x, y * cos - z * sin, z * cos + y * sin);
+    return ckVec(x, y * cos - z * sin, z * cos + y * sin);
 }
 
 
-pgVec pgVec::rotateY_r32(r32 deg) const
+ckVec ckVec::rotateY_r32(r32 deg) const
 {
-    r32 sin = pgMath::sin_r32(deg);
-    r32 cos = pgMath::cos_r32(deg);
+    r32 sin = ckMath::sin_r32(deg);
+    r32 cos = ckMath::cos_r32(deg);
 
-    return pgVec(x * cos + z * sin, y, z * cos - x * sin);
+    return ckVec(x * cos + z * sin, y, z * cos - x * sin);
 }
 
 
-pgVec pgVec::rotateZ_r32(r32 deg) const
+ckVec ckVec::rotateZ_r32(r32 deg) const
 {
-    r32 sin = pgMath::sin_r32(deg);
-    r32 cos = pgMath::cos_r32(deg);
+    r32 sin = ckMath::sin_r32(deg);
+    r32 cos = ckMath::cos_r32(deg);
 
-    return pgVec(x * cos - y * sin, y * cos + x * sin, z);
+    return ckVec(x * cos - y * sin, y * cos + x * sin, z);
 }
 
 
-pgVec pgVec::rotateX_s32(s32 deg) const
+ckVec ckVec::rotateX_s32(s32 deg) const
 {
-    r32 sin = pgMath::sin_s32(deg);
-    r32 cos = pgMath::cos_s32(deg);
+    r32 sin = ckMath::sin_s32(deg);
+    r32 cos = ckMath::cos_s32(deg);
 
-    return pgVec(x, y * cos - z * sin, z * cos + y * sin);
+    return ckVec(x, y * cos - z * sin, z * cos + y * sin);
 }
 
 
-pgVec pgVec::rotateY_s32(s32 deg) const
+ckVec ckVec::rotateY_s32(s32 deg) const
 {
-    r32 sin = pgMath::sin_s32(deg);
-    r32 cos = pgMath::cos_s32(deg);
+    r32 sin = ckMath::sin_s32(deg);
+    r32 cos = ckMath::cos_s32(deg);
 
-    return pgVec(x * cos + z * sin, y, z * cos - x * sin);
+    return ckVec(x * cos + z * sin, y, z * cos - x * sin);
 }
 
 
-pgVec pgVec::rotateZ_s32(s32 deg) const
+ckVec ckVec::rotateZ_s32(s32 deg) const
 {
-    r32 sin = pgMath::sin_s32(deg);
-    r32 cos = pgMath::cos_s32(deg);
+    r32 sin = ckMath::sin_s32(deg);
+    r32 cos = ckMath::cos_s32(deg);
 
-    return pgVec(x * cos - y * sin, y * cos + x * sin, z);
+    return ckVec(x * cos - y * sin, y * cos + x * sin, z);
 }
 
 
-pgVec pgVec::normalize() const
+ckVec ckVec::normalize() const
 {
     return *this / length();
 }
 
 
-pgVec pgVec::interp(const pgVec& to, r32 ratio) const
+ckVec ckVec::interp(const ckVec& to, r32 ratio) const
 {
-    if (ratio < pgMath::EPSILON)
+    if (ratio < ckMath::EPSILON)
     {
         return *this;
     }
-    else if (ratio > 1.0f - pgMath::EPSILON)
+    else if (ratio > 1.0f - ckMath::EPSILON)
     {
         return to;
     }
@@ -244,70 +244,70 @@ pgVec pgVec::interp(const pgVec& to, r32 ratio) const
 }
 
 
-pgVec pgVec::slerp(const pgVec& to, r32 ratio) const
+ckVec ckVec::slerp(const ckVec& to, r32 ratio) const
 {
     /*
         the length of each vector must be 1.0
     */
 
-    if (ratio < pgMath::EPSILON)
+    if (ratio < ckMath::EPSILON)
     {
         return *this;
     }
-    else if (ratio > 1.0f - pgMath::EPSILON)
+    else if (ratio > 1.0f - ckMath::EPSILON)
     {
         return to;
     }
     else
     {
-        r32 a = pgMath::acos(dot(to));
+        r32 a = ckMath::acos(dot(to));
         r32 b = a * ratio;
 
-        if (pgMath::abs(a) > 180.0f - pgMath::EPSILON)
+        if (ckMath::abs(a) > 180.0f - ckMath::EPSILON)
         {
             return *this;
         }
         else
         {
-            return pgMath::cos_r32(b) * *this + (to - pgMath::cos_r32(a) * *this) * (pgMath::sin_r32(b) / pgMath::sin_r32(a));
+            return ckMath::cos_r32(b) * *this + (to - ckMath::cos_r32(a) * *this) * (ckMath::sin_r32(b) / ckMath::sin_r32(a));
         }
     }
 }
 
 
-pgVec pgVec::toLocalOf(const pgMat& mat) const
+ckVec ckVec::toLocalOf(const ckMat& mat) const
 {
-    pgVec vec = *this - mat.trans;
+    ckVec vec = *this - mat.trans;
 
-    return pgVec( //
+    return ckVec( //
         vec.dot(mat.x_axis) / mat.x_axis.sqLength(), //
         vec.dot(mat.y_axis) / mat.y_axis.sqLength(), //
         vec.dot(mat.z_axis) / mat.z_axis.sqLength());
 }
 
 
-pgVec pgVec::toGlobalFrom(const pgMat& mat) const
+ckVec ckVec::toGlobalFrom(const ckMat& mat) const
 {
     return mat.x_axis * x + mat.y_axis * y + mat.z_axis * z + mat.trans;
 }
 
 
-pgVec pgVec::toLocalOf_noTrans(const pgMat& mat) const
+ckVec ckVec::toLocalOf_noTrans(const ckMat& mat) const
 {
-    return pgVec( //
+    return ckVec( //
         dot(mat.x_axis) / mat.x_axis.sqLength(), //
         dot(mat.y_axis) / mat.y_axis.sqLength(), //
         dot(mat.z_axis) / mat.z_axis.sqLength());
 }
 
 
-pgVec pgVec::toGlobalFrom_noTrans(const pgMat& mat) const
+ckVec ckVec::toGlobalFrom_noTrans(const ckMat& mat) const
 {
     return mat.x_axis * x + mat.y_axis * y + mat.z_axis * z;
 }
 
 
-void pgVec::toR32x4(r32* r32x4, r32 w) const
+void ckVec::toR32x4(r32* r32x4, r32 w) const
 {
     r32x4[0] = x;
     r32x4[1] = y;
@@ -316,13 +316,13 @@ void pgVec::toR32x4(r32* r32x4, r32 w) const
 }
 
 
-pgVec pgVec::fromR32x4(const r32* r32x4)
+ckVec ckVec::fromR32x4(const r32* r32x4)
 {
-    return pgVec(r32x4[0], r32x4[1], r32x4[2]);
+    return ckVec(r32x4[0], r32x4[1], r32x4[2]);
 }
 
 
-void pgVec::mulR32x4(r32* res_r32x4, const r32* lhs_r32x16, const r32* rhs_r32x4)
+void ckVec::mulR32x4(r32* res_r32x4, const r32* lhs_r32x16, const r32* rhs_r32x4)
 {
     r32 v[4];
 
@@ -331,5 +331,5 @@ void pgVec::mulR32x4(r32* res_r32x4, const r32* lhs_r32x16, const r32* rhs_r32x4
     v[2] = lhs_r32x16[2] * rhs_r32x4[0] + lhs_r32x16[6] * rhs_r32x4[1] + lhs_r32x16[10] * rhs_r32x4[2] + lhs_r32x16[14] * rhs_r32x4[3];
     v[3] = lhs_r32x16[3] * rhs_r32x4[0] + lhs_r32x16[7] * rhs_r32x4[1] + lhs_r32x16[11] * rhs_r32x4[2] + lhs_r32x16[15] * rhs_r32x4[3];
 
-    pgMemMgr::memcpy(res_r32x4, v, sizeof(v));
+    ckMemMgr::memcpy(res_r32x4, v, sizeof(v));
 }

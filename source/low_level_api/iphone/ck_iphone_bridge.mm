@@ -29,10 +29,10 @@
 */
 
 
-#ifdef PG_IPHONE
+#ifdef CK_IPHONE
 
 
-#import "pg_iphone_bridge.h"
+#import "ck_iphone_bridge.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
@@ -244,12 +244,12 @@ void sig_handler(int ignored)
     case 2:
         touch = [[allTouches allObjects] objectAtIndex:1];
         m_outer_mouse_pos = [touch locationInView:self];
-        pgIPhoneBridge::setMouseState(1, true);
+        ckIPhoneBridge::setMouseState(1, true);
     case 1:
         touch = [[allTouches allObjects] objectAtIndex:0];
         m_mouse_pos = [touch locationInView:self];
         m_inner_mouse_pos = m_mouse_pos;
-        pgIPhoneBridge::setMouseState(0, true);
+        ckIPhoneBridge::setMouseState(0, true);
         break;
     }
 }
@@ -265,12 +265,12 @@ void sig_handler(int ignored)
     case 2:
         touch = [[allTouches allObjects] objectAtIndex:1];
         m_outer_mouse_pos = [touch locationInView:self];
-        pgIPhoneBridge::setMouseState(1, true);
+        ckIPhoneBridge::setMouseState(1, true);
     case 1:
         touch = [[allTouches allObjects] objectAtIndex:0];
         m_mouse_pos = [touch locationInView:self];
         m_inner_mouse_pos = m_mouse_pos;
-        pgIPhoneBridge::setMouseState(0, true);
+        ckIPhoneBridge::setMouseState(0, true);
         break;
     }
 }
@@ -297,11 +297,11 @@ void sig_handler(int ignored)
                 touch = [[allTouches allObjects] objectAtIndex:i];
                 m_mouse_pos = [touch locationInView:self];
                 m_inner_mouse_pos = m_mouse_pos;
-                pgIPhoneBridge::setMouseState(0, true);
+                ckIPhoneBridge::setMouseState(0, true);
             } else if (out == 1) {
                 touch = [[allTouches allObjects] objectAtIndex:i];
                 m_outer_mouse_pos = [touch locationInView:self];
-                pgIPhoneBridge::setMouseState(1, true);
+                ckIPhoneBridge::setMouseState(1, true);
             }
             out++;
         }
@@ -310,11 +310,11 @@ void sig_handler(int ignored)
 
     switch (out) {
     case 1:
-        pgIPhoneBridge::setMouseState(1, false);
+        ckIPhoneBridge::setMouseState(1, false);
         break;
     case 0:
-        pgIPhoneBridge::setMouseState(0, false);
-        pgIPhoneBridge::setMouseState(1, false);
+        ckIPhoneBridge::setMouseState(0, false);
+        ckIPhoneBridge::setMouseState(1, false);
         break;
     }
 }
@@ -332,7 +332,7 @@ void sig_handler(int ignored)
 {
     [self drawView];
 
-    pgIPhoneBridge::updateApplication();
+    ckIPhoneBridge::updateApplication();
 }
 
 - (CGPoint&)GetMousePos;
@@ -352,7 +352,7 @@ void sig_handler(int ignored)
 
 @end
 
-@interface PogolynApp : UIApplication
+@interface CatcakeApp : UIApplication
 {
     OpenGLView* m_view;
     int m_orientation;
@@ -361,9 +361,9 @@ void sig_handler(int ignored)
 
 @end
 
-PogolynApp* g_app;
+CatcakeApp* g_app;
 
-@implementation PogolynApp
+@implementation CatcakeApp
 
 - (void)applicationDidFinishLaunching:(id)unused
 {
@@ -448,41 +448,41 @@ PogolynApp* g_app;
 @end
 
 
-bool pgIPhoneBridge::createFramebuffer()
+bool ckIPhoneBridge::createFramebuffer()
 {
     return true;
 }
 
 
-void pgIPhoneBridge::destroyFramebuffer() {}
+void ckIPhoneBridge::destroyFramebuffer() {}
 
 
-void pgIPhoneBridge::swapFramebuffer()
+void ckIPhoneBridge::swapFramebuffer()
 {
 }
 
 
-void pgIPhoneBridge::startApplication()
+void ckIPhoneBridge::startApplication()
 {
     [[NSAutoreleasePool alloc] init];
 
-    UIApplicationMain(0, NULL, @"PogolynApp", @"PogolynApp");
+    UIApplicationMain(0, NULL, @"CatcakeApp", @"CatcakeApp");
 }
 
 
-int pgIPhoneBridge::getFramebufferWidth()
+int ckIPhoneBridge::getFramebufferWidth()
 {
     return 320;
 }
 
 
-int pgIPhoneBridge::getFramebufferHeight()
+int ckIPhoneBridge::getFramebufferHeight()
 {
     return 480;
 }
 
 
-void pgIPhoneBridge::getMousePos(int* x, int* y)
+void ckIPhoneBridge::getMousePos(int* x, int* y)
 {
     CGPoint& pos = [g_app GetMousePos];
 
@@ -491,7 +491,7 @@ void pgIPhoneBridge::getMousePos(int* x, int* y)
 }
 
 
-void pgIPhoneBridge::getInnerMousePos(int* x, int* y)
+void ckIPhoneBridge::getInnerMousePos(int* x, int* y)
 {
     CGPoint& pos = [g_app GetInnerMousePos];
 
@@ -500,7 +500,7 @@ void pgIPhoneBridge::getInnerMousePos(int* x, int* y)
 }
 
 
-void pgIPhoneBridge::getOuterMousePos(int* x, int* y)
+void ckIPhoneBridge::getOuterMousePos(int* x, int* y)
 {
     CGPoint& pos = [g_app GetOuterMousePos];
 
@@ -509,13 +509,13 @@ void pgIPhoneBridge::getOuterMousePos(int* x, int* y)
 }
 
 
-int pgIPhoneBridge::getDeviceOrientation()
+int ckIPhoneBridge::getDeviceOrientation()
 {
     return [g_app GetDeviceOrientation];
 }
 
 
-void pgIPhoneBridge::getAcceleraion(float* x, float* y, float* z)
+void ckIPhoneBridge::getAcceleraion(float* x, float* y, float* z)
 {
     *x = [g_app GetAcceleraionX];
     *y = [g_app GetAcceleraionY];
@@ -523,4 +523,4 @@ void pgIPhoneBridge::getAcceleraion(float* x, float* y, float* z)
 }
 
 
-#endif // PG_IPHONE
+#endif // CK_IPHONE

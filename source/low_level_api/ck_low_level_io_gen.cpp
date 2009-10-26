@@ -38,10 +38,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
 
-void pgLowLevelAPI::printf(const char* msg)
+void ckLowLevelAPI::printf(const char* msg)
 {
     ::printf("%s", msg);
 
@@ -51,7 +51,7 @@ void pgLowLevelAPI::printf(const char* msg)
 }
 
 
-void pgLowLevelAPI::wprintf(const wchar_t* msg)
+void ckLowLevelAPI::wprintf(const wchar_t* msg)
 {
     ::wprintf(msg);
 
@@ -61,7 +61,7 @@ void pgLowLevelAPI::wprintf(const wchar_t* msg)
 }
 
 
-void pgLowLevelAPI::vsprintf(char* buf, u32 buf_size, const char* format, void* arg)
+void ckLowLevelAPI::vsprintf(char* buf, u32 buf_size, const char* format, void* arg)
 {
 #if _MSC_VER >= 1400
     ::vsprintf_s(buf, buf_size, format, *reinterpret_cast<va_list*>(arg));
@@ -71,9 +71,9 @@ void pgLowLevelAPI::vsprintf(char* buf, u32 buf_size, const char* format, void* 
 }
 
 
-void pgLowLevelAPI::vswprintf(wchar_t* buf, u32 buf_size, const wchar_t* format, void* arg)
+void ckLowLevelAPI::vswprintf(wchar_t* buf, u32 buf_size, const wchar_t* format, void* arg)
 {
-#ifdef PG_MINGW
+#ifdef CK_MINGW
     ::vswprintf(buf, format, *reinterpret_cast<va_list*>(arg));
 #else
     ::vswprintf(buf, buf_size, format, *reinterpret_cast<va_list*>(arg));
@@ -81,7 +81,7 @@ void pgLowLevelAPI::vswprintf(wchar_t* buf, u32 buf_size, const wchar_t* format,
 }
 
 
-void* pgLowLevelAPI::openFile(const char* filename, FileMode file_mode)
+void* ckLowLevelAPI::openFile(const char* filename, FileMode file_mode)
 {
 #if _MSC_VER >= 1400
     FILE* fp;
@@ -92,7 +92,7 @@ void* pgLowLevelAPI::openFile(const char* filename, FileMode file_mode)
 }
 
 
-s32 pgLowLevelAPI::getFileSize(void* file_handler)
+s32 ckLowLevelAPI::getFileSize(void* file_handler)
 {
     FILE* fp = reinterpret_cast<FILE*>(file_handler);
 
@@ -100,7 +100,7 @@ s32 pgLowLevelAPI::getFileSize(void* file_handler)
 }
 
 
-bool pgLowLevelAPI::readFile(void* buf, u32 offset, u32 size, void* file_handler)
+bool ckLowLevelAPI::readFile(void* buf, u32 offset, u32 size, void* file_handler)
 {
     FILE* fp = reinterpret_cast<FILE*>(file_handler);
 
@@ -108,7 +108,7 @@ bool pgLowLevelAPI::readFile(void* buf, u32 offset, u32 size, void* file_handler
 }
 
 
-bool pgLowLevelAPI::writeFile(u32 offset, const void* buf, u32 size, void* file_handler)
+bool ckLowLevelAPI::writeFile(u32 offset, const void* buf, u32 size, void* file_handler)
 {
     FILE* fp = reinterpret_cast<FILE*>(file_handler);
 
@@ -116,7 +116,7 @@ bool pgLowLevelAPI::writeFile(u32 offset, const void* buf, u32 size, void* file_
 }
 
 
-void pgLowLevelAPI::closeFile(void* file_handler)
+void ckLowLevelAPI::closeFile(void* file_handler)
 {
     fclose(reinterpret_cast<FILE*>(file_handler));
 }

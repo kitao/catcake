@@ -29,13 +29,13 @@
 */
 
 
-#include "pg_mem_all.h"
+#include "ck_mem_all.h"
 
 
-void* operator new(size_t, void* ptr, pgException*)
+void* operator new(size_t, void* ptr, ckException*)
 {
     return ptr;
 }
 
 
-void operator delete(void*, void*, pgException*) {}
+void operator delete(void*, void*, ckException*) {}

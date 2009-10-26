@@ -29,40 +29,40 @@
 */
 
 
-#include "pg_key_all.h"
+#include "ck_key_all.h"
 
-#include "pg_task_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
-
-
-pgKeyMgr* pgKeyMgr::m_instance = NULL;
+#include "ck_task_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgKeyMgr)
+ckKeyMgr* ckKeyMgr::m_instance = NULL;
 
 
-PG_DEFINE_MANAGER_CREATE(pgKeyMgr, AfterTask, BeforeSys)
+CK_DEFINE_MANAGER_IS_CREATED(ckKeyMgr)
 
 
-PG_DEFINE_MANAGER_DESTROY(pgKeyMgr, BeforeSys)
+CK_DEFINE_MANAGER_CREATE(ckKeyMgr, AfterTask, BeforeSys)
 
 
-pgKeyMgr::KeyEventHandler pgKeyMgr::getKeyEventHandlerN()
+CK_DEFINE_MANAGER_DESTROY(ckKeyMgr, BeforeSys)
+
+
+ckKeyMgr::KeyEventHandler ckKeyMgr::getKeyEventHandlerN()
 {
     return instance()->m_key_event_handler;
 }
 
 
-void pgKeyMgr::setKeyEventHandler(KeyEventHandler handler)
+void ckKeyMgr::setKeyEventHandler(KeyEventHandler handler)
 {
     instance()->m_key_event_handler = handler;
 }
 
 
-void pgKeyMgr::defaultKeyEventHandler(KeyType key, KeyState key_state)
+void ckKeyMgr::defaultKeyEventHandler(KeyType key, KeyState key_state)
 {
-    pgKeyMgr* ins = instance();
+    ckKeyMgr* ins = instance();
 
     if (key < KEY_ANY)
     {
@@ -87,42 +87,42 @@ void pgKeyMgr::defaultKeyEventHandler(KeyType key, KeyState key_state)
 }
 
 
-pgKeyMgr::MouseEventHandler pgKeyMgr::getMouseEventHandlerN()
+ckKeyMgr::MouseEventHandler ckKeyMgr::getMouseEventHandlerN()
 {
     return instance()->m_mouse_event_handler;
 }
 
 
-void pgKeyMgr::setMouseEventHandler(MouseEventHandler handler)
+void ckKeyMgr::setMouseEventHandler(MouseEventHandler handler)
 {
     instance()->m_mouse_event_handler = handler;
 }
 
 
-void pgKeyMgr::defaultMouseEventHandler(s16 mouse_x, s16 mouse_y)
+void ckKeyMgr::defaultMouseEventHandler(s16 mouse_x, s16 mouse_y)
 {
-    pgKeyMgr* ins = pgKeyMgr::instance();
+    ckKeyMgr* ins = ckKeyMgr::instance();
 
     ins->m_mouse_x = mouse_x;
     ins->m_mouse_y = mouse_y;
 }
 
 
-pgKeyMgr::ExtraEventHandler pgKeyMgr::getExtraEventHandlerN()
+ckKeyMgr::ExtraEventHandler ckKeyMgr::getExtraEventHandlerN()
 {
     return instance()->m_extra_event_handler;
 }
 
 
-void pgKeyMgr::setExtraEventHandler(ExtraEventHandler handler)
+void ckKeyMgr::setExtraEventHandler(ExtraEventHandler handler)
 {
     instance()->m_extra_event_handler = handler;
 }
 
 
-void pgKeyMgr::defaultExtraEventHandler(u8 val_index, r32 value)
+void ckKeyMgr::defaultExtraEventHandler(u8 val_index, r32 value)
 {
-    pgKeyMgr* ins = pgKeyMgr::instance();
+    ckKeyMgr* ins = ckKeyMgr::instance();
 
     if (val_index < EXTRA_VALUE_NUM)
     {
@@ -131,7 +131,7 @@ void pgKeyMgr::defaultExtraEventHandler(u8 val_index, r32 value)
 }
 
 
-bool pgKeyMgr::isOn(KeyType key)
+bool ckKeyMgr::isOn(KeyType key)
 {
     u8 key_flag = instance()->m_key_flag[key];
 
@@ -139,7 +139,7 @@ bool pgKeyMgr::isOn(KeyType key)
 }
 
 
-bool pgKeyMgr::isOff(KeyType key)
+bool ckKeyMgr::isOff(KeyType key)
 {
     u8 key_flag = instance()->m_key_flag[key];
 
@@ -147,7 +147,7 @@ bool pgKeyMgr::isOff(KeyType key)
 }
 
 
-bool pgKeyMgr::isPressed(KeyType key)
+bool ckKeyMgr::isPressed(KeyType key)
 {
     u8 key_flag = instance()->m_key_flag[key];
 
@@ -155,7 +155,7 @@ bool pgKeyMgr::isPressed(KeyType key)
 }
 
 
-bool pgKeyMgr::isReleased(KeyType key)
+bool ckKeyMgr::isReleased(KeyType key)
 {
     u8 key_flag = instance()->m_key_flag[key];
 
@@ -163,69 +163,69 @@ bool pgKeyMgr::isReleased(KeyType key)
 }
 
 
-s16 pgKeyMgr::getMouseX()
+s16 ckKeyMgr::getMouseX()
 {
     return instance()->m_mouse_x;
 }
 
 
-s16 pgKeyMgr::getMouseY()
+s16 ckKeyMgr::getMouseY()
 {
     return instance()->m_mouse_y;
 }
 
 
-s16 pgKeyMgr::getMouseWheel()
+s16 ckKeyMgr::getMouseWheel()
 {
     return instance()->m_cur_mouse_wheel;
 }
 
 
-void pgKeyMgr::setMousePos(s16 mouse_x, s16 mouse_y)
+void ckKeyMgr::setMousePos(s16 mouse_x, s16 mouse_y)
 {
-    pgKeyMgr* ins = pgKeyMgr::instance();
+    ckKeyMgr* ins = ckKeyMgr::instance();
 
     ins->m_mouse_x = mouse_x;
     ins->m_mouse_y = mouse_y;
 
-    pgLowLevelAPI::setMousePos(mouse_x, mouse_y);
+    ckLowLevelAPI::setMousePos(mouse_x, mouse_y);
 }
 
 
-bool pgKeyMgr::isMouseVisible()
+bool ckKeyMgr::isMouseVisible()
 {
-    return pgLowLevelAPI::isMouseVisible();
+    return ckLowLevelAPI::isMouseVisible();
 }
 
 
-void pgKeyMgr::setMouseVisible(bool is_visible)
+void ckKeyMgr::setMouseVisible(bool is_visible)
 {
-    return pgLowLevelAPI::setMouseVisible(is_visible);
+    return ckLowLevelAPI::setMouseVisible(is_visible);
 }
 
 
-s32 pgKeyMgr::getExtraValue_s32(u8 val_index)
+s32 ckKeyMgr::getExtraValue_s32(u8 val_index)
 {
     return static_cast<s32>(getExtraValue_r32(val_index));
 }
 
 
-r32 pgKeyMgr::getExtraValue_r32(u8 val_index)
+r32 ckKeyMgr::getExtraValue_r32(u8 val_index)
 {
-    pgKeyMgr* ins = instance();
+    ckKeyMgr* ins = instance();
 
     if (val_index >= EXTRA_VALUE_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_cur_ext_val[val_index];
 }
 
 
-void pgKeyMgr::updateKeyStateForSystem()
+void ckKeyMgr::updateKeyStateForSystem()
 {
-    pgKeyMgr* ins = instance();
+    ckKeyMgr* ins = instance();
     u8* key_flag = ins->m_key_flag;
 
     key_flag[KEY_WHEELUP] &= ~FLAG_REAL_ON;
@@ -285,38 +285,38 @@ void pgKeyMgr::updateKeyStateForSystem()
 }
 
 
-void pgKeyMgr::resetKeyStateForSystem()
+void ckKeyMgr::resetKeyStateForSystem()
 {
-    pgKeyMgr* ins = instance();
+    ckKeyMgr* ins = instance();
 
-    pgMemMgr::memset(ins->m_key_flag, 0, sizeof(ins->m_key_flag));
+    ckMemMgr::memset(ins->m_key_flag, 0, sizeof(ins->m_key_flag));
 
     ins->m_real_mouse_wheel = ins->m_cur_mouse_wheel = 0;
 }
 
 
-void pgKeyMgr::updateExtraValueForSystem()
+void ckKeyMgr::updateExtraValueForSystem()
 {
-    pgKeyMgr* ins = instance();
+    ckKeyMgr* ins = instance();
 
-    pgMemMgr::memcpy(ins->m_cur_ext_val, ins->m_real_ext_val, sizeof(ins->m_cur_ext_val));
+    ckMemMgr::memcpy(ins->m_cur_ext_val, ins->m_real_ext_val, sizeof(ins->m_cur_ext_val));
 }
 
 
 static void lowLevelKeyEventHandler(u8 keycode, bool is_down)
 {
-    pgKeyMgr::KeyEventHandler handler = pgKeyMgr::getKeyEventHandlerN();
+    ckKeyMgr::KeyEventHandler handler = ckKeyMgr::getKeyEventHandlerN();
 
     if (handler)
     {
-        (*handler)(static_cast<pgKeyMgr::KeyType>(keycode), is_down ? pgKeyMgr::STATE_DOWN : pgKeyMgr::STATE_UP);
+        (*handler)(static_cast<ckKeyMgr::KeyType>(keycode), is_down ? ckKeyMgr::STATE_DOWN : ckKeyMgr::STATE_UP);
     }
 }
 
 
 static void lowLevelMouseEventHandler(s16 mouse_x, s16 mouse_y)
 {
-    pgKeyMgr::MouseEventHandler handler = pgKeyMgr::getMouseEventHandlerN();
+    ckKeyMgr::MouseEventHandler handler = ckKeyMgr::getMouseEventHandlerN();
 
     if (handler)
     {
@@ -327,7 +327,7 @@ static void lowLevelMouseEventHandler(s16 mouse_x, s16 mouse_y)
 
 static void lowLevelExtraEventHandler(u8 index, r32 value)
 {
-    pgKeyMgr::ExtraEventHandler handler = pgKeyMgr::getExtraEventHandlerN();
+    ckKeyMgr::ExtraEventHandler handler = ckKeyMgr::getExtraEventHandlerN();
 
     if (handler)
     {
@@ -336,24 +336,24 @@ static void lowLevelExtraEventHandler(u8 index, r32 value)
 }
 
 
-class pgKeyDaemon : public pgTask
+class ckKeyDaemon : public ckTask
 {
 public:
-    pgKeyDaemon() : pgTask(ORDER_MINUS_8_FOR_SYSTEM) {}
+    ckKeyDaemon() : ckTask(ORDER_MINUS_8_FOR_SYSTEM) {}
 
     virtual void onUpdate()
     {
-        pgKeyMgr::updateKeyStateForSystem();
-        pgKeyMgr::updateExtraValueForSystem();
+        ckKeyMgr::updateKeyStateForSystem();
+        ckKeyMgr::updateExtraValueForSystem();
     }
 };
 
 
-pgKeyMgr::pgKeyMgr()
+ckKeyMgr::ckKeyMgr()
 {
-    pgLowLevelAPI::setKeyEventHandler(lowLevelKeyEventHandler);
-    pgLowLevelAPI::setMouseEventHandler(lowLevelMouseEventHandler);
-    pgLowLevelAPI::setExtraEventHandler(lowLevelExtraEventHandler);
+    ckLowLevelAPI::setKeyEventHandler(lowLevelKeyEventHandler);
+    ckLowLevelAPI::setMouseEventHandler(lowLevelMouseEventHandler);
+    ckLowLevelAPI::setExtraEventHandler(lowLevelExtraEventHandler);
 
     m_key_event_handler = defaultKeyEventHandler;
     m_mouse_event_handler = defaultMouseEventHandler;
@@ -362,29 +362,29 @@ pgKeyMgr::pgKeyMgr()
     m_mouse_y = 0;
     m_real_mouse_wheel = m_cur_mouse_wheel = 0;
 
-    pgMemMgr::memset(m_key_flag, 0, sizeof(m_key_flag));
-    pgMemMgr::memset(m_cur_ext_val, 0, sizeof(m_cur_ext_val));
-    pgMemMgr::memset(m_real_ext_val, 0, sizeof(m_real_ext_val));
+    ckMemMgr::memset(m_key_flag, 0, sizeof(m_key_flag));
+    ckMemMgr::memset(m_cur_ext_val, 0, sizeof(m_cur_ext_val));
+    ckMemMgr::memset(m_real_ext_val, 0, sizeof(m_real_ext_val));
 
     setMouseVisible(true);
 
-    m_key_daemon = pgNewTask(pgKeyDaemon);
+    m_key_daemon = ckNewTask(ckKeyDaemon);
 }
 
 
-pgKeyMgr::~pgKeyMgr()
+ckKeyMgr::~ckKeyMgr()
 {
-    if (pgTaskMgr::isCreated())
+    if (ckTaskMgr::isCreated())
     {
-        pgDeleteTask(m_key_daemon);
+        ckDeleteTask(m_key_daemon);
     }
 
-    pgLowLevelAPI::setKeyEventHandler(NULL);
-    pgLowLevelAPI::setMouseEventHandler(NULL);
+    ckLowLevelAPI::setKeyEventHandler(NULL);
+    ckLowLevelAPI::setMouseEventHandler(NULL);
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgKeyMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckKeyMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgKeyMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckKeyMgr)

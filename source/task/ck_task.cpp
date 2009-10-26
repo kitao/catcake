@@ -29,137 +29,137 @@
 */
 
 
-#include "pg_task_all.h"
+#include "ck_task_all.h"
 
-#include "pg_private_macro.h"
+#include "ck_private_macro.h"
 
 
-bool pgTask::hasOrder() const
+bool ckTask::hasOrder() const
 {
     return (m_tree.hasParent() && !m_tree.getParentN()->hasParent());
 }
 
 
-pgTask::TaskOrder pgTask::getOrder() const
+ckTask::TaskOrder ckTask::getOrder() const
 {
     if (!hasOrder())
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     return m_tree.getParentN()->getSelf()->m_order.getType();
 }
 
 
-bool pgTask::hasParent() const
+bool ckTask::hasParent() const
 {
     return (m_tree.hasParent() && m_tree.getParentN()->hasParent());
 }
 
 
-pgTask* pgTask::getParentN() const
+ckTask* ckTask::getParentN() const
 {
     return hasParent() ? m_tree.getParentN()->getSelf() : NULL;
 }
 
 
-pgTask* pgTask::getPrevAllN() const
+ckTask* ckTask::getPrevAllN() const
 {
-    pgTree<pgTask>* prev = m_tree.getPrevAllN();
+    ckTree<ckTask>* prev = m_tree.getPrevAllN();
 
     return (prev && prev->hasParent()) ? prev->getSelf() : NULL;
 }
 
 
-pgTask* pgTask::getNextAllN() const
+ckTask* ckTask::getNextAllN() const
 {
-    pgTree<pgTask>* next = m_tree.getNextAllN();
+    ckTree<ckTask>* next = m_tree.getNextAllN();
 
     return next ? next->getSelf() : NULL;
 }
 
 
-pgTask* pgTask::getPrevSiblingN() const
+ckTask* ckTask::getPrevSiblingN() const
 {
-    pgTree<pgTask>* sibling = m_tree.getPrevSiblingN();
+    ckTree<ckTask>* sibling = m_tree.getPrevSiblingN();
 
     return sibling ? sibling->getSelf() : NULL;
 }
 
 
-pgTask* pgTask::getNextSiblingN() const
+ckTask* ckTask::getNextSiblingN() const
 {
-    pgTree<pgTask>* sibling = m_tree.getNextSiblingN();
+    ckTree<ckTask>* sibling = m_tree.getNextSiblingN();
 
     return sibling ? sibling->getSelf() : NULL;
 }
 
 
-pgTask* pgTask::getLastDescendant() const
+ckTask* ckTask::getLastDescendant() const
 {
     return m_tree.getLastDescendant()->getSelf();
 }
 
 
-bool pgTask::hasChild() const
+bool ckTask::hasChild() const
 {
     return m_tree.hasChild();
 }
 
 
-pgTask* pgTask::getFirstChildN() const
+ckTask* ckTask::getFirstChildN() const
 {
-    pgTree<pgTask>* child = m_tree.getFirstChildN();
+    ckTree<ckTask>* child = m_tree.getFirstChildN();
 
     return child ? child->getSelf() : NULL;
 }
 
 
-pgTask* pgTask::getLastChildN() const
+ckTask* ckTask::getLastChildN() const
 {
-    pgTree<pgTask>* child = m_tree.getLastChildN();
+    ckTree<ckTask>* child = m_tree.getLastChildN();
 
     return child ? child->getSelf() : NULL;
 }
 
 
-const char* pgTask::getName() const
+const char* ckTask::getName() const
 {
     return m_name;
 }
 
 
-u64 pgTask::getExecuteUsecTime() const
+u64 ckTask::getExecuteUsecTime() const
 {
     return m_execute_time;
 }
 
 
-bool pgTask::isActive() const
+bool ckTask::isActive() const
 {
     return m_flag.isOn(FLAG_ACTIVE);
 }
 
 
-void pgTask::setActive(bool is_active)
+void ckTask::setActive(bool is_active)
 {
     m_flag.set(FLAG_ACTIVE, is_active);
 }
 
 
-void pgTask::onUpdate() {}
+void ckTask::onUpdate() {}
 
 
-void pgTask::onMessage(pgID msg_id, pgMsg<4>&) {}
+void ckTask::onMessage(ckID msg_id, ckMsg<4>&) {}
 
 
-pgTask::pgTask(TaskOrder order)
+ckTask::ckTask(TaskOrder order)
 {
-    pgTaskMgr* ins = pgTaskMgr::instance();
+    ckTaskMgr* ins = ckTaskMgr::instance();
 
     if (!ins->m_next_task_name)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     m_tree.init(this);
@@ -174,18 +174,18 @@ pgTask::pgTask(TaskOrder order)
 }
 
 
-pgTask::pgTask(pgTask* parent)
+ckTask::ckTask(ckTask* parent)
 {
-    pgTaskMgr* ins = pgTaskMgr::instance();
+    ckTaskMgr* ins = ckTaskMgr::instance();
 
     if (!ins->m_next_task_name)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (!parent)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_tree.init(this);
@@ -200,15 +200,15 @@ pgTask::pgTask(pgTask* parent)
 }
 
 
-pgTask::~pgTask()
+ckTask::~ckTask()
 {
-    pgTaskMgr* ins = pgTaskMgr::instance();
+    ckTaskMgr* ins = ckTaskMgr::instance();
 
     if (m_tree.hasParent())
     {
         if (ins->m_next_task_name != reinterpret_cast<const char*>(this))
         {
-            pgThrow(ExceptionInvalidCall);
+            ckThrow(ExceptionInvalidCall);
         }
 
         ins->m_next_task_name = NULL;
@@ -216,7 +216,7 @@ pgTask::~pgTask()
 }
 
 
-pgTask::pgTask()
+ckTask::ckTask()
 {
     m_tree.init(this);
     m_flag.setOn(FLAG_ACTIVE);
@@ -226,7 +226,7 @@ pgTask::pgTask()
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgTask)
+CK_DEFINE_COPY_CONSTRUCTOR(ckTask)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgTask)
+CK_DEFINE_OPERATOR_EQUAL(ckTask)

@@ -29,16 +29,16 @@
 */
 
 
-#include "pg_dbg_all.h"
+#include "ck_dbg_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_task_all.h"
-#include "pg_res_all.h"
-#include "pg_conf_all.h"
-#include "pg_util_all.h"
+#include "ck_sys_all.h"
+#include "ck_task_all.h"
+#include "ck_res_all.h"
+#include "ck_conf_all.h"
+#include "ck_util_all.h"
 
 
-void pgDbgMgr::dumpVector(const pgVec& vec, const char* name)
+void ckDbgMgr::dumpVector(const ckVec& vec, const char* name)
 {
     if (!m_instance)
     {
@@ -54,7 +54,7 @@ void pgDbgMgr::dumpVector(const pgVec& vec, const char* name)
 }
 
 
-void pgDbgMgr::dumpMatrix(const pgMat& mat, const char* name)
+void ckDbgMgr::dumpMatrix(const ckMat& mat, const char* name)
 {
     if (!m_instance)
     {
@@ -90,7 +90,7 @@ static bool isEqual(const char* str1, const char* str2)
 }
 
 
-void pgDbgMgr::dumpMemory()
+void ckDbgMgr::dumpMemory()
 {
     if (!m_instance)
     {
@@ -102,15 +102,15 @@ void pgDbgMgr::dumpMemory()
     trace("|        NAME        |BLOCK|  SIZE  |\n");
     trace("+--------------------+-----+--------+\n");
 
-    for (const void* mem1 = pgMemMgr::getFirstMemoryBlockN(); mem1; mem1 = pgMemMgr::getNextMemoryBlockN(mem1))
+    for (const void* mem1 = ckMemMgr::getFirstMemoryBlockN(); mem1; mem1 = ckMemMgr::getNextMemoryBlockN(mem1))
     {
-        const char* name = pgMemMgr::getMemoryBlockName(mem1);
+        const char* name = ckMemMgr::getMemoryBlockName(mem1);
 
         bool is_continue = false;
 
-        for (const void* mem2 = pgMemMgr::getFirstMemoryBlockN(); mem2 != mem1; mem2 = pgMemMgr::getNextMemoryBlockN(mem2))
+        for (const void* mem2 = ckMemMgr::getFirstMemoryBlockN(); mem2 != mem1; mem2 = ckMemMgr::getNextMemoryBlockN(mem2))
         {
-            if (isEqual(name, pgMemMgr::getMemoryBlockName(mem2)))
+            if (isEqual(name, ckMemMgr::getMemoryBlockName(mem2)))
             {
                 is_continue = true;
                 break;
@@ -123,28 +123,28 @@ void pgDbgMgr::dumpMemory()
         }
 
         u32 count = 1;
-        u32 size = pgMemMgr::getMemoryBlockSize(mem1);
+        u32 size = ckMemMgr::getMemoryBlockSize(mem1);
 
-        for (const void* mem2 = pgMemMgr::getNextMemoryBlockN(mem1); mem2; mem2 = pgMemMgr::getNextMemoryBlockN(mem2))
+        for (const void* mem2 = ckMemMgr::getNextMemoryBlockN(mem1); mem2; mem2 = ckMemMgr::getNextMemoryBlockN(mem2))
         {
-            if (isEqual(name, pgMemMgr::getMemoryBlockName(mem2)))
+            if (isEqual(name, ckMemMgr::getMemoryBlockName(mem2)))
             {
                 count++;
-                size += pgMemMgr::getMemoryBlockSize(mem2);
+                size += ckMemMgr::getMemoryBlockSize(mem2);
             }
         }
 
-        trace("|%-20s|%5d|%8d|\n", pgUtil::getBasename(name), count, size);
+        trace("|%-20s|%5d|%8d|\n", ckUtil::getBasename(name), count, size);
     }
 
     trace("+--------------------+-----+--------+\n");
-    trace("|TOTAL SIZE  %18d byte|\n", pgMemMgr::getCurUsedMemorySize());
-    trace("|MAX SIZE    %18d byte|\n", pgMemMgr::getMaxUsedMemorySize());
+    trace("|TOTAL SIZE  %18d byte|\n", ckMemMgr::getCurUsedMemorySize());
+    trace("|MAX SIZE    %18d byte|\n", ckMemMgr::getMaxUsedMemorySize());
     trace("+-----------------------------------+\n");
 }
 
 
-void pgDbgMgr::dumpTask()
+void ckDbgMgr::dumpTask()
 {
     if (!m_instance)
     {
@@ -156,49 +156,49 @@ void pgDbgMgr::dumpTask()
     trace("|        NAME        |ORDER| TIME |\n");
     trace("+--------------------+-----+------+\n");
 
-    for (u32 order = pgTask::ORDER_MINUS_8_FOR_SYSTEM; order <= pgTask::ORDER_PLUS_8_FOR_SYSTEM; order++)
+    for (u32 order = ckTask::ORDER_MINUS_8_FOR_SYSTEM; order <= ckTask::ORDER_PLUS_8_FOR_SYSTEM; order++)
     {
-        for (pgTask* task = pgTaskMgr::getFirstTaskN(static_cast<pgTask::TaskOrder>(order)); task; task = task->getNextAllN())
+        for (ckTask* task = ckTaskMgr::getFirstTaskN(static_cast<ckTask::TaskOrder>(order)); task; task = task->getNextAllN())
         {
             static char buf1[8];
 
             if (task->hasOrder())
             {
-                pgSysMgr::sprintf(buf1, 8, "%5d", task->getOrder() - 8);
+                ckSysMgr::sprintf(buf1, 8, "%5d", task->getOrder() - 8);
             }
             else if (task->getParentN() == task->getPrevAllN())
             {
-                pgSysMgr::sprintf(buf1, 8, "CHILD");
+                ckSysMgr::sprintf(buf1, 8, "CHILD");
             }
             else
             {
-                pgSysMgr::sprintf(buf1, 8, "child");
+                ckSysMgr::sprintf(buf1, 8, "child");
             }
 
             static char buf2[8];
 
             if (task->isActive())
             {
-                pgSysMgr::sprintf(buf2, 8, "%6d", task->getExecuteUsecTime());
+                ckSysMgr::sprintf(buf2, 8, "%6d", task->getExecuteUsecTime());
             }
             else
             {
-                pgSysMgr::sprintf(buf2, 8, "PAUSED");
+                ckSysMgr::sprintf(buf2, 8, "PAUSED");
             }
 
-            trace("|%-20s|%5s|%6s|\n", pgUtil::getBasename(task->getName()), buf1, buf2);
+            trace("|%-20s|%5s|%6s|\n", ckUtil::getBasename(task->getName()), buf1, buf2);
         }
     }
 
-    trace("|%-20s|%5d|%6d|\n", "RENDER", 9, pgTaskMgr::getRenderUsecTime());
+    trace("|%-20s|%5d|%6d|\n", "RENDER", 9, ckTaskMgr::getRenderUsecTime());
 
     trace("+--------------------+-----+------+\n");
-    trace("|TOTAL TIME   %15d usec|\n", pgTaskMgr::getExecuteUsecTime());
+    trace("|TOTAL TIME   %15d usec|\n", ckTaskMgr::getExecuteUsecTime());
     trace("+---------------------------------+\n");
 }
 
 
-void pgDbgMgr::dumpResource()
+void ckDbgMgr::dumpResource()
 {
     if (!m_instance)
     {
@@ -210,7 +210,7 @@ void pgDbgMgr::dumpResource()
     trace("|   ID   |EXT|  SIZE  |AUTO|\n");
     trace("+--------+---+--------+----+\n");
 
-    for (const pgRes* res = pgResMgr::getFirstResourceN(); res; res = pgResMgr::getNextResourceN(res->getID()))
+    for (const ckRes* res = ckResMgr::getFirstResourceN(); res; res = ckResMgr::getNextResourceN(res->getID()))
     {
         trace("|%08X|%3s|%8d|%4s|\n", res->getID().getValue(), res->getExtension().getString(), //
             res->getDataSize(), res->isAutoFree() ? "ON" : "OFF");
@@ -219,9 +219,9 @@ void pgDbgMgr::dumpResource()
     trace("+--------+---+--------+----+\n");
     trace("TYPE = { ");
 
-    for (const pgStr<char, 3>* str = pgResMgr::getFirstTypeN(); str; str = pgResMgr::getNextTypeN(*str))
+    for (const ckStr<char, 3>* str = ckResMgr::getFirstTypeN(); str; str = ckResMgr::getNextTypeN(*str))
     {
-        if (str != pgResMgr::getFirstTypeN())
+        if (str != ckResMgr::getFirstTypeN())
         {
             trace(", ");
         }
@@ -233,7 +233,7 @@ void pgDbgMgr::dumpResource()
 }
 
 
-void pgDbgMgr::dumpConfig()
+void ckDbgMgr::dumpConfig()
 {
     if (!m_instance)
     {
@@ -245,7 +245,7 @@ void pgDbgMgr::dumpConfig()
     trace("|   ID   | STATE |ERROR|\n");
     trace("+--------+-------+-----+\n");
 
-    for (pgConf* conf = pgConfMgr::getFirstConfigN(); conf; conf = conf->getNextN())
+    for (ckConf* conf = ckConfMgr::getFirstConfigN(); conf; conf = conf->getNextN())
     {
         trace("|%08X|%7s|%5d|\n", conf->getID().getValue(), conf->isValid() ? "VALID" : "INVALID", conf->isValid() ? 0 : conf->getErrorLineNo());
     }
@@ -254,7 +254,7 @@ void pgDbgMgr::dumpConfig()
 }
 
 
-void pgDbgMgr::dumpScreen()
+void ckDbgMgr::dumpScreen()
 {
     if (!m_instance)
     {
@@ -266,7 +266,7 @@ void pgDbgMgr::dumpScreen()
     trace("|   ID   |   POS   |   SIZE  |FLAG|\n");
     trace("+--------+---------+---------+----+\n");
 
-    for (pgScr* scr = pgDrawMgr::getFirstScreenN(); scr; scr = scr->getNextN())
+    for (ckScr* scr = ckDrawMgr::getFirstScreenN(); scr; scr = scr->getNextN())
     {
         trace("|%08X|%4d,%4d|%4dx%4d|%c%c%c%c|\n", scr->getID().getValue(), //
             scr->getLeftInFramebuffer(), scr->getTopInFramebuffer(), scr->getWidthInFramebuffer(), scr->getHeightInFramebuffer(), //
@@ -277,7 +277,7 @@ void pgDbgMgr::dumpScreen()
 }
 
 
-void pgDbgMgr::dumpTexture()
+void ckDbgMgr::dumpTexture()
 {
     if (!m_instance)
     {
@@ -299,7 +299,7 @@ void pgDbgMgr::dumpTexture()
     trace("|   ID   |   SIZE  |  FORMAT |    MODE   |\n");
     trace("+--------+---------+---------+-----------+\n");
 
-    for (pgTex* tex = pgDrawMgr::getFirstTextureN(); tex; tex = tex->getNextN())
+    for (ckTex* tex = ckDrawMgr::getFirstTextureN(); tex; tex = tex->getNextN())
     {
         trace("|%08X|%4dx%4d|%9s|%11s|\n", tex->getID().getValue(), tex->getWidth(), tex->getHeight(), //
             s_format_name[tex->getFormat()], s_mode_name[tex->getMode()]);
@@ -309,7 +309,7 @@ void pgDbgMgr::dumpTexture()
 }
 
 
-void pgDbgMgr::dumpShader()
+void ckDbgMgr::dumpShader()
 {
     if (!m_instance)
     {
@@ -318,12 +318,12 @@ void pgDbgMgr::dumpShader()
 
     trace("` DumpShader `\n");
     trace("+--------+-------------------+\n");
-    trace("| SHADER: %-11s        |\n", pgDrawMgr::isShaderAvailable() ? "AVAILABLE" : "UNAVAILABLE");
+    trace("| SHADER: %-11s        |\n", ckDrawMgr::isShaderAvailable() ? "AVAILABLE" : "UNAVAILABLE");
     trace("+--------+---+---+---+-------+\n");
     trace("|   ID   |UNI|ATT|TEX| STATE |\n");
     trace("+--------+---+---+---+-------+\n");
 
-    for (pgShd* shd = pgDrawMgr::getFirstShaderN(); shd; shd = shd->getNextN())
+    for (ckShd* shd = ckDrawMgr::getFirstShaderN(); shd; shd = shd->getNextN())
     {
         trace("|%08X|%3d|%3d|%3d|%7s|\n", shd->getID().getValue(), shd->getUniformNum(), shd->getAttribNum(), //
             shd->getTextureNum(), shd->isValid() ? "VALID" : "INVALID");

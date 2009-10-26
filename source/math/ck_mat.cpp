@@ -29,19 +29,19 @@
 */
 
 
-#include "pg_math_all.h"
+#include "ck_math_all.h"
 
-#include "pg_mem_all.h"
-
-
-const pgMat pgMat::ZERO(pgVec(0.0f, 0.0f, 0.0f), pgVec(0.0f, 0.0f, 0.0f), pgVec(0.0f, 0.0f, 0.0f), pgVec(0.0f, 0.0f, 0.0f));
-const pgMat pgMat::UNIT(pgVec(1.0f, 0.0f, 0.0f), pgVec(0.0f, 1.0f, 0.0f), pgVec(0.0f, 0.0f, 1.0f), pgVec(0.0f, 0.0f, 0.0f));
+#include "ck_mem_all.h"
 
 
-pgMat::pgMat() {}
+const ckMat ckMat::ZERO(ckVec(0.0f, 0.0f, 0.0f), ckVec(0.0f, 0.0f, 0.0f), ckVec(0.0f, 0.0f, 0.0f), ckVec(0.0f, 0.0f, 0.0f));
+const ckMat ckMat::UNIT(ckVec(1.0f, 0.0f, 0.0f), ckVec(0.0f, 1.0f, 0.0f), ckVec(0.0f, 0.0f, 1.0f), ckVec(0.0f, 0.0f, 0.0f));
 
 
-pgMat::pgMat(const pgVec& x_axis_, const pgVec& y_axis_, const pgVec& z_axis_, const pgVec& trans_)
+ckMat::ckMat() {}
+
+
+ckMat::ckMat(const ckVec& x_axis_, const ckVec& y_axis_, const ckVec& z_axis_, const ckVec& trans_)
 {
     x_axis = x_axis_;
     y_axis = y_axis_;
@@ -50,7 +50,7 @@ pgMat::pgMat(const pgVec& x_axis_, const pgVec& y_axis_, const pgVec& z_axis_, c
 }
 
 
-void pgMat::set(const pgVec& x_axis_, const pgVec& y_axis_, const pgVec& z_axis_, const pgVec& trans_)
+void ckMat::set(const ckVec& x_axis_, const ckVec& y_axis_, const ckVec& z_axis_, const ckVec& trans_)
 {
     x_axis = x_axis_;
     y_axis = y_axis_;
@@ -59,7 +59,7 @@ void pgMat::set(const pgVec& x_axis_, const pgVec& y_axis_, const pgVec& z_axis_
 }
 
 
-bool pgMat::isUnit() const
+bool ckMat::isUnit() const
 {
     return ( //
         x_axis.x == 1.0f && x_axis.y == 0.0f && x_axis.z == 0.0f && //
@@ -69,112 +69,112 @@ bool pgMat::isUnit() const
 }
 
 
-pgMat pgMat::rotateX_r32(r32 deg) const
+ckMat ckMat::rotateX_r32(r32 deg) const
 {
-    r32 sin = pgMath::sin_r32(deg);
-    r32 cos = pgMath::cos_r32(deg);
+    r32 sin = ckMath::sin_r32(deg);
+    r32 cos = ckMath::cos_r32(deg);
 
-    return pgMat(pgVec::X_UNIT, pgVec(0.0f, cos, sin), pgVec(0.0f, -sin, cos), pgVec::ZERO).toGlobalFrom(*this);
+    return ckMat(ckVec::X_UNIT, ckVec(0.0f, cos, sin), ckVec(0.0f, -sin, cos), ckVec::ZERO).toGlobalFrom(*this);
 }
 
 
-pgMat pgMat::rotateY_r32(r32 deg) const
+ckMat ckMat::rotateY_r32(r32 deg) const
 {
-    r32 sin = pgMath::sin_r32(deg);
-    r32 cos = pgMath::cos_r32(deg);
+    r32 sin = ckMath::sin_r32(deg);
+    r32 cos = ckMath::cos_r32(deg);
 
-    return pgMat(pgVec(cos, 0.0f, -sin), pgVec::Y_UNIT, pgVec(sin, 0.0f, cos), pgVec::ZERO).toGlobalFrom(*this);
+    return ckMat(ckVec(cos, 0.0f, -sin), ckVec::Y_UNIT, ckVec(sin, 0.0f, cos), ckVec::ZERO).toGlobalFrom(*this);
 }
 
 
-pgMat pgMat::rotateZ_r32(r32 deg) const
+ckMat ckMat::rotateZ_r32(r32 deg) const
 {
-    r32 sin = pgMath::sin_r32(deg);
-    r32 cos = pgMath::cos_r32(deg);
+    r32 sin = ckMath::sin_r32(deg);
+    r32 cos = ckMath::cos_r32(deg);
 
-    return pgMat(pgVec(cos, sin, 0.0f), pgVec(-sin, cos, 0.0f), pgVec::Z_UNIT, pgVec::ZERO).toGlobalFrom(*this);
+    return ckMat(ckVec(cos, sin, 0.0f), ckVec(-sin, cos, 0.0f), ckVec::Z_UNIT, ckVec::ZERO).toGlobalFrom(*this);
 }
 
 
-pgMat pgMat::rotateX_s32(s32 deg) const
+ckMat ckMat::rotateX_s32(s32 deg) const
 {
-    r32 sin = pgMath::sin_s32(deg);
-    r32 cos = pgMath::cos_s32(deg);
+    r32 sin = ckMath::sin_s32(deg);
+    r32 cos = ckMath::cos_s32(deg);
 
-    return pgMat(pgVec::X_UNIT, pgVec(0.0f, cos, sin), pgVec(0.0f, -sin, cos), pgVec::ZERO).toGlobalFrom(*this);
+    return ckMat(ckVec::X_UNIT, ckVec(0.0f, cos, sin), ckVec(0.0f, -sin, cos), ckVec::ZERO).toGlobalFrom(*this);
 }
 
 
-pgMat pgMat::rotateY_s32(s32 deg) const
+ckMat ckMat::rotateY_s32(s32 deg) const
 {
-    r32 sin = pgMath::sin_s32(deg);
-    r32 cos = pgMath::cos_s32(deg);
+    r32 sin = ckMath::sin_s32(deg);
+    r32 cos = ckMath::cos_s32(deg);
 
-    return pgMat(pgVec(cos, 0.0f, -sin), pgVec::Y_UNIT, pgVec(sin, 0.0f, cos), pgVec::ZERO).toGlobalFrom(*this);
+    return ckMat(ckVec(cos, 0.0f, -sin), ckVec::Y_UNIT, ckVec(sin, 0.0f, cos), ckVec::ZERO).toGlobalFrom(*this);
 }
 
 
-pgMat pgMat::rotateZ_s32(s32 deg) const
+ckMat ckMat::rotateZ_s32(s32 deg) const
 {
-    r32 sin = pgMath::sin_s32(deg);
-    r32 cos = pgMath::cos_s32(deg);
+    r32 sin = ckMath::sin_s32(deg);
+    r32 cos = ckMath::cos_s32(deg);
 
-    return pgMat(pgVec(cos, sin, 0.0f), pgVec(-sin, cos, 0.0f), pgVec::Z_UNIT, pgVec::ZERO).toGlobalFrom(*this);
+    return ckMat(ckVec(cos, sin, 0.0f), ckVec(-sin, cos, 0.0f), ckVec::Z_UNIT, ckVec::ZERO).toGlobalFrom(*this);
 }
 
 
-pgMat pgMat::scale(r32 x_scale, r32 y_scale, r32 z_scale) const
+ckMat ckMat::scale(r32 x_scale, r32 y_scale, r32 z_scale) const
 {
-    return pgMat(x_axis * x_scale, y_axis * y_scale, z_axis * z_scale, trans);
+    return ckMat(x_axis * x_scale, y_axis * y_scale, z_axis * z_scale, trans);
 }
 
 
-pgMat pgMat::translate(r32 x, r32 y, r32 z) const
+ckMat ckMat::translate(r32 x, r32 y, r32 z) const
 {
-    return pgMat(x_axis, y_axis, z_axis, x_axis * x + y_axis * y + z_axis * z + trans);
+    return ckMat(x_axis, y_axis, z_axis, x_axis * x + y_axis * y + z_axis * z + trans);
 }
 
 
-pgMat pgMat::slerp(const pgMat& to, r32 ratio) const
+ckMat ckMat::slerp(const ckMat& to, r32 ratio) const
 {
-    return pgQuat::fromMat(*this).slerp(pgQuat::fromMat(to), ratio).toMat(trans.interp(to.trans, ratio));
+    return ckQuat::fromMat(*this).slerp(ckQuat::fromMat(to), ratio).toMat(trans.interp(to.trans, ratio));
 }
 
 
-pgMat pgMat::slerp_noTrans(const pgMat& to, r32 ratio) const
+ckMat ckMat::slerp_noTrans(const ckMat& to, r32 ratio) const
 {
-    return pgQuat::fromMat(*this).slerp(pgQuat::fromMat(to), ratio).toMat(pgVec::ZERO);
+    return ckQuat::fromMat(*this).slerp(ckQuat::fromMat(to), ratio).toMat(ckVec::ZERO);
 }
 
 
-pgMat pgMat::orthonormal() const
+ckMat ckMat::orthonormal() const
 {
-    pgVec new_z_axis = z_axis.normalize();
-    pgVec new_x_axis = y_axis.cross(z_axis).normalize();
-    pgVec new_y_axis = new_z_axis.cross(new_x_axis);
+    ckVec new_z_axis = z_axis.normalize();
+    ckVec new_x_axis = y_axis.cross(z_axis).normalize();
+    ckVec new_y_axis = new_z_axis.cross(new_x_axis);
 
-    return pgMat(new_x_axis, new_y_axis, new_z_axis, trans);
+    return ckMat(new_x_axis, new_y_axis, new_z_axis, trans);
 }
 
 
-pgMat pgMat::toLocalOf(const pgMat& mat) const
+ckMat ckMat::toLocalOf(const ckMat& mat) const
 {
     r32 rsq_xa = 1.0f / mat.x_axis.sqLength();
     r32 rsq_ya = 1.0f / mat.y_axis.sqLength();
     r32 rsq_za = 1.0f / mat.z_axis.sqLength();
-    pgVec vec = trans - mat.trans;
+    ckVec vec = trans - mat.trans;
 
-    return pgMat( //
-        pgVec(x_axis.dot(mat.x_axis) * rsq_xa, x_axis.dot(mat.y_axis) * rsq_ya, x_axis.dot(mat.z_axis) * rsq_za), //
-        pgVec(y_axis.dot(mat.x_axis) * rsq_xa, y_axis.dot(mat.y_axis) * rsq_ya, y_axis.dot(mat.z_axis) * rsq_za), //
-        pgVec(z_axis.dot(mat.x_axis) * rsq_xa, z_axis.dot(mat.y_axis) * rsq_ya, z_axis.dot(mat.z_axis) * rsq_za), //
-        pgVec(vec.dot(mat.x_axis) * rsq_xa, vec.dot(mat.y_axis) * rsq_ya, vec.dot(mat.z_axis) * rsq_za));
+    return ckMat( //
+        ckVec(x_axis.dot(mat.x_axis) * rsq_xa, x_axis.dot(mat.y_axis) * rsq_ya, x_axis.dot(mat.z_axis) * rsq_za), //
+        ckVec(y_axis.dot(mat.x_axis) * rsq_xa, y_axis.dot(mat.y_axis) * rsq_ya, y_axis.dot(mat.z_axis) * rsq_za), //
+        ckVec(z_axis.dot(mat.x_axis) * rsq_xa, z_axis.dot(mat.y_axis) * rsq_ya, z_axis.dot(mat.z_axis) * rsq_za), //
+        ckVec(vec.dot(mat.x_axis) * rsq_xa, vec.dot(mat.y_axis) * rsq_ya, vec.dot(mat.z_axis) * rsq_za));
 }
 
 
-pgMat pgMat::toGlobalFrom(const pgMat& mat) const
+ckMat ckMat::toGlobalFrom(const ckMat& mat) const
 {
-    return pgMat( //
+    return ckMat( //
         x_axis.toGlobalFrom_noTrans(mat), //
         y_axis.toGlobalFrom_noTrans(mat), //
         z_axis.toGlobalFrom_noTrans(mat), //
@@ -182,41 +182,41 @@ pgMat pgMat::toGlobalFrom(const pgMat& mat) const
 }
 
 
-pgMat pgMat::toLocalOf_noTrans(const pgMat& mat) const
+ckMat ckMat::toLocalOf_noTrans(const ckMat& mat) const
 {
     r32 rsq_xa = 1.0f / mat.x_axis.sqLength();
     r32 rsq_ya = 1.0f / mat.y_axis.sqLength();
     r32 rsq_za = 1.0f / mat.z_axis.sqLength();
 
-    return pgMat( //
-        pgVec(x_axis.dot(mat.x_axis) * rsq_xa, x_axis.dot(mat.y_axis) * rsq_ya, x_axis.dot(mat.z_axis) * rsq_za), //
-        pgVec(y_axis.dot(mat.x_axis) * rsq_xa, y_axis.dot(mat.y_axis) * rsq_ya, y_axis.dot(mat.z_axis) * rsq_za), //
-        pgVec(z_axis.dot(mat.x_axis) * rsq_xa, z_axis.dot(mat.y_axis) * rsq_ya, z_axis.dot(mat.z_axis) * rsq_za), //
-        pgVec::ZERO);
+    return ckMat( //
+        ckVec(x_axis.dot(mat.x_axis) * rsq_xa, x_axis.dot(mat.y_axis) * rsq_ya, x_axis.dot(mat.z_axis) * rsq_za), //
+        ckVec(y_axis.dot(mat.x_axis) * rsq_xa, y_axis.dot(mat.y_axis) * rsq_ya, y_axis.dot(mat.z_axis) * rsq_za), //
+        ckVec(z_axis.dot(mat.x_axis) * rsq_xa, z_axis.dot(mat.y_axis) * rsq_ya, z_axis.dot(mat.z_axis) * rsq_za), //
+        ckVec::ZERO);
 }
 
 
-pgMat pgMat::toGlobalFrom_noTrans(const pgMat& mat) const
+ckMat ckMat::toGlobalFrom_noTrans(const ckMat& mat) const
 {
-    return pgMat( //
+    return ckMat( //
         x_axis.toGlobalFrom_noTrans(mat), //
         y_axis.toGlobalFrom_noTrans(mat), //
         z_axis.toGlobalFrom_noTrans(mat), //
-        pgVec::ZERO);
+        ckVec::ZERO);
 }
 
 
-pgMat pgMat::lookAt(const pgVec& from, const pgVec& to, const pgVec& up)
+ckMat ckMat::lookAt(const ckVec& from, const ckVec& to, const ckVec& up)
 {
-    pgVec new_z_axis = (from - to).normalize();
-    pgVec new_x_axis = up.cross(new_z_axis).normalize();
-    pgVec new_y_axis = new_z_axis.cross(new_x_axis);
+    ckVec new_z_axis = (from - to).normalize();
+    ckVec new_x_axis = up.cross(new_z_axis).normalize();
+    ckVec new_y_axis = new_z_axis.cross(new_x_axis);
 
-    return pgMat(new_x_axis, new_y_axis, new_z_axis, from);
+    return ckMat(new_x_axis, new_y_axis, new_z_axis, from);
 }
 
 
-void pgMat::toR32x16(r32* r32x16) const
+void ckMat::toR32x16(r32* r32x16) const
 {
     r32x16[0] = x_axis.x;
     r32x16[1] = x_axis.y;
@@ -240,17 +240,17 @@ void pgMat::toR32x16(r32* r32x16) const
 }
 
 
-pgMat pgMat::fromR32x16(const r32* r32x16)
+ckMat ckMat::fromR32x16(const r32* r32x16)
 {
-    return pgMat( //
-        pgVec(r32x16[0], r32x16[1], r32x16[2]), //
-        pgVec(r32x16[4], r32x16[5], r32x16[6]), //
-        pgVec(r32x16[8], r32x16[9], r32x16[10]), //
-        pgVec(r32x16[12], r32x16[13], r32x16[14]));
+    return ckMat( //
+        ckVec(r32x16[0], r32x16[1], r32x16[2]), //
+        ckVec(r32x16[4], r32x16[5], r32x16[6]), //
+        ckVec(r32x16[8], r32x16[9], r32x16[10]), //
+        ckVec(r32x16[12], r32x16[13], r32x16[14]));
 }
 
 
-void pgMat::mulR32x16(r32* res_r32x16, const r32* lhs_r32x16, const r32* rhs_r32x16)
+void ckMat::mulR32x16(r32* res_r32x16, const r32* lhs_r32x16, const r32* rhs_r32x16)
 {
     r32 m[16];
 
@@ -274,5 +274,5 @@ void pgMat::mulR32x16(r32* res_r32x16, const r32* lhs_r32x16, const r32* rhs_r32
     m[14] = lhs_r32x16[2] * rhs_r32x16[12] + lhs_r32x16[6] * rhs_r32x16[13] + lhs_r32x16[10] * rhs_r32x16[14] + lhs_r32x16[14] * rhs_r32x16[15];
     m[15] = lhs_r32x16[3] * rhs_r32x16[12] + lhs_r32x16[7] * rhs_r32x16[13] + lhs_r32x16[11] * rhs_r32x16[14] + lhs_r32x16[15] * rhs_r32x16[15];
 
-    pgMemMgr::memcpy(res_r32x16, m, sizeof(m));
+    ckMemMgr::memcpy(res_r32x16, m, sizeof(m));
 }

@@ -29,15 +29,15 @@
 */
 
 
-#ifndef PG_IPHONE_BRIDGE_H_
-#define PG_IPHONE_BRIDGE_H_
+#ifndef CK_IPHONE_BRIDGE_H_
+#define CK_IPHONE_BRIDGE_H_
 
 
-class pgIPhoneBridge
+class ckIPhoneBridge
 {
 public:
     /*
-        methods called by Pogolyn
+        methods called by Catcake
     */
     static void startApplication();
 
@@ -62,4 +62,4 @@ public:
 };
 
 
-#endif // PG_IPHONE_BRIDGE_H_
+#endif // CK_IPHONE_BRIDGE_H_

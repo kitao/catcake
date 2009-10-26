@@ -29,17 +29,17 @@
 */
 
 
-#include "pg_util_all.h"
+#include "ck_util_all.h"
 
-#include "pg_res_all.h"
-#include "pg_low_level_api.h"
+#include "ck_res_all.h"
+#include "ck_low_level_api.h"
 
 
-u32 pgUtil::strlen(const char* str)
+u32 ckUtil::strlen(const char* str)
 {
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     u32 len = 0;
@@ -54,11 +54,11 @@ u32 pgUtil::strlen(const char* str)
 }
 
 
-u32 pgUtil::wcslen(const wchar_t* str)
+u32 ckUtil::wcslen(const wchar_t* str)
 {
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     u32 len = 0;
@@ -73,11 +73,11 @@ u32 pgUtil::wcslen(const wchar_t* str)
 }
 
 
-void pgUtil::charToWchar(wchar_t* buf, u32 buf_size, const char* str)
+void ckUtil::charToWchar(wchar_t* buf, u32 buf_size, const char* str)
 {
     if (!buf || buf_size == 0 || !str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     for (u32 i = 0; i < buf_size; i++)
@@ -97,11 +97,11 @@ void pgUtil::charToWchar(wchar_t* buf, u32 buf_size, const char* str)
 }
 
 
-const char* pgUtil::getBasename(const char* filename)
+const char* ckUtil::getBasename(const char* filename)
 {
     if (!filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     const char* base = filename;
@@ -118,11 +118,11 @@ const char* pgUtil::getBasename(const char* filename)
 }
 
 
-const char* pgUtil::getExtension(const char* filename)
+const char* ckUtil::getExtension(const char* filename)
 {
     if (!filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     const char* ext = getBasename(filename);
@@ -139,18 +139,18 @@ const char* pgUtil::getExtension(const char* filename)
 }
 
 
-void pgUtil::calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing)
+void ckUtil::calcNormalAsTriangles(ckVec* normal, const ckPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing)
 {
     if (!normal || !prim_data || vert_num == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (vert_num < 3)
     {
         for (s32 i = 0; i < vert_num; i++)
         {
-            normal[i] = pgVec::Z_UNIT;
+            normal[i] = ckVec::Z_UNIT;
         }
 
         return;
@@ -160,15 +160,15 @@ void pgUtil::calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_d
 
     for (s32 i = 0; i < tri_vert_num; i += 3)
     {
-        pgVec vec1 = prim_data[i + 1].pos - prim_data[i].pos;
-        pgVec vec2 = prim_data[i + 2].pos - prim_data[i].pos;
+        ckVec vec1 = prim_data[i + 1].pos - prim_data[i].pos;
+        ckVec vec2 = prim_data[i + 2].pos - prim_data[i].pos;
 
         normal[i] = normal[i + 1] = normal[i + 2] = vec1.cross(vec2).normalize();
     }
 
     for (s32 i = tri_vert_num; i < vert_num; i++)
     {
-        normal[i] = pgVec::Z_UNIT;
+        normal[i] = ckVec::Z_UNIT;
     }
 
     if (!is_smoothing)
@@ -177,9 +177,9 @@ void pgUtil::calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_d
     }
 
     u32 mark_buf_size = sizeof(u16) * vert_num;
-    u16* mark_buf = static_cast<u16*>(pgMalloc(mark_buf_size));
+    u16* mark_buf = static_cast<u16*>(ckMalloc(mark_buf_size));
 
-    pgMemMgr::memset(mark_buf, 0, mark_buf_size);
+    ckMemMgr::memset(mark_buf, 0, mark_buf_size);
 
     for (s32 i = 0; i < vert_num; i++)
     {
@@ -191,17 +191,17 @@ void pgUtil::calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_d
         u16 mark = i + 1;
         u16 mark_num = 1;
 
-        const pgVec& pos1 = prim_data[i].pos;
-        const pgVec& n1 = normal[i];
+        const ckVec& pos1 = prim_data[i].pos;
+        const ckVec& n1 = normal[i];
 
-        pgVec avgn = n1;
+        ckVec avgn = n1;
 
         mark_buf[i] = mark;
 
         for (s32 j = i + 1; j < vert_num; j++)
         {
-            const pgVec& pos2 = prim_data[j].pos;
-            const pgVec& n2 = normal[j];
+            const ckVec& pos2 = prim_data[j].pos;
+            const ckVec& n2 = normal[j];
 
             if (pos1.x == pos2.x && pos1.y == pos2.y && pos1.z == pos2.z)
             {
@@ -212,7 +212,7 @@ void pgUtil::calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_d
                     mark_buf[j] = mark;
                     mark_num++;
 
-                    if (inner < 1.0f - pgMath::EPSILON)
+                    if (inner < 1.0f - ckMath::EPSILON)
                     {
                         avgn += n2;
                     }
@@ -239,96 +239,96 @@ void pgUtil::calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_d
         }
     }
 
-    pgFree(mark_buf);
+    ckFree(mark_buf);
 }
 
 
-bool pgUtil::readPNGInfo(u16* width, u16* height, pgTex::TexFormat* format, const void* data, u32 data_size)
+bool ckUtil::readPNGInfo(u16* width, u16* height, ckTex::TexFormat* format, const void* data, u32 data_size)
 {
     if (!width || !height || !format || !data || data_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::TextureFormat texture_format;
+    ckLowLevelAPI::TextureFormat texture_format;
 
-    bool res = pgLowLevelAPI::readPNGInfo(width, height, &texture_format, data, data_size);
+    bool res = ckLowLevelAPI::readPNGInfo(width, height, &texture_format, data, data_size);
 
-    *format = static_cast<pgTex::TexFormat>(pgTex::FORMAT_PNG_RGB + texture_format);
+    *format = static_cast<ckTex::TexFormat>(ckTex::FORMAT_PNG_RGB + texture_format);
 
     return res;
 }
 
 
-bool pgUtil::readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size)
+bool ckUtil::readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size)
 {
     if (!buf || buf_size == 0 || buf_line_size == 0 || !data || data_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    return pgLowLevelAPI::readPNGImage(buf, buf_size, buf_line_size, data, data_size);
+    return ckLowLevelAPI::readPNGImage(buf, buf_size, buf_line_size, data, data_size);
 }
 
 
-void pgUtil::loadWindowsFont(const char* filename)
+void ckUtil::loadWindowsFont(const char* filename)
 {
     if (!filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     char buf[256];
-    pgLowLevelAPI::getWindowsFontDirectory(buf, 256);
+    ckLowLevelAPI::getWindowsFontDirectory(buf, 256);
 
-    pgStr<char, 255> str = buf;
+    ckStr<char, 255> str = buf;
     str += filename;
 
-    pgResMgr::loadResource(str.getString(), true);
+    ckResMgr::loadResource(str.getString(), true);
 }
 
 
-void pgUtil::loadShader(pgID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num)
+void ckUtil::loadShader(ckID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num)
 {
-    pgID vert_id = pgID::genID();
+    ckID vert_id = ckID::genID();
     char* vert_code = NULL;
 
     if (vert_file)
     {
-        pgResMgr::loadResourceAs(vert_id, vert_file, false);
-        pgRes res = pgResMgr::getResource(vert_id);
-        vert_code = static_cast<char*>(pgMalloc(res.getDataSize() + 1));
+        ckResMgr::loadResourceAs(vert_id, vert_file, false);
+        ckRes res = ckResMgr::getResource(vert_id);
+        vert_code = static_cast<char*>(ckMalloc(res.getDataSize() + 1));
 
-        pgMemMgr::memcpy(vert_code, res.getData<void>(), res.getDataSize());
+        ckMemMgr::memcpy(vert_code, res.getData<void>(), res.getDataSize());
         vert_code[res.getDataSize()] = '\0';
 
-        pgResMgr::removeResource(vert_id);
+        ckResMgr::removeResource(vert_id);
     }
 
-    pgID frag_id = pgID::genID();
+    ckID frag_id = ckID::genID();
     char* frag_code = NULL;
 
     if (frag_file)
     {
-        pgResMgr::loadResourceAs(frag_id, frag_file, false);
-        pgRes res = pgResMgr::getResource(frag_id);
-        frag_code = static_cast<char*>(pgMalloc(res.getDataSize() + 1));
+        ckResMgr::loadResourceAs(frag_id, frag_file, false);
+        ckRes res = ckResMgr::getResource(frag_id);
+        frag_code = static_cast<char*>(ckMalloc(res.getDataSize() + 1));
 
-        pgMemMgr::memcpy(frag_code, res.getData<void>(), res.getDataSize());
+        ckMemMgr::memcpy(frag_code, res.getData<void>(), res.getDataSize());
         frag_code[res.getDataSize()] = '\0';
 
-        pgResMgr::removeResource(frag_id);
+        ckResMgr::removeResource(frag_id);
     }
 
-    pgDrawMgr::newShader(shd_id, vert_code, frag_code, uni_num, att_num, tex_num);
+    ckDrawMgr::newShader(shd_id, vert_code, frag_code, uni_num, att_num, tex_num);
 
     if (vert_code)
     {
-        pgFree(vert_code);
+        ckFree(vert_code);
     }
 
     if (frag_code)
     {
-        pgFree(frag_code);
+        ckFree(frag_code);
     }
 }

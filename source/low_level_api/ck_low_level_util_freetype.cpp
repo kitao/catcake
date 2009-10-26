@@ -36,9 +36,9 @@ extern "C"
 #include FT_MODULE_H
 }
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_mem_all.h" // for pgMalloc, pgFree
+#include "ck_mem_all.h" // for ckMalloc, ckFree
 
 
 static FT_Library s_freetype;
@@ -47,25 +47,25 @@ static FT_Memory s_memory;
 
 static void* myMalloc(FT_Memory, long size)
 {
-    return pgMalloc(size);
+    return ckMalloc(size);
 }
 
 
 static void myFree(FT_Memory, void* ptr)
 {
-    pgFree(ptr);
+    ckFree(ptr);
 }
 
 
 static void* myRealloc(FT_Memory, long, long new_size, void* ptr)
 {
-    return pgRealloc(ptr, new_size);
+    return ckRealloc(ptr, new_size);
 }
 
 
-bool pgLowLevelAPI::createFreeType()
+bool ckLowLevelAPI::createFreeType()
 {
-    s_memory = static_cast<FT_Memory>(pgMalloc(sizeof(*s_memory)));
+    s_memory = static_cast<FT_Memory>(ckMalloc(sizeof(*s_memory)));
     s_memory->user = NULL;
     s_memory->alloc = myMalloc;
     s_memory->free = myFree;
@@ -73,7 +73,7 @@ bool pgLowLevelAPI::createFreeType()
 
     if (FT_New_Library(s_memory, &s_freetype))
     {
-        pgFree(s_memory);
+        ckFree(s_memory);
         return false;
     }
 
@@ -83,20 +83,20 @@ bool pgLowLevelAPI::createFreeType()
 }
 
 
-bool pgLowLevelAPI::destroyFreeType()
+bool ckLowLevelAPI::destroyFreeType()
 {
     if (FT_Done_Library(s_freetype))
     {
         return false;
     }
 
-    pgFree(s_memory);
+    ckFree(s_memory);
 
     return true;
 }
 
 
-void* pgLowLevelAPI::newFreeTypeFont(const void* data, u32 data_size)
+void* ckLowLevelAPI::newFreeTypeFont(const void* data, u32 data_size)
 {
     FT_Face face0;
 
@@ -107,7 +107,7 @@ void* pgLowLevelAPI::newFreeTypeFont(const void* data, u32 data_size)
 
     u32 face_num = face0->num_faces;
 
-    void* font_info = pgMalloc(sizeof(u32) + sizeof(FT_Face) * face_num);
+    void* font_info = ckMalloc(sizeof(u32) + sizeof(FT_Face) * face_num);
 
     *static_cast<u32*>(font_info) = face_num;
 
@@ -127,7 +127,7 @@ void* pgLowLevelAPI::newFreeTypeFont(const void* data, u32 data_size)
 }
 
 
-bool pgLowLevelAPI::deleteFreeTypeFont(void* font_info)
+bool ckLowLevelAPI::deleteFreeTypeFont(void* font_info)
 {
     u32 face_num = *static_cast<u32*>(font_info);
     FT_Face* faces = reinterpret_cast<FT_Face*>(static_cast<u32*>(font_info) + 1);
@@ -140,7 +140,7 @@ bool pgLowLevelAPI::deleteFreeTypeFont(void* font_info)
         }
     }
 
-    pgFree(font_info);
+    ckFree(font_info);
 
     return true;
 }
@@ -179,7 +179,7 @@ static void rasterSpanFunc(int y, int count, const FT_Span* spans, void* user)
 }
 
 
-s16 pgLowLevelAPI::drawFreeTypeFont(void* image, u16 image_width, u16 image_height, //
+s16 ckLowLevelAPI::drawFreeTypeFont(void* image, u16 image_width, u16 image_height, //
     void* font_info, u32 font_index, u16 font_size, s16 x, s16 y, const wchar_t* str)
 {
     FT_Face face = *(reinterpret_cast<FT_Face*>(static_cast<u32*>(font_info) + 1) + font_index);

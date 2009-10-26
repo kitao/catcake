@@ -29,36 +29,36 @@
 */
 
 
-#include "pg_cdt_all.h"
+#include "ck_cdt_all.h"
 
 
-pgCdt::Ray::Ray()
+ckCdt::Ray::Ray()
 {
-    m_from = m_to = pgVec::ZERO;
+    m_from = m_to = ckVec::ZERO;
 
     updateAABB();
 }
 
 
-const pgCdt::AABB& pgCdt::Ray::getAABB() const
+const ckCdt::AABB& ckCdt::Ray::getAABB() const
 {
     return m_aabb;
 }
 
 
-const pgVec& pgCdt::Ray::getFrom() const
+const ckVec& ckCdt::Ray::getFrom() const
 {
     return m_from;
 }
 
 
-const pgVec& pgCdt::Ray::getTo() const
+const ckVec& ckCdt::Ray::getTo() const
 {
     return m_to;
 }
 
 
-void pgCdt::Ray::setPos(const pgVec& from, const pgVec& to)
+void ckCdt::Ray::setPos(const ckVec& from, const ckVec& to)
 {
     m_from = from;
     m_to = to;
@@ -67,9 +67,9 @@ void pgCdt::Ray::setPos(const pgVec& from, const pgVec& to)
 }
 
 
-void pgCdt::Ray::updateAABB()
+void ckCdt::Ray::updateAABB()
 {
-    pgVec min, max;
+    ckVec min, max;
 
     if (m_from.x < m_to.x)
     {
@@ -108,14 +108,14 @@ void pgCdt::Ray::updateAABB()
 }
 
 
-bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Sph& sph)
+bool ckCdt::intersect(ckVec* pos, const Ray& ray, const Sph& sph)
 {
     if (!checkTouch(ray.m_aabb, sph.m_aabb))
     {
         return false;
     }
 
-    pgVec m = sph.getPos() - ray.m_from;
+    ckVec m = sph.getPos() - ray.m_from;
     r32 c = m.sqLength() - sph.getRadius() * sph.getRadius();
 
     if (c <= 0.0f)
@@ -128,7 +128,7 @@ bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Sph& sph)
         return true;
     }
 
-    pgVec d = ray.m_to - ray.m_from;
+    ckVec d = ray.m_to - ray.m_from;
     r32 b = m.dot(d);
 
     if (b < 0.0f)
@@ -148,7 +148,7 @@ bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Sph& sph)
         return false;
     }
 
-    r32 dist = b - pgMath::sqrt(discr);
+    r32 dist = b - ckMath::sqrt(discr);
 
     if (dist > 1.0f)
     {
@@ -164,16 +164,16 @@ bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Sph& sph)
 }
 
 
-bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Box& box)
+bool ckCdt::intersect(ckVec* pos, const Ray& ray, const Box& box)
 {
     if (!checkTouch(ray.m_aabb, box.m_aabb))
     {
         return false;
     }
 
-    pgVec rel_pos = ray.m_from.toLocalOf(box.m_world);
-    pgVec dir = ray.m_to - ray.m_from;
-    pgVec rel_dir = dir.toLocalOf_noTrans(box.m_world);
+    ckVec rel_pos = ray.m_from.toLocalOf(box.m_world);
+    ckVec dir = ray.m_to - ray.m_from;
+    ckVec rel_dir = dir.toLocalOf_noTrans(box.m_world);
 
     r32 min_dist, max_dist;
 
@@ -193,14 +193,14 @@ bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Box& box)
 }
 
 
-bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Tri& tri)
+bool ckCdt::intersect(ckVec* pos, const Ray& ray, const Tri& tri)
 {
     if (!checkTouch(ray.m_aabb, tri.m_aabb))
     {
         return false;
     }
 
-    pgVec ray_dir = ray.m_to - ray.m_from;
+    ckVec ray_dir = ray.m_to - ray.m_from;
 
     r32 dist;
 
@@ -220,7 +220,7 @@ bool pgCdt::intersect(pgVec* pos, const Ray& ray, const Tri& tri)
 }
 
 
-bool pgCdt::intersectLocalBox(r32* min_dist, r32* max_dist, const pgVec& local_ray_pos, const pgVec& local_ray_dir, const pgVec& box_half_size)
+bool ckCdt::intersectLocalBox(r32* min_dist, r32* max_dist, const ckVec& local_ray_pos, const ckVec& local_ray_dir, const ckVec& box_half_size)
 {
     *min_dist = -1000000.0f;
     *max_dist = 1000000.0f;
@@ -231,7 +231,7 @@ bool pgCdt::intersectLocalBox(r32* min_dist, r32* max_dist, const pgVec& local_r
 
     for (s32 i = 0; i < 3; i++, p++, d++, s++)
     {
-        if (*d < pgMath::EPSILON && *d > -pgMath::EPSILON)
+        if (*d < ckMath::EPSILON && *d > -ckMath::EPSILON)
         {
             if (*p < -*s || *p > *s)
             {
@@ -282,20 +282,20 @@ bool pgCdt::intersectLocalBox(r32* min_dist, r32* max_dist, const pgVec& local_r
 }
 
 
-bool pgCdt::intersectTri(r32* dist, const pgVec& ray_pos, const pgVec& ray_dir, const Tri& tri)
+bool ckCdt::intersectTri(r32* dist, const ckVec& ray_pos, const ckVec& ray_dir, const Tri& tri)
 {
-    pgVec ab = tri.m_pos2 - tri.m_pos1;
-    pgVec ac = tri.m_pos3 - tri.m_pos1;
-    pgVec pvec = ray_dir.cross(ac);
+    ckVec ab = tri.m_pos2 - tri.m_pos1;
+    ckVec ac = tri.m_pos3 - tri.m_pos1;
+    ckVec pvec = ray_dir.cross(ac);
 
     r32 det = ab.dot(pvec);
 
-    if (det < pgMath::EPSILON && det > -pgMath::EPSILON)
+    if (det < ckMath::EPSILON && det > -ckMath::EPSILON)
     {
         return false;
     }
 
-    pgVec tvec = ray_pos - tri.m_pos1;
+    ckVec tvec = ray_pos - tri.m_pos1;
     r32 inv_det = 1.0f / det;
     r32 u = tvec.dot(pvec) * inv_det;
 
@@ -304,7 +304,7 @@ bool pgCdt::intersectTri(r32* dist, const pgVec& ray_pos, const pgVec& ray_dir, 
         return false;
     }
 
-    pgVec qvec = tvec.cross(ab);
+    ckVec qvec = tvec.cross(ab);
     r32 v = ray_dir.dot(qvec) * inv_det;
 
     if (v < 0.0f || u + v > 1.0f)

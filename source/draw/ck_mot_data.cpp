@@ -29,38 +29,38 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_res_all.h"
-#include "pg_util_all.h"
-#include "pg_private_macro.h"
+#include "ck_res_all.h"
+#include "ck_util_all.h"
+#include "ck_private_macro.h"
 
 
-pgMotData::pgMotData()
+ckMotData::ckMotData()
 {
     m_data = NULL;
 }
 
 
-pgMotData::~pgMotData()
+ckMotData::~ckMotData()
 {
     if (m_data && m_mode == MODE_WRITE)
     {
-        pgFree(m_data);
+        ckFree(m_data);
     }
 }
 
 
-void pgMotData::initAsReader(const void* data, u32 data_size)
+void ckMotData::initAsReader(const void* data, u32 data_size)
 {
     if (!data || data_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_data && m_mode == MODE_WRITE)
     {
-        pgFree(m_data);
+        ckFree(m_data);
     }
 
     m_mode = MODE_READ;
@@ -71,9 +71,9 @@ void pgMotData::initAsReader(const void* data, u32 data_size)
     m_key_frame_info = reinterpret_cast<KeyFrameInfo*>(m_data + m_mot_data_header->key_frame_info_offset);
     m_node_info = reinterpret_cast<NodeInfo*>(m_data + m_mot_data_header->node_info_offset);
 
-    if (m_mot_data_header->format_id != pgID_("POGOLYN_MOTION_DATA") || m_mot_data_header->format_version > MOTION_DATA_VERSION)
+    if (m_mot_data_header->format_id != ckID_("CATCAKE_MOTION_DATA") || m_mot_data_header->format_version > MOTION_DATA_VERSION)
     {
-        pgThrow(ExceptionInvalidData);
+        ckThrow(ExceptionInvalidData);
     }
 
     u32 valid_data_size = sizeof(MotionDataHeader) + sizeof(MotionInfo) * getMotionNum() + //
@@ -81,21 +81,21 @@ void pgMotData::initAsReader(const void* data, u32 data_size)
 
     if (m_data_size != valid_data_size)
     {
-        pgThrow(ExceptionInvalidData);
+        ckThrow(ExceptionInvalidData);
     }
 }
 
 
-void pgMotData::initAsWriter(u16 node_num, u16 mot_num, u32 key_frame_num)
+void ckMotData::initAsWriter(u16 node_num, u16 mot_num, u32 key_frame_num)
 {
     if (node_num == 0 || mot_num == 0 || key_frame_num == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_data && m_mode == MODE_WRITE)
     {
-        pgFree(m_data);
+        ckFree(m_data);
     }
 
     m_mode = MODE_WRITE;
@@ -107,13 +107,13 @@ void pgMotData::initAsWriter(u16 node_num, u16 mot_num, u32 key_frame_num)
     u32 node_info_size = sizeof(NodeInfo) * node_info_num;
 
     m_data_size = sizeof(MotionDataHeader) + mot_info_size + key_frame_info_size + node_info_size;
-    m_data = static_cast<u8*>(pgMalloc(m_data_size));
+    m_data = static_cast<u8*>(ckMalloc(m_data_size));
 
-    pgMemMgr::memset(m_data, 0, m_data_size);
+    ckMemMgr::memset(m_data, 0, m_data_size);
 
     m_mot_data_header = reinterpret_cast<MotionDataHeader*>(m_data);
 
-    m_mot_data_header->format_id = pgID_("POGOLYN_MOTION_DATA");
+    m_mot_data_header->format_id = ckID_("CATCAKE_MOTION_DATA");
     m_mot_data_header->format_version = MOTION_DATA_VERSION;
     m_mot_data_header->node_num = node_num;
     m_mot_data_header->mot_num = mot_num;
@@ -138,114 +138,114 @@ void pgMotData::initAsWriter(u16 node_num, u16 mot_num, u32 key_frame_num)
 }
 
 
-pgMotData::MotionDataMode pgMotData::getMode() const
+ckMotData::MotionDataMode ckMotData::getMode() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mode.getType();
 }
 
 
-u16 pgMotData::getNodeNum() const
+u16 ckMotData::getNodeNum() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mot_data_header->node_num;
 }
 
 
-u16 pgMotData::getMotionNum() const
+u16 ckMotData::getMotionNum() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mot_data_header->mot_num;
 }
 
 
-u32 pgMotData::getKeyFrameNum() const
+u32 ckMotData::getKeyFrameNum() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mot_data_header->key_frame_num;
 }
 
 
-u32 pgMotData::getMotionFrameNum(u16 mot_index) const
+u32 ckMotData::getMotionFrameNum(u16 mot_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (mot_index >= m_mot_data_header->mot_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_mot_info[mot_index].frame_num;
 }
 
 
-u32 pgMotData::getMotionKeyFrameIndex(u16 mot_index) const
+u32 ckMotData::getMotionKeyFrameIndex(u16 mot_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (mot_index >= m_mot_data_header->mot_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_mot_info[mot_index].key_frame_index;
 }
 
 
-u32 pgMotData::getMotionKeyFrameNum(u16 mot_index) const
+u32 ckMotData::getMotionKeyFrameNum(u16 mot_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (mot_index >= m_mot_data_header->mot_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_mot_info[mot_index].key_frame_num;
 }
 
 
-void pgMotData::setMotionInfo(u16 mot_index, u32 frame_num, u32 key_frame_index, u32 key_frame_num)
+void ckMotData::setMotionInfo(u16 mot_index, u32 frame_num, u32 key_frame_index, u32 key_frame_num)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (mot_index >= m_mot_data_header->mot_num || frame_num == 0 || key_frame_num == 0 || //
         key_frame_index + key_frame_num > m_mot_data_header->key_frame_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     MotionInfo* mot_info = &m_mot_info[mot_index];
@@ -256,123 +256,123 @@ void pgMotData::setMotionInfo(u16 mot_index, u32 frame_num, u32 key_frame_index,
 }
 
 
-u32 pgMotData::getKeyFramePlayFrame(u32 key_frame_index) const
+u32 ckMotData::getKeyFramePlayFrame(u32 key_frame_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (key_frame_index >= m_mot_data_header->key_frame_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_key_frame_info[key_frame_index].play_frame;
 }
 
 
-void pgMotData::setKeyFramePlayFrame(u32 key_frame_index, u32 play_frame)
+void ckMotData::setKeyFramePlayFrame(u32 key_frame_index, u32 play_frame)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (key_frame_index >= m_mot_data_header->key_frame_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_key_frame_info[key_frame_index].play_frame = play_frame;
 }
 
 
-const pgQuat& pgMotData::getNodeRotate(u16 node_index, u32 key_frame_index) const
+const ckQuat& ckMotData::getNodeRotate(u16 node_index, u32 key_frame_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mot_data_header->node_num || key_frame_index >= m_mot_data_header->key_frame_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[m_mot_data_header->key_frame_num * node_index + key_frame_index].m_quat;
 }
 
 
-const pgVec& pgMotData::getNodeTrans(u16 node_index, u32 key_frame_index) const
+const ckVec& ckMotData::getNodeTrans(u16 node_index, u32 key_frame_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mot_data_header->node_num || key_frame_index >= m_mot_data_header->key_frame_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[m_mot_data_header->key_frame_num * node_index + key_frame_index].m_trans;
 }
 
 
-void pgMotData::setNodeLocal(u16 node_index, u32 key_frame_index, const pgMat& local)
+void ckMotData::setNodeLocal(u16 node_index, u32 key_frame_index, const ckMat& local)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mot_data_header->node_num || key_frame_index >= m_mot_data_header->key_frame_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     NodeInfo* joint_info = &m_node_info[m_mot_data_header->key_frame_num * node_index + key_frame_index];
 
-    joint_info->m_quat = pgQuat::fromMat(local);
+    joint_info->m_quat = ckQuat::fromMat(local);
     joint_info->m_trans = local.trans;
 }
 
 
-void pgMotData::registerAsResource(pgID res_id)
+void ckMotData::registerAsResource(ckID res_id)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
-    if (res_id == pgID::ZERO)
+    if (res_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgResMgr::addResource(res_id, "", m_data, m_data_size, true);
+    ckResMgr::addResource(res_id, "", m_data, m_data_size, true);
 
     m_mode = MODE_READ;
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgMotData)
+CK_DEFINE_COPY_CONSTRUCTOR(ckMotData)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgMotData)
+CK_DEFINE_OPERATOR_EQUAL(ckMotData)

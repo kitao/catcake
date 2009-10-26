@@ -29,47 +29,47 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_res_all.h"
-#include "pg_private_macro.h"
+#include "ck_res_all.h"
+#include "ck_private_macro.h"
 
 
-pgMot::pgMot()
+ckMot::ckMot()
 {
     m_interp_info = NULL;
 }
 
 
-pgMot::~pgMot()
+ckMot::~ckMot()
 {
     uninit();
 }
 
 
-void pgMot::init(pgMdl* mdl, pgID mot_data_id)
+void ckMot::init(ckMdl* mdl, ckID mot_data_id)
 {
     uninit();
 
-    if (mot_data_id == pgID::ZERO)
+    if (mot_data_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgRes res;
+    ckRes res;
 
-    pgTry
+    ckTry
     {
-        res = pgResMgr::getResource(mot_data_id);
+        res = ckResMgr::getResource(mot_data_id);
     }
-    pgCatch(pgResMgr::ExceptionNotFound)
+    ckCatch(ckResMgr::ExceptionNotFound)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_mot_data.initAsReader(res.getData<void>(), res.getDataSize());
 
-    pgNewArray(m_interp_info, InterpInfo, m_mot_data.getNodeNum());
+    ckNewArray(m_interp_info, InterpInfo, m_mot_data.getNodeNum());
 
     m_play_mode = PLAY_NORMAL;
     m_mot_index = 0;
@@ -81,71 +81,71 @@ void pgMot::init(pgMdl* mdl, pgID mot_data_id)
 }
 
 
-u16 pgMot::getMotionIndex() const
+u16 ckMot::getMotionIndex() const
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mot_index;
 }
 
 
-pgMot::PlayMode pgMot::getPlayMode() const
+ckMot::PlayMode ckMot::getPlayMode() const
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_play_mode.getType();
 }
 
 
-r32 pgMot::getPlaySpeed() const
+r32 ckMot::getPlaySpeed() const
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_play_speed;
 }
 
 
-u16 pgMot::getInterpFrame() const
+u16 ckMot::getInterpFrame() const
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_interp_frame;
 }
 
 
-bool pgMot::isPlaying() const
+bool ckMot::isPlaying() const
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return (m_playing_frame >= 0.0f);
 }
 
 
-void pgMot::play(pgMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame)
+void ckMot::play(ckMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame)
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!mdl || mot_index >= m_mot_data.getMotionNum())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_play_mode = play_mode;
@@ -159,15 +159,15 @@ void pgMot::play(pgMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, 
         m_interp_speed = 1.0f / interp_frame;
         m_interp_ratio = 1.0f;
 
-        const pgMdlData* mdl_data = mdl->getModelData();
-        u16 node_num = pgMath::min(m_mot_data.getNodeNum(), mdl_data->getNodeNum());
+        const ckMdlData* mdl_data = mdl->getModelData();
+        u16 node_num = ckMath::min(m_mot_data.getNodeNum(), mdl_data->getNodeNum());
 
         for (s32 i = 0; i < node_num; i++)
         {
             InterpInfo* interp_info = &m_interp_info[i];
-            pgMat local = mdl->getNodeDraw(i)->local().toLocalOf(mdl_data->getNodeLocal(i));
+            ckMat local = mdl->getNodeDraw(i)->local().toLocalOf(mdl_data->getNodeLocal(i));
 
-            interp_info->quat = pgQuat::fromMat(local);
+            interp_info->quat = ckQuat::fromMat(local);
             interp_info->trans = local.trans;
         }
     }
@@ -179,38 +179,38 @@ void pgMot::play(pgMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, 
 }
 
 
-void pgMot::stop()
+void ckMot::stop()
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_playing_frame = -1.0f;
 }
 
 
-r32 pgMot::getNextUpdateFrame() const
+r32 ckMot::getNextUpdateFrame() const
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return (m_playing_frame < 0.0f) ? 0.0f : m_playing_frame;
 }
 
 
-void pgMot::update(pgMdl* mdl)
+void ckMot::update(ckMdl* mdl)
 {
     if (!m_interp_info)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!mdl)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (!isPlaying())
@@ -263,18 +263,18 @@ void pgMot::update(pgMdl* mdl)
     /*
         update model's local matrix
     */
-    const pgMdlData* mdl_data = mdl->getModelData();
-    u16 node_num = pgMath::min(m_mot_data.getNodeNum(), mdl_data->getNodeNum());
+    const ckMdlData* mdl_data = mdl->getModelData();
+    u16 node_num = ckMath::min(m_mot_data.getNodeNum(), mdl_data->getNodeNum());
 
     for (s32 i = 0; i < node_num; i++)
     {
-        pgQuat quat = m_mot_data.getNodeRotate(i, key_frame_index);
-        pgVec trans = m_mot_data.getNodeTrans(i, key_frame_index);
+        ckQuat quat = m_mot_data.getNodeRotate(i, key_frame_index);
+        ckVec trans = m_mot_data.getNodeTrans(i, key_frame_index);
 
         if (is_blend)
         {
-            pgQuat quat2 = m_mot_data.getNodeRotate(i, key_frame_index + 1); // to avoid runtime error on iPhone
-            pgVec trans2 = m_mot_data.getNodeTrans(i, key_frame_index + 1); // to avoid runtime error on iPhone
+            ckQuat quat2 = m_mot_data.getNodeRotate(i, key_frame_index + 1); // to avoid runtime error on iPhone
+            ckVec trans2 = m_mot_data.getNodeTrans(i, key_frame_index + 1); // to avoid runtime error on iPhone
 
             quat = quat.slerp(quat2, blend_ratio);
             trans = trans.interp(trans2, blend_ratio);
@@ -317,17 +317,17 @@ void pgMot::update(pgMdl* mdl)
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgMot)
+CK_DEFINE_COPY_CONSTRUCTOR(ckMot)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgMot)
+CK_DEFINE_OPERATOR_EQUAL(ckMot)
 
 
-void pgMot::uninit()
+void ckMot::uninit()
 {
     if (m_interp_info)
     {
-        pgDeleteArray(m_interp_info, InterpInfo);
+        ckDeleteArray(m_interp_info, InterpInfo);
 
         m_interp_info = NULL;
     }

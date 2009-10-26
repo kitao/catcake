@@ -29,17 +29,17 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
 
-const pgCol pgCol::ZERO = pgCol(0, 0, 0, 0);
-const pgCol pgCol::FULL = pgCol(255, 255, 255, 255);
+const ckCol ckCol::ZERO = ckCol(0, 0, 0, 0);
+const ckCol ckCol::FULL = ckCol(255, 255, 255, 255);
 
 
-pgCol::pgCol() {}
+ckCol::ckCol() {}
 
 
-pgCol::pgCol(const pgCol& col)
+ckCol::ckCol(const ckCol& col)
 {
     r = col.r;
     g = col.g;
@@ -48,7 +48,7 @@ pgCol::pgCol(const pgCol& col)
 }
 
 
-pgCol::pgCol(u8 r_, u8 g_, u8 b_, u8 a_)
+ckCol::ckCol(u8 r_, u8 g_, u8 b_, u8 a_)
 {
     r = r_;
     g = g_;
@@ -57,7 +57,7 @@ pgCol::pgCol(u8 r_, u8 g_, u8 b_, u8 a_)
 }
 
 
-void pgCol::set(u8 r_, u8 g_, u8 b_, u8 a_)
+void ckCol::set(u8 r_, u8 g_, u8 b_, u8 a_)
 {
     r = r_;
     g = g_;
@@ -66,51 +66,51 @@ void pgCol::set(u8 r_, u8 g_, u8 b_, u8 a_)
 }
 
 
-bool pgCol::operator==(pgCol col) const
+bool ckCol::operator==(ckCol col) const
 {
     return (r == col.r && g == col.g && b == col.b && a == col.a);
 }
 
 
-bool pgCol::operator!=(pgCol col) const
+bool ckCol::operator!=(ckCol col) const
 {
     return (r != col.r || g != col.g || b != col.b || a != col.a);
 }
 
 
-pgCol pgCol::operator+(pgCol col) const
+ckCol ckCol::operator+(ckCol col) const
 {
-    return pgCol( //
-        pgMath::min(r + col.r, 255), //
-        pgMath::min(g + col.g, 255), //
-        pgMath::min(b + col.b, 255), //
-        pgMath::min(a + col.a, 255));
+    return ckCol( //
+        ckMath::min(r + col.r, 255), //
+        ckMath::min(g + col.g, 255), //
+        ckMath::min(b + col.b, 255), //
+        ckMath::min(a + col.a, 255));
 }
 
 
-void pgCol::operator+=(pgCol col)
+void ckCol::operator+=(ckCol col)
 {
     *this = *this + col;
 }
 
 
-pgCol pgCol::operator-(pgCol col) const
+ckCol ckCol::operator-(ckCol col) const
 {
-    return pgCol( //
-        pgMath::max(r - col.r, 0), //
-        pgMath::max(g - col.g, 0), //
-        pgMath::max(b - col.b, 0), //
-        pgMath::max(a - col.a, 0));
+    return ckCol( //
+        ckMath::max(r - col.r, 0), //
+        ckMath::max(g - col.g, 0), //
+        ckMath::max(b - col.b, 0), //
+        ckMath::max(a - col.a, 0));
 }
 
 
-void pgCol::operator-=(pgCol col)
+void ckCol::operator-=(ckCol col)
 {
     *this = *this - col;
 }
 
 
-pgCol pgCol::operator*(pgCol col) const
+ckCol ckCol::operator*(ckCol col) const
 {
     if (*this == FULL)
     {
@@ -122,7 +122,7 @@ pgCol pgCol::operator*(pgCol col) const
     }
     else
     {
-        return pgCol( //
+        return ckCol( //
             ((r + 1) * (col.r + 1) - 1) >> 8, //
             ((g + 1) * (col.g + 1) - 1) >> 8, //
             ((b + 1) * (col.b + 1) - 1) >> 8, //
@@ -131,7 +131,7 @@ pgCol pgCol::operator*(pgCol col) const
 }
 
 
-void pgCol::operator*=(pgCol col)
+void ckCol::operator*=(ckCol col)
 {
     if (*this == FULL)
     {
@@ -151,7 +151,7 @@ void pgCol::operator*=(pgCol col)
 }
 
 
-pgCol pgCol::operator*(r32 s) const
+ckCol ckCol::operator*(r32 s) const
 {
     s32 new_r = static_cast<s32>(r * s);
     s32 new_g = static_cast<s32>(g * s);
@@ -194,41 +194,41 @@ pgCol pgCol::operator*(r32 s) const
         new_a = 0;
     }
 
-    return pgCol(new_r, new_g, new_b, new_a);
+    return ckCol(new_r, new_g, new_b, new_a);
 }
 
 
-pgCol operator*(r32 s, pgCol col)
+ckCol operator*(r32 s, ckCol col)
 {
     return col * s;
 }
 
 
-void pgCol::operator*=(r32 s)
+void ckCol::operator*=(r32 s)
 {
     *this = *this * s;
 }
 
 
-pgCol pgCol::operator/(r32 s) const
+ckCol ckCol::operator/(r32 s) const
 {
     return *this * (1.0f / s);
 }
 
 
-void pgCol::operator/=(r32 s)
+void ckCol::operator/=(r32 s)
 {
     *this = *this / s;
 }
 
 
-pgCol pgCol::interp(pgCol to, r32 ratio) const
+ckCol ckCol::interp(ckCol to, r32 ratio) const
 {
-    if (ratio < pgMath::EPSILON)
+    if (ratio < ckMath::EPSILON)
     {
         return *this;
     }
-    else if (ratio > 1.0f - pgMath::EPSILON)
+    else if (ratio > 1.0f - ckMath::EPSILON)
     {
         return to;
     }

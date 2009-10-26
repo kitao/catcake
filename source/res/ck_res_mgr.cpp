@@ -29,51 +29,51 @@
 */
 
 
-#include "pg_res_all.h"
+#include "ck_res_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_util_all.h"
-#include "pg_private_macro.h"
-
-
-pgResMgr* pgResMgr::m_instance = NULL;
+#include "ck_sys_all.h"
+#include "ck_util_all.h"
+#include "ck_private_macro.h"
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgResMgr)
+ckResMgr* ckResMgr::m_instance = NULL;
 
 
-PG_DEFINE_MANAGER_CREATE(pgResMgr, AfterTask, BeforeSys)
+CK_DEFINE_MANAGER_IS_CREATED(ckResMgr)
 
 
-PG_DEFINE_MANAGER_DESTROY(pgResMgr, BeforeSys)
+CK_DEFINE_MANAGER_CREATE(ckResMgr, AfterTask, BeforeSys)
 
 
-u16 pgResMgr::getTypeNum()
+CK_DEFINE_MANAGER_DESTROY(ckResMgr, BeforeSys)
+
+
+u16 ckResMgr::getTypeNum()
 {
     return instance()->m_type_info_map.getDataNum();
 }
 
 
-u16 pgResMgr::getResourceNum()
+u16 ckResMgr::getResourceNum()
 {
     return instance()->m_res_map.getDataNum();
 }
 
 
-void pgResMgr::addType(pgStr<char, 3> ext, Initializer init, Finalizer final)
+void ckResMgr::addType(ckStr<char, 3> ext, Initializer init, Finalizer final)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
     if (ext == "" || !init || !final)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    ext = pgRes::toUppercase(ext);
+    ext = ckRes::toUppercase(ext);
 
     if (ins->m_type_info_map.getN(ext))
     {
-        pgThrow(ExceptionSameExtensionExists);
+        ckThrow(ExceptionSameExtensionExists);
     }
 
     TypeInfo ti;
@@ -85,113 +85,113 @@ void pgResMgr::addType(pgStr<char, 3> ext, Initializer init, Finalizer final)
 }
 
 
-void pgResMgr::removeType(pgStr<char, 3> ext)
+void ckResMgr::removeType(ckStr<char, 3> ext)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
     if (ext == "")
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    ext = pgRes::toUppercase(ext);
+    ext = ckRes::toUppercase(ext);
 
-    pgTry
+    ckTry
     {
         ins->m_type_info_map.remove(ext);
     }
-    pgCatch(pgMap<pgStr<char, 3>, TypeInfo>::ExceptionNotFound)
+    ckCatch(ckMap<ckStr<char, 3>, TypeInfo>::ExceptionNotFound)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 }
 
 
-bool pgResMgr::hasResource(pgID id)
+bool ckResMgr::hasResource(ckID id)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_res_map.getN(id) ? true : false;
 }
 
 
-pgRes pgResMgr::getResource(pgID id)
+ckRes ckResMgr::getResource(ckID id)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgRes* res = ins->m_res_map.getN(id);
+    ckRes* res = ins->m_res_map.getN(id);
 
     if (!res)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return *res;
 }
 
 
-void pgResMgr::addResource(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, bool is_auto_free)
+void ckResMgr::addResource(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, bool is_auto_free)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
-    if (id == pgID::ZERO || !data || data_size == 0)
+    if (id == ckID::ZERO || !data || data_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    ext = pgRes::toUppercase(ext);
+    ext = ckRes::toUppercase(ext);
 
-    pgTry
+    ckTry
     {
-        pgRes res;
+        ckRes res;
         res.init(id, ext, data, data_size, NULL, is_auto_free);
 
         ins->m_res_map.add(id, res);
     }
-    pgCatch(pgMap<pgID, pgRes>::ExceptionSameKeyExists)
+    ckCatch(ckMap<ckID, ckRes>::ExceptionSameKeyExists)
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
     TypeInfo* ti = ins->m_type_info_map.getN(ext);
 
     if (ti)
     {
-        pgRes* res = ins->m_res_map.get(id);
+        ckRes* res = ins->m_res_map.get(id);
 
         (*ti->init)(res->m_id, res->m_ext, res->m_data, res->m_data_size, &res->m_exinfo);
     }
 }
 
 
-void pgResMgr::removeResource(pgID id)
+void ckResMgr::removeResource(ckID id)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgRes* res;
+    ckRes* res;
 
-    pgTry
+    ckTry
     {
         res = ins->m_res_map.get(id);
     }
-    pgCatch(pgMap<pgID, pgRes>::ExceptionNotFound)
+    ckCatch(ckMap<ckID, ckRes>::ExceptionNotFound)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     TypeInfo* ti = ins->m_type_info_map.getN(res->m_ext);
@@ -203,149 +203,149 @@ void pgResMgr::removeResource(pgID id)
 
     if (res->m_is_auto_free)
     {
-        pgFree(const_cast<void*>(res->m_data));
+        ckFree(const_cast<void*>(res->m_data));
     }
 
     ins->m_res_map.remove(id);
 }
 
 
-void pgResMgr::loadResource(const char* filename, bool is_type_detect)
+void ckResMgr::loadResource(const char* filename, bool is_type_detect)
 {
     instance();
 
     if (!filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    return loadResourceAs(pgID::genID(pgUtil::getBasename(filename)), filename, is_type_detect);
+    return loadResourceAs(ckID::genID(ckUtil::getBasename(filename)), filename, is_type_detect);
 }
 
 
-void pgResMgr::loadResourceAs(pgID id, const char* filename, bool is_type_detect)
+void ckResMgr::loadResourceAs(ckID id, const char* filename, bool is_type_detect)
 {
     instance();
 
-    if (id == pgID::ZERO || !filename)
+    if (id == ckID::ZERO || !filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     void* fh;
 
-    pgTry
+    ckTry
     {
-        fh = pgSysMgr::openFile(filename, pgSysMgr::FILE_MODE_READ);
+        fh = ckSysMgr::openFile(filename, ckSysMgr::FILE_MODE_READ);
     }
-    pgCatch(pgSysMgr::ExceptionCannotOpenFile)
+    ckCatch(ckSysMgr::ExceptionCannotOpenFile)
     {
-        pgThrow(ExceptionCannotOpenFile);
+        ckThrow(ExceptionCannotOpenFile);
     }
 
     u32 data_size;
     void* data = NULL;
 
-    pgTry
+    ckTry
     {
-        data_size = pgSysMgr::getFileSize(fh);
+        data_size = ckSysMgr::getFileSize(fh);
 
         if (data_size == 0)
         {
-            pgThrow(ExceptionCannotReadFile);
+            ckThrow(ExceptionCannotReadFile);
         }
 
-        data = pgMalloc(data_size);
+        data = ckMalloc(data_size);
 
-        pgSysMgr::readFile(data, 0, data_size, fh);
+        ckSysMgr::readFile(data, 0, data_size, fh);
     }
-    pgCatch(pgSysMgr::ExceptionCannotReadFile)
+    ckCatch(ckSysMgr::ExceptionCannotReadFile)
     {
-        pgSysMgr::closeFile(fh);
+        ckSysMgr::closeFile(fh);
 
         if (data)
         {
-            pgFree(data);
+            ckFree(data);
         }
 
-        pgThrow(ExceptionCannotReadFile);
+        ckThrow(ExceptionCannotReadFile);
     }
 
-    pgSysMgr::closeFile(fh);
+    ckSysMgr::closeFile(fh);
 
-    pgTry
+    ckTry
     {
-        addResource(id, is_type_detect ? pgUtil::getExtension(filename) : "", data, data_size, true);
+        addResource(id, is_type_detect ? ckUtil::getExtension(filename) : "", data, data_size, true);
     }
-    pgCatch(ExceptionSameIDExists)
+    ckCatch(ExceptionSameIDExists)
     {
-        pgFree(data);
+        ckFree(data);
 
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 }
 
 
-const pgStr<char, 3>* pgResMgr::getFirstTypeN()
+const ckStr<char, 3>* ckResMgr::getFirstTypeN()
 {
     return instance()->m_type_info_map.getFirstKeyN();
 }
 
 
-const pgStr<char, 3>* pgResMgr::getNextTypeN(pgStr<char, 3> ext)
+const ckStr<char, 3>* ckResMgr::getNextTypeN(ckStr<char, 3> ext)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
     if (ext == "")
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_type_info_map.getNextKeyN(ext);
 }
 
 
-const pgRes* pgResMgr::getFirstResourceN()
+const ckRes* ckResMgr::getFirstResourceN()
 {
-    pgResMgr* ins = instance();
-    const pgID* id = ins->m_res_map.getFirstKeyN();
+    ckResMgr* ins = instance();
+    const ckID* id = ins->m_res_map.getFirstKeyN();
 
     return id ? ins->m_res_map.get(*id) : NULL;
 }
 
 
-const pgRes* pgResMgr::getNextResourceN(pgID id)
+const ckRes* ckResMgr::getNextResourceN(ckID id)
 {
-    pgResMgr* ins = instance();
+    ckResMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    const pgID* id2 = ins->m_res_map.getNextKeyN(id);
+    const ckID* id2 = ins->m_res_map.getNextKeyN(id);
 
     return id2 ? ins->m_res_map.get(*id2) : NULL;
 }
 
 
-pgResMgr::pgResMgr()
+ckResMgr::ckResMgr()
 {
     m_type_info_map.init(TYPE_HASH_SIZE);
     m_res_map.init(RESOURCE_HASH_SIZE);
 }
 
 
-pgResMgr::~pgResMgr()
+ckResMgr::~ckResMgr()
 {
-    while (const pgRes* res = getFirstResourceN())
+    while (const ckRes* res = getFirstResourceN())
     {
         removeResource(res->m_id);
     }
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgResMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckResMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgResMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckResMgr)

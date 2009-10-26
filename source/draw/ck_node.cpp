@@ -29,21 +29,21 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_private_macro.h"
+#include "ck_private_macro.h"
 
 
-pgNode::pgNode()
+ckNode::ckNode()
 {
     m_type = TYPE_NODE;
 }
 
 
-pgNode::~pgNode() {}
+ckNode::~ckNode() {}
 
 
-void pgNode::init(pgID scr_id)
+void ckNode::init(ckID scr_id)
 {
     m_private_flag.setOn(FLAG_INITIALIZED);
 
@@ -51,7 +51,7 @@ void pgNode::init(pgID scr_id)
 }
 
 
-void pgNode::init(pgDraw* parent)
+void ckNode::init(ckDraw* parent)
 {
     m_private_flag.setOn(FLAG_INITIALIZED);
 

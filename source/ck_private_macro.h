@@ -29,73 +29,73 @@
 */
 
 
-#ifndef PG_PRIVATE_MACRO_H_
-#define PG_PRIVATE_MACRO_H_
+#ifndef CK_PRIVATE_MACRO_H_
+#define CK_PRIVATE_MACRO_H_
 
 
-#define PG_DEFINE_COPY_CONSTRUCTOR(name) name::name(const name&) {}
+#define CK_DEFINE_COPY_CONSTRUCTOR(name) name::name(const name&) {}
 
 
-#define PG_DEFINE_OPERATOR_EQUAL(name) void name::operator=(const name&) {}
+#define CK_DEFINE_OPERATOR_EQUAL(name) void name::operator=(const name&) {}
 
 
-#define PG_DEFINE_MANAGER_IS_CREATED(name) \
+#define CK_DEFINE_MANAGER_IS_CREATED(name) \
     bool name::isCreated() \
     { \
         return m_instance ? true : false; \
     }
 
 
-#define PG_DEFINE_MANAGER_CREATE(name, create_suffix, destroy_suffix) \
+#define CK_DEFINE_MANAGER_CREATE(name, create_suffix, destroy_suffix) \
     void name::create##create_suffix() \
     { \
         destroy##destroy_suffix(); \
     \
-        m_instance = pgNew(name); \
+        m_instance = ckNew(name); \
     }
 
 
-#define PG_DEFINE_MANAGER_DESTROY(name, suffix) \
+#define CK_DEFINE_MANAGER_DESTROY(name, suffix) \
     void name::destroy##suffix() \
     { \
         if (m_instance) \
         { \
-            pgDelete(m_instance, name); \
+            ckDelete(m_instance, name); \
             m_instance = NULL; \
         } \
     }
 
 
-#define PG_DEFINE_MANAGER_INSTANCE(name) \
+#define CK_DEFINE_MANAGER_INSTANCE(name) \
     name* name::instance() \
     { \
         if (!isCreated()) \
         { \
-            pgThrow(ExceptionNotInitialized); \
+            ckThrow(ExceptionNotInitialized); \
         } \
     \
         return m_instance; \
     }
 
 
-#define PG_VSPRINTF(buf, buf_size, format) \
+#define CK_VSPRINTF(buf, buf_size, format) \
     va_list ap; \
     \
     va_start(ap, str); \
-    pgLowLevelAPI::vsprintf(buf, buf_size, format, &ap); \
+    ckLowLevelAPI::vsprintf(buf, buf_size, format, &ap); \
     va_end(ap); \
     \
     buf[buf_size - 1] = '\0'
 
 
-#define PG_VSWPRINTF(buf, buf_size, format) \
+#define CK_VSWPRINTF(buf, buf_size, format) \
     va_list ap; \
     \
     va_start(ap, str); \
-    pgLowLevelAPI::vswprintf(buf, buf_size, format, &ap); \
+    ckLowLevelAPI::vswprintf(buf, buf_size, format, &ap); \
     va_end(ap); \
     \
     buf[buf_size - 1] = L'\0'
 
 
-#endif // !PG_PRIVATE_MACRO_H_
+#endif // !CK_PRIVATE_MACRO_H_

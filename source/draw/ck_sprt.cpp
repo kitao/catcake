@@ -29,16 +29,16 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgSprt::SprtData::SprtData()
+ckSprt::SprtData::SprtData()
 {
-    pos = pgVec::ZERO;
-    col = pgCol::FULL;
+    pos = ckVec::ZERO;
+    col = ckCol::FULL;
     w = h = 0.0f;
     u1 = v1 = 0.0f;
     u2 = v2 = 1.0f;
@@ -46,7 +46,7 @@ pgSprt::SprtData::SprtData()
 }
 
 
-pgSprt::pgSprt()
+ckSprt::ckSprt()
 {
     m_type = TYPE_SPRT;
 
@@ -56,115 +56,115 @@ pgSprt::pgSprt()
 }
 
 
-pgSprt::~pgSprt()
+ckSprt::~ckSprt()
 {
     if (m_sprt_data && !m_is_share_data.getType())
     {
-        pgDeleteArray(m_sprt_data, SprtData);
+        ckDeleteArray(m_sprt_data, SprtData);
     }
 }
 
 
-void pgSprt::init(u16 max_data_num, pgID scr_id)
+void ckSprt::init(u16 max_data_num, ckID scr_id)
 {
     init2(false, NULL, max_data_num, scr_id, NULL);
 }
 
 
-void pgSprt::init(u16 max_data_num, pgDraw* parent)
+void ckSprt::init(u16 max_data_num, ckDraw* parent)
 {
-    init2(false, NULL, max_data_num, pgID::ZERO, parent);
+    init2(false, NULL, max_data_num, ckID::ZERO, parent);
 }
 
 
-void pgSprt::init(SprtData* sprt_data, u16 max_data_num, pgID scr_id)
+void ckSprt::init(SprtData* sprt_data, u16 max_data_num, ckID scr_id)
 {
     init2(true, sprt_data, max_data_num, scr_id, NULL);
 }
 
 
-void pgSprt::init(SprtData* sprt_data, u16 max_data_num, pgDraw* parent)
+void ckSprt::init(SprtData* sprt_data, u16 max_data_num, ckDraw* parent)
 {
-    init2(true, sprt_data, max_data_num, pgID::ZERO, parent);
+    init2(true, sprt_data, max_data_num, ckID::ZERO, parent);
 }
 
 
-bool pgSprt::isShareData() const
+bool ckSprt::isShareData() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_is_share_data.getType();
 }
 
 
-u16 pgSprt::getCurDataNum() const
+u16 ckSprt::getCurDataNum() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_cur_data_num;
 }
 
 
-void pgSprt::setCurDataNum(u16 cur_data_num)
+void ckSprt::setCurDataNum(u16 cur_data_num)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (cur_data_num > m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_cur_data_num = cur_data_num;
 }
 
 
-u16 pgSprt::getMaxDataNum() const
+u16 ckSprt::getMaxDataNum() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_max_data_num;
 }
 
 
-void pgSprt::reallocData(u16 max_data_num)
+void ckSprt::reallocData(u16 max_data_num)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_is_share_data.getType())
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (max_data_num == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_sprt_data)
     {
         SprtData* new_sprt_data;
-        pgNewArray(new_sprt_data, SprtData, max_data_num);
+        ckNewArray(new_sprt_data, SprtData, max_data_num);
 
-        u32 copy_num = pgMath::min(max_data_num, m_max_data_num);
+        u32 copy_num = ckMath::min(max_data_num, m_max_data_num);
 
-        pgMemMgr::memcpy(new_sprt_data, m_sprt_data, sizeof(SprtData) * copy_num);
+        ckMemMgr::memcpy(new_sprt_data, m_sprt_data, sizeof(SprtData) * copy_num);
 
-        pgDeleteArray(m_sprt_data, SprtData);
+        ckDeleteArray(m_sprt_data, SprtData);
 
         m_max_data_num = max_data_num;
         m_sprt_data = new_sprt_data;
@@ -173,7 +173,7 @@ void pgSprt::reallocData(u16 max_data_num)
     {
         m_max_data_num = max_data_num;
 
-        pgNewArray(m_sprt_data, SprtData, m_max_data_num);
+        ckNewArray(m_sprt_data, SprtData, m_max_data_num);
     }
 
     if (m_cur_data_num > m_max_data_num)
@@ -183,126 +183,126 @@ void pgSprt::reallocData(u16 max_data_num)
 }
 
 
-void pgSprt::copyData(u16 dest_index, const pgSprt* src_sprt, u16 src_index)
+void ckSprt::copyData(u16 dest_index, const ckSprt* src_sprt, u16 src_index)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!src_sprt || dest_index >= m_max_data_num || src_index >= src_sprt->m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_sprt_data[dest_index] = src_sprt->m_sprt_data[src_index];
 }
 
 
-pgVec& pgSprt::dataPos(u16 index)
+ckVec& ckSprt::dataPos(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].pos;
 }
 
 
-pgCol& pgSprt::dataCol(u16 index)
+ckCol& ckSprt::dataCol(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].col;
 }
 
 
-r32& pgSprt::dataW(u16 index)
+r32& ckSprt::dataW(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].w;
 }
 
 
-r32& pgSprt::dataH(u16 index)
+r32& ckSprt::dataH(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].h;
 }
 
 
-r32& pgSprt::dataU1(u16 index)
+r32& ckSprt::dataU1(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].u1;
 }
 
 
-r32& pgSprt::dataV1(u16 index)
+r32& ckSprt::dataV1(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].v1;
 }
 
 
-r32& pgSprt::dataU2(u16 index)
+r32& ckSprt::dataU2(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].u2;
 }
 
 
-r32& pgSprt::dataV2(u16 index)
+r32& ckSprt::dataV2(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].v2;
 }
 
 
-s32& pgSprt::dataAng(u16 index)
+s32& ckSprt::dataAng(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_sprt_data[index].ang;
 }
 
 
-void pgSprt::setDataSize(u16 index, r32 width, r32 height)
+void ckSprt::setDataSize(u16 index, r32 width, r32 height)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     SprtData* sprt_data = &m_sprt_data[index];
@@ -312,11 +312,11 @@ void pgSprt::setDataSize(u16 index, r32 width, r32 height)
 }
 
 
-void pgSprt::setDataUV(u16 index, r32 u1, r32 v1, r32 u2, r32 v2)
+void ckSprt::setDataUV(u16 index, r32 u1, r32 v1, r32 u2, r32 v2)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     SprtData* sprt_data = &m_sprt_data[index];
@@ -328,7 +328,7 @@ void pgSprt::setDataUV(u16 index, r32 u1, r32 v1, r32 u2, r32 v2)
 }
 
 
-void pgSprt::init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, pgID scr_id, pgDraw* parent)
+void ckSprt::init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, ckID scr_id, ckDraw* parent)
 {
     m_private_flag.setOn(FLAG_INITIALIZED);
 
@@ -336,12 +336,12 @@ void pgSprt::init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, pg
     {
         if (!sprt_data || max_data_num == 0)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         if (m_sprt_data && !m_is_share_data.getType())
         {
-            pgDeleteArray(m_sprt_data, SprtData);
+            ckDeleteArray(m_sprt_data, SprtData);
         }
 
         m_is_share_data = true;
@@ -362,7 +362,7 @@ void pgSprt::init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, pg
     }
 
     setCurDataNum(max_data_num);
-    setTextureID(pgID::ZERO);
+    setTextureID(ckID::ZERO);
 
     if (parent)
     {
@@ -375,9 +375,9 @@ void pgSprt::init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, pg
 }
 
 
-void pgSprt::render(const pgMat& view)
+void ckSprt::render(const ckMat& view)
 {
-    if (pgDrawMgr::isShaderAvailable())
+    if (ckDrawMgr::isShaderAvailable())
     {
         render_shader(view);
     }
@@ -388,7 +388,7 @@ void pgSprt::render(const pgMat& view)
 }
 
 
-void pgSprt::render_soft(const pgMat& view)
+void ckSprt::render_soft(const ckMat& view)
 {
     if (m_cur_data_num == 0)
     {
@@ -398,22 +398,22 @@ void pgSprt::render_soft(const pgMat& view)
     /*
         reset shader
     */
-    pgLowLevelAPI::setShader(0);
+    ckLowLevelAPI::setShader(0);
 
     /*
         alloc buffer
     */
-    pgTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
-    u32 pos_size = sizeof(pgVec) * 4 * m_cur_data_num;
-    u32 col_size = sizeof(pgCol) * 4 * m_cur_data_num;
+    ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
+    u32 pos_size = sizeof(ckVec) * 4 * m_cur_data_num;
+    u32 col_size = sizeof(ckCol) * 4 * m_cur_data_num;
     u32 uv_size = tex ? sizeof(r32) * 8 * m_cur_data_num : 0;
 
-    u8* buf = reinterpret_cast<u8*>(pgMemMgr::allocTempBufferForSystem(pos_size + col_size + uv_size));
+    u8* buf = reinterpret_cast<u8*>(ckMemMgr::allocTempBufferForSystem(pos_size + col_size + uv_size));
 
-    pgVec* pos_buf = reinterpret_cast<pgVec*>(buf);
+    ckVec* pos_buf = reinterpret_cast<ckVec*>(buf);
     buf += pos_size;
 
-    pgCol* col_buf = reinterpret_cast<pgCol*>(buf);
+    ckCol* col_buf = reinterpret_cast<ckCol*>(buf);
     buf += col_size;
 
     r32* uv_buf = reinterpret_cast<r32*>(buf);
@@ -421,11 +421,11 @@ void pgSprt::render_soft(const pgMat& view)
     /*
         setup buffer
     */
-    pgVec view_x = view.x_axis.toLocalOf_noTrans(m_world);
-    pgVec view_y = view.y_axis.toLocalOf_noTrans(m_world);
+    ckVec view_x = view.x_axis.toLocalOf_noTrans(m_world);
+    ckVec view_y = view.y_axis.toLocalOf_noTrans(m_world);
 
-    pgVec* pos_ptr = pos_buf;
-    pgCol* col_ptr = col_buf;
+    ckVec* pos_ptr = pos_buf;
+    ckCol* col_ptr = col_buf;
     r32* uv_ptr = uv_buf;
 
     u16 count = 0;
@@ -440,7 +440,7 @@ void pgSprt::render_soft(const pgMat& view)
         count += 4;
 
         SprtData* sprt_data = &m_sprt_data[i];
-        pgVec vec_w, vec_h;
+        ckVec vec_w, vec_h;
 
         if (sprt_data->ang == 0)
         {
@@ -449,8 +449,8 @@ void pgSprt::render_soft(const pgMat& view)
         }
         else
         {
-            r32 sin = pgMath::sin_s32(-sprt_data->ang);
-            r32 cos = pgMath::cos_s32(-sprt_data->ang);
+            r32 sin = ckMath::sin_s32(-sprt_data->ang);
+            r32 cos = ckMath::cos_s32(-sprt_data->ang);
 
             vec_w = (view_x * cos - view_y * sin) * sprt_data->w / 2.0f;
             vec_h = (view_y * cos + view_x * sin) * sprt_data->h / 2.0f;
@@ -495,9 +495,9 @@ void pgSprt::render_soft(const pgMat& view)
     */
     if (tex)
     {
-        pgLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
 
-        if (tex->m_flag.isOn(pgTex::FLAG_UV_ADJUST))
+        if (tex->m_flag.isOn(ckTex::FLAG_UV_ADJUST))
         {
             r32* uv_ptr = uv_buf;
 
@@ -511,28 +511,28 @@ void pgSprt::render_soft(const pgMat& view)
             }
         }
 
-        pgLowLevelAPI::setTexCoordPointer(sizeof(r32) * 2, uv_buf);
+        ckLowLevelAPI::setTexCoordPointer(sizeof(r32) * 2, uv_buf);
     }
     else
     {
-        pgLowLevelAPI::setTexture(0, 0, 0, false);
-        pgLowLevelAPI::setTexCoordPointer(0, NULL);
+        ckLowLevelAPI::setTexture(0, 0, 0, false);
+        ckLowLevelAPI::setTexCoordPointer(0, NULL);
     }
 
     /*
         draw sprites
     */
-    pgLowLevelAPI::setVertexPointer(sizeof(pgVec), reinterpret_cast<const r32*>(pos_buf));
-    pgLowLevelAPI::setColorPointer(sizeof(pgCol), reinterpret_cast<const u8*>(col_buf));
+    ckLowLevelAPI::setVertexPointer(sizeof(ckVec), reinterpret_cast<const r32*>(pos_buf));
+    ckLowLevelAPI::setColorPointer(sizeof(ckCol), reinterpret_cast<const u8*>(col_buf));
 
     for (s32 i = 0; i < count; i += 4)
     {
-        pgLowLevelAPI::drawArrays(pgLowLevelAPI::DRAW_TRIANGLE_FAN, i, 4);
+        ckLowLevelAPI::drawArrays(ckLowLevelAPI::DRAW_TRIANGLE_FAN, i, 4);
     }
 }
 
 
-void pgSprt::render_shader(const pgMat& view)
+void ckSprt::render_shader(const ckMat& view)
 {
     if (m_cur_data_num == 0)
     {
@@ -542,11 +542,11 @@ void pgSprt::render_shader(const pgMat& view)
     /*
         setup shader
     */
-    pgShd* shd = pgDrawMgr::getShader(pgDrawMgr::DEFAULT_SHADER_ID);
+    ckShd* shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
 
     if (shd->isValid())
     {
-        pgLowLevelAPI::setShader(shd->getShdObj());
+        ckLowLevelAPI::setShader(shd->getShdObj());
     }
     else
     {
@@ -557,17 +557,17 @@ void pgSprt::render_shader(const pgMat& view)
     /*
         alloc buffer
     */
-    pgTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
-    u32 pos_size = sizeof(pgVec) * 4 * m_cur_data_num;
-    u32 col_size = sizeof(pgCol) * 4 * m_cur_data_num;
+    ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
+    u32 pos_size = sizeof(ckVec) * 4 * m_cur_data_num;
+    u32 col_size = sizeof(ckCol) * 4 * m_cur_data_num;
     u32 uv_size = tex ? sizeof(r32) * 8 * m_cur_data_num : 0;
 
-    u8* buf = reinterpret_cast<u8*>(pgMemMgr::allocTempBufferForSystem(pos_size + col_size + uv_size));
+    u8* buf = reinterpret_cast<u8*>(ckMemMgr::allocTempBufferForSystem(pos_size + col_size + uv_size));
 
-    pgVec* pos_buf = reinterpret_cast<pgVec*>(buf);
+    ckVec* pos_buf = reinterpret_cast<ckVec*>(buf);
     buf += pos_size;
 
-    pgCol* col_buf = reinterpret_cast<pgCol*>(buf);
+    ckCol* col_buf = reinterpret_cast<ckCol*>(buf);
     buf += col_size;
 
     r32* uv_buf = reinterpret_cast<r32*>(buf);
@@ -575,11 +575,11 @@ void pgSprt::render_shader(const pgMat& view)
     /*
         setup buffer
     */
-    pgVec view_x = view.x_axis.toLocalOf_noTrans(m_world);
-    pgVec view_y = view.y_axis.toLocalOf_noTrans(m_world);
+    ckVec view_x = view.x_axis.toLocalOf_noTrans(m_world);
+    ckVec view_y = view.y_axis.toLocalOf_noTrans(m_world);
 
-    pgVec* pos_ptr = pos_buf;
-    pgCol* col_ptr = col_buf;
+    ckVec* pos_ptr = pos_buf;
+    ckCol* col_ptr = col_buf;
     r32* uv_ptr = uv_buf;
 
     u16 count = 0;
@@ -594,7 +594,7 @@ void pgSprt::render_shader(const pgMat& view)
         count += 4;
 
         SprtData* sprt_data = &m_sprt_data[i];
-        pgVec vec_w, vec_h;
+        ckVec vec_w, vec_h;
 
         if (sprt_data->ang == 0)
         {
@@ -603,8 +603,8 @@ void pgSprt::render_shader(const pgMat& view)
         }
         else
         {
-            r32 sin = pgMath::sin_s32(-sprt_data->ang);
-            r32 cos = pgMath::cos_s32(-sprt_data->ang);
+            r32 sin = ckMath::sin_s32(-sprt_data->ang);
+            r32 cos = ckMath::cos_s32(-sprt_data->ang);
 
             vec_w = (view_x * cos - view_y * sin) * sprt_data->w / 2.0f;
             vec_h = (view_y * cos + view_x * sin) * sprt_data->h / 2.0f;
@@ -647,76 +647,76 @@ void pgSprt::render_shader(const pgMat& view)
     /*
         setup color
     */
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[0], m_final_col.r);
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[1], m_final_col.g);
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[2], m_final_col.b);
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[3], m_final_col.a);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[0], m_final_col.r);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[1], m_final_col.g);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[2], m_final_col.b);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[3], m_final_col.a);
 
-    pgLowLevelAPI::setColorPointer(0, NULL);
-    pgLowLevelAPI::setAttribPointer_color(shd->m_color_loc, sizeof(pgCol), reinterpret_cast<const u8*>(col_buf));
+    ckLowLevelAPI::setColorPointer(0, NULL);
+    ckLowLevelAPI::setAttribPointer_color(shd->m_color_loc, sizeof(ckCol), reinterpret_cast<const u8*>(col_buf));
 
     /*
         setup texture
     */
-    pgLowLevelAPI::setTexCoordPointer(0, NULL);
+    ckLowLevelAPI::setTexCoordPointer(0, NULL);
 
     if (tex)
     {
-        pgLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
 
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[4], tex->m_u_param_a);
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[5], tex->m_u_param_b);
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[6], tex->m_v_param_a);
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[7], tex->m_v_param_b);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[4], tex->m_u_param_a);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[5], tex->m_u_param_b);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[6], tex->m_v_param_a);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[7], tex->m_v_param_b);
 
         switch (tex->m_format.getType())
         {
-        case pgTex::FORMAT_RGB:
-        case pgTex::FORMAT_PNG_RGB:
-            pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 1);
+        case ckTex::FORMAT_RGB:
+        case ckTex::FORMAT_PNG_RGB:
+            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 1);
             break;
 
-        case pgTex::FORMAT_RGBA:
-        case pgTex::FORMAT_PNG_RGBA:
-            pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 2);
+        case ckTex::FORMAT_RGBA:
+        case ckTex::FORMAT_PNG_RGBA:
+            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 2);
             break;
 
-        case pgTex::FORMAT_ALPHA:
-        case pgTex::FORMAT_PNG_ALPHA:
-            pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 3);
+        case ckTex::FORMAT_ALPHA:
+        case ckTex::FORMAT_PNG_ALPHA:
+            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 3);
             break;
         }
 
-        pgLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(r32) * 2, uv_buf);
+        ckLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(r32) * 2, uv_buf);
     }
     else
     {
-        pgLowLevelAPI::setTexture(0, 0, 0, false);
-        pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 0);
+        ckLowLevelAPI::setTexture(0, 0, 0, false);
+        ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 0);
     }
 
     /*
         draw sprites
     */
-    pgLowLevelAPI::setUniform_localToScreen(shd->m_local_to_screen_loc);
+    ckLowLevelAPI::setUniform_localToScreen(shd->m_local_to_screen_loc);
 
-    pgLowLevelAPI::setVertexPointer(0, NULL);
-    pgLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, sizeof(pgVec), reinterpret_cast<const r32*>(pos_buf));
+    ckLowLevelAPI::setVertexPointer(0, NULL);
+    ckLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, sizeof(ckVec), reinterpret_cast<const r32*>(pos_buf));
 
     for (s32 i = 0; i < count; i += 4)
     {
-        pgLowLevelAPI::drawArrays(pgLowLevelAPI::DRAW_TRIANGLE_FAN, i, 4);
+        ckLowLevelAPI::drawArrays(ckLowLevelAPI::DRAW_TRIANGLE_FAN, i, 4);
     }
 
     /*
         disable attributes
     */
-    pgLowLevelAPI::disableAttribPointer(shd->m_vertex_loc);
-    pgLowLevelAPI::disableAttribPointer(shd->m_color_loc);
-    pgLowLevelAPI::disableAttribPointer(shd->m_texcoord_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_vertex_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_color_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_texcoord_loc);
 
     for (s32 i = 0; i < shd->m_att_num; i++)
     {
-        pgLowLevelAPI::disableAttribPointer(shd->m_att_loc_tbl[i]);
+        ckLowLevelAPI::disableAttribPointer(shd->m_att_loc_tbl[i]);
     }
 }

@@ -29,40 +29,40 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_util_all.h"
+#include "ck_util_all.h"
 
 
-static const pgID s_rend_light_shader_id = pgID_("REND_LIGHT_SHADER");
+static const ckID s_rend_light_shader_id = ckID_("REND_LIGHT_SHADER");
 
 
 static const char s_vert_code[] = //
-    "uniform mat4 pg_local_to_screen;" //
+    "uniform mat4 ck_local_to_screen;" //
     "" //
-    "attribute vec4 pg_vertex;" //
-    "attribute vec4 pg_color;" //
-    "attribute vec2 pg_texcoord;" //
+    "attribute vec4 ck_vertex;" //
+    "attribute vec4 ck_color;" //
+    "attribute vec2 ck_texcoord;" //
     "" //
-    "uniform float pg_uni_00, pg_uni_01, pg_uni_02, pg_uni_03;" // final color
+    "uniform float ck_uni_00, ck_uni_01, ck_uni_02, ck_uni_03;" // final color
     "" //
-    "uniform float pg_uni_04, pg_uni_05;" // u param
-    "uniform float pg_uni_06, pg_uni_07;" // v param
+    "uniform float ck_uni_04, ck_uni_05;" // u param
+    "uniform float ck_uni_06, ck_uni_07;" // v param
     "" //
-    "uniform float pg_uni_09, pg_uni_10, pg_uni_11;" // ambient color
+    "uniform float ck_uni_09, ck_uni_10, ck_uni_11;" // ambient color
     "" //
-    "uniform int pg_uni_12;" // light number
+    "uniform int ck_uni_12;" // light number
     "" //
-    "uniform float pg_uni_13, pg_uni_14, pg_uni_15;" // light1 direction
-    "uniform float pg_uni_16, pg_uni_17, pg_uni_18;" // light1 color
+    "uniform float ck_uni_13, ck_uni_14, ck_uni_15;" // light1 direction
+    "uniform float ck_uni_16, ck_uni_17, ck_uni_18;" // light1 color
     "" //
-    "uniform float pg_uni_19, pg_uni_20, pg_uni_21;" // light2 direction
-    "uniform float pg_uni_22, pg_uni_23, pg_uni_24;" // light2 color
+    "uniform float ck_uni_19, ck_uni_20, ck_uni_21;" // light2 direction
+    "uniform float ck_uni_22, ck_uni_23, ck_uni_24;" // light2 color
     "" //
-    "uniform float pg_uni_25, pg_uni_26, pg_uni_27;" // light3 direction
-    "uniform float pg_uni_28, pg_uni_29, pg_uni_30;" // light3 color
+    "uniform float ck_uni_25, ck_uni_26, ck_uni_27;" // light3 direction
+    "uniform float ck_uni_28, ck_uni_29, ck_uni_30;" // light3 color
     "" //
-    "attribute vec3 pg_att_00;" // normal
+    "attribute vec3 ck_att_00;" // normal
     "" //
     "varying vec4 vary_color;" //
     "varying vec2 vary_texcoord;" //
@@ -70,39 +70,39 @@ static const char s_vert_code[] = //
     "" //
     "void main()" //
     "{" //
-    "    gl_Position = pg_local_to_screen * pg_vertex;" //
+    "    gl_Position = ck_local_to_screen * ck_vertex;" //
     "" //
-    "    vary_color = vec4(pg_uni_09, pg_uni_10, pg_uni_11, 255.0) / 255.0;" //
+    "    vary_color = vec4(ck_uni_09, ck_uni_10, ck_uni_11, 255.0) / 255.0;" //
     "" //
-    "    if (pg_uni_12 >= 1)" //
+    "    if (ck_uni_12 >= 1)" //
     "    {" //
-    "        float lumi = max(-dot(vec3(pg_uni_13, pg_uni_14, pg_uni_15), pg_att_00), 0.0);" //
-    "        vary_color += vec4(pg_uni_16, pg_uni_17, pg_uni_18, 255.0) * (lumi / 255.0);" //
+    "        float lumi = max(-dot(vec3(ck_uni_13, ck_uni_14, ck_uni_15), ck_att_00), 0.0);" //
+    "        vary_color += vec4(ck_uni_16, ck_uni_17, ck_uni_18, 255.0) * (lumi / 255.0);" //
     "    }" //
     "" //
-    "    if (pg_uni_12 >= 2)" //
+    "    if (ck_uni_12 >= 2)" //
     "    {" //
-    "        float lumi = max(-dot(vec3(pg_uni_19, pg_uni_20, pg_uni_21), pg_att_00), 0.0);" //
-    "        vary_color += vec4(pg_uni_22, pg_uni_23, pg_uni_24, 255.0) * (lumi / 255.0);" //
+    "        float lumi = max(-dot(vec3(ck_uni_19, ck_uni_20, ck_uni_21), ck_att_00), 0.0);" //
+    "        vary_color += vec4(ck_uni_22, ck_uni_23, ck_uni_24, 255.0) * (lumi / 255.0);" //
     "    }" //
     "" //
-    "    if (pg_uni_12 >= 3)" //
+    "    if (ck_uni_12 >= 3)" //
     "    {" //
-    "        float lumi = max(-dot(vec3(pg_uni_25, pg_uni_26, pg_uni_27), pg_att_00), 0.0);" //
-    "        vary_color += vec4(pg_uni_28, pg_uni_29, pg_uni_30, 255.0) * (lumi / 255.0);" //
+    "        float lumi = max(-dot(vec3(ck_uni_25, ck_uni_26, ck_uni_27), ck_att_00), 0.0);" //
+    "        vary_color += vec4(ck_uni_28, ck_uni_29, ck_uni_30, 255.0) * (lumi / 255.0);" //
     "    }" //
     "" //
-    "    vary_color = min(vary_color, 1.0) * pg_color;" //
+    "    vary_color = min(vary_color, 1.0) * ck_color;" //
     "" //
-    "    vary_texcoord.s = pg_texcoord.s * pg_uni_04 + pg_uni_05;" //
-    "    vary_texcoord.t = pg_texcoord.t * pg_uni_06 + pg_uni_07;" //
+    "    vary_texcoord.s = ck_texcoord.s * ck_uni_04 + ck_uni_05;" //
+    "    vary_texcoord.t = ck_texcoord.t * ck_uni_06 + ck_uni_07;" //
     "}";
 
 
 static const char s_frag_code[] = //
-    "uniform int pg_uni_08;" // texture format
+    "uniform int ck_uni_08;" // texture format
     "" //
-    "uniform sampler2D pg_tex_00;" //
+    "uniform sampler2D ck_tex_00;" //
     "" //
     "varying vec4 vary_color;" //
     "varying vec2 vary_texcoord;" //
@@ -110,19 +110,19 @@ static const char s_frag_code[] = //
     "" //
     "void main()" //
     "{" //
-    "    if (pg_uni_08 == 1)" //
+    "    if (ck_uni_08 == 1)" //
     "    {" //
-    "        gl_FragColor.rgb = texture2D(pg_tex_00, vary_texcoord.st).rgb * vary_color.rgb;" //
+    "        gl_FragColor.rgb = texture2D(ck_tex_00, vary_texcoord.st).rgb * vary_color.rgb;" //
     "        gl_FragColor.a = vary_color.a;" //
     "    }" //
-    "    else if (pg_uni_08 == 2)" //
+    "    else if (ck_uni_08 == 2)" //
     "    {" //
-    "        gl_FragColor = texture2D(pg_tex_00, vary_texcoord.st) * vary_color;" //
+    "        gl_FragColor = texture2D(ck_tex_00, vary_texcoord.st) * vary_color;" //
     "    }" //
-    "    else if (pg_uni_08 == 3)" //
+    "    else if (ck_uni_08 == 3)" //
     "    {" //
     "        gl_FragColor.rgb = vary_color.rgb;" //
-    "        gl_FragColor.a = texture2D(pg_tex_00, vary_texcoord.st).a * vary_color.a;" //
+    "        gl_FragColor.a = texture2D(ck_tex_00, vary_texcoord.st).a * vary_color.a;" //
     "    }" //
     "    else" //
     "    {" //
@@ -131,33 +131,33 @@ static const char s_frag_code[] = //
     "}";
 
 
-void pgRend_Light::init(pgPrim* prim, pgID lts_id)
+void ckRend_Light::init(ckPrim* prim, ckID lts_id)
 {
-    if (!pgDrawMgr::hasShader(s_rend_light_shader_id))
+    if (!ckDrawMgr::hasShader(s_rend_light_shader_id))
     {
-        pgDrawMgr::newShader(s_rend_light_shader_id, s_vert_code, s_frag_code, 31, 1, 1);
+        ckDrawMgr::newShader(s_rend_light_shader_id, s_vert_code, s_frag_code, 31, 1, 1);
     }
 
-    pgRend::init(prim, sizeof(RendBody), sizeof(RendData));
+    ckRend::init(prim, sizeof(RendBody), sizeof(RendData));
 
     setLightSetID(lts_id);
 }
 
 
-void pgRend_Light::init(pgPrim* prim, RendData* rend_data, pgID lts_id)
+void ckRend_Light::init(ckPrim* prim, RendData* rend_data, ckID lts_id)
 {
-    if (!pgDrawMgr::hasShader(s_rend_light_shader_id))
+    if (!ckDrawMgr::hasShader(s_rend_light_shader_id))
     {
-        pgDrawMgr::newShader(s_rend_light_shader_id, s_vert_code, s_frag_code, 31, 1, 1);
+        ckDrawMgr::newShader(s_rend_light_shader_id, s_vert_code, s_frag_code, 31, 1, 1);
     }
 
-    pgRend::init(prim, sizeof(RendBody), sizeof(RendData), rend_data);
+    ckRend::init(prim, sizeof(RendBody), sizeof(RendData), rend_data);
 
     setLightSetID(lts_id);
 }
 
 
-pgID pgRend_Light::getLightSetID()
+ckID ckRend_Light::getLightSetID()
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
@@ -165,20 +165,20 @@ pgID pgRend_Light::getLightSetID()
 }
 
 
-void pgRend_Light::setLightSetID(pgID lts_id)
+void ckRend_Light::setLightSetID(ckID lts_id)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
-    if (lts_id == pgID::ZERO)
+    if (lts_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    rend_body->lts = pgDrawMgr::getLightSet(lts_id);
+    rend_body->lts = ckDrawMgr::getLightSet(lts_id);
 }
 
 
-pgVec& pgRend_Light::dataN(u16 index)
+ckVec& ckRend_Light::dataN(u16 index)
 {
     RendData* rend_data = getRendData<RendData>(index);
 
@@ -186,34 +186,34 @@ pgVec& pgRend_Light::dataN(u16 index)
 }
 
 
-void pgRend_Light::calcNormalAsTriangles(bool is_smoothing)
+void ckRend_Light::calcNormalAsTriangles(bool is_smoothing)
 {
-    pgPrim* prim = getPrim();
+    ckPrim* prim = getPrim();
 
-    pgUtil::calcNormalAsTriangles(getRendData<pgVec>(0), reinterpret_cast<const pgPrim::PrimData*>(&prim->dataPos(0)), prim->getMaxDataNum(), is_smoothing);
+    ckUtil::calcNormalAsTriangles(getRendData<ckVec>(0), reinterpret_cast<const ckPrim::PrimData*>(&prim->dataPos(0)), prim->getMaxDataNum(), is_smoothing);
 }
 
 
-pgID pgRend_Light::getClassID()
+ckID ckRend_Light::getClassID()
 {
-    return pgID_("pgRend_Light");
+    return ckID_("ckRend_Light");
 }
 
 
-void pgRend_Light::initData(void* data, u16 data_num)
+void ckRend_Light::initData(void* data, u16 data_num)
 {
     RendData* rend_data = static_cast<RendData*>(data);
 
     for (s32 i = 0; i < data_num; i++)
     {
-        rend_data[i].normal = pgVec::Z_UNIT;
+        rend_data[i].normal = ckVec::Z_UNIT;
     }
 }
 
 
-void pgRend_Light::render(const pgMat& view)
+void ckRend_Light::render(const ckMat& view)
 {
-    if (pgDrawMgr::isShaderAvailable())
+    if (ckDrawMgr::isShaderAvailable())
     {
         render_shader(view);
     }
@@ -224,9 +224,9 @@ void pgRend_Light::render(const pgMat& view)
 }
 
 
-void pgRend_Light::render_soft(const pgMat& view)
+void ckRend_Light::render_soft(const ckMat& view)
 {
-    pgPrim* prim = getPrim();
+    ckPrim* prim = getPrim();
     u16 cur_data_num = prim->getCurDataNum();
 
     if (cur_data_num == 0)
@@ -242,21 +242,21 @@ void pgRend_Light::render_soft(const pgMat& view)
     /*
         alloc buffer
     */
-    pgTex* tex = renderGetPrimTextureN(prim);
+    ckTex* tex = renderGetPrimTextureN(prim);
 
-    pgVec* pos_buf;
-    pgCol* col_buf;
+    ckVec* pos_buf;
+    ckCol* col_buf;
     r32* uv_buf;
-    pgVec* normal_buf;
+    ckVec* normal_buf;
 
     renderAllocBuffer(&pos_buf, &col_buf, &uv_buf, &normal_buf, prim, false, true, (tex && renderIsTextureUVAdjustNeeded(tex)), false);
 
     /*
         setup color
     */
-    pgCol final_col = renderGetPrimFinalColor(prim);
+    ckCol final_col = renderGetPrimFinalColor(prim);
 
-    if (final_col == pgCol::FULL)
+    if (final_col == ckCol::FULL)
     {
         for (s32 i = 0; i < cur_data_num; i++)
         {
@@ -268,14 +268,14 @@ void pgRend_Light::render_soft(const pgMat& view)
         renderCalcColorBuffer(col_buf, prim);
     }
 
-    pgLts* lts = getRendBody<RendBody>()->lts;
-    pgMat prim_world = renderGetPrimWorld(prim);
+    ckLts* lts = getRendBody<RendBody>()->lts;
+    ckMat prim_world = renderGetPrimWorld(prim);
 
     lts->findNearLight(prim_world.trans);
 
     u8 near_lit_num = lts->getNearLightNum();
-    pgVec near_lit_dir[pgLts::MAX_NEAR_LIGHT_NUM];
-    pgCol near_lit_col[pgLts::MAX_NEAR_LIGHT_NUM];
+    ckVec near_lit_dir[ckLts::MAX_NEAR_LIGHT_NUM];
+    ckCol near_lit_col[ckLts::MAX_NEAR_LIGHT_NUM];
 
     for (s32 i = 0; i < near_lit_num; i++)
     {
@@ -283,12 +283,12 @@ void pgRend_Light::render_soft(const pgMat& view)
         near_lit_col[i] = lts->getNearLightColor(i);
     }
 
-    pgCol amb_col = lts->getAmbientColor();
+    ckCol amb_col = lts->getAmbientColor();
     RendData* rend_data = getRendData<RendData>(0);
 
     for (s32 i = 0; i < cur_data_num; i++)
     {
-        pgCol lit_col = amb_col;
+        ckCol lit_col = amb_col;
 
         for (s32 j = 0; j < near_lit_num; j++)
         {
@@ -300,7 +300,7 @@ void pgRend_Light::render_soft(const pgMat& view)
         col_buf[i] *= lit_col;
     }
 
-    renderSetColorPointer(sizeof(pgCol), reinterpret_cast<const u8*>(col_buf));
+    renderSetColorPointer(sizeof(ckCol), reinterpret_cast<const u8*>(col_buf));
 
     /*
         setup texture
@@ -333,9 +333,9 @@ void pgRend_Light::render_soft(const pgMat& view)
 }
 
 
-void pgRend_Light::render_shader(const pgMat& view)
+void ckRend_Light::render_shader(const ckMat& view)
 {
-    pgPrim* prim = getPrim();
+    ckPrim* prim = getPrim();
     u16 cur_data_num = prim->getCurDataNum();
 
     if (cur_data_num == 0)
@@ -346,7 +346,7 @@ void pgRend_Light::render_shader(const pgMat& view)
     /*
         setup shader
     */
-    pgShd* shd = pgDrawMgr::getShader(s_rend_light_shader_id);
+    ckShd* shd = ckDrawMgr::getShader(s_rend_light_shader_id);
 
     if (shd->isValid())
     {
@@ -361,15 +361,15 @@ void pgRend_Light::render_shader(const pgMat& view)
     /*
         setup color
     */
-    pgCol final_col = renderGetPrimFinalColor(prim);
+    ckCol final_col = renderGetPrimFinalColor(prim);
 
     renderSetUniform_r32(renderGetShaderUniformLocation(shd, 0), final_col.r);
     renderSetUniform_r32(renderGetShaderUniformLocation(shd, 1), final_col.g);
     renderSetUniform_r32(renderGetShaderUniformLocation(shd, 2), final_col.b);
     renderSetUniform_r32(renderGetShaderUniformLocation(shd, 3), final_col.a);
 
-    pgLts* lts = getRendBody<RendBody>()->lts;
-    pgCol amb_col = lts->getAmbientColor();
+    ckLts* lts = getRendBody<RendBody>()->lts;
+    ckCol amb_col = lts->getAmbientColor();
 
     renderSetUniform_r32(renderGetShaderUniformLocation(shd, 9), amb_col.r);
     renderSetUniform_r32(renderGetShaderUniformLocation(shd, 10), amb_col.g);
@@ -378,7 +378,7 @@ void pgRend_Light::render_shader(const pgMat& view)
     renderSetColorPointer(0, NULL);
     renderSetAttribPointer_color(shd, prim);
 
-    pgMat prim_world = renderGetPrimWorld(prim);
+    ckMat prim_world = renderGetPrimWorld(prim);
 
     lts->findNearLight(prim_world.trans);
 
@@ -386,8 +386,8 @@ void pgRend_Light::render_shader(const pgMat& view)
 
     for (s32 i = 0; i < lts->getNearLightNum(); i++)
     {
-        pgVec lit_dir = lts->getNearLightDir(i).toLocalOf_noTrans(prim_world);
-        pgCol lit_col = lts->getNearLightColor(i);
+        ckVec lit_dir = lts->getNearLightDir(i).toLocalOf_noTrans(prim_world);
+        ckCol lit_col = lts->getNearLightColor(i);
 
         s32 index = i * 6 + 13;
 
@@ -410,7 +410,7 @@ void pgRend_Light::render_shader(const pgMat& view)
     renderSetTexture(prim);
     renderSetTexCoordPointer(0, NULL);
 
-    pgTex* tex = renderGetPrimTextureN(prim);
+    ckTex* tex = renderGetPrimTextureN(prim);
 
     if (tex)
     {
@@ -424,18 +424,18 @@ void pgRend_Light::render_shader(const pgMat& view)
 
         switch (tex->getFormat())
         {
-        case pgTex::FORMAT_RGB:
-        case pgTex::FORMAT_PNG_RGB:
+        case ckTex::FORMAT_RGB:
+        case ckTex::FORMAT_PNG_RGB:
             renderSetUniform_s32(renderGetShaderUniformLocation(shd, 8), 1);
             break;
 
-        case pgTex::FORMAT_RGBA:
-        case pgTex::FORMAT_PNG_RGBA:
+        case ckTex::FORMAT_RGBA:
+        case ckTex::FORMAT_PNG_RGBA:
             renderSetUniform_s32(renderGetShaderUniformLocation(shd, 8), 2);
             break;
 
-        case pgTex::FORMAT_ALPHA:
-        case pgTex::FORMAT_PNG_ALPHA:
+        case ckTex::FORMAT_ALPHA:
+        case ckTex::FORMAT_PNG_ALPHA:
             renderSetUniform_s32(renderGetShaderUniformLocation(shd, 8), 3);
             break;
         }

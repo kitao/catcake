@@ -32,20 +32,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef PG_NO_THROW_EXCEPTION
+#ifndef CK_NO_THROW_EXCEPTION
 #include <new>
 #endif
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
 
-void* pgLowLevelAPI::malloc(u32 size)
+void* ckLowLevelAPI::malloc(u32 size)
 {
     void* ptr = ::malloc(size);
 
     if (!ptr)
     {
-#ifdef PG_NO_THROW_EXCEPTION
+#ifdef CK_NO_THROW_EXCEPTION
         error("bad_alloc");
 #else
         throw std::bad_alloc();
@@ -56,13 +56,13 @@ void* pgLowLevelAPI::malloc(u32 size)
 }
 
 
-void* pgLowLevelAPI::realloc(void* ptr, u32 size)
+void* ckLowLevelAPI::realloc(void* ptr, u32 size)
 {
     ptr = ::realloc(ptr, size);
 
     if (!ptr)
     {
-#ifdef PG_NO_THROW_EXCEPTION
+#ifdef CK_NO_THROW_EXCEPTION
         error("bad_alloc");
 #else
         throw std::bad_alloc();
@@ -73,19 +73,19 @@ void* pgLowLevelAPI::realloc(void* ptr, u32 size)
 }
 
 
-void pgLowLevelAPI::free(void* ptr)
+void ckLowLevelAPI::free(void* ptr)
 {
     ::free(ptr);
 }
 
 
-void pgLowLevelAPI::memset(void* buf, u8 value, u32 size)
+void ckLowLevelAPI::memset(void* buf, u8 value, u32 size)
 {
     ::memset(buf, value, size);
 }
 
 
-void pgLowLevelAPI::memcpy(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::memcpy(void* dest, const void* src, u32 size)
 {
     ::memcpy(dest, src, size);
 }

@@ -29,138 +29,138 @@
 */
 
 
-#include "pg_conf_all.h"
+#include "ck_conf_all.h"
 
-#include "pg_res_all.h"
-#include "pg_private_macro.h"
-
-
-pgConfMgr* pgConfMgr::m_instance = NULL;
+#include "ck_res_all.h"
+#include "ck_private_macro.h"
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgConfMgr)
+ckConfMgr* ckConfMgr::m_instance = NULL;
 
 
-PG_DEFINE_MANAGER_CREATE(pgConfMgr, AfterRes, BeforeRes)
+CK_DEFINE_MANAGER_IS_CREATED(ckConfMgr)
 
 
-PG_DEFINE_MANAGER_DESTROY(pgConfMgr, BeforeRes)
+CK_DEFINE_MANAGER_CREATE(ckConfMgr, AfterRes, BeforeRes)
 
 
-bool pgConfMgr::hasConfig(pgID id)
+CK_DEFINE_MANAGER_DESTROY(ckConfMgr, BeforeRes)
+
+
+bool ckConfMgr::hasConfig(ckID id)
 {
-    pgConfMgr* ins = instance();
+    ckConfMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return ins->m_conf_map.getN(id) ? true : false;
 }
 
 
-pgConf* pgConfMgr::getConfig(pgID id)
+ckConf* ckConfMgr::getConfig(ckID id)
 {
-    pgConfMgr* ins = instance();
+    ckConfMgr* ins = instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgConf** conf = ins->m_conf_map.getN(id);
+    ckConf** conf = ins->m_conf_map.getN(id);
 
     if (!conf)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return *conf;
 }
 
 
-pgConf* pgConfMgr::newConfig(pgID id, const void* data, u32 data_size)
+ckConf* ckConfMgr::newConfig(ckID id, const void* data, u32 data_size)
 {
-    pgConfMgr* ins = instance();
+    ckConfMgr* ins = instance();
 
-    if (id == pgID::ZERO || !data || data_size == 0)
+    if (id == ckID::ZERO || !data || data_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_conf_map.getN(id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    return pgNew(pgConf)(id, data, data_size);
+    return ckNew(ckConf)(id, data, data_size);
 }
 
 
-void pgConfMgr::deleteConfig(pgID id)
+void ckConfMgr::deleteConfig(ckID id)
 {
     instance();
 
-    if (id == pgID::ZERO)
+    if (id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgDelete(getConfig(id), pgConf);
+    ckDelete(getConfig(id), ckConf);
 }
 
 
-pgConf* pgConfMgr::getFirstConfigN()
+ckConf* ckConfMgr::getFirstConfigN()
 {
-    pgConfMgr* ins = instance();
-    const pgID* id = ins->m_conf_map.getFirstKeyN();
+    ckConfMgr* ins = instance();
+    const ckID* id = ins->m_conf_map.getFirstKeyN();
 
     return id ? *ins->m_conf_map.get(*id) : NULL;
 }
 
 
-pgConf* pgConfMgr::getLastConfigN()
+ckConf* ckConfMgr::getLastConfigN()
 {
-    pgConfMgr* ins = instance();
-    const pgID* id = ins->m_conf_map.getLastKeyN();
+    ckConfMgr* ins = instance();
+    const ckID* id = ins->m_conf_map.getLastKeyN();
 
     return id ? *ins->m_conf_map.get(*id) : NULL;
 }
 
 
-pgConfMgr::pgConfMgr()
+ckConfMgr::ckConfMgr()
 {
     m_conf_map.init(CONFIG_HASH_SIZE);
 
-    pgResMgr::addType("PGC", configInitializer, configFinalizer);
+    ckResMgr::addType("CKC", configInitializer, configFinalizer);
 }
 
 
-pgConfMgr::~pgConfMgr()
+ckConfMgr::~ckConfMgr()
 {
-    while (const pgConf* conf = getFirstConfigN())
+    while (const ckConf* conf = getFirstConfigN())
     {
         deleteConfig(conf->m_id);
     }
 
-    pgResMgr::removeType("PGC");
+    ckResMgr::removeType("CKC");
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgConfMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckConfMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgConfMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckConfMgr)
 
 
-void pgConfMgr::configInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
+void ckConfMgr::configInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo)
 {
     newConfig(id, data, data_size);
 }
 
 
-void pgConfMgr::configFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
+void ckConfMgr::configFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo)
 {
     deleteConfig(id);
 }

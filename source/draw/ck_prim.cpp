@@ -29,21 +29,21 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgPrim::PrimData::PrimData()
+ckPrim::PrimData::PrimData()
 {
-    pos = pgVec::ZERO;
-    col = pgCol::FULL;
+    pos = ckVec::ZERO;
+    col = ckCol::FULL;
     u = v = 0.0f;
 }
 
 
-pgPrim::pgPrim()
+ckPrim::ckPrim()
 {
     m_type = TYPE_PRIM;
 
@@ -55,7 +55,7 @@ pgPrim::pgPrim()
 }
 
 
-pgPrim::~pgPrim()
+ckPrim::~ckPrim()
 {
     if (m_rend)
     {
@@ -64,121 +64,121 @@ pgPrim::~pgPrim()
 
     if (m_prim_data && !m_is_share_data.getType())
     {
-        pgDeleteArray(m_prim_data, PrimData);
+        ckDeleteArray(m_prim_data, PrimData);
     }
 }
 
 
-void pgPrim::init(PrimMode prim_mode, u16 max_data_num, pgID scr_id)
+void ckPrim::init(PrimMode prim_mode, u16 max_data_num, ckID scr_id)
 {
     init2(prim_mode, false, NULL, max_data_num, scr_id, NULL);
 }
 
 
-void pgPrim::init(PrimMode prim_mode, u16 max_data_num, pgDraw* parent)
+void ckPrim::init(PrimMode prim_mode, u16 max_data_num, ckDraw* parent)
 {
-    init2(prim_mode, false, NULL, max_data_num, pgID::ZERO, parent);
+    init2(prim_mode, false, NULL, max_data_num, ckID::ZERO, parent);
 }
 
 
-void pgPrim::init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, pgID scr_id)
+void ckPrim::init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, ckID scr_id)
 {
     init2(prim_mode, true, prim_data, max_data_num, scr_id, NULL);
 }
 
 
-void pgPrim::init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, pgDraw* parent)
+void ckPrim::init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, ckDraw* parent)
 {
-    init2(prim_mode, true, prim_data, max_data_num, pgID::ZERO, parent);
+    init2(prim_mode, true, prim_data, max_data_num, ckID::ZERO, parent);
 }
 
 
-bool pgPrim::isShareData() const
+bool ckPrim::isShareData() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_is_share_data.getType();
 }
 
 
-pgPrim::PrimMode pgPrim::getPrimMode() const
+ckPrim::PrimMode ckPrim::getPrimMode() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_prim_mode.getType();
 }
 
 
-void pgPrim::setPrimMode(PrimMode prim_mode)
+void ckPrim::setPrimMode(PrimMode prim_mode)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_prim_mode = prim_mode;
 }
 
 
-u16 pgPrim::getCurDataNum() const
+u16 ckPrim::getCurDataNum() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_cur_data_num;
 }
 
 
-void pgPrim::setCurDataNum(u16 cur_data_num)
+void ckPrim::setCurDataNum(u16 cur_data_num)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (cur_data_num > m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_cur_data_num = cur_data_num;
 }
 
 
-u16 pgPrim::getMaxDataNum() const
+u16 ckPrim::getMaxDataNum() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_max_data_num;
 }
 
 
-void pgPrim::reallocData(u16 max_data_num)
+void ckPrim::reallocData(u16 max_data_num)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_is_share_data.getType())
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (max_data_num == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_rend)
@@ -189,13 +189,13 @@ void pgPrim::reallocData(u16 max_data_num)
     if (m_prim_data)
     {
         PrimData* new_prim_data;
-        pgNewArray(new_prim_data, PrimData, max_data_num);
+        ckNewArray(new_prim_data, PrimData, max_data_num);
 
-        u32 copy_num = pgMath::min(max_data_num, m_max_data_num);
+        u32 copy_num = ckMath::min(max_data_num, m_max_data_num);
 
-        pgMemMgr::memcpy(new_prim_data, m_prim_data, sizeof(PrimData) * copy_num);
+        ckMemMgr::memcpy(new_prim_data, m_prim_data, sizeof(PrimData) * copy_num);
 
-        pgDeleteArray(m_prim_data, PrimData);
+        ckDeleteArray(m_prim_data, PrimData);
 
         m_max_data_num = max_data_num;
         m_prim_data = new_prim_data;
@@ -204,7 +204,7 @@ void pgPrim::reallocData(u16 max_data_num)
     {
         m_max_data_num = max_data_num;
 
-        pgNewArray(m_prim_data, PrimData, m_max_data_num);
+        ckNewArray(m_prim_data, PrimData, m_max_data_num);
     }
 
     if (m_cur_data_num > m_max_data_num)
@@ -214,16 +214,16 @@ void pgPrim::reallocData(u16 max_data_num)
 }
 
 
-void pgPrim::copyData(u16 dest_index, const pgPrim* src_prim, u16 src_index)
+void ckPrim::copyData(u16 dest_index, const ckPrim* src_prim, u16 src_index)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!src_prim || dest_index >= m_max_data_num || src_index >= src_prim->m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_rend)
@@ -235,55 +235,55 @@ void pgPrim::copyData(u16 dest_index, const pgPrim* src_prim, u16 src_index)
 }
 
 
-pgVec& pgPrim::dataPos(u16 index)
+ckVec& ckPrim::dataPos(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[index].pos;
 }
 
 
-pgCol& pgPrim::dataCol(u16 index)
+ckCol& ckPrim::dataCol(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[index].col;
 }
 
 
-r32& pgPrim::dataU(u16 index)
+r32& ckPrim::dataU(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[index].u;
 }
 
 
-r32& pgPrim::dataV(u16 index)
+r32& ckPrim::dataV(u16 index)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[index].v;
 }
 
 
-void pgPrim::setDataUV(u16 index, r32 u, r32 v)
+void ckPrim::setDataUV(u16 index, r32 u, r32 v)
 {
     if (index >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     PrimData* prim_data = &m_prim_data[index];
@@ -293,11 +293,11 @@ void pgPrim::setDataUV(u16 index, r32 u, r32 v)
 }
 
 
-void pgPrim::setDataRect(u16 index, const pgVec& center, r32 width, r32 height, pgCol col, r32 u1, r32 v1, r32 u2, r32 v2)
+void ckPrim::setDataRect(u16 index, const ckVec& center, r32 width, r32 height, ckCol col, r32 u1, r32 v1, r32 u2, r32 v2)
 {
     if (index + 3 >= m_max_data_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     width /= 2.0f;
@@ -305,10 +305,10 @@ void pgPrim::setDataRect(u16 index, const pgVec& center, r32 width, r32 height, 
 
     PrimData* prim_data = &m_prim_data[index];
 
-    (prim_data + 0)->pos = center + pgVec(-width, height);
-    (prim_data + 1)->pos = center + pgVec(-width, -height);
-    (prim_data + 2)->pos = center + pgVec(width, -height);
-    (prim_data + 3)->pos = center + pgVec(width, height);
+    (prim_data + 0)->pos = center + ckVec(-width, height);
+    (prim_data + 1)->pos = center + ckVec(-width, -height);
+    (prim_data + 2)->pos = center + ckVec(width, -height);
+    (prim_data + 3)->pos = center + ckVec(width, height);
 
     (prim_data + 0)->col = col;
     (prim_data + 1)->col = col;
@@ -326,13 +326,13 @@ void pgPrim::setDataRect(u16 index, const pgVec& center, r32 width, r32 height, 
 }
 
 
-void pgPrim::render(const pgMat& view)
+void ckPrim::render(const ckMat& view)
 {
     if (m_rend && m_rend->isActive())
     {
         m_rend->render(view);
     }
-    else if (pgDrawMgr::isShaderAvailable())
+    else if (ckDrawMgr::isShaderAvailable())
     {
         render_shader(view);
     }
@@ -343,7 +343,7 @@ void pgPrim::render(const pgMat& view)
 }
 
 
-void pgPrim::init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, u16 max_data_num, pgID scr_id, pgDraw* parent)
+void ckPrim::init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, u16 max_data_num, ckID scr_id, ckDraw* parent)
 {
     if (m_rend)
     {
@@ -358,12 +358,12 @@ void pgPrim::init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, 
     {
         if (!prim_data || max_data_num == 0)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         if (m_prim_data && !m_is_share_data.getType())
         {
-            pgDeleteArray(m_prim_data, PrimData);
+            ckDeleteArray(m_prim_data, PrimData);
         }
 
         m_is_share_data = true;
@@ -384,7 +384,7 @@ void pgPrim::init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, 
     }
 
     setCurDataNum(max_data_num);
-    setTextureID(pgID::ZERO);
+    setTextureID(ckID::ZERO);
 
     if (parent)
     {
@@ -397,7 +397,7 @@ void pgPrim::init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, 
 }
 
 
-void pgPrim::render_soft(const pgMat& view)
+void ckPrim::render_soft(const ckMat& view)
 {
     if (m_cur_data_num == 0)
     {
@@ -407,19 +407,19 @@ void pgPrim::render_soft(const pgMat& view)
     /*
         reset shader
     */
-    pgLowLevelAPI::setShader(0);
+    ckLowLevelAPI::setShader(0);
 
     /*
         alloc buffer
     */
-    pgTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
-    u32 col_size = (m_final_col != pgCol::FULL) ? sizeof(pgCol) * m_cur_data_num : 0;
-    u32 uv_size = (tex && tex->m_flag.isOn(pgTex::FLAG_UV_ADJUST)) ? sizeof(r32) * 2 * m_cur_data_num : 0;
+    ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
+    u32 col_size = (m_final_col != ckCol::FULL) ? sizeof(ckCol) * m_cur_data_num : 0;
+    u32 uv_size = (tex && tex->m_flag.isOn(ckTex::FLAG_UV_ADJUST)) ? sizeof(r32) * 2 * m_cur_data_num : 0;
     u32 buf_size = col_size + uv_size;
 
-    u8* buf = (buf_size > 0) ? reinterpret_cast<u8*>(pgMemMgr::allocTempBufferForSystem(buf_size)) : 0;
+    u8* buf = (buf_size > 0) ? reinterpret_cast<u8*>(ckMemMgr::allocTempBufferForSystem(buf_size)) : 0;
 
-    pgCol* col_buf = reinterpret_cast<pgCol*>(buf);
+    ckCol* col_buf = reinterpret_cast<ckCol*>(buf);
     buf += col_size;
 
     r32* uv_buf = reinterpret_cast<r32*>(buf);
@@ -434,11 +434,11 @@ void pgPrim::render_soft(const pgMat& view)
             col_buf[i] = m_final_col * m_prim_data[i].col;
         }
 
-        pgLowLevelAPI::setColorPointer(sizeof(pgCol), reinterpret_cast<const u8*>(col_buf));
+        ckLowLevelAPI::setColorPointer(sizeof(ckCol), reinterpret_cast<const u8*>(col_buf));
     }
     else
     {
-        pgLowLevelAPI::setColorPointer(sizeof(PrimData), reinterpret_cast<const u8*>(&m_prim_data->col));
+        ckLowLevelAPI::setColorPointer(sizeof(PrimData), reinterpret_cast<const u8*>(&m_prim_data->col));
     }
 
     /*
@@ -446,7 +446,7 @@ void pgPrim::render_soft(const pgMat& view)
     */
     if (tex)
     {
-        pgLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
 
         if (uv_size > 0)
         {
@@ -463,28 +463,28 @@ void pgPrim::render_soft(const pgMat& view)
                 uv_ptr++;
             }
 
-            pgLowLevelAPI::setTexCoordPointer(sizeof(r32) * 2, reinterpret_cast<const r32*>(uv_buf));
+            ckLowLevelAPI::setTexCoordPointer(sizeof(r32) * 2, reinterpret_cast<const r32*>(uv_buf));
         }
         else
         {
-            pgLowLevelAPI::setTexCoordPointer(sizeof(PrimData), reinterpret_cast<const r32*>(&m_prim_data->u));
+            ckLowLevelAPI::setTexCoordPointer(sizeof(PrimData), reinterpret_cast<const r32*>(&m_prim_data->u));
         }
     }
     else
     {
-        pgLowLevelAPI::setTexture(0, 0, 0, false);
-        pgLowLevelAPI::setTexCoordPointer(0, NULL);
+        ckLowLevelAPI::setTexture(0, 0, 0, false);
+        ckLowLevelAPI::setTexCoordPointer(0, NULL);
     }
 
     /*
         draw primitives
     */
-    pgLowLevelAPI::setVertexPointer(sizeof(PrimData), reinterpret_cast<const r32*>(&m_prim_data->pos));
-    pgLowLevelAPI::drawArrays(static_cast<pgLowLevelAPI::DrawMode>(m_prim_mode.getType()), 0, m_cur_data_num);
+    ckLowLevelAPI::setVertexPointer(sizeof(PrimData), reinterpret_cast<const r32*>(&m_prim_data->pos));
+    ckLowLevelAPI::drawArrays(static_cast<ckLowLevelAPI::DrawMode>(m_prim_mode.getType()), 0, m_cur_data_num);
 }
 
 
-void pgPrim::render_shader(const pgMat& view)
+void ckPrim::render_shader(const ckMat& view)
 {
     if (m_cur_data_num == 0)
     {
@@ -494,11 +494,11 @@ void pgPrim::render_shader(const pgMat& view)
     /*
         setup shader
     */
-    pgShd* shd = pgDrawMgr::getShader(pgDrawMgr::DEFAULT_SHADER_ID);
+    ckShd* shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
 
     if (shd->isValid())
     {
-        pgLowLevelAPI::setShader(shd->getShdObj());
+        ckLowLevelAPI::setShader(shd->getShdObj());
     }
     else
     {
@@ -509,75 +509,75 @@ void pgPrim::render_shader(const pgMat& view)
     /*
         setup color
     */
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[0], m_final_col.r);
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[1], m_final_col.g);
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[2], m_final_col.b);
-    pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[3], m_final_col.a);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[0], m_final_col.r);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[1], m_final_col.g);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[2], m_final_col.b);
+    ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[3], m_final_col.a);
 
-    pgLowLevelAPI::setColorPointer(0, NULL);
-    pgLowLevelAPI::setAttribPointer_color(shd->m_color_loc, sizeof(PrimData), reinterpret_cast<const u8*>(&m_prim_data->col));
+    ckLowLevelAPI::setColorPointer(0, NULL);
+    ckLowLevelAPI::setAttribPointer_color(shd->m_color_loc, sizeof(PrimData), reinterpret_cast<const u8*>(&m_prim_data->col));
 
     /*
         setup texture
     */
-    pgLowLevelAPI::setTexCoordPointer(0, NULL);
+    ckLowLevelAPI::setTexCoordPointer(0, NULL);
 
-    pgTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
+    ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
 
     if (tex)
     {
-        pgLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
 
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[4], tex->m_u_param_a);
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[5], tex->m_u_param_b);
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[6], tex->m_v_param_a);
-        pgLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[7], tex->m_v_param_b);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[4], tex->m_u_param_a);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[5], tex->m_u_param_b);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[6], tex->m_v_param_a);
+        ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[7], tex->m_v_param_b);
 
         switch (tex->m_format.getType())
         {
-        case pgTex::FORMAT_RGB:
-        case pgTex::FORMAT_PNG_RGB:
-            pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 1);
+        case ckTex::FORMAT_RGB:
+        case ckTex::FORMAT_PNG_RGB:
+            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 1);
             break;
 
-        case pgTex::FORMAT_RGBA:
-        case pgTex::FORMAT_PNG_RGBA:
-            pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 2);
+        case ckTex::FORMAT_RGBA:
+        case ckTex::FORMAT_PNG_RGBA:
+            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 2);
             break;
 
-        case pgTex::FORMAT_ALPHA:
-        case pgTex::FORMAT_PNG_ALPHA:
-            pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 3);
+        case ckTex::FORMAT_ALPHA:
+        case ckTex::FORMAT_PNG_ALPHA:
+            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 3);
             break;
         }
 
-        pgLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(PrimData), &m_prim_data->u);
+        ckLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(PrimData), &m_prim_data->u);
     }
     else
     {
-        pgLowLevelAPI::setTexture(0, 0, 0, false);
-        pgLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 0);
+        ckLowLevelAPI::setTexture(0, 0, 0, false);
+        ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 0);
     }
 
     /*
         draw primitives
     */
-    pgLowLevelAPI::setUniform_localToScreen(shd->m_local_to_screen_loc);
+    ckLowLevelAPI::setUniform_localToScreen(shd->m_local_to_screen_loc);
 
-    pgLowLevelAPI::setVertexPointer(0, NULL);
-    pgLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, sizeof(PrimData), reinterpret_cast<const r32*>(&m_prim_data->pos));
+    ckLowLevelAPI::setVertexPointer(0, NULL);
+    ckLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, sizeof(PrimData), reinterpret_cast<const r32*>(&m_prim_data->pos));
 
-    pgLowLevelAPI::drawArrays(static_cast<pgLowLevelAPI::DrawMode>(m_prim_mode.getType()), 0, m_cur_data_num);
+    ckLowLevelAPI::drawArrays(static_cast<ckLowLevelAPI::DrawMode>(m_prim_mode.getType()), 0, m_cur_data_num);
 
     /*
         disable attributes
     */
-    pgLowLevelAPI::disableAttribPointer(shd->m_vertex_loc);
-    pgLowLevelAPI::disableAttribPointer(shd->m_color_loc);
-    pgLowLevelAPI::disableAttribPointer(shd->m_texcoord_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_vertex_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_color_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_texcoord_loc);
 
     for (s32 i = 0; i < shd->m_att_num; i++)
     {
-        pgLowLevelAPI::disableAttribPointer(shd->m_att_loc_tbl[i]);
+        ckLowLevelAPI::disableAttribPointer(shd->m_att_loc_tbl[i]);
     }
 }

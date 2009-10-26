@@ -29,100 +29,100 @@
 */
 
 
-#include "pg_mem_all.h"
+#include "ck_mem_all.h"
 
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
-
-
-pgMemMgr* pgMemMgr::m_instance = NULL;
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-void pgMemMgr::memset(void* buf, u8 value, u32 size)
+ckMemMgr* ckMemMgr::m_instance = NULL;
+
+
+void ckMemMgr::memset(void* buf, u8 value, u32 size)
 {
     if (!buf || size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::memset(buf, value, size);
+    ckLowLevelAPI::memset(buf, value, size);
 }
 
 
-void pgMemMgr::memcpy(void* dest, const void* src, u32 size)
+void ckMemMgr::memcpy(void* dest, const void* src, u32 size)
 {
     if (!dest || !src || size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::memcpy(dest, src, size);
+    ckLowLevelAPI::memcpy(dest, src, size);
 }
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgMemMgr)
+CK_DEFINE_MANAGER_IS_CREATED(ckMemMgr)
 
 
-void pgMemMgr::createFirst(u32 pogolyn_version)
+void ckMemMgr::createFirst(u32 catcake_version)
 {
-    if (pogolyn_version != POGOLYN_VERSION)
+    if (catcake_version != CATCAKE_VERSION)
     {
-        pgThrow(ExceptionInvalidVersionOfHeader);
+        ckThrow(ExceptionInvalidVersionOfHeader);
     }
 
     if (!(sizeof(s8) == 1 && sizeof(s16) == 2 && sizeof(s32) == 4 && sizeof(s64) == 8 && //
         sizeof(u8) == 1 && sizeof(u16) == 2 && sizeof(u32) == 4 && sizeof(u64) == 8 && //
         sizeof(r32) == 4 && sizeof(r64) == 8))
     {
-        pgThrow(ExceptionInvalidSizeOfType);
+        ckThrow(ExceptionInvalidSizeOfType);
     }
 
     destroyLast();
 
-    m_instance = new(pgLowLevelAPI::malloc(sizeof(pgMemMgr)), NULL) pgMemMgr;
+    m_instance = new(ckLowLevelAPI::malloc(sizeof(ckMemMgr)), NULL) ckMemMgr;
 
     m_instance->m_temp_buf_size = INITIAL_TEMP_BUFFER_SIZE;
-    m_instance->m_temp_buf = pgMalloc(m_instance->m_temp_buf_size);
+    m_instance->m_temp_buf = ckMalloc(m_instance->m_temp_buf_size);
 }
 
 
-void pgMemMgr::destroyLast()
+void ckMemMgr::destroyLast()
 {
     if (m_instance)
     {
-        m_instance->~pgMemMgr();
-        pgLowLevelAPI::free(m_instance);
+        m_instance->~ckMemMgr();
+        ckLowLevelAPI::free(m_instance);
     }
 }
 
 
-u32 pgMemMgr::getCurUsedMemorySize()
+u32 ckMemMgr::getCurUsedMemorySize()
 {
     return instance()->m_cur_used_memory_size;
 }
 
 
-u32 pgMemMgr::getMaxUsedMemorySize()
+u32 ckMemMgr::getMaxUsedMemorySize()
 {
     return instance()->m_max_used_memory_size;
 }
 
 
-const void* pgMemMgr::getFirstMemoryBlockN()
+const void* ckMemMgr::getFirstMemoryBlockN()
 {
-    pgMemMgr* ins = instance();
+    ckMemMgr* ins = instance();
 
     return (ins->m_mbh_start.next != &ins->m_mbh_end) ? ins->m_mbh_start.next + 1 : NULL;
 }
 
 
-const void* pgMemMgr::getNextMemoryBlockN(const void* ptr)
+const void* ckMemMgr::getNextMemoryBlockN(const void* ptr)
 {
-    pgMemMgr* ins = instance();
+    ckMemMgr* ins = instance();
 
     if (!ptr)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     const MemoryBlockHeader* mbh = reinterpret_cast<const MemoryBlockHeader*>(ptr) - 1;
@@ -131,57 +131,57 @@ const void* pgMemMgr::getNextMemoryBlockN(const void* ptr)
 }
 
 
-const char* pgMemMgr::getMemoryBlockName(const void* ptr)
+const char* ckMemMgr::getMemoryBlockName(const void* ptr)
 {
     if (!ptr)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return (reinterpret_cast<const MemoryBlockHeader*>(ptr) - 1)->name;
 }
 
 
-u32 pgMemMgr::getMemoryBlockSize(const void* ptr)
+u32 ckMemMgr::getMemoryBlockSize(const void* ptr)
 {
     if (!ptr)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return (reinterpret_cast<const MemoryBlockHeader*>(ptr) - 1)->size;
 }
 
 
-u32 pgMemMgr::getMemoryBlockArraySize(const void* ptr)
+u32 ckMemMgr::getMemoryBlockArraySize(const void* ptr)
 {
     if (!ptr)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return (reinterpret_cast<const MemoryBlockHeader*>(ptr) - 1)->array_size;
 }
 
 
-u32 pgMemMgr::getMemoryBlockHeaderSize()
+u32 ckMemMgr::getMemoryBlockHeaderSize()
 {
     return sizeof(MemoryBlockHeader);
 }
 
 
-void* pgMemMgr::mallocForSystem(u32 size, u32 array_size, const char* name)
+void* ckMemMgr::mallocForSystem(u32 size, u32 array_size, const char* name)
 {
-    pgMemMgr* ins = instance();
+    ckMemMgr* ins = instance();
 
     if (size == 0 || !name)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     size += sizeof(MemoryBlockHeader);
 
-    MemoryBlockHeader* mbh = reinterpret_cast<MemoryBlockHeader*>(pgLowLevelAPI::malloc(size));
+    MemoryBlockHeader* mbh = reinterpret_cast<MemoryBlockHeader*>(ckLowLevelAPI::malloc(size));
 
     mbh->prev = ins->m_mbh_end.prev;
     mbh->next = &ins->m_mbh_end;
@@ -203,13 +203,13 @@ void* pgMemMgr::mallocForSystem(u32 size, u32 array_size, const char* name)
 }
 
 
-void* pgMemMgr::reallocForSystem(void* ptr, u32 size, u32 array_size, const char* name)
+void* ckMemMgr::reallocForSystem(void* ptr, u32 size, u32 array_size, const char* name)
 {
-    pgMemMgr* ins = instance();
+    ckMemMgr* ins = instance();
 
     if (!ptr || size == 0 || !name)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     size += sizeof(MemoryBlockHeader);
@@ -218,7 +218,7 @@ void* pgMemMgr::reallocForSystem(void* ptr, u32 size, u32 array_size, const char
 
     ins->m_cur_used_memory_size -= mbh->size;
 
-    mbh = reinterpret_cast<MemoryBlockHeader*>(pgLowLevelAPI::realloc(mbh, size));
+    mbh = reinterpret_cast<MemoryBlockHeader*>(ckLowLevelAPI::realloc(mbh, size));
 
     mbh->name = name;
     mbh->size = size;
@@ -238,18 +238,18 @@ void* pgMemMgr::reallocForSystem(void* ptr, u32 size, u32 array_size, const char
 }
 
 
-void pgMemMgr::freeForSystem(void* ptr)
+void ckMemMgr::freeForSystem(void* ptr)
 {
     if (!isCreated())
     {
         return;
     }
 
-    pgMemMgr* ins = instance();
+    ckMemMgr* ins = instance();
 
     if (!ptr)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     MemoryBlockHeader* mbh = reinterpret_cast<MemoryBlockHeader*>(ptr) - 1;
@@ -259,17 +259,17 @@ void pgMemMgr::freeForSystem(void* ptr)
     mbh->prev->next = mbh->next;
     mbh->next->prev = mbh->prev;
 
-    pgLowLevelAPI::free(mbh);
+    ckLowLevelAPI::free(mbh);
 }
 
 
-void* pgMemMgr::allocTempBufferForSystem(u32 size)
+void* ckMemMgr::allocTempBufferForSystem(u32 size)
 {
-    pgMemMgr* ins = instance();
+    ckMemMgr* ins = instance();
 
     if (size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (size > ins->m_temp_buf_size)
@@ -279,22 +279,22 @@ void* pgMemMgr::allocTempBufferForSystem(u32 size)
             ins->m_temp_buf_size *= 2;
         }
 
-        pgFree(ins->m_temp_buf);
+        ckFree(ins->m_temp_buf);
 
-        ins->m_temp_buf = pgMalloc(ins->m_temp_buf_size);
+        ins->m_temp_buf = ckMalloc(ins->m_temp_buf_size);
     }
 
     return ins->m_temp_buf;
 }
 
 
-u32 pgMemMgr::getTempBufferSizeForSystem()
+u32 ckMemMgr::getTempBufferSizeForSystem()
 {
     return instance()->m_temp_buf_size;
 }
 
 
-pgMemMgr::pgMemMgr()
+ckMemMgr::ckMemMgr()
 {
     m_mbh_start.prev = NULL;
     m_mbh_start.next = &m_mbh_end;
@@ -311,22 +311,22 @@ pgMemMgr::pgMemMgr()
     m_temp_buf = NULL;
     m_temp_buf_size = 0;
 
-    m_cur_used_memory_size = m_max_used_memory_size = sizeof(pgMemMgr);
+    m_cur_used_memory_size = m_max_used_memory_size = sizeof(ckMemMgr);
 }
 
 
-pgMemMgr::~pgMemMgr()
+ckMemMgr::~ckMemMgr()
 {
     while (void* ptr = const_cast<void*>(getFirstMemoryBlockN()))
     {
-        pgFree(ptr);
+        ckFree(ptr);
     }
 
     m_instance = NULL;
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgMemMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckMemMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgMemMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckMemMgr)

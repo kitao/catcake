@@ -29,9 +29,9 @@
 */
 
 
-#include "pg_math_all.h"
+#include "ck_math_all.h"
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
 
 static const r32 s_sin_tbl[180] =
@@ -69,31 +69,31 @@ static const r32 s_sin_tbl[180] =
 };
 
 
-const r32 pgMath::EPSILON = 0.0001f;
-const r32 pgMath::PI = 3.14159265358979323846f;
-const r32 pgMath::DEG_TO_RAD = pgMath::PI / 180.0f;
-const r32 pgMath::RAD_TO_DEG = 180.0f / pgMath::PI;
+const r32 ckMath::EPSILON = 0.0001f;
+const r32 ckMath::PI = 3.14159265358979323846f;
+const r32 ckMath::DEG_TO_RAD = ckMath::PI / 180.0f;
+const r32 ckMath::RAD_TO_DEG = 180.0f / ckMath::PI;
 
 
-r32 pgMath::sqrt(r32 x)
+r32 ckMath::sqrt(r32 x)
 {
-    return pgLowLevelAPI::sqrt(x);
+    return ckLowLevelAPI::sqrt(x);
 }
 
 
-r32 pgMath::sin_r32(r32 deg)
+r32 ckMath::sin_r32(r32 deg)
 {
-    return pgLowLevelAPI::sin(deg * DEG_TO_RAD);
+    return ckLowLevelAPI::sin(deg * DEG_TO_RAD);
 }
 
 
-r32 pgMath::cos_r32(r32 deg)
+r32 ckMath::cos_r32(r32 deg)
 {
-    return pgLowLevelAPI::cos(deg * DEG_TO_RAD);
+    return ckLowLevelAPI::cos(deg * DEG_TO_RAD);
 }
 
 
-r32 pgMath::sin_s32(s32 deg)
+r32 ckMath::sin_s32(s32 deg)
 {
     if (deg < 0)
     {
@@ -106,54 +106,54 @@ r32 pgMath::sin_s32(s32 deg)
 }
 
 
-r32 pgMath::cos_s32(s32 deg)
+r32 ckMath::cos_s32(s32 deg)
 {
     return sin_s32(deg + 90);
 }
 
 
-r32 pgMath::asin(r32 x)
+r32 ckMath::asin(r32 x)
 {
-    return pgLowLevelAPI::asin(x) * RAD_TO_DEG;
+    return ckLowLevelAPI::asin(x) * RAD_TO_DEG;
 }
 
 
-r32 pgMath::acos(r32 x)
+r32 ckMath::acos(r32 x)
 {
-    return pgLowLevelAPI::acos(x) * RAD_TO_DEG;
+    return ckLowLevelAPI::acos(x) * RAD_TO_DEG;
 }
 
 
-r32 pgMath::atan2(r32 y, r32 x)
+r32 ckMath::atan2(r32 y, r32 x)
 {
-    return pgLowLevelAPI::atan2(y, x) * RAD_TO_DEG;
+    return ckLowLevelAPI::atan2(y, x) * RAD_TO_DEG;
 }
 
 
-void pgMath::srand(u32 seed)
+void ckMath::srand(u32 seed)
 {
-    pgLowLevelAPI::srand(seed);
+    ckLowLevelAPI::srand(seed);
 }
 
 
-s32 pgMath::rand(s32 from, s32 to)
+s32 ckMath::rand(s32 from, s32 to)
 {
     if (to >= from)
     {
         s32 range = to - from + 1;
 
-        return from + (pgLowLevelAPI::rand() % range);
+        return from + (ckLowLevelAPI::rand() % range);
     }
     else
     {
         s32 range = from - to + 1;
 
-        return from - (pgLowLevelAPI::rand() % range);
+        return from - (ckLowLevelAPI::rand() % range);
     }
 }
 
 
-r32 pgMath::rand(r32 from, r32 to, r32 interval)
+r32 ckMath::rand(r32 from, r32 to, r32 interval)
 {
     interval = abs(interval);
 
@@ -161,24 +161,24 @@ r32 pgMath::rand(r32 from, r32 to, r32 interval)
     {
         s32 range = static_cast<s32>((to - from) / interval + 1.0f);
 
-        return from + (pgLowLevelAPI::rand() % range) * interval;
+        return from + (ckLowLevelAPI::rand() % range) * interval;
     }
     else
     {
         s32 range = static_cast<s32>((from - to) / interval + 1.0f);
 
-        return from - (pgLowLevelAPI::rand() % range) * interval;
+        return from - (ckLowLevelAPI::rand() % range) * interval;
     }
 }
 
 
-r32 pgMath::interp(r32 from, r32 to, r32 ratio)
+r32 ckMath::interp(r32 from, r32 to, r32 ratio)
 {
-    if (ratio < pgMath::EPSILON)
+    if (ratio < ckMath::EPSILON)
     {
         return from;
     }
-    else if (ratio > 1.0f - pgMath::EPSILON)
+    else if (ratio > 1.0f - ckMath::EPSILON)
     {
         return to;
     }

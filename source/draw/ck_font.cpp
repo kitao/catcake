@@ -31,184 +31,184 @@
 
 #include <stdarg.h>
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_util_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_util_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgFont::pgFont()
+ckFont::ckFont()
 {
     m_tex = NULL;
 }
 
 
-pgFont::~pgFont()
+ckFont::~ckFont()
 {
-    if (pgDrawMgr::isCreated() && m_tex)
+    if (ckDrawMgr::isCreated() && m_tex)
     {
-        pgDrawMgr::deleteTexture(m_tex->getID());
+        ckDrawMgr::deleteTexture(m_tex->getID());
     }
 }
 
 
-void pgFont::init(u16 width, u16 height)
+void ckFont::init(u16 width, u16 height)
 {
     if (m_tex)
     {
-        pgTry
+        ckTry
         {
             m_tex->resizeImage(width, height);
         }
-        pgCatch(pgTex::ExceptionInvalidArgument)
+        ckCatch(ckTex::ExceptionInvalidArgument)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
     }
     else
     {
-        pgTry
+        ckTry
         {
-            m_tex = pgDrawMgr::newTexture(pgID::genID(), width, height, pgTex::FORMAT_ALPHA);
+            m_tex = ckDrawMgr::newTexture(ckID::genID(), width, height, ckTex::FORMAT_ALPHA);
         }
-        pgCatch(pgDrawMgr::ExceptionInvalidArgument)
+        ckCatch(ckDrawMgr::ExceptionInvalidArgument)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
     }
 
-    m_tex->clearImage(pgCol::ZERO);
+    m_tex->clearImage(ckCol::ZERO);
 }
 
 
-pgID pgFont::getTextureID() const
+ckID ckFont::getTextureID() const
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tex->getID();
 }
 
 
-u16 pgFont::getWidth() const
+u16 ckFont::getWidth() const
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tex->getWidth();
 }
 
 
-u16 pgFont::getHeight() const
+u16 ckFont::getHeight() const
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tex->getHeight();
 }
 
 
-const void* pgFont::getImage() const
+const void* ckFont::getImage() const
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tex->getImage();
 }
 
 
-u32 pgFont::getImageSize() const
+u32 ckFont::getImageSize() const
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tex->getImageSize();
 }
 
 
-void* pgFont::editImage()
+void* ckFont::editImage()
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tex->editImage();
 }
 
 
-void pgFont::clearImage()
+void ckFont::clearImage()
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    return m_tex->clearImage(pgCol::ZERO);
+    return m_tex->clearImage(ckCol::ZERO);
 }
 
 
-u16 pgFont::drawString(s16 x, s16 y, const char* str, ...)
+u16 ckFont::drawString(s16 x, s16 y, const char* str, ...)
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     char buf1[256];
-    PG_VSPRINTF(buf1, 256, str);
+    CK_VSPRINTF(buf1, 256, str);
 
     wchar_t buf2[256];
-    pgUtil::charToWchar(buf2, 256, buf1);
+    ckUtil::charToWchar(buf2, 256, buf1);
 
     return drawString(x, y, buf2);
 }
 
 
-u16 pgFont::drawString(s16 x, s16 y, const wchar_t* str, ...)
+u16 ckFont::drawString(s16 x, s16 y, const wchar_t* str, ...)
 {
     if (!m_tex)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgDrawMgr* ins = pgDrawMgr::instance();
+    ckDrawMgr* ins = ckDrawMgr::instance();
 
     if (!ins->m_font_info)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     wchar_t buf[256];
-    PG_VSWPRINTF(buf, 256, str);
+    CK_VSWPRINTF(buf, 256, str);
 
-    s32 draw_width = pgLowLevelAPI::drawFreeTypeFont(m_tex->editImage(), m_tex->getWidth(), m_tex->getHeight(), //
+    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(m_tex->editImage(), m_tex->getWidth(), m_tex->getHeight(), //
         ins->m_font_info, ins->m_font_index, ins->m_font_size, x, y, buf);
 
     if (draw_width < 0)
     {
-        pgThrow(ExceptionDrawStringFailed);
+        ckThrow(ExceptionDrawStringFailed);
     }
 
     return draw_width;

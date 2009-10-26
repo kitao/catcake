@@ -29,11 +29,11 @@
 */
 
 
-#include "pg_snd_all.h"
+#include "ck_snd_all.h"
 
-#include "pg_math_all.h"
-#include "pg_sys_all.h"
-#include "pg_low_level_api.h"
+#include "ck_math_all.h"
+#include "ck_sys_all.h"
+#include "ck_low_level_api.h"
 
 
 const s32 MIN_AMPLITUDE = -32765;
@@ -71,9 +71,9 @@ const s32 MAX_AMPLITUDE = 32765;
     }
 
 
-bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
+bool ckSndMgr::soundMixFunction(void* snd_mix_buf)
 {
-    pgSndMgr* ins = instance();
+    ckSndMgr* ins = instance();
     bool is_playing = false;
 
     for (u32 i = 0; i < TRACK_NUM; i++)
@@ -92,7 +92,7 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
 
     TrackInfo temp_trk_info[TRACK_NUM];
 
-    pgLowLevelAPI::lockSoundMixMutex();
+    ckLowLevelAPI::lockSoundMixMutex();
     {
         for (u32 i = 0; i < TRACK_NUM; i++)
         {
@@ -105,8 +105,8 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
                 continue;
             }
 
-            trk_info->play_pos += pgLowLevelAPI::getSoundMixBufferSampleNum() * //
-                trk_info->snd_info->sample_rate.getValue() / pgLowLevelAPI::getSoundDeviceSampleRate();
+            trk_info->play_pos += ckLowLevelAPI::getSoundMixBufferSampleNum() * //
+                trk_info->snd_info->sample_rate.getValue() / ckLowLevelAPI::getSoundDeviceSampleRate();
 
             if (trk_info->play_pos >= trk_info->snd_info->sample_num)
             {
@@ -122,9 +122,9 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
             }
         }
     }
-    pgLowLevelAPI::unlockSoundMixMutex();
+    ckLowLevelAPI::unlockSoundMixMutex();
 
-    pgMemMgr::memset(snd_mix_buf, 0, pgLowLevelAPI::getSoundMixBufferSize());
+    ckMemMgr::memset(snd_mix_buf, 0, ckLowLevelAPI::getSoundMixBufferSize());
 
     for (u32 i = 0; i < TRACK_NUM; i++)
     {
@@ -139,13 +139,13 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
         u8* dest = static_cast<u8*>(snd_mix_buf);
 
         u32 src_sample_rate = trk_info->snd_info->sample_rate.getValue();
-        u32 dest_sample_rate = pgLowLevelAPI::getSoundDeviceSampleRate();
+        u32 dest_sample_rate = ckLowLevelAPI::getSoundDeviceSampleRate();
 
-        u32 src_sample_step = pgMath::max(src_sample_rate / dest_sample_rate, static_cast<u32>(1));
-        u32 dest_sample_step = pgMath::max(dest_sample_rate / src_sample_rate, static_cast<u32>(1));
+        u32 src_sample_step = ckMath::max(src_sample_rate / dest_sample_rate, static_cast<u32>(1));
+        u32 dest_sample_step = ckMath::max(dest_sample_rate / src_sample_rate, static_cast<u32>(1));
 
         u32 src_sample_num = trk_info->snd_info->sample_num;
-        u32 dest_sample_num = pgLowLevelAPI::getSoundMixBufferSampleNum();
+        u32 dest_sample_num = ckLowLevelAPI::getSoundMixBufferSampleNum();
 
         u32 cur_src_sample = trk_info->play_pos;
         u32 cur_dest_sample = 0;
@@ -159,15 +159,15 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
 
         if (trk_info->snd_info->channel_num == CHANNEL_NUM_MONO)
         {
-            if (pgLowLevelAPI::getSoundDeviceChannelNum() == 1)
+            if (ckLowLevelAPI::getSoundDeviceChannelNum() == 1)
             {
 #undef INJECTION_CODE1
 #define INJECTION_CODE1 \
-    s32 src_amp = (pgReadLittleEndian(src, s16) * mix_vol) >> 8; \
-    s32 dest_amp = pgMath::clamp(pgReadLittleEndian(dest, s16) + src_amp, MIN_AMPLITUDE, MAX_AMPLITUDE);
+    s32 src_amp = (ckReadLittleEndian(src, s16) * mix_vol) >> 8; \
+    s32 dest_amp = ckMath::clamp(ckReadLittleEndian(dest, s16) + src_amp, MIN_AMPLITUDE, MAX_AMPLITUDE);
 
 #undef INJECTION_CODE2
-#define INJECTION_CODE2 pgWriteLittleEndian(dest, dest_amp, s16);
+#define INJECTION_CODE2 ckWriteLittleEndian(dest, dest_amp, s16);
 
                 SOUND_MIX_CODE(2, 2)
             }
@@ -175,30 +175,30 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
             {
 #undef INJECTION_CODE1
 #define INJECTION_CODE1 \
-    s32 src_amp = (pgReadLittleEndian(src, s16) * mix_vol) >> 8; \
-    s32 dest_amp = pgMath::clamp(pgReadLittleEndian(dest, s16) + src_amp, MIN_AMPLITUDE, MAX_AMPLITUDE);
+    s32 src_amp = (ckReadLittleEndian(src, s16) * mix_vol) >> 8; \
+    s32 dest_amp = ckMath::clamp(ckReadLittleEndian(dest, s16) + src_amp, MIN_AMPLITUDE, MAX_AMPLITUDE);
 
 #undef INJECTION_CODE2
 #define INJECTION_CODE2 \
-    pgWriteLittleEndian(dest + 0, dest_amp, s16); \
-    pgWriteLittleEndian(dest + 2, dest_amp, s16);
+    ckWriteLittleEndian(dest + 0, dest_amp, s16); \
+    ckWriteLittleEndian(dest + 2, dest_amp, s16);
 
                 SOUND_MIX_CODE(2, 4)
             }
         }
         else
         {
-            if (pgLowLevelAPI::getSoundDeviceChannelNum() == 1)
+            if (ckLowLevelAPI::getSoundDeviceChannelNum() == 1)
             {
 #undef INJECTION_CODE1
 #define INJECTION_CODE1 \
-    s32 src_amp_l = (pgReadLittleEndian(src + 0, s16) * mix_vol) >> 8; \
-    s32 src_amp_r = (pgReadLittleEndian(src + 2, s16) * mix_vol) >> 8; \
+    s32 src_amp_l = (ckReadLittleEndian(src + 0, s16) * mix_vol) >> 8; \
+    s32 src_amp_r = (ckReadLittleEndian(src + 2, s16) * mix_vol) >> 8; \
     s32 src_amp = (src_amp_l + src_amp_r) / 2; \
-    s32 dest_amp = pgMath::clamp(pgReadLittleEndian(dest, s16) + src_amp, MIN_AMPLITUDE, MAX_AMPLITUDE);
+    s32 dest_amp = ckMath::clamp(ckReadLittleEndian(dest, s16) + src_amp, MIN_AMPLITUDE, MAX_AMPLITUDE);
 
 #undef INJECTION_CODE2
-#define INJECTION_CODE2 pgWriteLittleEndian(dest, dest_amp, s16);
+#define INJECTION_CODE2 ckWriteLittleEndian(dest, dest_amp, s16);
 
                 SOUND_MIX_CODE(4, 2)
             }
@@ -206,15 +206,15 @@ bool pgSndMgr::soundMixFunction(void* snd_mix_buf)
             {
 #undef INJECTION_CODE1
 #define INJECTION_CODE1 \
-    s32 src_amp_l = (pgReadLittleEndian(src + 0, s16) * mix_vol) >> 8; \
-    s32 src_amp_r = (pgReadLittleEndian(src + 2, s16) * mix_vol) >> 8; \
-    s32 dest_amp_l = pgMath::clamp(pgReadLittleEndian(dest + 0, s16) + src_amp_l, MIN_AMPLITUDE, MAX_AMPLITUDE); \
-    s32 dest_amp_r = pgMath::clamp(pgReadLittleEndian(dest + 2, s16) + src_amp_r, MIN_AMPLITUDE, MAX_AMPLITUDE);
+    s32 src_amp_l = (ckReadLittleEndian(src + 0, s16) * mix_vol) >> 8; \
+    s32 src_amp_r = (ckReadLittleEndian(src + 2, s16) * mix_vol) >> 8; \
+    s32 dest_amp_l = ckMath::clamp(ckReadLittleEndian(dest + 0, s16) + src_amp_l, MIN_AMPLITUDE, MAX_AMPLITUDE); \
+    s32 dest_amp_r = ckMath::clamp(ckReadLittleEndian(dest + 2, s16) + src_amp_r, MIN_AMPLITUDE, MAX_AMPLITUDE);
 
 #undef INJECTION_CODE2
 #define INJECTION_CODE2 \
-    pgWriteLittleEndian(dest + 0, dest_amp_l, s16); \
-    pgWriteLittleEndian(dest + 2, dest_amp_r, s16);
+    ckWriteLittleEndian(dest + 0, dest_amp_l, s16); \
+    ckWriteLittleEndian(dest + 2, dest_amp_r, s16);
 
                 SOUND_MIX_CODE(4, 4)
             }

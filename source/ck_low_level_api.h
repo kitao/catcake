@@ -29,14 +29,14 @@
 */
 
 
-#ifndef PG_LOW_LEVEL_API_H_
-#define PG_LOW_LEVEL_API_H_
+#ifndef CK_LOW_LEVEL_API_H_
+#define CK_LOW_LEVEL_API_H_
 
 
-#include "pg_def.h"
+#include "ck_def.h"
 
 
-class pgLowLevelAPI
+class ckLowLevelAPI
 {
 public:
     /*
@@ -236,4 +236,4 @@ public:
 };
 
 
-#endif // !PG_LOW_LEVEL_API_H_
+#endif // !CK_LOW_LEVEL_API_H_

@@ -29,7 +29,7 @@
 */
 
 
-#ifdef PG_LINUX
+#ifdef CK_LINUX
 
 
 #include <sys/time.h>
@@ -41,15 +41,15 @@
 #include <X11/extensions/xf86vmode.h>
 #include <GL/glx.h>
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_sys_all.h" // for pgSysMgr::SysFlag and pgSysMgr::sprintf
-#include "pg_key_all.h" // for pgKeyMgr::KeyType
+#include "ck_sys_all.h" // for ckSysMgr::SysFlag and ckSysMgr::sprintf
+#include "ck_key_all.h" // for ckKeyMgr::KeyType
 
 
-static pgLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
-static pgLowLevelAPI::MouseEventHandler s_mouse_event_handler = NULL;
-static pgLowLevelAPI::ExtraEventHandler s_extra_event_handler = NULL;
+static ckLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
+static ckLowLevelAPI::MouseEventHandler s_mouse_event_handler = NULL;
+static ckLowLevelAPI::ExtraEventHandler s_extra_event_handler = NULL;
 
 static const char* s_app_name;
 static u16 s_framebuffer_width;
@@ -70,91 +70,91 @@ static bool s_is_double_buffered;
 static void callKeyEventHandler(KeyCode keycode, bool is_down)
 {
     KeySym keysym = XKeycodeToKeysym(s_dpy, keycode, 0);
-    pgKeyMgr::KeyType key_type = pgKeyMgr::KEY_NONE;
+    ckKeyMgr::KeyType key_type = ckKeyMgr::KEY_NONE;
 
     if (keysym >= XK_0 && keysym <= XK_9)
     {
-        key_type = static_cast<pgKeyMgr::KeyType>(pgKeyMgr::KEY_0 + keysym - XK_0);
+        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_0 + keysym - XK_0);
     }
     else if (keysym >= XK_A && keysym <= XK_Z)
     {
-        key_type = static_cast<pgKeyMgr::KeyType>(pgKeyMgr::KEY_A + keysym - XK_A);
+        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_A + keysym - XK_A);
     }
     else if (keysym >= XK_a && keysym <= XK_z)
     {
-        key_type = static_cast<pgKeyMgr::KeyType>(pgKeyMgr::KEY_A + keysym - XK_a);
+        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_A + keysym - XK_a);
     }
     else if (keysym >= XK_F1 && keysym <= XK_F12)
     {
-        key_type = static_cast<pgKeyMgr::KeyType>(pgKeyMgr::KEY_F1 + keysym - XK_F1);
+        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_F1 + keysym - XK_F1);
     }
     else if (keysym >= XK_KP_0 && keysym <= XK_KP_9)
     {
-        key_type = static_cast<pgKeyMgr::KeyType>(pgKeyMgr::KEY_NUMPAD0 + keysym - XK_KP_0);
+        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_NUMPAD0 + keysym - XK_KP_0);
     }
     else if (keysym >= XK_Home && keysym <= XK_End)
     {
-        static const pgKeyMgr::KeyType s_keycode_table[] =
+        static const ckKeyMgr::KeyType s_keycode_table[] =
         {
-            pgKeyMgr::KEY_HOME, pgKeyMgr::KEY_LEFT, pgKeyMgr::KEY_UP, pgKeyMgr::KEY_RIGHT, //
-            pgKeyMgr::KEY_DOWN, pgKeyMgr::KEY_PAGEUP, pgKeyMgr::KEY_PAGEDOWN, pgKeyMgr::KEY_END
+            ckKeyMgr::KEY_HOME, ckKeyMgr::KEY_LEFT, ckKeyMgr::KEY_UP, ckKeyMgr::KEY_RIGHT, //
+            ckKeyMgr::KEY_DOWN, ckKeyMgr::KEY_PAGEUP, ckKeyMgr::KEY_PAGEDOWN, ckKeyMgr::KEY_END
         };
 
         key_type = s_keycode_table[keysym - XK_Home];
     }
     else if (keysym >= XK_KP_Multiply && keysym <= XK_KP_Divide)
     {
-        static const pgKeyMgr::KeyType s_keycode_table[] =
+        static const ckKeyMgr::KeyType s_keycode_table[] =
         {
-            pgKeyMgr::KEY_MULTIPLY, pgKeyMgr::KEY_ADD, pgKeyMgr::KEY_NONE, //
-            pgKeyMgr::KEY_SUBTRACT, pgKeyMgr::KEY_DECIMAL, pgKeyMgr::KEY_DIVIDE
+            ckKeyMgr::KEY_MULTIPLY, ckKeyMgr::KEY_ADD, ckKeyMgr::KEY_NONE, //
+            ckKeyMgr::KEY_SUBTRACT, ckKeyMgr::KEY_DECIMAL, ckKeyMgr::KEY_DIVIDE
         };
 
         key_type = s_keycode_table[keysym - XK_KP_Multiply];
     }
     else if (keysym == XK_BackSpace)
     {
-        key_type = pgKeyMgr::KEY_BACKSPACE;
+        key_type = ckKeyMgr::KEY_BACKSPACE;
     }
     else if (keysym == XK_Tab)
     {
-        key_type = pgKeyMgr::KEY_TAB;
+        key_type = ckKeyMgr::KEY_TAB;
     }
     else if (keysym == XK_Return)
     {
-        key_type = pgKeyMgr::KEY_ENTER;
+        key_type = ckKeyMgr::KEY_ENTER;
     }
     else if (keysym == XK_Escape)
     {
-        key_type = pgKeyMgr::KEY_ESCAPE;
+        key_type = ckKeyMgr::KEY_ESCAPE;
     }
     else if (keysym == XK_space)
     {
-        key_type = pgKeyMgr::KEY_SPACE;
+        key_type = ckKeyMgr::KEY_SPACE;
     }
     else if (keysym == XK_Insert)
     {
-        key_type = pgKeyMgr::KEY_INSERT;
+        key_type = ckKeyMgr::KEY_INSERT;
     }
     else if (keysym == XK_Delete)
     {
-        key_type = pgKeyMgr::KEY_DELETE;
+        key_type = ckKeyMgr::KEY_DELETE;
     }
     else if (keysym == XK_KP_Enter)
     {
-        key_type = pgKeyMgr::KEY_SEPARATOR;
+        key_type = ckKeyMgr::KEY_SEPARATOR;
     }
     else if (keysym == XK_Shift_L || keysym == XK_Shift_R)
     {
-        key_type = pgKeyMgr::KEY_SHIFT;
+        key_type = ckKeyMgr::KEY_SHIFT;
     }
     else if (keysym == XK_Control_L || keysym == XK_Control_R)
     {
-        key_type = pgKeyMgr::KEY_CTRL;
+        key_type = ckKeyMgr::KEY_CTRL;
     }
     else if (keysym == XK_Alt_L || keysym == XK_Alt_R)
     {
-        key_type = pgKeyMgr::KEY_ALT;
+        key_type = ckKeyMgr::KEY_ALT;
     }
 
     (*s_key_event_handler)(key_type, is_down);
@@ -302,7 +302,7 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
         size_hints.width = new_width;
         size_hints.height = new_height;
 
-        if (!(s_sys_flag & pgSysMgr::FLAG_VARIABLE_SIZE))
+        if (!(s_sys_flag & ckSysMgr::FLAG_VARIABLE_SIZE))
         {
             size_hints.flags |= PMinSize | PMaxSize;
             size_hints.min_width = new_width;
@@ -332,14 +332,14 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
 }
 
 
-bool pgLowLevelAPI::createApplication(const char* title, u16 width, u16 height, u16 sys_flag)
+bool ckLowLevelAPI::createApplication(const char* title, u16 width, u16 height, u16 sys_flag)
 {
     s_app_name = title;
     s_framebuffer_width = width;
     s_framebuffer_height = height;
     s_sys_flag = sys_flag;
     s_is_framebuffer_size_changed = false;
-    s_is_fullscreen = (sys_flag & pgSysMgr::FLAG_FULLSCREEN_START) ? true : false;
+    s_is_fullscreen = (sys_flag & ckSysMgr::FLAG_FULLSCREEN_START) ? true : false;
     s_is_mouse_visible = true;
 
     if (!createFramebuffer(width, height))
@@ -347,19 +347,19 @@ bool pgLowLevelAPI::createApplication(const char* title, u16 width, u16 height, 
         return false;
     }
 
-    setupShaderAPI((sys_flag & pgSysMgr::FLAG_DISABLE_SHADER) ? false : true);
+    setupShaderAPI((sys_flag & ckSysMgr::FLAG_DISABLE_SHADER) ? false : true);
 
     return true;
 }
 
 
-void pgLowLevelAPI::destroyApplication()
+void ckLowLevelAPI::destroyApplication()
 {
     destroyFramebuffer();
 }
 
 
-void pgLowLevelAPI::startApplication(bool (*update_func)(void))
+void ckLowLevelAPI::startApplication(bool (*update_func)(void))
 {
     while (true)
     {
@@ -381,38 +381,38 @@ void pgLowLevelAPI::startApplication(bool (*update_func)(void))
             case ButtonPress:
                 if (event.xbutton.button == Button1)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_LBUTTON, true);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, true);
                 }
                 else if (event.xbutton.button == Button2)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_MBUTTON, true);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_MBUTTON, true);
                 }
                 else if (event.xbutton.button == Button3)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_RBUTTON, true);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_RBUTTON, true);
                 }
                 else if (event.xbutton.button == Button4)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_WHEELUP, true);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_WHEELUP, true);
                 }
                 else if (event.xbutton.button == Button5)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_WHEELDOWN, true);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_WHEELDOWN, true);
                 }
                 break;
 
             case ButtonRelease:
                 if (event.xbutton.button == Button1)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_LBUTTON, false);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, false);
                 }
                 else if (event.xbutton.button == Button2)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_MBUTTON, false);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_MBUTTON, false);
                 }
                 else if (event.xbutton.button == Button3)
                 {
-                    (*s_key_event_handler)(pgKeyMgr::KEY_RBUTTON, false);
+                    (*s_key_event_handler)(ckKeyMgr::KEY_RBUTTON, false);
                 }
                 break;
 
@@ -441,19 +441,19 @@ void pgLowLevelAPI::startApplication(bool (*update_func)(void))
 }
 
 
-u16 pgLowLevelAPI::getFramebufferWidth()
+u16 ckLowLevelAPI::getFramebufferWidth()
 {
     return s_framebuffer_width;
 }
 
 
-u16 pgLowLevelAPI::getFramebufferHeight()
+u16 ckLowLevelAPI::getFramebufferHeight()
 {
     return s_framebuffer_height;
 }
 
 
-void pgLowLevelAPI::updateFramebufferSize()
+void ckLowLevelAPI::updateFramebufferSize()
 {
     Window root;
     int win_x, win_y;
@@ -476,13 +476,13 @@ void pgLowLevelAPI::updateFramebufferSize()
 }
 
 
-bool pgLowLevelAPI::isFramebufferSizeChanged()
+bool ckLowLevelAPI::isFramebufferSizeChanged()
 {
     return s_is_framebuffer_size_changed;
 }
 
 
-void pgLowLevelAPI::swapFramebuffer()
+void ckLowLevelAPI::swapFramebuffer()
 {
     if (s_is_double_buffered)
     {
@@ -491,13 +491,13 @@ void pgLowLevelAPI::swapFramebuffer()
 }
 
 
-bool pgLowLevelAPI::isFullScreen()
+bool ckLowLevelAPI::isFullScreen()
 {
     return s_is_fullscreen;
 }
 
 
-bool pgLowLevelAPI::toggleFullScreen(u16 width, u16 height)
+bool ckLowLevelAPI::toggleFullScreen(u16 width, u16 height)
 {
     destroyFramebuffer();
 
@@ -507,25 +507,25 @@ bool pgLowLevelAPI::toggleFullScreen(u16 width, u16 height)
 }
 
 
-void pgLowLevelAPI::setKeyEventHandler(KeyEventHandler handler)
+void ckLowLevelAPI::setKeyEventHandler(KeyEventHandler handler)
 {
     s_key_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setMouseEventHandler(MouseEventHandler handler)
+void ckLowLevelAPI::setMouseEventHandler(MouseEventHandler handler)
 {
     s_mouse_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setExtraEventHandler(ExtraEventHandler handler)
+void ckLowLevelAPI::setExtraEventHandler(ExtraEventHandler handler)
 {
     s_extra_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y)
+void ckLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y)
 {
     /*
         Window root;
@@ -544,13 +544,13 @@ void pgLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y)
 }
 
 
-bool pgLowLevelAPI::isMouseVisible()
+bool ckLowLevelAPI::isMouseVisible()
 {
     return s_is_mouse_visible;
 }
 
 
-void pgLowLevelAPI::setMouseVisible(bool is_visible)
+void ckLowLevelAPI::setMouseVisible(bool is_visible)
 {
     if (is_visible != s_is_mouse_visible)
     {
@@ -578,7 +578,7 @@ void pgLowLevelAPI::setMouseVisible(bool is_visible)
 }
 
 
-u64 pgLowLevelAPI::getUsecTime()
+u64 ckLowLevelAPI::getUsecTime()
 {
     static u64 s_start_time;
     static bool s_is_first = true;
@@ -601,19 +601,19 @@ u64 pgLowLevelAPI::getUsecTime()
 }
 
 
-void pgLowLevelAPI::sleepUsec(u64 usec)
+void ckLowLevelAPI::sleepUsec(u64 usec)
 {
     usleep(usec);
 }
 
 
-void pgLowLevelAPI::exit(s32 status)
+void ckLowLevelAPI::exit(s32 status)
 {
     ::exit(status);
 }
 
 
-void pgLowLevelAPI::error(const char* msg)
+void ckLowLevelAPI::error(const char* msg)
 {
     printf(msg);
     printf("\n");
@@ -622,13 +622,13 @@ void pgLowLevelAPI::error(const char* msg)
 }
 
 
-void pgLowLevelAPI::readLittleEndian(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::readLittleEndian(void* dest, const void* src, u32 size)
 {
     memcpy(dest, src, size);
 }
 
 
-void pgLowLevelAPI::writeLittleEndian(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::writeLittleEndian(void* dest, const void* src, u32 size)
 {
     memcpy(dest, src, size);
 }
@@ -647,13 +647,13 @@ static void* threadStartFunc(void* user_param)
 
     func_and_param->start_func(func_and_param->user_param);
 
-    pgLowLevelAPI::free(user_param);
+    ckLowLevelAPI::free(user_param);
 
     return NULL;
 }
 
 
-void* pgLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
+void* ckLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
 {
     static pthread_mutex_t s_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -679,19 +679,19 @@ void* pgLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
 }
 
 
-void pgLowLevelAPI::deleteThread(void* thread_handler)
+void ckLowLevelAPI::deleteThread(void* thread_handler)
 {
     free(thread_handler);
 }
 
 
-void pgLowLevelAPI::joinThread(void* thread_handler)
+void ckLowLevelAPI::joinThread(void* thread_handler)
 {
     pthread_join(*static_cast<pthread_t*>(thread_handler), NULL);
 }
 
 
-void* pgLowLevelAPI::newMutex()
+void* ckLowLevelAPI::newMutex()
 {
     void* mutex_handler = malloc(sizeof(pthread_mutex_t));
 
@@ -708,7 +708,7 @@ void* pgLowLevelAPI::newMutex()
 }
 
 
-void pgLowLevelAPI::deleteMutex(void* mutex_handler)
+void ckLowLevelAPI::deleteMutex(void* mutex_handler)
 {
     pthread_mutex_destroy(static_cast<pthread_mutex_t*>(mutex_handler));
 
@@ -716,19 +716,19 @@ void pgLowLevelAPI::deleteMutex(void* mutex_handler)
 }
 
 
-void pgLowLevelAPI::lockMutex(void* mutex_handler)
+void ckLowLevelAPI::lockMutex(void* mutex_handler)
 {
     pthread_mutex_lock(static_cast<pthread_mutex_t*>(mutex_handler));
 }
 
 
-void pgLowLevelAPI::unlockMutex(void* mutex_handler)
+void ckLowLevelAPI::unlockMutex(void* mutex_handler)
 {
     pthread_mutex_unlock(static_cast<pthread_mutex_t*>(mutex_handler));
 }
 
 
-void pgLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
+void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 {
     if (argc > 0)
     {
@@ -740,10 +740,10 @@ void pgLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 }
 
 
-void pgLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
+void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
 {
     // TODO: Error
 }
 
 
-#endif // PG_LINUX
+#endif // CK_LINUX

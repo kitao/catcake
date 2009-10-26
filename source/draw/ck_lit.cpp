@@ -29,52 +29,52 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_private_macro.h"
+#include "ck_private_macro.h"
 
 
-pgLit* pgLit::getPrevN() const
+ckLit* ckLit::getPrevN() const
 {
-    pgList<pgLit>::Item* prev = m_item.getPrevN();
+    ckList<ckLit>::Item* prev = m_item.getPrevN();
 
     return prev ? prev->getSelf() : NULL;
 }
 
 
-pgLit* pgLit::getNextN() const
+ckLit* ckLit::getNextN() const
 {
-    pgList<pgLit>::Item* next = m_item.getNextN();
+    ckList<ckLit>::Item* next = m_item.getNextN();
 
     return next ? next->getSelf() : NULL;
 }
 
 
-pgID pgLit::getID() const
+ckID ckLit::getID() const
 {
     return m_id;
 }
 
 
-bool pgLit::isActive() const
+bool ckLit::isActive() const
 {
     return m_is_active.getType();
 }
 
 
-void pgLit::setActive(bool is_active)
+void ckLit::setActive(bool is_active)
 {
     m_is_active = is_active;
 }
 
 
-const pgVec& pgLit::getPos() const
+const ckVec& ckLit::getPos() const
 {
     return m_pos;
 }
 
 
-void pgLit::setPos(const pgVec& pos)
+void ckLit::setPos(const ckVec& pos)
 {
     m_pos = pos;
 
@@ -82,23 +82,23 @@ void pgLit::setPos(const pgVec& pos)
 }
 
 
-r32 pgLit::getInnerRadius() const
+r32 ckLit::getInnerRadius() const
 {
     return m_inner_rad;
 }
 
 
-r32 pgLit::getOuterRadius() const
+r32 ckLit::getOuterRadius() const
 {
     return m_outer_rad;
 }
 
 
-void pgLit::setRadius(r32 inner_rad, r32 outer_rad)
+void ckLit::setRadius(r32 inner_rad, r32 outer_rad)
 {
     if (inner_rad < 0.0f || outer_rad < 0.0 || inner_rad > outer_rad)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_inner_rad = inner_rad;
@@ -111,36 +111,36 @@ void pgLit::setRadius(r32 inner_rad, r32 outer_rad)
 }
 
 
-pgCol pgLit::getColor() const
+ckCol ckLit::getColor() const
 {
     return m_col;
 }
 
 
-void pgLit::setColor(pgCol col)
+void ckLit::setColor(ckCol col)
 {
     m_col = col;
     m_col_int = m_col.r + m_col.g + m_col.b;
 }
 
 
-pgLit::pgLit(pgID lts_id)
+ckLit::ckLit(ckID lts_id)
 {
     m_id = lts_id;
 
     m_item.init(this);
 
     setActive(true);
-    setPos(pgVec::ZERO);
+    setPos(ckVec::ZERO);
     setRadius(0.0f, 0.0f);
-    setColor(pgCol(255, 255, 0));
+    setColor(ckCol(255, 255, 0));
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgLit)
+CK_DEFINE_OPERATOR_EQUAL(ckLit)
 
 
-void pgLit::updateBound()
+void ckLit::updateBound()
 {
     m_max_bound.set(m_pos.x + m_outer_rad, m_pos.y + m_outer_rad, m_pos.z + m_outer_rad);
     m_min_bound.set(m_pos.x - m_outer_rad, m_pos.y - m_outer_rad, m_pos.z - m_outer_rad);

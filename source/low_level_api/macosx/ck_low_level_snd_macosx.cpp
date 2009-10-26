@@ -29,12 +29,12 @@
 */
 
 
-#ifdef PG_MACOSX
+#ifdef CK_MACOSX
 
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_mem_all.h"
+#include "ck_mem_all.h"
 
 
 static bool s_is_snd_dev_open = false;
@@ -46,7 +46,7 @@ static u32 s_snd_mix_buf_size;
 static u32 s_snd_mix_buf_sample_num;
 
 
-bool pgLowLevelAPI::isSoundDeviceOpen()
+bool ckLowLevelAPI::isSoundDeviceOpen()
 {
     // TODO
 
@@ -54,7 +54,7 @@ bool pgLowLevelAPI::isSoundDeviceOpen()
 }
 
 
-bool pgLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix_buf_msec, SoundMixFunction snd_mix_func)
+bool ckLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix_buf_msec, SoundMixFunction snd_mix_func)
 {
     if (isSoundDeviceOpen())
     {
@@ -74,7 +74,7 @@ bool pgLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix
 }
 
 
-void pgLowLevelAPI::closeSoundDevice()
+void ckLowLevelAPI::closeSoundDevice()
 {
     // TODO
 
@@ -82,46 +82,46 @@ void pgLowLevelAPI::closeSoundDevice()
 }
 
 
-u8 pgLowLevelAPI::getSoundDeviceChannelNum()
+u8 ckLowLevelAPI::getSoundDeviceChannelNum()
 {
     return s_channel_num;
 }
 
 
-u16 pgLowLevelAPI::getSoundDeviceSampleRate()
+u16 ckLowLevelAPI::getSoundDeviceSampleRate()
 {
     return s_sample_rate;
 }
 
 
-u16 pgLowLevelAPI::getSoundMixBufferMsec()
+u16 ckLowLevelAPI::getSoundMixBufferMsec()
 {
     return s_snd_mix_buf_msec;
 }
 
 
-u32 pgLowLevelAPI::getSoundMixBufferSize()
+u32 ckLowLevelAPI::getSoundMixBufferSize()
 {
     return s_snd_mix_buf_size;
 }
 
 
-u32 pgLowLevelAPI::getSoundMixBufferSampleNum()
+u32 ckLowLevelAPI::getSoundMixBufferSampleNum()
 {
     return s_snd_mix_buf_sample_num;
 }
 
 
-void pgLowLevelAPI::lockSoundMixMutex()
+void ckLowLevelAPI::lockSoundMixMutex()
 {
     // TODO
 }
 
 
-void pgLowLevelAPI::unlockSoundMixMutex()
+void ckLowLevelAPI::unlockSoundMixMutex()
 {
     // TODO
 }
 
 
-#endif // PG_MACOSX
+#endif // CK_MACOSX

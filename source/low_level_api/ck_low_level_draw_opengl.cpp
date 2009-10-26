@@ -33,121 +33,121 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include <glext.h>
-#elif defined(PG_LINUX)
+#elif defined(CK_LINUX)
 #include <GL/glx.h>
-#elif defined(PG_MACOSX)
+#elif defined(CK_MACOSX)
 #include <GLUT/glut.h>
-#elif defined(PG_IPHONE)
+#elif defined(CK_IPHONE)
 #include <OpenGLES/ES1/gl.h>
 #else
 #error
 #endif
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_math_all.h" // for pgMat::MulR32x16
+#include "ck_math_all.h" // for ckMat::MulR32x16
 
 
-#if !defined(PG_GLES1) && defined(PG_IPHONE)
-#define PG_GLES1
+#if !defined(CK_GLES1) && defined(CK_IPHONE)
+#define CK_GLES1
 #endif
 
-#if !defined(PG_GLSL) && !defined(PG_GLES1)
-#define PG_GLSL
+#if !defined(CK_GLSL) && !defined(CK_GLES1)
+#define CK_GLSL
 #endif
 
 
-#if defined(WIN32) || defined(PG_LINUX)
+#if defined(WIN32) || defined(CK_LINUX)
 
-PFNGLACTIVETEXTUREARBPROC pglActiveTexture;
-PFNGLATTACHOBJECTARBPROC pglAttachShader;
-PFNGLCOMPILESHADERARBPROC pglCompileShader;
-PFNGLCREATEPROGRAMOBJECTARBPROC pglCreateProgram;
-PFNGLCREATESHADEROBJECTARBPROC pglCreateShader;
-PFNGLDELETEOBJECTARBPROC pglDeleteObject;
-PFNGLDISABLEVERTEXATTRIBARRAYARBPROC pglDisableVertexAttribArray;
-PFNGLENABLEVERTEXATTRIBARRAYARBPROC pglEnableVertexAttribArray;
-PFNGLGETATTRIBLOCATIONARBPROC pglGetAttribLocation;
-PFNGLGETINFOLOGARBPROC pglGetInfoLog;
-PFNGLGETOBJECTPARAMETERIVARBPROC pglGetObjectParameteriv;
-PFNGLGETUNIFORMLOCATIONARBPROC pglGetUniformLocation;
-PFNGLLINKPROGRAMARBPROC pglLinkProgram;
-PFNGLSHADERSOURCEARBPROC pglShaderSource;
-PFNGLUNIFORM1FARBPROC pglUniform1f;
-PFNGLUNIFORM1IARBPROC pglUniform1i;
-PFNGLUNIFORMMATRIX4FVARBPROC pglUniformMatrix4fv;
-PFNGLUSEPROGRAMOBJECTARBPROC pglUseProgram;
-PFNGLVERTEXATTRIBPOINTERARBPROC pglVertexAttribPointer;
+PFNGLACTIVETEXTUREARBPROC ckglActiveTexture;
+PFNGLATTACHOBJECTARBPROC ckglAttachShader;
+PFNGLCOMPILESHADERARBPROC ckglCompileShader;
+PFNGLCREATEPROGRAMOBJECTARBPROC ckglCreateProgram;
+PFNGLCREATESHADEROBJECTARBPROC ckglCreateShader;
+PFNGLDELETEOBJECTARBPROC ckglDeleteObject;
+PFNGLDISABLEVERTEXATTRIBARRAYARBPROC ckglDisableVertexAttribArray;
+PFNGLENABLEVERTEXATTRIBARRAYARBPROC ckglEnableVertexAttribArray;
+PFNGLGETATTRIBLOCATIONARBPROC ckglGetAttribLocation;
+PFNGLGETINFOLOGARBPROC ckglGetInfoLog;
+PFNGLGETOBJECTPARAMETERIVARBPROC ckglGetObjectParameteriv;
+PFNGLGETUNIFORMLOCATIONARBPROC ckglGetUniformLocation;
+PFNGLLINKPROGRAMARBPROC ckglLinkProgram;
+PFNGLSHADERSOURCEARBPROC ckglShaderSource;
+PFNGLUNIFORM1FARBPROC ckglUniform1f;
+PFNGLUNIFORM1IARBPROC ckglUniform1i;
+PFNGLUNIFORMMATRIX4FVARBPROC ckglUniformMatrix4fv;
+PFNGLUSEPROGRAMOBJECTARBPROC ckglUseProgram;
+PFNGLVERTEXATTRIBPOINTERARBPROC ckglVertexAttribPointer;
 
-#define pglDeleteProgram pglDeleteObject
-#define pglDeleteShader pglDeleteObject
-#define pglGetProgramInfoLog pglGetInfoLog
-#define pglGetProgramiv pglGetObjectParameteriv
-#define pglGetShaderInfoLog pglGetInfoLog
-#define pglGetShaderiv pglGetObjectParameteriv
+#define ckglDeleteProgram ckglDeleteObject
+#define ckglDeleteShader ckglDeleteObject
+#define ckglGetProgramInfoLog ckglGetInfoLog
+#define ckglGetProgramiv ckglGetObjectParameteriv
+#define ckglGetShaderInfoLog ckglGetInfoLog
+#define ckglGetShaderiv ckglGetObjectParameteriv
 
-#define PGL_COMPILE_STATUS GL_OBJECT_COMPILE_STATUS_ARB
-#define PGL_FRAGMENT_SHADER GL_FRAGMENT_SHADER_ARB
-#define PGL_INFO_LOG_LENGTH GL_OBJECT_INFO_LOG_LENGTH_ARB
-#define PGL_LINK_STATUS GL_OBJECT_LINK_STATUS_ARB
-#define PGL_TEXTURE0 GL_TEXTURE0_ARB
-#define PGL_TEXTURE1 GL_TEXTURE1_ARB
-#define PGL_TEXTURE2 GL_TEXTURE2_ARB
-#define PGL_VERTEX_SHADER GL_VERTEX_SHADER_ARB
+#define CKGL_COMPILE_STATUS GL_OBJECT_COMPILE_STATUS_ARB
+#define CKGL_FRAGMENT_SHADER GL_FRAGMENT_SHADER_ARB
+#define CKGL_INFO_LOG_LENGTH GL_OBJECT_INFO_LOG_LENGTH_ARB
+#define CKGL_LINK_STATUS GL_OBJECT_LINK_STATUS_ARB
+#define CKGL_TEXTURE0 GL_TEXTURE0_ARB
+#define CKGL_TEXTURE1 GL_TEXTURE1_ARB
+#define CKGL_TEXTURE2 GL_TEXTURE2_ARB
+#define CKGL_VERTEX_SHADER GL_VERTEX_SHADER_ARB
 
-#else // !(WIN32 || PG_LINUX)
+#else // !(WIN32 || CK_LINUX)
 
-#define pglActiveTexture glActiveTexture
-#define pglAttachShader glAttachShader
-#define pglCompileShader glCompileShader
-#define pglCreateProgram glCreateProgram
-#define pglCreateShader glCreateShader
-#define pglDeleteProgram glDeleteProgram
-#define pglDeleteShader glDeleteShader
-#define pglDisableVertexAttribArray glDisableVertexAttribArray
-#define pglEnableVertexAttribArray glEnableVertexAttribArray
-#define pglGetAttribLocation glGetAttribLocation
-#define pglGetProgramInfoLog glGetProgramInfoLog
-#define pglGetProgramiv glGetProgramiv
-#define pglGetShaderInfoLog glGetShaderInfoLog
-#define pglGetShaderiv glGetShaderiv
-#define pglGetUniformLocation glGetUniformLocation
-#define pglLinkProgram glLinkProgram
-#define pglShaderSource glShaderSource
-#define pglUniform1f glUniform1f
-#define pglUniform1i glUniform1i
-#define pglUniformMatrix4fv glUniformMatrix4fv
-#define pglUseProgram glUseProgram
-#define pglVertexAttribPointer glVertexAttribPointer
+#define ckglActiveTexture glActiveTexture
+#define ckglAttachShader glAttachShader
+#define ckglCompileShader glCompileShader
+#define ckglCreateProgram glCreateProgram
+#define ckglCreateShader glCreateShader
+#define ckglDeleteProgram glDeleteProgram
+#define ckglDeleteShader glDeleteShader
+#define ckglDisableVertexAttribArray glDisableVertexAttribArray
+#define ckglEnableVertexAttribArray glEnableVertexAttribArray
+#define ckglGetAttribLocation glGetAttribLocation
+#define ckglGetProgramInfoLog glGetProgramInfoLog
+#define ckglGetProgramiv glGetProgramiv
+#define ckglGetShaderInfoLog glGetShaderInfoLog
+#define ckglGetShaderiv glGetShaderiv
+#define ckglGetUniformLocation glGetUniformLocation
+#define ckglLinkProgram glLinkProgram
+#define ckglShaderSource glShaderSource
+#define ckglUniform1f glUniform1f
+#define ckglUniform1i glUniform1i
+#define ckglUniformMatrix4fv glUniformMatrix4fv
+#define ckglUseProgram glUseProgram
+#define ckglVertexAttribPointer glVertexAttribPointer
 
-#define PGL_COMPILE_STATUS GL_COMPILE_STATUS
-#define PGL_FRAGMENT_SHADER GL_FRAGMENT_SHADER
-#define PGL_INFO_LOG_LENGTH GL_INFO_LOG_LENGTH
-#define PGL_LINK_STATUS GL_LINK_STATUS
-#define PGL_TEXTURE0 GL_TEXTURE0
-#define PGL_TEXTURE1 GL_TEXTURE1
-#define PGL_TEXTURE2 GL_TEXTURE2
-#define PGL_VERTEX_SHADER GL_VERTEX_SHADER
+#define CKGL_COMPILE_STATUS GL_COMPILE_STATUS
+#define CKGL_FRAGMENT_SHADER GL_FRAGMENT_SHADER
+#define CKGL_INFO_LOG_LENGTH GL_INFO_LOG_LENGTH
+#define CKGL_LINK_STATUS GL_LINK_STATUS
+#define CKGL_TEXTURE0 GL_TEXTURE0
+#define CKGL_TEXTURE1 GL_TEXTURE1
+#define CKGL_TEXTURE2 GL_TEXTURE2
+#define CKGL_VERTEX_SHADER GL_VERTEX_SHADER
 
-#endif // WIN32 || PG_LINUX
+#endif // WIN32 || CK_LINUX
 
 
 static bool s_is_shader_available = false;
 
-static pgLowLevelAPI::DepthTest s_depth_test;
-static pgLowLevelAPI::BlendMode s_blend_mode;
+static ckLowLevelAPI::DepthTest s_depth_test;
+static ckLowLevelAPI::BlendMode s_blend_mode;
 static bool s_is_draw_rgb, s_is_draw_alpha, s_is_draw_depth;
 static bool s_is_backface_culling;
 static u32 s_tex_obj[3];
 static bool s_is_bilinear[3];
 static u32 s_shd_obj;
 
-#ifdef PG_GLSL
+#ifdef CK_GLSL
 static r32 s_model_view[16];
 static r32 s_projection[16];
 #endif
 
-#ifndef PG_GLES2
+#ifndef CK_GLES2
 static bool s_is_vertex_array_state;
 static bool s_is_color_array_state;
 static bool s_is_texcoord_array_state;
@@ -156,17 +156,17 @@ static bool s_is_texcoord_array_state;
 
 static void resetDepthTest()
 {
-    s_depth_test = pgLowLevelAPI::DEPTH_TEST_ALWAYS;
+    s_depth_test = ckLowLevelAPI::DEPTH_TEST_ALWAYS;
 
-    pgLowLevelAPI::setDepthTest(pgLowLevelAPI::DEPTH_TEST_GEQUAL);
+    ckLowLevelAPI::setDepthTest(ckLowLevelAPI::DEPTH_TEST_GEQUAL);
 }
 
 
 static void resetBlendMode()
 {
-    s_blend_mode = pgLowLevelAPI::BLEND_HALF;
+    s_blend_mode = ckLowLevelAPI::BLEND_HALF;
 
-    pgLowLevelAPI::setBlendMode(pgLowLevelAPI::BLEND_OFF);
+    ckLowLevelAPI::setBlendMode(ckLowLevelAPI::BLEND_OFF);
 }
 
 
@@ -176,7 +176,7 @@ static void resetWriteMode()
     s_is_draw_alpha = true;
     s_is_draw_depth = false;
 
-    pgLowLevelAPI::setWriteMode(true, false, true);
+    ckLowLevelAPI::setWriteMode(true, false, true);
 }
 
 
@@ -184,7 +184,7 @@ static void resetBackfaceCulling()
 {
     s_is_backface_culling = true;
 
-    pgLowLevelAPI::setBackfaceCulling(false);
+    ckLowLevelAPI::setBackfaceCulling(false);
 }
 
 
@@ -193,7 +193,7 @@ static void resetTexture()
     s_tex_obj[0] = s_tex_obj[1] = s_tex_obj[2] = 1;
     s_is_bilinear[0] = s_is_bilinear[1] = s_is_bilinear[2] = true;
 
-    pgLowLevelAPI::setTexture(0, 0, 0, false);
+    ckLowLevelAPI::setTexture(0, 0, 0, false);
 }
 
 
@@ -201,11 +201,11 @@ static void resetShader()
 {
     s_shd_obj = 1;
 
-    pgLowLevelAPI::setShader(0);
+    ckLowLevelAPI::setShader(0);
 }
 
 
-#ifndef PG_GLES2
+#ifndef CK_GLES2
 
 static void setVertexArrayState(bool is_vertex_array_state)
 {
@@ -284,10 +284,10 @@ static void resetTexCoordArrayState()
     setTexCoordArrayState(false);
 }
 
-#endif // !PG_GLES2
+#endif // !CK_GLES2
 
 
-void pgLowLevelAPI::setupShaderAPI(bool is_shader_check)
+void ckLowLevelAPI::setupShaderAPI(bool is_shader_check)
 {
     if (!is_shader_check)
     {
@@ -295,53 +295,53 @@ void pgLowLevelAPI::setupShaderAPI(bool is_shader_check)
         return;
     }
 
-#if defined(WIN32) || defined(PG_LINUX)
+#if defined(WIN32) || defined(CK_LINUX)
 
 #ifdef WIN32
-#define pglGetProcAddress(x) wglGetProcAddress(x)
-#else // PG_LINUX
-#define pglGetProcAddress(x) (*glXGetProcAddress)((const GLubyte*)(x))
+#define ckglGetProcAddress(x) wglGetProcAddress(x)
+#else // CK_LINUX
+#define ckglGetProcAddress(x) (*glXGetProcAddress)((const GLubyte*)(x))
 #endif
 
-    pglActiveTexture = reinterpret_cast<PFNGLACTIVETEXTUREARBPROC>(pglGetProcAddress("glActiveTextureARB"));
-    pglAttachShader = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(pglGetProcAddress("glAttachObjectARB"));
-    pglCompileShader = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(pglGetProcAddress("glCompileShaderARB"));
-    pglCreateProgram = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(pglGetProcAddress("glCreateProgramObjectARB"));
-    pglCreateShader = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(pglGetProcAddress("glCreateShaderObjectARB"));
-    pglDeleteObject = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(pglGetProcAddress("glDeleteObjectARB"));
-    pglDisableVertexAttribArray = reinterpret_cast<PFNGLDISABLEVERTEXATTRIBARRAYARBPROC>(pglGetProcAddress("glDisableVertexAttribArrayARB"));
-    pglEnableVertexAttribArray = reinterpret_cast<PFNGLENABLEVERTEXATTRIBARRAYARBPROC>(pglGetProcAddress("glEnableVertexAttribArrayARB"));
-    pglGetAttribLocation = reinterpret_cast<PFNGLGETATTRIBLOCATIONARBPROC>(pglGetProcAddress("glGetAttribLocationARB"));
-    pglGetInfoLog = reinterpret_cast<PFNGLGETINFOLOGARBPROC>(pglGetProcAddress("glGetInfoLogARB"));
-    pglGetObjectParameteriv = reinterpret_cast<PFNGLGETOBJECTPARAMETERIVARBPROC>(pglGetProcAddress("glGetObjectParameterivARB"));
-    pglGetUniformLocation = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(pglGetProcAddress("glGetUniformLocationARB"));
-    pglLinkProgram = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(pglGetProcAddress("glLinkProgramARB"));
-    pglShaderSource = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(pglGetProcAddress("glShaderSourceARB"));
-    pglUniform1f = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(pglGetProcAddress("glUniform1fARB"));
-    pglUniform1i = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(pglGetProcAddress("glUniform1iARB"));
-    pglUniformMatrix4fv = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(pglGetProcAddress("glUniformMatrix4fvARB"));
-    pglUseProgram = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(pglGetProcAddress("glUseProgramObjectARB"));
-    pglVertexAttribPointer = reinterpret_cast<PFNGLVERTEXATTRIBPOINTERARBPROC>(pglGetProcAddress("glVertexAttribPointerARB"));
+    ckglActiveTexture = reinterpret_cast<PFNGLACTIVETEXTUREARBPROC>(ckglGetProcAddress("glActiveTextureARB"));
+    ckglAttachShader = reinterpret_cast<PFNGLATTACHOBJECTARBPROC>(ckglGetProcAddress("glAttachObjectARB"));
+    ckglCompileShader = reinterpret_cast<PFNGLCOMPILESHADERARBPROC>(ckglGetProcAddress("glCompileShaderARB"));
+    ckglCreateProgram = reinterpret_cast<PFNGLCREATEPROGRAMOBJECTARBPROC>(ckglGetProcAddress("glCreateProgramObjectARB"));
+    ckglCreateShader = reinterpret_cast<PFNGLCREATESHADEROBJECTARBPROC>(ckglGetProcAddress("glCreateShaderObjectARB"));
+    ckglDeleteObject = reinterpret_cast<PFNGLDELETEOBJECTARBPROC>(ckglGetProcAddress("glDeleteObjectARB"));
+    ckglDisableVertexAttribArray = reinterpret_cast<PFNGLDISABLEVERTEXATTRIBARRAYARBPROC>(ckglGetProcAddress("glDisableVertexAttribArrayARB"));
+    ckglEnableVertexAttribArray = reinterpret_cast<PFNGLENABLEVERTEXATTRIBARRAYARBPROC>(ckglGetProcAddress("glEnableVertexAttribArrayARB"));
+    ckglGetAttribLocation = reinterpret_cast<PFNGLGETATTRIBLOCATIONARBPROC>(ckglGetProcAddress("glGetAttribLocationARB"));
+    ckglGetInfoLog = reinterpret_cast<PFNGLGETINFOLOGARBPROC>(ckglGetProcAddress("glGetInfoLogARB"));
+    ckglGetObjectParameteriv = reinterpret_cast<PFNGLGETOBJECTPARAMETERIVARBPROC>(ckglGetProcAddress("glGetObjectParameterivARB"));
+    ckglGetUniformLocation = reinterpret_cast<PFNGLGETUNIFORMLOCATIONARBPROC>(ckglGetProcAddress("glGetUniformLocationARB"));
+    ckglLinkProgram = reinterpret_cast<PFNGLLINKPROGRAMARBPROC>(ckglGetProcAddress("glLinkProgramARB"));
+    ckglShaderSource = reinterpret_cast<PFNGLSHADERSOURCEARBPROC>(ckglGetProcAddress("glShaderSourceARB"));
+    ckglUniform1f = reinterpret_cast<PFNGLUNIFORM1FARBPROC>(ckglGetProcAddress("glUniform1fARB"));
+    ckglUniform1i = reinterpret_cast<PFNGLUNIFORM1IARBPROC>(ckglGetProcAddress("glUniform1iARB"));
+    ckglUniformMatrix4fv = reinterpret_cast<PFNGLUNIFORMMATRIX4FVARBPROC>(ckglGetProcAddress("glUniformMatrix4fvARB"));
+    ckglUseProgram = reinterpret_cast<PFNGLUSEPROGRAMOBJECTARBPROC>(ckglGetProcAddress("glUseProgramObjectARB"));
+    ckglVertexAttribPointer = reinterpret_cast<PFNGLVERTEXATTRIBPOINTERARBPROC>(ckglGetProcAddress("glVertexAttribPointerARB"));
 
-    if (pglActiveTexture && //
-        pglAttachShader && //
-        pglCompileShader && //
-        pglCreateProgram && //
-        pglCreateShader && //
-        pglDeleteObject && //
-        pglDisableVertexAttribArray && //
-        pglEnableVertexAttribArray && //
-        pglGetAttribLocation && //
-        pglGetInfoLog && //
-        pglGetObjectParameteriv && //
-        pglGetUniformLocation && //
-        pglLinkProgram && //
-        pglShaderSource && //
-        pglUniform1f && //
-        pglUniform1i && //
-        pglUniformMatrix4fv && //
-        pglUseProgram && //
-        pglVertexAttribPointer)
+    if (ckglActiveTexture && //
+        ckglAttachShader && //
+        ckglCompileShader && //
+        ckglCreateProgram && //
+        ckglCreateShader && //
+        ckglDeleteObject && //
+        ckglDisableVertexAttribArray && //
+        ckglEnableVertexAttribArray && //
+        ckglGetAttribLocation && //
+        ckglGetInfoLog && //
+        ckglGetObjectParameteriv && //
+        ckglGetUniformLocation && //
+        ckglLinkProgram && //
+        ckglShaderSource && //
+        ckglUniform1f && //
+        ckglUniform1i && //
+        ckglUniformMatrix4fv && //
+        ckglUseProgram && //
+        ckglVertexAttribPointer)
     {
         s_is_shader_available = true;
     }
@@ -350,29 +350,29 @@ void pgLowLevelAPI::setupShaderAPI(bool is_shader_check)
         s_is_shader_available = false;
     }
 
-#elif defined(PG_GLSL)
+#elif defined(CK_GLSL)
 
     s_is_shader_available = true;
 
-#else // !PG_GLSL
+#else // !CK_GLSL
 
     s_is_shader_available = false;
 
-#endif // WIN32 || PG_LINUX
+#endif // WIN32 || CK_LINUX
 }
 
 
-void pgLowLevelAPI::resetDrawState()
+void ckLowLevelAPI::resetDrawState()
 {
     glEnable(GL_SCISSOR_TEST);
     glEnable(GL_DEPTH_TEST);
 
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     glShadeModel(GL_SMOOTH);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 #endif
 
-#if defined(PG_GLES1) || defined(PG_GLES2)
+#if defined(CK_GLES1) || defined(CK_GLES2)
     glClearDepthf(-1.0f);
 #else
     glClearDepth(-1.0f);
@@ -385,7 +385,7 @@ void pgLowLevelAPI::resetDrawState()
     resetTexture();
     resetShader();
 
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     resetVertexArrayState();
     resetColorArrayState();
     resetTexCoordArrayState();
@@ -393,13 +393,13 @@ void pgLowLevelAPI::resetDrawState()
 }
 
 
-bool pgLowLevelAPI::isShaderAvailable()
+bool ckLowLevelAPI::isShaderAvailable()
 {
     return s_is_shader_available;
 }
 
 
-void pgLowLevelAPI::setViewport(s16 left, s16 top, u16 width, u16 height)
+void ckLowLevelAPI::setViewport(s16 left, s16 top, u16 width, u16 height)
 {
     s16 bottom = getFramebufferHeight() - (top + height);
 
@@ -408,7 +408,7 @@ void pgLowLevelAPI::setViewport(s16 left, s16 top, u16 width, u16 height)
 }
 
 
-void pgLowLevelAPI::clearFramebuffer(bool is_clear_color, bool is_clear_depth, const u8* clear_color)
+void ckLowLevelAPI::clearFramebuffer(bool is_clear_color, bool is_clear_depth, const u8* clear_color)
 {
     GLbitfield mask = 0;
 
@@ -434,7 +434,7 @@ void pgLowLevelAPI::clearFramebuffer(bool is_clear_color, bool is_clear_depth, c
 }
 
 
-void pgLowLevelAPI::setDepthTest(DepthTest depth_test)
+void ckLowLevelAPI::setDepthTest(DepthTest depth_test)
 {
     if (s_depth_test != depth_test)
     {
@@ -454,7 +454,7 @@ void pgLowLevelAPI::setDepthTest(DepthTest depth_test)
 }
 
 
-void pgLowLevelAPI::setBlendMode(BlendMode blend_mode)
+void ckLowLevelAPI::setBlendMode(BlendMode blend_mode)
 {
     if (s_blend_mode != blend_mode)
     {
@@ -485,7 +485,7 @@ void pgLowLevelAPI::setBlendMode(BlendMode blend_mode)
 }
 
 
-void pgLowLevelAPI::setWriteMode(bool is_draw_rgb, bool is_draw_alpha, bool is_draw_depth)
+void ckLowLevelAPI::setWriteMode(bool is_draw_rgb, bool is_draw_alpha, bool is_draw_depth)
 {
     if (s_is_draw_rgb != is_draw_rgb || s_is_draw_alpha != is_draw_alpha)
     {
@@ -504,7 +504,7 @@ void pgLowLevelAPI::setWriteMode(bool is_draw_rgb, bool is_draw_alpha, bool is_d
 }
 
 
-void pgLowLevelAPI::setBackfaceCulling(bool is_backface_culling)
+void ckLowLevelAPI::setBackfaceCulling(bool is_backface_culling)
 {
     if (s_is_backface_culling != is_backface_culling)
     {
@@ -522,13 +522,13 @@ void pgLowLevelAPI::setBackfaceCulling(bool is_backface_culling)
 }
 
 
-u16 pgLowLevelAPI::getMaxTextureLength()
+u16 ckLowLevelAPI::getMaxTextureLength()
 {
     return 2048;
 }
 
 
-u16 pgLowLevelAPI::getValidTextureLength(u16 length)
+u16 ckLowLevelAPI::getValidTextureLength(u16 length)
 {
     if (length >= getMaxTextureLength())
     {
@@ -546,7 +546,7 @@ u16 pgLowLevelAPI::getValidTextureLength(u16 length)
 }
 
 
-u16 pgLowLevelAPI::getTexturePixelSize(TextureFormat format)
+u16 ckLowLevelAPI::getTexturePixelSize(TextureFormat format)
 {
     static const u16 s_pixel_size[] =
     {
@@ -557,7 +557,7 @@ u16 pgLowLevelAPI::getTexturePixelSize(TextureFormat format)
 }
 
 
-u32 pgLowLevelAPI::registerTexture(u16 width, u16 height, TextureFormat format, const void* image)
+u32 ckLowLevelAPI::registerTexture(u16 width, u16 height, TextureFormat format, const void* image)
 {
     glEnable(GL_TEXTURE_2D);
 
@@ -589,7 +589,7 @@ u32 pgLowLevelAPI::registerTexture(u16 width, u16 height, TextureFormat format, 
 }
 
 
-void pgLowLevelAPI::unregisterTexture(u32 tex_obj)
+void ckLowLevelAPI::unregisterTexture(u32 tex_obj)
 {
     glDeleteTextures(1, &tex_obj);
 
@@ -597,7 +597,7 @@ void pgLowLevelAPI::unregisterTexture(u32 tex_obj)
 }
 
 
-void pgLowLevelAPI::setTexture(u32 tex_obj1, u32 tex_obj2, u32 tex_obj3, bool is_bilinear)
+void ckLowLevelAPI::setTexture(u32 tex_obj1, u32 tex_obj2, u32 tex_obj3, bool is_bilinear)
 {
 #define SETUP_TEXTURE(index, tex_obj) \
     do \
@@ -637,16 +637,16 @@ void pgLowLevelAPI::setTexture(u32 tex_obj1, u32 tex_obj2, u32 tex_obj3, bool is
 
     SETUP_TEXTURE(0, tex_obj1);
 
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglActiveTexture(PGL_TEXTURE1);
+        ckglActiveTexture(CKGL_TEXTURE1);
         SETUP_TEXTURE(1, tex_obj2);
 
-        pglActiveTexture(PGL_TEXTURE2);
+        ckglActiveTexture(CKGL_TEXTURE2);
         SETUP_TEXTURE(2, tex_obj3);
 
-        pglActiveTexture(PGL_TEXTURE0);
+        ckglActiveTexture(CKGL_TEXTURE0);
     }
 #endif
 
@@ -654,7 +654,7 @@ void pgLowLevelAPI::setTexture(u32 tex_obj1, u32 tex_obj2, u32 tex_obj3, bool is
 }
 
 
-void pgLowLevelAPI::copyImageFromFramebufferToTexture( //
+void ckLowLevelAPI::copyImageFromFramebufferToTexture( //
     u32 tex_obj, u16 tex_width, u16 tex_height, TextureFormat tex_format, u16 left_in_framebuffer, u16 top_in_framebuffer)
 {
     if ((tex_obj != 0 && tex_format == FORMAT_RGB) || tex_format == FORMAT_RGBA)
@@ -667,35 +667,35 @@ void pgLowLevelAPI::copyImageFromFramebufferToTexture( //
 }
 
 
-void pgLowLevelAPI::setProjection(const r32* projection)
+void ckLowLevelAPI::setProjection(const r32* projection)
 {
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(projection);
 #endif
 
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     memcpy(s_projection, projection, sizeof(s_projection));
 #endif
 }
 
 
-void pgLowLevelAPI::setModelView(const r32* model_view)
+void ckLowLevelAPI::setModelView(const r32* model_view)
 {
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(model_view);
 #endif
 
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     memcpy(s_model_view, model_view, sizeof(s_model_view));
 #endif
 }
 
 
-void pgLowLevelAPI::setVertexPointer(u32 stride, const r32* vert)
+void ckLowLevelAPI::setVertexPointer(u32 stride, const r32* vert)
 {
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     if (vert)
     {
         setVertexArrayState(true);
@@ -709,9 +709,9 @@ void pgLowLevelAPI::setVertexPointer(u32 stride, const r32* vert)
 }
 
 
-void pgLowLevelAPI::setColorPointer(u32 stride, const u8* color)
+void ckLowLevelAPI::setColorPointer(u32 stride, const u8* color)
 {
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     if (color)
     {
         setColorArrayState(true);
@@ -725,9 +725,9 @@ void pgLowLevelAPI::setColorPointer(u32 stride, const u8* color)
 }
 
 
-void pgLowLevelAPI::setTexCoordPointer(u32 stride, const r32* uv)
+void ckLowLevelAPI::setTexCoordPointer(u32 stride, const r32* uv)
 {
-#ifndef PG_GLES2
+#ifndef CK_GLES2
     if (uv)
     {
         setTexCoordArrayState(true);
@@ -741,7 +741,7 @@ void pgLowLevelAPI::setTexCoordPointer(u32 stride, const r32* uv)
 }
 
 
-void pgLowLevelAPI::drawArrays(DrawMode draw_mode, u16 first, u16 count)
+void ckLowLevelAPI::drawArrays(DrawMode draw_mode, u16 first, u16 count)
 {
     static const GLenum s_gl_draw_mode[] =
     {
@@ -758,28 +758,28 @@ void pgLowLevelAPI::drawArrays(DrawMode draw_mode, u16 first, u16 count)
 }
 
 
-u32 pgLowLevelAPI::registerShader(const char* vert_code, const char* frag_code)
+u32 ckLowLevelAPI::registerShader(const char* vert_code, const char* frag_code)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
 
 #define PRINT_LOG(type, obj, msg) \
     do \
     { \
         GLint buf_size; \
-        pglGet##type##iv(obj, PGL_INFO_LOG_LENGTH, &buf_size); \
+        ckglGet##type##iv(obj, CKGL_INFO_LOG_LENGTH, &buf_size); \
     \
         if (buf_size > 1) \
         { \
-            char* buf = static_cast<char*>(pgLowLevelAPI::malloc(buf_size)); \
+            char* buf = static_cast<char*>(ckLowLevelAPI::malloc(buf_size)); \
             GLint wrote_size; \
     \
-            pglGet##type##InfoLog(obj, buf_size, &wrote_size, buf); \
+            ckglGet##type##InfoLog(obj, buf_size, &wrote_size, buf); \
     \
-            pgLowLevelAPI::printf(msg); \
-            pgLowLevelAPI::printf("\n"); \
-            pgLowLevelAPI::printf(buf); \
+            ckLowLevelAPI::printf(msg); \
+            ckLowLevelAPI::printf("\n"); \
+            ckLowLevelAPI::printf(buf); \
     \
-            pgLowLevelAPI::free(buf); \
+            ckLowLevelAPI::free(buf); \
         } \
     } \
     while (false)
@@ -790,17 +790,17 @@ u32 pgLowLevelAPI::registerShader(const char* vert_code, const char* frag_code)
 
         if (vert_code)
         {
-            vert_obj = pglCreateShader(PGL_VERTEX_SHADER);
-            pglShaderSource(vert_obj, 1, &vert_code, NULL);
-            pglCompileShader(vert_obj);
+            vert_obj = ckglCreateShader(CKGL_VERTEX_SHADER);
+            ckglShaderSource(vert_obj, 1, &vert_code, NULL);
+            ckglCompileShader(vert_obj);
 
             GLint is_compile;
-            pglGetShaderiv(vert_obj, PGL_COMPILE_STATUS, &is_compile);
+            ckglGetShaderiv(vert_obj, CKGL_COMPILE_STATUS, &is_compile);
 
             if (!is_compile)
             {
                 PRINT_LOG(Shader, vert_obj, "*** vertex shader compile error ***");
-                pglDeleteShader(vert_obj);
+                ckglDeleteShader(vert_obj);
 
                 return 0;
             }
@@ -810,50 +810,50 @@ u32 pgLowLevelAPI::registerShader(const char* vert_code, const char* frag_code)
 
         if (frag_code)
         {
-            frag_obj = pglCreateShader(PGL_FRAGMENT_SHADER);
-            pglShaderSource(frag_obj, 1, &frag_code, NULL);
-            pglCompileShader(frag_obj);
+            frag_obj = ckglCreateShader(CKGL_FRAGMENT_SHADER);
+            ckglShaderSource(frag_obj, 1, &frag_code, NULL);
+            ckglCompileShader(frag_obj);
 
             GLint is_compile;
-            pglGetShaderiv(frag_obj, PGL_COMPILE_STATUS, &is_compile);
+            ckglGetShaderiv(frag_obj, CKGL_COMPILE_STATUS, &is_compile);
 
             if (!is_compile)
             {
                 PRINT_LOG(Shader, frag_obj, "*** fragment shader compile error ***");
-                pglDeleteShader(frag_obj);
+                ckglDeleteShader(frag_obj);
 
                 if (vert_code)
                 {
-                    pglDeleteShader(vert_obj);
+                    ckglDeleteShader(vert_obj);
                 }
 
                 return 0;
             }
         }
 
-        u32 prog_obj = pglCreateProgram();
+        u32 prog_obj = ckglCreateProgram();
 
         if (vert_code)
         {
-            pglAttachShader(prog_obj, vert_obj);
-            pglDeleteShader(vert_obj);
+            ckglAttachShader(prog_obj, vert_obj);
+            ckglDeleteShader(vert_obj);
         }
 
         if (frag_code)
         {
-            pglAttachShader(prog_obj, frag_obj);
-            pglDeleteShader(frag_obj);
+            ckglAttachShader(prog_obj, frag_obj);
+            ckglDeleteShader(frag_obj);
         }
 
-        pglLinkProgram(prog_obj);
+        ckglLinkProgram(prog_obj);
 
         GLint is_link;
-        pglGetProgramiv(prog_obj, PGL_LINK_STATUS, &is_link);
+        ckglGetProgramiv(prog_obj, CKGL_LINK_STATUS, &is_link);
 
         if (!is_link)
         {
             PRINT_LOG(Program, prog_obj, "*** shader link error ***");
-            pglDeleteProgram(prog_obj);
+            ckglDeleteProgram(prog_obj);
 
             return 0;
         }
@@ -871,124 +871,124 @@ u32 pgLowLevelAPI::registerShader(const char* vert_code, const char* frag_code)
 
     return 0;
 
-#endif // PG_GLSL
+#endif // CK_GLSL
 }
 
 
-void pgLowLevelAPI::unregisterShader(u32 shd_obj)
+void ckLowLevelAPI::unregisterShader(u32 shd_obj)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglDeleteShader(shd_obj);
+        ckglDeleteShader(shd_obj);
     }
 #endif
 }
 
 
-void pgLowLevelAPI::setShader(u32 shd_obj)
+void ckLowLevelAPI::setShader(u32 shd_obj)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
         if (s_shd_obj != shd_obj)
         {
             s_shd_obj = shd_obj;
 
-            pglUseProgram(s_shd_obj);
+            ckglUseProgram(s_shd_obj);
         }
     }
 #endif
 }
 
 
-u32 pgLowLevelAPI::getUniformLocation(u32 shd_obj, const char* name)
+u32 ckLowLevelAPI::getUniformLocation(u32 shd_obj, const char* name)
 {
-#ifdef PG_GLSL
-    return s_is_shader_available ? pglGetUniformLocation(shd_obj, name) : 0;
+#ifdef CK_GLSL
+    return s_is_shader_available ? ckglGetUniformLocation(shd_obj, name) : 0;
 #else
     return 0;
 #endif
 }
 
 
-void pgLowLevelAPI::setUniform_s32(u32 location, s32 uniform)
+void ckLowLevelAPI::setUniform_s32(u32 location, s32 uniform)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglUniform1i(location, uniform);
+        ckglUniform1i(location, uniform);
     }
 #endif
 }
 
 
-void pgLowLevelAPI::setUniform_r32(u32 location, r32 uniform)
+void ckLowLevelAPI::setUniform_r32(u32 location, r32 uniform)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglUniform1f(location, uniform);
+        ckglUniform1f(location, uniform);
     }
 #endif
 }
 
 
-void pgLowLevelAPI::setUniform_localToScreen(u32 location)
+void ckLowLevelAPI::setUniform_localToScreen(u32 location)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
         r32 local_to_screen[16];
 
-        pgMat::mulR32x16(local_to_screen, s_projection, s_model_view);
+        ckMat::mulR32x16(local_to_screen, s_projection, s_model_view);
 
-        pglUniformMatrix4fv(location, 1, GL_FALSE, local_to_screen);
+        ckglUniformMatrix4fv(location, 1, GL_FALSE, local_to_screen);
     }
 #endif
 }
 
 
-u32 pgLowLevelAPI::getAttribLocation(u32 shd_obj, const char* name)
+u32 ckLowLevelAPI::getAttribLocation(u32 shd_obj, const char* name)
 {
-#ifdef PG_GLSL
-    return s_is_shader_available ? pglGetAttribLocation(shd_obj, name) : 0;
+#ifdef CK_GLSL
+    return s_is_shader_available ? ckglGetAttribLocation(shd_obj, name) : 0;
 #else
     return 0;
 #endif
 }
 
 
-void pgLowLevelAPI::setAttribPointer_r32(u32 location, u8 size, u32 stride, const r32* attrib)
+void ckLowLevelAPI::setAttribPointer_r32(u32 location, u8 size, u32 stride, const r32* attrib)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglEnableVertexAttribArray(location);
-        pglVertexAttribPointer(location, size, GL_FLOAT, GL_FALSE, stride, attrib);
+        ckglEnableVertexAttribArray(location);
+        ckglVertexAttribPointer(location, size, GL_FLOAT, GL_FALSE, stride, attrib);
     }
 #endif
 }
 
 
-void pgLowLevelAPI::setAttribPointer_color(u32 location, u32 stride, const u8* attrib)
+void ckLowLevelAPI::setAttribPointer_color(u32 location, u32 stride, const u8* attrib)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglEnableVertexAttribArray(location);
-        pglVertexAttribPointer(location, 4, GL_UNSIGNED_BYTE, GL_TRUE, stride, attrib);
+        ckglEnableVertexAttribArray(location);
+        ckglVertexAttribPointer(location, 4, GL_UNSIGNED_BYTE, GL_TRUE, stride, attrib);
     }
 #endif
 }
 
 
-void pgLowLevelAPI::disableAttribPointer(u32 location)
+void ckLowLevelAPI::disableAttribPointer(u32 location)
 {
-#ifdef PG_GLSL
+#ifdef CK_GLSL
     if (s_is_shader_available)
     {
-        pglDisableVertexAttribArray(location);
+        ckglDisableVertexAttribArray(location);
     }
 #endif
 }

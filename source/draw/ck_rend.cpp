@@ -29,41 +29,41 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgRend::~pgRend()
+ckRend::~ckRend()
 {
     uninit();
 }
 
 
-bool pgRend::isActive() const
+bool ckRend::isActive() const
 {
     if (!m_prim)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_is_active.getType();
 }
 
 
-void pgRend::setActive(bool is_active)
+void ckRend::setActive(bool is_active)
 {
     if (!m_prim)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_is_active = is_active;
 }
 
 
-pgRend::pgRend()
+ckRend::ckRend()
 {
     m_prim = NULL;
     m_rend_body = NULL;
@@ -71,42 +71,42 @@ pgRend::pgRend()
 }
 
 
-void pgRend::init(pgPrim* prim, u32 body_size, u32 data_size)
+void ckRend::init(ckPrim* prim, u32 body_size, u32 data_size)
 {
     init2(prim, body_size, data_size, false, NULL);
 }
 
 
-void pgRend::init(pgPrim* prim, u32 body_size, u32 data_size, void* rend_data)
+void ckRend::init(ckPrim* prim, u32 body_size, u32 data_size, void* rend_data)
 {
     init2(prim, body_size, data_size, true, rend_data);
 }
 
 
-pgPrim* pgRend::getPrim() const
+ckPrim* ckRend::getPrim() const
 {
     if (!m_prim)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_prim;
 }
 
 
-void pgRend::renderAllocBuffer(pgVec** pos_buf, pgCol** col_buf, r32** uv_buf, pgVec** normal_buf, //
-    const pgPrim* prim, bool has_pos_buf, bool has_col_buf, bool has_uv_buf, bool has_normal_buf)
+void ckRend::renderAllocBuffer(ckVec** pos_buf, ckCol** col_buf, r32** uv_buf, ckVec** normal_buf, //
+    const ckPrim* prim, bool has_pos_buf, bool has_col_buf, bool has_uv_buf, bool has_normal_buf)
 {
     u32 data_size = 0;
 
     if (has_pos_buf)
     {
-        data_size += sizeof(pgVec);
+        data_size += sizeof(ckVec);
     }
 
     if (has_col_buf)
     {
-        data_size += sizeof(pgCol);
+        data_size += sizeof(ckCol);
     }
 
     if (has_uv_buf)
@@ -116,7 +116,7 @@ void pgRend::renderAllocBuffer(pgVec** pos_buf, pgCol** col_buf, r32** uv_buf, p
 
     if (has_normal_buf)
     {
-        data_size += sizeof(pgVec);
+        data_size += sizeof(ckVec);
     }
 
     if (data_size == 0)
@@ -129,12 +129,12 @@ void pgRend::renderAllocBuffer(pgVec** pos_buf, pgCol** col_buf, r32** uv_buf, p
         return;
     }
 
-    u8* buf = static_cast<u8*>(pgMemMgr::allocTempBufferForSystem(data_size * prim->m_cur_data_num));
+    u8* buf = static_cast<u8*>(ckMemMgr::allocTempBufferForSystem(data_size * prim->m_cur_data_num));
 
     if (has_pos_buf)
     {
-        *pos_buf = reinterpret_cast<pgVec*>(buf);
-        buf += sizeof(pgVec) * prim->m_cur_data_num;
+        *pos_buf = reinterpret_cast<ckVec*>(buf);
+        buf += sizeof(ckVec) * prim->m_cur_data_num;
     }
     else
     {
@@ -143,8 +143,8 @@ void pgRend::renderAllocBuffer(pgVec** pos_buf, pgCol** col_buf, r32** uv_buf, p
 
     if (has_col_buf)
     {
-        *col_buf = reinterpret_cast<pgCol*>(buf);
-        buf += sizeof(pgCol) * prim->m_cur_data_num;
+        *col_buf = reinterpret_cast<ckCol*>(buf);
+        buf += sizeof(ckCol) * prim->m_cur_data_num;
     }
     else
     {
@@ -163,8 +163,8 @@ void pgRend::renderAllocBuffer(pgVec** pos_buf, pgCol** col_buf, r32** uv_buf, p
 
     if (has_normal_buf)
     {
-        *normal_buf = reinterpret_cast<pgVec*>(buf);
-        buf += sizeof(pgVec) * prim->m_cur_data_num;
+        *normal_buf = reinterpret_cast<ckVec*>(buf);
+        buf += sizeof(ckVec) * prim->m_cur_data_num;
     }
     else
     {
@@ -173,31 +173,31 @@ void pgRend::renderAllocBuffer(pgVec** pos_buf, pgCol** col_buf, r32** uv_buf, p
 }
 
 
-const pgMat& pgRend::renderGetPrimWorld(const pgPrim* prim)
+const ckMat& ckRend::renderGetPrimWorld(const ckPrim* prim)
 {
     return prim->m_world;
 }
 
 
-pgTex* pgRend::renderGetPrimTextureN(const pgPrim* prim)
+ckTex* ckRend::renderGetPrimTextureN(const ckPrim* prim)
 {
     return prim->m_tex ? (prim->m_tex->m_proxy_tex ? prim->m_tex->m_proxy_tex : prim->m_tex) : NULL;
 }
 
 
-pgCol pgRend::renderGetPrimFinalColor(const pgPrim* prim)
+ckCol ckRend::renderGetPrimFinalColor(const ckPrim* prim)
 {
     return prim->m_final_col;
 }
 
 
-bool pgRend::renderIsTextureUVAdjustNeeded(pgTex* tex)
+bool ckRend::renderIsTextureUVAdjustNeeded(ckTex* tex)
 {
-    return tex->m_flag.isOn(pgTex::FLAG_UV_ADJUST);
+    return tex->m_flag.isOn(ckTex::FLAG_UV_ADJUST);
 }
 
 
-void pgRend::renderGetTextureParam(r32* u_param_a, r32* u_param_b, r32* v_param_a, r32* v_param_b, const pgTex* tex)
+void ckRend::renderGetTextureParam(r32* u_param_a, r32* u_param_b, r32* v_param_a, r32* v_param_b, const ckTex* tex)
 {
     *u_param_a = tex->m_u_param_a;
     *u_param_b = tex->m_u_param_b;
@@ -206,9 +206,9 @@ void pgRend::renderGetTextureParam(r32* u_param_a, r32* u_param_b, r32* v_param_
 }
 
 
-void pgRend::renderCalcColorBuffer(pgCol* col_buf, const pgPrim* prim)
+void ckRend::renderCalcColorBuffer(ckCol* col_buf, const ckPrim* prim)
 {
-    pgPrim::PrimData* prim_data = prim->m_prim_data;
+    ckPrim::PrimData* prim_data = prim->m_prim_data;
 
     for (s32 i = 0; i < prim->m_cur_data_num; i++)
     {
@@ -217,9 +217,9 @@ void pgRend::renderCalcColorBuffer(pgCol* col_buf, const pgPrim* prim)
 }
 
 
-void pgRend::renderCalcUVBuffer(r32* uv_buf, const pgPrim* prim)
+void ckRend::renderCalcUVBuffer(r32* uv_buf, const ckPrim* prim)
 {
-    pgTex* tex = prim->m_tex->m_proxy_tex ? prim->m_tex->m_proxy_tex : prim->m_tex;
+    ckTex* tex = prim->m_tex->m_proxy_tex ? prim->m_tex->m_proxy_tex : prim->m_tex;
     r32 u_param_a = tex->m_u_param_a;
     r32 u_param_b = tex->m_u_param_b;
     r32 v_param_a = tex->m_v_param_a;
@@ -227,7 +227,7 @@ void pgRend::renderCalcUVBuffer(r32* uv_buf, const pgPrim* prim)
 
     for (u32 i = 0; i < prim->m_cur_data_num; i++)
     {
-        pgPrim::PrimData* prim_data = &prim->m_prim_data[i];
+        ckPrim::PrimData* prim_data = &prim->m_prim_data[i];
 
         *uv_buf = prim_data->u * u_param_a + u_param_b;
         uv_buf++;
@@ -238,176 +238,176 @@ void pgRend::renderCalcUVBuffer(r32* uv_buf, const pgPrim* prim)
 }
 
 
-void pgRend::renderSetTexture(pgTex* tex1, pgTex* tex2, pgTex* tex3, bool is_bilinear)
+void ckRend::renderSetTexture(ckTex* tex1, ckTex* tex2, ckTex* tex3, bool is_bilinear)
 {
-    pgLowLevelAPI::setTexture(tex1 ? tex1->getTexObj() : 0, tex2 ? tex2->getTexObj() : 0, tex3 ? tex3->getTexObj() : 0, is_bilinear);
+    ckLowLevelAPI::setTexture(tex1 ? tex1->getTexObj() : 0, tex2 ? tex2->getTexObj() : 0, tex3 ? tex3->getTexObj() : 0, is_bilinear);
 }
 
 
-void pgRend::renderSetVertexPointer(u32 stride, const r32* vert)
+void ckRend::renderSetVertexPointer(u32 stride, const r32* vert)
 {
-    pgLowLevelAPI::setVertexPointer(stride, vert);
+    ckLowLevelAPI::setVertexPointer(stride, vert);
 }
 
 
-void pgRend::renderSetColorPointer(u32 stride, const u8* color)
+void ckRend::renderSetColorPointer(u32 stride, const u8* color)
 {
-    pgLowLevelAPI::setColorPointer(stride, color);
+    ckLowLevelAPI::setColorPointer(stride, color);
 }
 
 
-void pgRend::renderSetTexCoordPointer(u32 stride, const r32* uv)
+void ckRend::renderSetTexCoordPointer(u32 stride, const r32* uv)
 {
-    pgLowLevelAPI::setTexCoordPointer(stride, uv);
+    ckLowLevelAPI::setTexCoordPointer(stride, uv);
 }
 
 
-void pgRend::renderSetTexture(const pgPrim* prim)
+void ckRend::renderSetTexture(const ckPrim* prim)
 {
-    pgTex* tex = prim->m_tex ? (prim->m_tex->m_proxy_tex ? prim->m_tex->m_proxy_tex : prim->m_tex) : NULL;
+    ckTex* tex = prim->m_tex ? (prim->m_tex->m_proxy_tex ? prim->m_tex->m_proxy_tex : prim->m_tex) : NULL;
 
     if (tex)
     {
-        pgLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, prim->m_draw_flag.isOn(pgDraw::FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, prim->m_draw_flag.isOn(ckDraw::FLAG_BILINEAR));
     }
     else
     {
-        pgLowLevelAPI::setTexture(0, 0, 0, false);
+        ckLowLevelAPI::setTexture(0, 0, 0, false);
     }
 }
 
 
-void pgRend::renderSetVertexPointer(const pgPrim* prim)
+void ckRend::renderSetVertexPointer(const ckPrim* prim)
 {
-    pgLowLevelAPI::setVertexPointer(sizeof(pgPrim::PrimData), reinterpret_cast<const r32*>(&prim->m_prim_data->pos));
+    ckLowLevelAPI::setVertexPointer(sizeof(ckPrim::PrimData), reinterpret_cast<const r32*>(&prim->m_prim_data->pos));
 }
 
 
-void pgRend::renderSetColorPointer(const pgPrim* prim)
+void ckRend::renderSetColorPointer(const ckPrim* prim)
 {
-    pgLowLevelAPI::setColorPointer(sizeof(pgPrim::PrimData), reinterpret_cast<const u8*>(&prim->m_prim_data->col));
+    ckLowLevelAPI::setColorPointer(sizeof(ckPrim::PrimData), reinterpret_cast<const u8*>(&prim->m_prim_data->col));
 }
 
 
-void pgRend::renderSetTexCoordPointer(const pgPrim* prim)
+void ckRend::renderSetTexCoordPointer(const ckPrim* prim)
 {
-    pgLowLevelAPI::setTexCoordPointer(sizeof(pgPrim::PrimData), reinterpret_cast<const r32*>(&prim->m_prim_data->u));
+    ckLowLevelAPI::setTexCoordPointer(sizeof(ckPrim::PrimData), reinterpret_cast<const r32*>(&prim->m_prim_data->u));
 }
 
 
-void pgRend::renderDrawArrays(u8 prim_mode, u16 first, u16 count)
+void ckRend::renderDrawArrays(u8 prim_mode, u16 first, u16 count)
 {
-    pgLowLevelAPI::drawArrays(static_cast<pgLowLevelAPI::DrawMode>(prim_mode), first, count);
+    ckLowLevelAPI::drawArrays(static_cast<ckLowLevelAPI::DrawMode>(prim_mode), first, count);
 }
 
 
-u32 pgRend::renderGetShaderUniformLocation(const pgShd* shd, u8 index)
+u32 ckRend::renderGetShaderUniformLocation(const ckShd* shd, u8 index)
 {
     return shd->m_uni_loc_tbl[index];
 }
 
 
-u32 pgRend::renderGetShaderAttribLocation(const pgShd* shd, u8 index)
+u32 ckRend::renderGetShaderAttribLocation(const ckShd* shd, u8 index)
 {
     return shd->m_att_loc_tbl[index];
 }
 
 
-u32 pgRend::renderGetShaderTextureLocation(const pgShd* shd, u8 index)
+u32 ckRend::renderGetShaderTextureLocation(const ckShd* shd, u8 index)
 {
     return shd->m_tex_loc_tbl[index];
 }
 
 
-void pgRend::renderSetShader(pgShd* shd)
+void ckRend::renderSetShader(ckShd* shd)
 {
     if (shd)
     {
-        pgLowLevelAPI::setShader(shd->getShdObj());
+        ckLowLevelAPI::setShader(shd->getShdObj());
     }
     else
     {
-        pgLowLevelAPI::setShader(0);
+        ckLowLevelAPI::setShader(0);
     }
 }
 
 
-void pgRend::renderSetUniform_s32(u32 location, s32 uniform)
+void ckRend::renderSetUniform_s32(u32 location, s32 uniform)
 {
-    pgLowLevelAPI::setUniform_s32(location, uniform);
+    ckLowLevelAPI::setUniform_s32(location, uniform);
 }
 
 
-void pgRend::renderSetUniform_r32(u32 location, r32 uniform)
+void ckRend::renderSetUniform_r32(u32 location, r32 uniform)
 {
-    pgLowLevelAPI::setUniform_r32(location, uniform);
+    ckLowLevelAPI::setUniform_r32(location, uniform);
 }
 
 
-void pgRend::renderSetUniform_localToScreen(const pgShd* shd)
+void ckRend::renderSetUniform_localToScreen(const ckShd* shd)
 {
-    pgLowLevelAPI::setUniform_localToScreen(shd->m_local_to_screen_loc);
+    ckLowLevelAPI::setUniform_localToScreen(shd->m_local_to_screen_loc);
 }
 
 
-void pgRend::renderSetAttribPointer_r32(u32 location, u8 size, u32 stride, const r32* attrib)
+void ckRend::renderSetAttribPointer_r32(u32 location, u8 size, u32 stride, const r32* attrib)
 {
-    pgLowLevelAPI::setAttribPointer_r32(location, size, stride, attrib);
+    ckLowLevelAPI::setAttribPointer_r32(location, size, stride, attrib);
 }
 
 
-void pgRend::renderSetAttribPointer_vertex(const pgShd* shd, u32 stride, const r32* vert)
+void ckRend::renderSetAttribPointer_vertex(const ckShd* shd, u32 stride, const r32* vert)
 {
-    pgLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, stride, vert);
+    ckLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, stride, vert);
 }
 
 
-void pgRend::renderSetAttribPointer_color(const pgShd* shd, u32 stride, const u8* color)
+void ckRend::renderSetAttribPointer_color(const ckShd* shd, u32 stride, const u8* color)
 {
-    pgLowLevelAPI::setAttribPointer_color(shd->m_color_loc, stride, color);
+    ckLowLevelAPI::setAttribPointer_color(shd->m_color_loc, stride, color);
 }
 
 
-void pgRend::renderSetAttribPointer_texCoord(const pgShd* shd, u32 stride, const r32* uv)
+void ckRend::renderSetAttribPointer_texCoord(const ckShd* shd, u32 stride, const r32* uv)
 {
-    pgLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, stride, uv);
+    ckLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, stride, uv);
 }
 
 
-void pgRend::renderSetAttribPointer_vertex(const pgShd* shd, const pgPrim* prim)
+void ckRend::renderSetAttribPointer_vertex(const ckShd* shd, const ckPrim* prim)
 {
-    pgLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, sizeof(pgPrim::PrimData), reinterpret_cast<const r32*>(&prim->m_prim_data->pos));
+    ckLowLevelAPI::setAttribPointer_r32(shd->m_vertex_loc, 3, sizeof(ckPrim::PrimData), reinterpret_cast<const r32*>(&prim->m_prim_data->pos));
 }
 
 
-void pgRend::renderSetAttribPointer_color(const pgShd* shd, const pgPrim* prim)
+void ckRend::renderSetAttribPointer_color(const ckShd* shd, const ckPrim* prim)
 {
-    pgLowLevelAPI::setAttribPointer_color(shd->m_color_loc, sizeof(pgPrim::PrimData), reinterpret_cast<const u8*>(&prim->m_prim_data->col));
+    ckLowLevelAPI::setAttribPointer_color(shd->m_color_loc, sizeof(ckPrim::PrimData), reinterpret_cast<const u8*>(&prim->m_prim_data->col));
 }
 
 
-void pgRend::renderSetAttribPointer_texCoord(const pgShd* shd, const pgPrim* prim)
+void ckRend::renderSetAttribPointer_texCoord(const ckShd* shd, const ckPrim* prim)
 {
-    pgLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(pgPrim::PrimData), &prim->m_prim_data->u);
+    ckLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(ckPrim::PrimData), &prim->m_prim_data->u);
 }
 
 
-void pgRend::renderDisableAttribPointers(const pgShd* shd)
+void ckRend::renderDisableAttribPointers(const ckShd* shd)
 {
-    pgLowLevelAPI::disableAttribPointer(shd->m_vertex_loc);
-    pgLowLevelAPI::disableAttribPointer(shd->m_color_loc);
-    pgLowLevelAPI::disableAttribPointer(shd->m_texcoord_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_vertex_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_color_loc);
+    ckLowLevelAPI::disableAttribPointer(shd->m_texcoord_loc);
 
     for (s32 i = 0; i < shd->m_att_num; i++)
     {
-        pgLowLevelAPI::disableAttribPointer(shd->m_att_loc_tbl[i]);
+        ckLowLevelAPI::disableAttribPointer(shd->m_att_loc_tbl[i]);
     }
 }
 
 
-void pgRend::renderCallPrimRenderWithDestroyingBuffer(pgPrim* prim, const pgMat& view)
+void ckRend::renderCallPrimRenderWithDestroyingBuffer(ckPrim* prim, const ckMat& view)
 {
-    if (pgDrawMgr::isShaderAvailable())
+    if (ckDrawMgr::isShaderAvailable())
     {
         prim->render_shader(view);
     }
@@ -418,20 +418,20 @@ void pgRend::renderCallPrimRenderWithDestroyingBuffer(pgPrim* prim, const pgMat&
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgRend)
+CK_DEFINE_COPY_CONSTRUCTOR(ckRend)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgRend)
+CK_DEFINE_OPERATOR_EQUAL(ckRend)
 
 
-void pgRend::init2(pgPrim* prim, u32 body_size, u32 data_size, bool is_share_data, void* rend_data)
+void ckRend::init2(ckPrim* prim, u32 body_size, u32 data_size, bool is_share_data, void* rend_data)
 {
     if (!prim)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    prim->getPrimMode(); // assure the pgPrim is initialized
+    prim->getPrimMode(); // assure the ckPrim is initialized
 
     if (prim->m_rend)
     {
@@ -442,19 +442,19 @@ void pgRend::init2(pgPrim* prim, u32 body_size, u32 data_size, bool is_share_dat
 
     if (prim->m_is_share_data.getType() != is_share_data)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (data_size > 0 && is_share_data && !rend_data)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_is_active = true;
     m_rend_body_size = body_size;
     m_rend_data_size = data_size;
     m_prim = prim;
-    m_rend_body = (m_rend_body_size > 0) ? pgMalloc(m_rend_body_size) : NULL;
+    m_rend_body = (m_rend_body_size > 0) ? ckMalloc(m_rend_body_size) : NULL;
 
     if (is_share_data)
     {
@@ -462,7 +462,7 @@ void pgRend::init2(pgPrim* prim, u32 body_size, u32 data_size, bool is_share_dat
     }
     else if (m_rend_data_size > 0)
     {
-        m_rend_data = pgMalloc(m_rend_data_size * m_prim->m_max_data_num);
+        m_rend_data = ckMalloc(m_rend_data_size * m_prim->m_max_data_num);
 
         initData(m_rend_data, m_prim->m_max_data_num);
     }
@@ -475,7 +475,7 @@ void pgRend::init2(pgPrim* prim, u32 body_size, u32 data_size, bool is_share_dat
 }
 
 
-void pgRend::uninit()
+void ckRend::uninit()
 {
     if (m_prim)
     {
@@ -484,12 +484,12 @@ void pgRend::uninit()
 
     if (m_rend_body)
     {
-        pgFree(m_rend_body);
+        ckFree(m_rend_body);
     }
 
     if (m_rend_data && !m_prim->m_is_share_data.getType())
     {
-        pgFree(m_rend_data);
+        ckFree(m_rend_data);
     }
 
     m_prim = NULL;
@@ -498,37 +498,37 @@ void pgRend::uninit()
 }
 
 
-u16 pgRend::getMaxDataNum() const
+u16 ckRend::getMaxDataNum() const
 {
     return m_prim->getMaxDataNum();
 }
 
 
-void pgRend::reallocData(u16 max_data_num)
+void ckRend::reallocData(u16 max_data_num)
 {
     if (m_rend_data_size > 0)
     {
-        void* new_rend_data = pgMalloc(m_rend_data_size * max_data_num);
-        u32 copy_num = pgMath::min(max_data_num, m_prim->m_max_data_num);
+        void* new_rend_data = ckMalloc(m_rend_data_size * max_data_num);
+        u32 copy_num = ckMath::min(max_data_num, m_prim->m_max_data_num);
 
         initData(new_rend_data, max_data_num);
 
-        pgMemMgr::memcpy(new_rend_data, m_rend_data, m_rend_data_size * copy_num);
+        ckMemMgr::memcpy(new_rend_data, m_rend_data, m_rend_data_size * copy_num);
 
-        pgFree(m_rend_data);
+        ckFree(m_rend_data);
 
         m_rend_data = new_rend_data;
     }
 }
 
 
-void pgRend::copyData(u16 dest_index, const pgPrim* src_prim, u16 src_index)
+void ckRend::copyData(u16 dest_index, const ckPrim* src_prim, u16 src_index)
 {
-    pgRend* src_rend = src_prim->m_rend;
+    ckRend* src_rend = src_prim->m_rend;
 
     if (!src_rend || src_rend->getClassID() != getClassID())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_rend_data_size > 0)
@@ -536,6 +536,6 @@ void pgRend::copyData(u16 dest_index, const pgPrim* src_prim, u16 src_index)
         void* src = static_cast<u8*>(src_rend->m_rend_data) + m_rend_data_size * src_index;
         void* dest = static_cast<u8*>(m_rend_data) + m_rend_data_size * dest_index;
 
-        pgMemMgr::memcpy(dest, src, m_rend_data_size);
+        ckMemMgr::memcpy(dest, src, m_rend_data_size);
     }
 }

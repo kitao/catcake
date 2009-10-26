@@ -29,13 +29,13 @@
 */
 
 
-#include "pg_math_all.h"
+#include "ck_math_all.h"
 
 
-pgFix::pgFix() {}
+ckFix::ckFix() {}
 
 
-pgFix::pgFix(s32 n)
+ckFix::ckFix(s32 n)
 {
     s64 value = static_cast<s64>(n) << FRACTION_BIT_NUM;
     checkOverflow(value);
@@ -44,57 +44,57 @@ pgFix::pgFix(s32 n)
 }
 
 
-pgFix::pgFix(r32 r)
+ckFix::ckFix(r32 r)
 {
     s64 value = static_cast<s64>(r * (1 << FRACTION_BIT_NUM));
     checkOverflow(value);
 
     if (r != 0.0f && value == 0)
     {
-        pgThrow(ExceptionUnderflow);
+        ckThrow(ExceptionUnderflow);
     }
 
     m_value = static_cast<s32>(value);
 }
 
 
-bool pgFix::operator==(pgFix fix) const
+bool ckFix::operator==(ckFix fix) const
 {
     return (m_value == fix.m_value);
 }
 
 
-bool pgFix::operator!=(pgFix fix) const
+bool ckFix::operator!=(ckFix fix) const
 {
     return (m_value != fix.m_value);
 }
 
 
-bool pgFix::operator<(pgFix fix) const
+bool ckFix::operator<(ckFix fix) const
 {
     return (m_value < fix.m_value);
 }
 
 
-bool pgFix::operator>(pgFix fix) const
+bool ckFix::operator>(ckFix fix) const
 {
     return (m_value > fix.m_value);
 }
 
 
-bool pgFix::operator<=(pgFix fix) const
+bool ckFix::operator<=(ckFix fix) const
 {
     return (m_value <= fix.m_value);
 }
 
 
-bool pgFix::operator>=(pgFix fix) const
+bool ckFix::operator>=(ckFix fix) const
 {
     return (m_value >= fix.m_value);
 }
 
 
-pgFix pgFix::operator+(pgFix fix) const
+ckFix ckFix::operator+(ckFix fix) const
 {
     s64 value = static_cast<s64>(m_value) + static_cast<s64>(fix.m_value);
     checkOverflow(value);
@@ -103,25 +103,25 @@ pgFix pgFix::operator+(pgFix fix) const
 }
 
 
-pgFix operator+(s32 n, pgFix fix)
+ckFix operator+(s32 n, ckFix fix)
 {
-    return pgFix(n) + fix;
+    return ckFix(n) + fix;
 }
 
 
-pgFix operator+(r32 r, pgFix fix)
+ckFix operator+(r32 r, ckFix fix)
 {
-    return pgFix(r) + fix;
+    return ckFix(r) + fix;
 }
 
 
-void pgFix::operator+=(pgFix fix)
+void ckFix::operator+=(ckFix fix)
 {
     *this = *this + fix;
 }
 
 
-pgFix pgFix::operator-() const
+ckFix ckFix::operator-() const
 {
     s64 value = -static_cast<s64>(m_value);
     checkOverflow(value);
@@ -130,7 +130,7 @@ pgFix pgFix::operator-() const
 }
 
 
-pgFix pgFix::operator-(pgFix fix) const
+ckFix ckFix::operator-(ckFix fix) const
 {
     s64 value = static_cast<s64>(m_value) - static_cast<s64>(fix.m_value);
     checkOverflow(value);
@@ -139,109 +139,109 @@ pgFix pgFix::operator-(pgFix fix) const
 }
 
 
-pgFix operator-(s32 n, pgFix fix)
+ckFix operator-(s32 n, ckFix fix)
 {
-    return pgFix(n) - fix;
+    return ckFix(n) - fix;
 }
 
 
-pgFix operator-(r32 r, pgFix fix)
+ckFix operator-(r32 r, ckFix fix)
 {
-    return pgFix(r) - fix;
+    return ckFix(r) - fix;
 }
 
 
-void pgFix::operator-=(pgFix fix)
+void ckFix::operator-=(ckFix fix)
 {
     *this = *this - fix;
 }
 
 
-pgFix pgFix::operator*(pgFix fix) const
+ckFix ckFix::operator*(ckFix fix) const
 {
     s64 value = (static_cast<s64>(m_value) * static_cast<s64>(fix.m_value)) >> FRACTION_BIT_NUM;
     checkOverflow(value);
 
     if (m_value != 0 && fix.m_value != 0 && value == 0)
     {
-        pgThrow(ExceptionUnderflow);
+        ckThrow(ExceptionUnderflow);
     }
 
     return fromValue(static_cast<s32>(value));
 }
 
 
-pgFix operator*(s32 n, pgFix fix)
+ckFix operator*(s32 n, ckFix fix)
 {
-    return pgFix(n) * fix;
+    return ckFix(n) * fix;
 }
 
 
-pgFix operator*(r32 r, pgFix fix)
+ckFix operator*(r32 r, ckFix fix)
 {
-    return pgFix(r) * fix;
+    return ckFix(r) * fix;
 }
 
 
-void pgFix::operator*=(pgFix fix)
+void ckFix::operator*=(ckFix fix)
 {
     *this = *this * fix;
 }
 
 
-pgFix pgFix::operator/(pgFix fix) const
+ckFix ckFix::operator/(ckFix fix) const
 {
     s64 value = (static_cast<s64>(m_value) << FRACTION_BIT_NUM) / static_cast<s64>(fix.m_value);
     checkOverflow(value);
 
     if (m_value != 0 && fix.m_value != 0 && value == 0)
     {
-        pgThrow(ExceptionUnderflow);
+        ckThrow(ExceptionUnderflow);
     }
 
     return fromValue(static_cast<s32>(value));
 }
 
 
-pgFix operator/(s32 n, pgFix fix)
+ckFix operator/(s32 n, ckFix fix)
 {
-    return pgFix(n) / fix;
+    return ckFix(n) / fix;
 }
 
 
-pgFix operator/(r32 r, pgFix fix)
+ckFix operator/(r32 r, ckFix fix)
 {
-    return pgFix(r) / fix;
+    return ckFix(r) / fix;
 }
 
 
-void pgFix::operator/=(pgFix fix)
+void ckFix::operator/=(ckFix fix)
 {
     *this = *this / fix;
 }
 
 
-s32 pgFix::toS32() const
+s32 ckFix::toS32() const
 {
     return m_value >> FRACTION_BIT_NUM;
 }
 
 
-r32 pgFix::toR32() const
+r32 ckFix::toR32() const
 {
     return static_cast<r32>(m_value) / (1 << FRACTION_BIT_NUM);
 }
 
 
-s32 pgFix::getValue() const
+s32 ckFix::getValue() const
 {
     return m_value;
 }
 
 
-pgFix pgFix::fromValue(s32 value)
+ckFix ckFix::fromValue(s32 value)
 {
-    pgFix fix;
+    ckFix fix;
 
     fix.m_value = value;
 
@@ -249,12 +249,12 @@ pgFix pgFix::fromValue(s32 value)
 }
 
 
-void pgFix::checkOverflow(s64 value)
+void ckFix::checkOverflow(s64 value)
 {
     const s64 max_value = (static_cast<s64>(1) << (BIT_NUM - 1)) - 1;
 
     if (value > max_value || value < -max_value)
     {
-        pgThrow(ExceptionOverflow);
+        ckThrow(ExceptionOverflow);
     }
 }

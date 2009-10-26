@@ -29,16 +29,16 @@
 */
 
 
-#include "pg_conf_all.h"
+#include "ck_conf_all.h"
 
-#include "pg_math_all.h"
-#include "pg_low_level_api.h"
+#include "ck_math_all.h"
+#include "ck_low_level_api.h"
 
 
 struct Value
 {
     Value* next;
-    pgEnt::ValueType type;
+    ckEnt::ValueType type;
 
     union
     {
@@ -117,7 +117,7 @@ public:
         }
     }
 
-    void parseIdentifier(pgStr<char, pgEnt::MAX_NAME_LENGTH>* name)
+    void parseIdentifier(ckStr<char, ckEnt::MAX_NAME_LENGTH>* name)
     {
         if (isError())
         {
@@ -134,7 +134,7 @@ public:
 
             if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_')
             {
-                if (name->getLength() >= pgEnt::MAX_NAME_LENGTH)
+                if (name->getLength() >= ckEnt::MAX_NAME_LENGTH)
                 {
                     m_is_err = true;
                 }
@@ -152,7 +152,7 @@ public:
 
     void parseNumber(Value* val)
     {
-        val->type = pgEnt::TYPE_S32;
+        val->type = ckEnt::TYPE_S32;
         val->val_s32 = 0;
 
         if (isError())
@@ -190,7 +190,7 @@ public:
 
             if (c == '.')
             {
-                val->type = pgEnt::TYPE_R32;
+                val->type = ckEnt::TYPE_R32;
                 val->val_r32 = static_cast<r32>(val->val_s32);
 
                 moveForward();
@@ -261,7 +261,7 @@ public:
 
     void parseString2(Value* val, char* str_buf, u16 str_buf_size)
     {
-        val->type = pgEnt::TYPE_STRING;
+        val->type = ckEnt::TYPE_STRING;
         val->val_str = str_buf;
 
         if (isError())
@@ -427,13 +427,13 @@ private:
 };
 
 
-void pgConf::parse(const void* data, u32 data_size)
+void ckConf::parse(const void* data, u32 data_size)
 {
     Parser pars(data, data_size);
 
     while (!pars.isEnd())
     {
-        pgStr<char, pgEnt::MAX_NAME_LENGTH> ent_name;
+        ckStr<char, ckEnt::MAX_NAME_LENGTH> ent_name;
         pars.parseIdentifier(&ent_name);
 
         pars.parseChar('=');
@@ -483,7 +483,7 @@ void pgConf::parse(const void* data, u32 data_size)
                 val_list = val;
             }
 
-            pgEnt* ent = newEntry(ent_name.getString(), val_num);
+            ckEnt* ent = newEntry(ent_name.getString(), val_num);
             u16 val_index = 0;
 
             for (Value* val = val_list; val; val = val->next)
@@ -492,15 +492,15 @@ void pgConf::parse(const void* data, u32 data_size)
 
                 switch (val->type)
                 {
-                case pgEnt::TYPE_S32:
+                case ckEnt::TYPE_S32:
                     ent->m_val[val_index].val_s32 = val->val_s32;
                     break;
 
-                case pgEnt::TYPE_R32:
+                case ckEnt::TYPE_R32:
                     ent->m_val[val_index].val_r32 = val->val_r32;
                     break;
 
-                case pgEnt::TYPE_STRING:
+                case ckEnt::TYPE_STRING:
                     ent->m_val[val_index].val_str = val->val_str;
                     break;
                 }
@@ -531,21 +531,21 @@ void pgConf::parse(const void* data, u32 data_size)
                 pars.parseNumber(&val);
             }
 
-            pgEnt* ent = newEntry(ent_name.getString(), 1);
+            ckEnt* ent = newEntry(ent_name.getString(), 1);
 
             ent->m_val_type[0] = val.type;
 
             switch (val.type)
             {
-            case pgEnt::TYPE_S32:
+            case ckEnt::TYPE_S32:
                 ent->m_val[0].val_s32 = val.val_s32;
                 break;
 
-            case pgEnt::TYPE_R32:
+            case ckEnt::TYPE_R32:
                 ent->m_val[0].val_r32 = val.val_r32;
                 break;
 
-            case pgEnt::TYPE_STRING:
+            case ckEnt::TYPE_STRING:
                 ent->m_val[0].val_str = val.val_str;
                 break;
             }
@@ -558,6 +558,6 @@ void pgConf::parse(const void* data, u32 data_size)
     {
         m_err_line_no = pars.getErrorLineNo();
 
-        pgLowLevelAPI::printf("*** config file compile error ***\n");
+        ckLowLevelAPI::printf("*** config file compile error ***\n");
     }
 }

@@ -29,22 +29,22 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
 
-void pgRend_Shader::init(pgPrim* prim, pgID shd_id)
+void ckRend_Shader::init(ckPrim* prim, ckID shd_id)
 {
-    if (shd_id == pgID::ZERO)
+    if (shd_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgShd* shd = pgDrawMgr::getShader(shd_id);
+    ckShd* shd = ckDrawMgr::getShader(shd_id);
 
     u32 rend_body_size = sizeof(RendBody) + shd->getUniformNum() * sizeof(r32);
     u32 rend_data_size = shd->getAttribNum() * sizeof(r32);
 
-    pgRend::init(prim, rend_body_size, rend_data_size);
+    ckRend::init(prim, rend_body_size, rend_data_size);
 
     RendBody* rend_body = getRendBody<RendBody>();
 
@@ -57,19 +57,19 @@ void pgRend_Shader::init(pgPrim* prim, pgID shd_id)
 }
 
 
-void pgRend_Shader::init(pgPrim* prim, r32* rend_data, pgID shd_id)
+void ckRend_Shader::init(ckPrim* prim, r32* rend_data, ckID shd_id)
 {
-    if (shd_id == pgID::ZERO)
+    if (shd_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgShd* shd = pgDrawMgr::getShader(shd_id);
+    ckShd* shd = ckDrawMgr::getShader(shd_id);
 
     u32 rend_body_size = sizeof(RendBody) + shd->getUniformNum() * sizeof(r32);
     u32 rend_data_size = shd->getAttribNum() * sizeof(r32);
 
-    pgRend::init(prim, rend_body_size, rend_data_size, rend_data);
+    ckRend::init(prim, rend_body_size, rend_data_size, rend_data);
 
     RendBody* rend_body = getRendBody<RendBody>();
 
@@ -82,7 +82,7 @@ void pgRend_Shader::init(pgPrim* prim, r32* rend_data, pgID shd_id)
 }
 
 
-pgID pgRend_Shader::getShaderID()
+ckID ckRend_Shader::getShaderID()
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
@@ -90,52 +90,52 @@ pgID pgRend_Shader::getShaderID()
 }
 
 
-pgID pgRend_Shader::get2ndTextureID()
+ckID ckRend_Shader::get2ndTextureID()
 {
     RendBody* rend_body = getRendBody<RendBody>();
-    pgTex* tex2 = rend_body->tex2;
+    ckTex* tex2 = rend_body->tex2;
 
-    return tex2 ? tex2->getID() : pgID::ZERO;
+    return tex2 ? tex2->getID() : ckID::ZERO;
 }
 
 
-void pgRend_Shader::set2ndTextureID(pgID tex_id)
+void ckRend_Shader::set2ndTextureID(ckID tex_id)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
-    rend_body->tex2 = (tex_id != pgID::ZERO) ? pgDrawMgr::getTexture(tex_id) : NULL;
+    rend_body->tex2 = (tex_id != ckID::ZERO) ? ckDrawMgr::getTexture(tex_id) : NULL;
 }
 
 
-pgID pgRend_Shader::get3rdTextureID()
+ckID ckRend_Shader::get3rdTextureID()
 {
     RendBody* rend_body = getRendBody<RendBody>();
-    pgTex* tex3 = rend_body->tex3;
+    ckTex* tex3 = rend_body->tex3;
 
-    return tex3 ? tex3->getID() : pgID::ZERO;
+    return tex3 ? tex3->getID() : ckID::ZERO;
 }
 
 
-r32& pgRend_Shader::uniform(u8 uni_index)
+r32& ckRend_Shader::uniform(u8 uni_index)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
     if (uni_index >= rend_body->shd->getUniformNum())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return rend_body->uni[uni_index];
 }
 
 
-void pgRend_Shader::setUniformVec(u8 uni_index, const pgVec& vec)
+void ckRend_Shader::setUniformVec(u8 uni_index, const ckVec& vec)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
     if (uni_index + 2 >= rend_body->shd->getUniformNum())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     r32* uni = &rend_body->uni[uni_index];
@@ -146,13 +146,13 @@ void pgRend_Shader::setUniformVec(u8 uni_index, const pgVec& vec)
 }
 
 
-void pgRend_Shader::setUniformCol3x255(u8 uni_index, pgCol col)
+void ckRend_Shader::setUniformCol3x255(u8 uni_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
     if (uni_index + 2 >= rend_body->shd->getUniformNum())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     r32* uni = &rend_body->uni[uni_index];
@@ -163,13 +163,13 @@ void pgRend_Shader::setUniformCol3x255(u8 uni_index, pgCol col)
 }
 
 
-void pgRend_Shader::setUniformCol4x255(u8 uni_index, pgCol col)
+void ckRend_Shader::setUniformCol4x255(u8 uni_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
     if (uni_index + 3 >= rend_body->shd->getUniformNum())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     r32* uni = &rend_body->uni[uni_index];
@@ -181,28 +181,28 @@ void pgRend_Shader::setUniformCol4x255(u8 uni_index, pgCol col)
 }
 
 
-r32& pgRend_Shader::attrib(u16 data_index, u8 att_index)
+r32& ckRend_Shader::attrib(u16 data_index, u8 att_index)
 {
     RendBody* rend_body = getRendBody<RendBody>();
     u8 att_num = rend_body->shd->getAttribNum();
 
     if (data_index >= getPrim()->getMaxDataNum() || att_index >= att_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return rend_body->att[att_num * data_index + att_index];
 }
 
 
-void pgRend_Shader::setAttribVec(u16 data_index, u8 att_index, const pgVec& vec)
+void ckRend_Shader::setAttribVec(u16 data_index, u8 att_index, const ckVec& vec)
 {
     RendBody* rend_body = getRendBody<RendBody>();
     u8 att_num = rend_body->shd->getAttribNum();
 
     if (data_index >= getPrim()->getMaxDataNum() || att_index + 2 >= att_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     r32* att = &rend_body->att[att_num * data_index + att_index];
@@ -213,14 +213,14 @@ void pgRend_Shader::setAttribVec(u16 data_index, u8 att_index, const pgVec& vec)
 }
 
 
-void pgRend_Shader::setAttribCol3x255(u16 data_index, u8 att_index, pgCol col)
+void ckRend_Shader::setAttribCol3x255(u16 data_index, u8 att_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
     u8 att_num = rend_body->shd->getAttribNum();
 
     if (data_index >= getPrim()->getMaxDataNum() || att_index + 2 >= att_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     r32* att = &rend_body->att[att_num * data_index + att_index];
@@ -231,14 +231,14 @@ void pgRend_Shader::setAttribCol3x255(u16 data_index, u8 att_index, pgCol col)
 }
 
 
-void pgRend_Shader::setAttribCol4x255(u16 data_index, u8 att_index, pgCol col)
+void ckRend_Shader::setAttribCol4x255(u16 data_index, u8 att_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
     u8 att_num = rend_body->shd->getAttribNum();
 
     if (data_index >= getPrim()->getMaxDataNum() || att_index + 3 >= att_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     r32* att = &rend_body->att[att_num * data_index + att_index];
@@ -250,28 +250,28 @@ void pgRend_Shader::setAttribCol4x255(u16 data_index, u8 att_index, pgCol col)
 }
 
 
-void pgRend_Shader::set3rdTextureID(pgID tex_id)
+void ckRend_Shader::set3rdTextureID(ckID tex_id)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
-    rend_body->tex3 = (tex_id != pgID::ZERO) ? pgDrawMgr::getTexture(tex_id) : NULL;
+    rend_body->tex3 = (tex_id != ckID::ZERO) ? ckDrawMgr::getTexture(tex_id) : NULL;
 }
 
 
-pgID pgRend_Shader::getClassID()
+ckID ckRend_Shader::getClassID()
 {
-    return pgID_("pgRend_Shader");
+    return ckID_("ckRend_Shader");
 }
 
 
-void pgRend_Shader::initData(void* data, u16 data_num) {}
+void ckRend_Shader::initData(void* data, u16 data_num) {}
 
 
-void pgRend_Shader::render(const pgMat& view)
+void ckRend_Shader::render(const ckMat& view)
 {
-    pgPrim* prim = getPrim();
+    ckPrim* prim = getPrim();
 
-    if (!pgDrawMgr::isShaderAvailable())
+    if (!ckDrawMgr::isShaderAvailable())
     {
         renderCallPrimRenderWithDestroyingBuffer(prim, view);
         return;
@@ -288,7 +288,7 @@ void pgRend_Shader::render(const pgMat& view)
         setup shader
     */
     RendBody* rend_body = getRendBody<RendBody>();
-    pgShd* shd = rend_body->shd;
+    ckShd* shd = rend_body->shd;
 
     if (shd->isValid())
     {
@@ -303,15 +303,15 @@ void pgRend_Shader::render(const pgMat& view)
     /*
         alloc buffer
     */
-    pgTex* tex = renderGetPrimTextureN(prim);
-    pgCol final_col = renderGetPrimFinalColor(prim);
+    ckTex* tex = renderGetPrimTextureN(prim);
+    ckCol final_col = renderGetPrimFinalColor(prim);
 
-    pgVec* pos_buf;
-    pgCol* col_buf;
+    ckVec* pos_buf;
+    ckCol* col_buf;
     r32* uv_buf;
-    pgVec* normal_buf;
+    ckVec* normal_buf;
 
-    renderAllocBuffer(&pos_buf, &col_buf, &uv_buf, &normal_buf, prim, false, (final_col != pgCol::FULL), (tex && renderIsTextureUVAdjustNeeded(tex)), false);
+    renderAllocBuffer(&pos_buf, &col_buf, &uv_buf, &normal_buf, prim, false, (final_col != ckCol::FULL), (tex && renderIsTextureUVAdjustNeeded(tex)), false);
 
     /*
         setup color
@@ -321,7 +321,7 @@ void pgRend_Shader::render(const pgMat& view)
     if (col_buf)
     {
         renderCalcColorBuffer(col_buf, prim);
-        renderSetAttribPointer_color(shd, sizeof(pgCol), reinterpret_cast<const u8*>(col_buf));
+        renderSetAttribPointer_color(shd, sizeof(ckCol), reinterpret_cast<const u8*>(col_buf));
     }
     else
     {
@@ -331,7 +331,7 @@ void pgRend_Shader::render(const pgMat& view)
     /*
         setup texture
     */
-    renderSetTexture(tex, rend_body->tex2, rend_body->tex3, prim->isDrawFlag(pgDraw::FLAG_BILINEAR));
+    renderSetTexture(tex, rend_body->tex2, rend_body->tex3, prim->isDrawFlag(ckDraw::FLAG_BILINEAR));
     renderSetTexCoordPointer(0, NULL);
 
     if (tex)

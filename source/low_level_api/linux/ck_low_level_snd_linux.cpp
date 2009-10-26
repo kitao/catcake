@@ -29,12 +29,12 @@
 */
 
 
-#ifdef PG_LINUX
+#ifdef CK_LINUX
 
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_mem_all.h"
+#include "ck_mem_all.h"
 
 #include <fcntl.h>
 #include <stddef.h>
@@ -72,7 +72,7 @@ u16 s_snd_mix_buf_msec;
 u32 s_snd_mix_buf_size;
 u32 s_snd_mix_buf_sample_num;
 
-pgLowLevelAPI::SoundMixFunction s_snd_mix_func;
+ckLowLevelAPI::SoundMixFunction s_snd_mix_func;
 void* s_snd_mix_buf[2] = { NULL, NULL };
 
 pthread_mutex_t s_snd_mix_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
@@ -459,13 +459,13 @@ int openDSP(int* fd, int channels, int rate, int bits_per_sample)
 
 }
 
-bool pgLowLevelAPI::isSoundDeviceOpen()
+bool ckLowLevelAPI::isSoundDeviceOpen()
 {
     return s_is_snd_dev_open;
 }
 
 
-bool pgLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix_buf_msec, SoundMixFunction snd_mix_func)
+bool ckLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix_buf_msec, SoundMixFunction snd_mix_func)
 {
     if (isSoundDeviceOpen())
     {
@@ -490,8 +490,8 @@ bool pgLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix
     s_snd_mix_buf_size = 2 * s_channel_num * s_snd_mix_buf_sample_num;
     for (s32 i = 0; i < 2; i++)
     {
-        s_snd_mix_buf[i] = pgMalloc(s_snd_mix_buf_size);
-        pgMemMgr::memset(s_snd_mix_buf[i], 0, s_snd_mix_buf_size);
+        s_snd_mix_buf[i] = ckMalloc(s_snd_mix_buf_size);
+        ckMemMgr::memset(s_snd_mix_buf[i], 0, s_snd_mix_buf_size);
     }
 #else
 
@@ -501,8 +501,8 @@ bool pgLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix
     s_snd_mix_buf_size = 2 * channel_num * s_snd_mix_buf_sample_num;
     for (s32 i = 0; i < 2; i++)
     {
-        s_snd_mix_buf[i] = pgMalloc(s_snd_mix_buf_size);
-        pgMemMgr::memset(s_snd_mix_buf[i], 0, s_snd_mix_buf_size);
+        s_snd_mix_buf[i] = ckMalloc(s_snd_mix_buf_size);
+        ckMemMgr::memset(s_snd_mix_buf[i], 0, s_snd_mix_buf_size);
     }
 #endif
 
@@ -521,7 +521,7 @@ bool pgLowLevelAPI::openSoundDevice(u8 channel_num, u16 sample_rate, u16 snd_mix
 }
 
 
-void pgLowLevelAPI::closeSoundDevice()
+void ckLowLevelAPI::closeSoundDevice()
 {
     if (s_is_playing)
     {
@@ -533,7 +533,7 @@ void pgLowLevelAPI::closeSoundDevice()
     {
         if (s_snd_mix_buf[i])
         {
-            pgFree(s_snd_mix_buf[i]);
+            ckFree(s_snd_mix_buf[i]);
             s_snd_mix_buf[i] = NULL;
         }
     }
@@ -560,47 +560,47 @@ void pgLowLevelAPI::closeSoundDevice()
 }
 
 
-u8 pgLowLevelAPI::getSoundDeviceChannelNum()
+u8 ckLowLevelAPI::getSoundDeviceChannelNum()
 {
     return s_channel_num;
 }
 
 
-u16 pgLowLevelAPI::getSoundDeviceSampleRate()
+u16 ckLowLevelAPI::getSoundDeviceSampleRate()
 {
     return s_sample_rate;
 }
 
 
-u16 pgLowLevelAPI::getSoundMixBufferMsec()
+u16 ckLowLevelAPI::getSoundMixBufferMsec()
 {
     return s_snd_mix_buf_msec;
 }
 
 
-u32 pgLowLevelAPI::getSoundMixBufferSize()
+u32 ckLowLevelAPI::getSoundMixBufferSize()
 {
     return s_snd_mix_buf_size;
 }
 
 
-u32 pgLowLevelAPI::getSoundMixBufferSampleNum()
+u32 ckLowLevelAPI::getSoundMixBufferSampleNum()
 {
     return s_snd_mix_buf_sample_num;
 }
 
 
-void pgLowLevelAPI::lockSoundMixMutex()
+void ckLowLevelAPI::lockSoundMixMutex()
 {
     pthread_mutex_lock(&s_snd_mix_mutex);
 }
 
 
-void pgLowLevelAPI::unlockSoundMixMutex()
+void ckLowLevelAPI::unlockSoundMixMutex()
 {
     pthread_mutex_unlock(&s_snd_mix_mutex);
 }
 
 
-#endif // PG_LINUX
+#endif // CK_LINUX
 

@@ -29,52 +29,52 @@
 */
 
 
-#include "pg_gen_all.h"
+#include "ck_gen_all.h"
 
 
-const pgID pgID::ZERO;
+const ckID ckID::ZERO;
 
-u32 pgID::m_cur_id = 1;
+u32 ckID::m_cur_id = 1;
 
 
-pgID::pgID()
+ckID::ckID()
 {
     m_id = 0;
 }
 
 
-bool pgID::operator==(pgID id) const
+bool ckID::operator==(ckID id) const
 {
     return (m_id == id.m_id);
 }
 
 
-bool pgID::operator!=(pgID id) const
+bool ckID::operator!=(ckID id) const
 {
     return (m_id != id.m_id);
 }
 
 
-u32 pgID::operator%(u32 n) const
+u32 ckID::operator%(u32 n) const
 {
     return m_id % n;
 }
 
 
-u32 pgID::getValue() const
+u32 ckID::getValue() const
 {
     return m_id;
 }
 
 
-pgID pgID::genID()
+ckID ckID::genID()
 {
     if (m_cur_id > MAX_ID)
     {
-        pgThrow(ExceptionOutOfID);
+        ckThrow(ExceptionOutOfID);
     }
 
-    pgID id;
+    ckID id;
 
     id.m_id = m_cur_id++;
 
@@ -82,14 +82,14 @@ pgID pgID::genID()
 }
 
 
-pgID pgID::genID(const char* str)
+ckID ckID::genID(const char* str)
 {
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgID id;
+    ckID id;
 
     if (*str == '\0')
     {
@@ -111,9 +111,9 @@ pgID pgID::genID(const char* str)
 }
 
 
-pgID pgID::genIDForSystem(u32 value)
+ckID ckID::genIDForSystem(u32 value)
 {
-    pgID id;
+    ckID id;
 
     id.m_id = value;
 
@@ -121,11 +121,11 @@ pgID pgID::genIDForSystem(u32 value)
 }
 
 
-void pgID::setCurIDForSystem(u32 value)
+void ckID::setCurIDForSystem(u32 value)
 {
     if (value <= 0 || value > MAX_ID)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_cur_id = value;

@@ -34,20 +34,20 @@ extern "C"
 #include <png.h>
 }
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_mem_all.h" // for pgMalloc, pgFree
+#include "ck_mem_all.h" // for ckMalloc, ckFree
 
 
 static png_voidp myMalloc(png_structp, png_size_t size)
 {
-    return pgMalloc(static_cast<u32>(size));
+    return ckMalloc(static_cast<u32>(size));
 }
 
 
 static void myFree(png_structp, png_voidp ptr)
 {
-    pgFree(ptr);
+    ckFree(ptr);
 }
 
 
@@ -68,12 +68,12 @@ static void readData(png_structp png_ptr, png_bytep dest, png_size_t read_size)
         png_error(png_ptr, "out of data");
     }
 
-    pgLowLevelAPI::memcpy(dest, ms->data + ms->pos, static_cast<u32>(read_size));
+    ckLowLevelAPI::memcpy(dest, ms->data + ms->pos, static_cast<u32>(read_size));
     ms->pos += read_size;
 }
 
 
-static bool readPNG(u16* width, u16* height, pgLowLevelAPI::TextureFormat* format, //
+static bool readPNG(u16* width, u16* height, ckLowLevelAPI::TextureFormat* format, //
     void* buf, size_t buf_size, size_t buf_line_size, const void* data, u32 data_size)
 {
     const u32 PNG_SIGNATURE_SIZE = 8;
@@ -104,7 +104,7 @@ static bool readPNG(u16* width, u16* height, pgLowLevelAPI::TextureFormat* forma
     {
         if (row_ptrs)
         {
-            pgFree(row_ptrs);
+            ckFree(row_ptrs);
         }
 
         png_destroy_read_struct(&png_ptr, &info_ptr, png_infopp_NULL);
@@ -157,15 +157,15 @@ static bool readPNG(u16* width, u16* height, pgLowLevelAPI::TextureFormat* forma
     {
         if (channels == 3)
         {
-            *format = pgLowLevelAPI::FORMAT_RGB;
+            *format = ckLowLevelAPI::FORMAT_RGB;
         }
         else if (channels == 4)
         {
-            *format = pgLowLevelAPI::FORMAT_RGBA;
+            *format = ckLowLevelAPI::FORMAT_RGBA;
         }
         else if (channels == 1)
         {
-            *format = pgLowLevelAPI::FORMAT_ALPHA;
+            *format = ckLowLevelAPI::FORMAT_ALPHA;
         }
         else
         {
@@ -182,7 +182,7 @@ static bool readPNG(u16* width, u16* height, pgLowLevelAPI::TextureFormat* forma
             return false;
         }
 
-        row_ptrs = static_cast<png_bytepp>(pgMalloc(sizeof(png_bytep) * height_u32));
+        row_ptrs = static_cast<png_bytepp>(ckMalloc(sizeof(png_bytep) * height_u32));
 
         for (u32 i = 0; i < height_u32; i++)
         {
@@ -192,7 +192,7 @@ static bool readPNG(u16* width, u16* height, pgLowLevelAPI::TextureFormat* forma
         png_read_image(png_ptr, row_ptrs);
         png_read_end(png_ptr, info_ptr);
 
-        pgFree(row_ptrs);
+        ckFree(row_ptrs);
     }
 
     png_destroy_read_struct(&png_ptr, &info_ptr, png_infopp_NULL);
@@ -200,13 +200,13 @@ static bool readPNG(u16* width, u16* height, pgLowLevelAPI::TextureFormat* forma
 }
 
 
-bool pgLowLevelAPI::readPNGInfo(u16* width, u16* height, TextureFormat* format, const void* data, u32 data_size)
+bool ckLowLevelAPI::readPNGInfo(u16* width, u16* height, TextureFormat* format, const void* data, u32 data_size)
 {
     return readPNG(width, height, format, NULL, 0, 0, data, data_size);
 }
 
 
-bool pgLowLevelAPI::readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size)
+bool ckLowLevelAPI::readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size)
 {
     return readPNG(NULL, NULL, NULL, buf, buf_size, buf_line_size, data, data_size);
 }

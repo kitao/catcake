@@ -29,85 +29,85 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_private_macro.h"
+#include "ck_private_macro.h"
 
 
-pgLts* pgLts::getPrevN() const
+ckLts* ckLts::getPrevN() const
 {
-    pgDrawMgr* ins = pgDrawMgr::instance();
-    const pgID* id = ins->m_lts_map.getPrevKeyN(m_id);
+    ckDrawMgr* ins = ckDrawMgr::instance();
+    const ckID* id = ins->m_lts_map.getPrevKeyN(m_id);
 
     return id ? *ins->m_lts_map.get(*id) : NULL;
 }
 
 
-pgLts* pgLts::getNextN() const
+ckLts* ckLts::getNextN() const
 {
-    pgDrawMgr* ins = pgDrawMgr::instance();
-    const pgID* id = ins->m_lts_map.getNextKeyN(m_id);
+    ckDrawMgr* ins = ckDrawMgr::instance();
+    const ckID* id = ins->m_lts_map.getNextKeyN(m_id);
 
     return id ? *ins->m_lts_map.get(*id) : NULL;
 }
 
 
-pgID pgLts::getID() const
+ckID ckLts::getID() const
 {
     return m_id;
 }
 
 
-pgCol pgLts::getAmbientColor() const
+ckCol ckLts::getAmbientColor() const
 {
     return m_amb_col;
 }
 
 
-void pgLts::setAmbientColor(pgCol col)
+void ckLts::setAmbientColor(ckCol col)
 {
     m_amb_col = col;
 }
 
 
-bool pgLts::isParaLightActive(u8 index) const
+bool ckLts::isParaLightActive(u8 index) const
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_para_lit[index].is_active.getType();
 }
 
 
-void pgLts::setParaLightActive(u8 index, bool is_active)
+void ckLts::setParaLightActive(u8 index, bool is_active)
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_para_lit[index].is_active = is_active;
 }
 
 
-const pgVec& pgLts::getParaLightDir(u8 index) const
+const ckVec& ckLts::getParaLightDir(u8 index) const
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_para_lit[index].dir;
 }
 
 
-void pgLts::setParaLightDir(u8 index, const pgVec& dir)
+void ckLts::setParaLightDir(u8 index, const ckVec& dir)
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (dir.x == 0.0f && dir.y == 0.0f && dir.z == 0.0f)
@@ -121,22 +121,22 @@ void pgLts::setParaLightDir(u8 index, const pgVec& dir)
 }
 
 
-pgCol pgLts::getParaLightColor(u8 index) const
+ckCol ckLts::getParaLightColor(u8 index) const
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_para_lit[index].col;
 }
 
 
-void pgLts::setParaLightColor(u8 index, pgCol col)
+void ckLts::setParaLightColor(u8 index, ckCol col)
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     ParaLight* para_lit = &m_para_lit[index];
@@ -146,38 +146,38 @@ void pgLts::setParaLightColor(u8 index, pgCol col)
 }
 
 
-u8 pgLts::getNearLightNum() const
+u8 ckLts::getNearLightNum() const
 {
     return m_near_lit_num;
 }
 
 
-pgLit* pgLts::getPointLight(pgID lit_id)
+ckLit* ckLts::getPointLight(ckID lit_id)
 {
-    pgLit* lit = getPointLightN(lit_id);
+    ckLit* lit = getPointLightN(lit_id);
 
     if (!lit)
     {
-        pgThrow(ExceptionNotFound);
+        ckThrow(ExceptionNotFound);
     }
 
     return lit;
 }
 
 
-pgLit* pgLts::newPointLight(pgID lit_id)
+ckLit* ckLts::newPointLight(ckID lit_id)
 {
-    if (lit_id == pgID::ZERO)
+    if (lit_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (getPointLightN(lit_id))
     {
-        pgThrow(ExceptionSameIDExists);
+        ckThrow(ExceptionSameIDExists);
     }
 
-    pgLit* lit = pgNew(pgLit)(lit_id);
+    ckLit* lit = ckNew(ckLit)(lit_id);
 
     m_lit_list.addLast(&lit->m_item);
 
@@ -185,42 +185,42 @@ pgLit* pgLts::newPointLight(pgID lit_id)
 }
 
 
-void pgLts::deletePointLight(pgID lit_id)
+void ckLts::deletePointLight(ckID lit_id)
 {
-    if (lit_id == pgID::ZERO)
+    if (lit_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_near_lit_num = 0;
 
-    pgDelete(getPointLight(lit_id), pgLit);
+    ckDelete(getPointLight(lit_id), ckLit);
 }
 
 
-pgLit* pgLts::getFirstPointLightN() const
+ckLit* ckLts::getFirstPointLightN() const
 {
-    pgList<pgLit>::Item* item = m_lit_list.getFirstN();
+    ckList<ckLit>::Item* item = m_lit_list.getFirstN();
 
     return item ? item->getSelf() : NULL;
 }
 
 
-pgLit* pgLts::getLastPointLightN() const
+ckLit* ckLts::getLastPointLightN() const
 {
-    pgList<pgLit>::Item* item = m_lit_list.getLastN();
+    ckList<ckLit>::Item* item = m_lit_list.getLastN();
 
     return item ? item->getSelf() : NULL;
 }
 
 
-u32 pgLts::getPointLightNum() const
+u32 ckLts::getPointLightNum() const
 {
     return m_lit_list.getItemNum();
 }
 
 
-void pgLts::findNearLight(const pgVec& pos)
+void ckLts::findNearLight(const ckVec& pos)
 {
     m_near_lit_num = 0;
 
@@ -234,9 +234,9 @@ void pgLts::findNearLight(const pgVec& pos)
         }
     }
 
-    for (pgList<pgLit>::Item* item = m_lit_list.getFirstN(); item; item = item->getNextN())
+    for (ckList<ckLit>::Item* item = m_lit_list.getFirstN(); item; item = item->getNextN())
     {
-        pgLit* lit = item->getSelf();
+        ckLit* lit = item->getSelf();
 
         if (!lit->m_is_active.getValue() || //
             pos.x < lit->m_min_bound.x || pos.y < lit->m_min_bound.y || pos.z < lit->m_min_bound.z || //
@@ -245,14 +245,14 @@ void pgLts::findNearLight(const pgVec& pos)
             continue;
         }
 
-        pgVec diff = pos - lit->m_pos;
+        ckVec diff = pos - lit->m_pos;
         r32 sq_dist = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
         if (sq_dist <= lit->m_sq_outer_rad)
         {
-            r32 dist = pgMath::sqrt(sq_dist);
-            pgVec dir = (dist < pgMath::EPSILON) ? pgVec(0.0f, -1.0f, 0.0f) : diff / dist;
-            pgCol col = (dist <= lit->m_inner_rad) ? lit->m_col : lit->m_col * ((lit->m_outer_rad - dist) / (lit->m_outer_rad - lit->m_inner_rad));
+            r32 dist = ckMath::sqrt(sq_dist);
+            ckVec dir = (dist < ckMath::EPSILON) ? ckVec(0.0f, -1.0f, 0.0f) : diff / dist;
+            ckCol col = (dist <= lit->m_inner_rad) ? lit->m_col : lit->m_col * ((lit->m_outer_rad - dist) / (lit->m_outer_rad - lit->m_inner_rad));
             col.a = 255;
 
             addLightToNearLight(dir, col, col.r + col.g + col.b);
@@ -261,78 +261,78 @@ void pgLts::findNearLight(const pgVec& pos)
 }
 
 
-const pgVec& pgLts::getNearLightDir(u8 index) const
+const ckVec& ckLts::getNearLightDir(u8 index) const
 {
     if (index >= m_near_lit_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_near_lit[m_near_lit_index_tbl[index]].dir;
 }
 
 
-pgCol pgLts::getNearLightColor(u8 index) const
+ckCol ckLts::getNearLightColor(u8 index) const
 {
     if (index >= m_near_lit_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_near_lit[m_near_lit_index_tbl[index]].col;
 }
 
 
-void pgLts::clearPointLight()
+void ckLts::clearPointLight()
 {
     while (m_lit_list.hasItem())
     {
-        pgDelete(m_lit_list.getFirstN()->getSelf(), pgLit);
+        ckDelete(m_lit_list.getFirstN()->getSelf(), ckLit);
     }
 }
 
 
-pgLts::pgLts(pgID lts_id)
+ckLts::ckLts(ckID lts_id)
 {
     m_id = lts_id;
     m_near_lit_num = 0;
 
-    setAmbientColor(pgCol::ZERO);
+    setAmbientColor(ckCol::ZERO);
 
     for (u32 i = 0; i < MAX_PARA_LIGHT_NUM; i++)
     {
         setParaLightActive(i, false);
-        setParaLightDir(i, pgVec::X_UNIT);
-        setParaLightColor(i, pgCol::ZERO);
+        setParaLightDir(i, ckVec::X_UNIT);
+        setParaLightColor(i, ckCol::ZERO);
     }
 
     clearPointLight();
 
-    pgDrawMgr::instance()->m_lts_map.add(m_id, this);
+    ckDrawMgr::instance()->m_lts_map.add(m_id, this);
 }
 
 
-pgLts::~pgLts()
+ckLts::~ckLts()
 {
-    pgDrawMgr::instance()->m_lts_map.remove(m_id);
+    ckDrawMgr::instance()->m_lts_map.remove(m_id);
 
     clearPointLight();
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgLts)
+CK_DEFINE_OPERATOR_EQUAL(ckLts)
 
 
-pgLit* pgLts::getPointLightN(pgID lit_id)
+ckLit* ckLts::getPointLightN(ckID lit_id)
 {
-    if (lit_id == pgID::ZERO)
+    if (lit_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    for (pgList<pgLit>::Item* item = m_lit_list.getFirstN(); item; item = item->getNextN())
+    for (ckList<ckLit>::Item* item = m_lit_list.getFirstN(); item; item = item->getNextN())
     {
-        pgLit* lit = item->getSelf();
+        ckLit* lit = item->getSelf();
 
         if (lit->m_id == lit_id)
         {
@@ -346,7 +346,7 @@ pgLit* pgLts::getPointLightN(pgID lit_id)
 }
 
 
-void pgLts::addLightToNearLight(const pgVec& dir, pgCol col, u16 col_int)
+void ckLts::addLightToNearLight(const ckVec& dir, ckCol col, u16 col_int)
 {
     if (m_near_lit_num == 0)
     {

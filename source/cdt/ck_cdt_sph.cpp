@@ -29,31 +29,31 @@
 */
 
 
-#include "pg_cdt_all.h"
+#include "ck_cdt_all.h"
 
 
-pgCdt::Sph::Sph()
+ckCdt::Sph::Sph()
 {
-    m_pos = pgVec::ZERO;
+    m_pos = ckVec::ZERO;
     m_radius = 0.0f;
 
     updateAABB();
 }
 
 
-const pgCdt::AABB& pgCdt::Sph::getAABB() const
+const ckCdt::AABB& ckCdt::Sph::getAABB() const
 {
     return m_aabb;
 }
 
 
-const pgVec& pgCdt::Sph::getPos() const
+const ckVec& ckCdt::Sph::getPos() const
 {
     return m_pos;
 }
 
 
-void pgCdt::Sph::setPos(const pgVec& pos)
+void ckCdt::Sph::setPos(const ckVec& pos)
 {
     m_pos = pos;
 
@@ -61,17 +61,17 @@ void pgCdt::Sph::setPos(const pgVec& pos)
 }
 
 
-r32 pgCdt::Sph::getRadius() const
+r32 ckCdt::Sph::getRadius() const
 {
     return m_radius;
 }
 
 
-void pgCdt::Sph::setRadius(r32 radius)
+void ckCdt::Sph::setRadius(r32 radius)
 {
     if (radius < 0.0f)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_radius = radius;
@@ -80,35 +80,35 @@ void pgCdt::Sph::setRadius(r32 radius)
 }
 
 
-void pgCdt::Sph::updateAABB()
+void ckCdt::Sph::updateAABB()
 {
     m_aabb.setBound( //
-        pgVec(m_pos.x - m_radius, m_pos.y - m_radius, m_pos.z - m_radius), //
-        pgVec(m_pos.x + m_radius, m_pos.y + m_radius, m_pos.z + m_radius));
+        ckVec(m_pos.x - m_radius, m_pos.y - m_radius, m_pos.z - m_radius), //
+        ckVec(m_pos.x + m_radius, m_pos.y + m_radius, m_pos.z + m_radius));
 }
 
 
-bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph1, const Sph& sph2)
+bool ckCdt::collide(CdtInfo* cdt_info, const Sph& sph1, const Sph& sph2)
 {
     if (!checkTouch(sph1.m_aabb, sph2.m_aabb))
     {
         return false;
     }
 
-    pgVec diff = sph1.m_pos - sph2.m_pos;
+    ckVec diff = sph1.m_pos - sph2.m_pos;
     r32 sum_rad = sph1.m_radius + sph2.m_radius;
     r32 sq_dist = diff.sqLength();
 
-    if (sq_dist > (sum_rad - pgMath::EPSILON) * (sum_rad - pgMath::EPSILON))
+    if (sq_dist > (sum_rad - ckMath::EPSILON) * (sum_rad - ckMath::EPSILON))
     {
         return false;
     }
 
-    r32 dist = pgMath::sqrt(sq_dist);
+    r32 dist = ckMath::sqrt(sq_dist);
 
     if (cdt_info)
     {
-        cdt_info->back_dir = (dist > pgMath::EPSILON) ? diff / dist : pgVec::X_UNIT;
+        cdt_info->back_dir = (dist > ckMath::EPSILON) ? diff / dist : ckVec::X_UNIT;
         cdt_info->back_dist = sum_rad - dist;
         cdt_info->pos = sph1.m_pos - cdt_info->back_dir * (sph1.m_radius - cdt_info->back_dist / 2.0f);
     }
@@ -117,15 +117,15 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph1, const Sph& sph2)
 }
 
 
-bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Box& box)
+bool ckCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Box& box)
 {
     if (!checkTouch(sph.m_aabb, box.m_aabb))
     {
         return false;
     }
 
-    pgVec diff = sph.m_pos - box.m_world.trans;
-    pgVec closest = box.m_world.trans;
+    ckVec diff = sph.m_pos - box.m_world.trans;
+    ckVec closest = box.m_world.trans;
 
 #define CALC_CLOSEST_POINT(compo, axis) \
     do \
@@ -155,16 +155,16 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Box& box)
 
     r32 sq_dist = diff.sqLength();
 
-    if (sq_dist > (sph.m_radius - pgMath::EPSILON) * (sph.m_radius - pgMath::EPSILON))
+    if (sq_dist > (sph.m_radius - ckMath::EPSILON) * (sph.m_radius - ckMath::EPSILON))
     {
         return false;
     }
 
     if (cdt_info)
     {
-        r32 dist = pgMath::sqrt(sq_dist);
+        r32 dist = ckMath::sqrt(sq_dist);
 
-        cdt_info->back_dir = (dist > pgMath::EPSILON) ? diff / dist : pgVec::X_UNIT;
+        cdt_info->back_dir = (dist > ckMath::EPSILON) ? diff / dist : ckVec::X_UNIT;
         cdt_info->back_dist = sph.m_radius - dist;
         cdt_info->pos = closest - cdt_info->back_dir * (cdt_info->back_dist / 2.0f);
     }
@@ -173,25 +173,25 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Box& box)
 }
 
 
-bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Tri& tri)
+bool ckCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Tri& tri)
 {
     if (!checkTouch(sph.m_aabb, tri.m_aabb))
     {
         return false;
     }
 
-    pgVec closest;
+    ckVec closest;
 
     do
     {
-        const pgVec& p = sph.m_pos;
-        const pgVec& a = tri.m_pos1;
-        const pgVec& b = tri.m_pos2;
-        const pgVec& c = tri.m_pos3;
+        const ckVec& p = sph.m_pos;
+        const ckVec& a = tri.m_pos1;
+        const ckVec& b = tri.m_pos2;
+        const ckVec& c = tri.m_pos3;
 
-        pgVec ap = p - a;
-        pgVec ab = b - a;
-        pgVec ac = c - a;
+        ckVec ap = p - a;
+        ckVec ab = b - a;
+        ckVec ac = c - a;
 
         r32 ap_ab = ap.dot(ab);
         r32 ab_ac = ap.dot(ac);
@@ -202,8 +202,8 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Tri& tri)
             break;
         }
 
-        pgVec bp = p - b;
-        pgVec bc = c - b;
+        ckVec bp = p - b;
+        ckVec bc = c - b;
 
         r32 bp_ba = -bp.dot(ab);
         r32 bp_bc = bp.dot(bc);
@@ -214,7 +214,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Tri& tri)
             break;
         }
 
-        pgVec cp = p - c;
+        ckVec cp = p - c;
 
         r32 cp_ca = -cp.dot(ac);
         r32 cp_cb = -cp.dot(bc);
@@ -225,7 +225,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Tri& tri)
             break;
         }
 
-        pgVec n = ab.cross(ac);
+        ckVec n = ab.cross(ac);
 
         r32 vc = n.dot(ap.cross(bp));
 
@@ -260,19 +260,19 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Sph& sph, const Tri& tri)
     }
     while (0);
 
-    pgVec diff = sph.m_pos - closest;
+    ckVec diff = sph.m_pos - closest;
     r32 sq_dist = diff.sqLength();
 
-    if (sq_dist > (sph.m_radius - pgMath::EPSILON) * (sph.m_radius - pgMath::EPSILON))
+    if (sq_dist > (sph.m_radius - ckMath::EPSILON) * (sph.m_radius - ckMath::EPSILON))
     {
         return false;
     }
 
     if (cdt_info)
     {
-        r32 dist = pgMath::sqrt(sq_dist);
+        r32 dist = ckMath::sqrt(sq_dist);
 
-        cdt_info->back_dir = (dist > pgMath::EPSILON) ? diff / dist : pgVec::X_UNIT;
+        cdt_info->back_dir = (dist > ckMath::EPSILON) ? diff / dist : ckVec::X_UNIT;
         cdt_info->back_dist = sph.m_radius - dist;
         cdt_info->pos = closest - cdt_info->back_dir * (cdt_info->back_dist / 2.0f);
     }

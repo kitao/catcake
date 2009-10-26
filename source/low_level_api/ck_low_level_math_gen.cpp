@@ -32,52 +32,52 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
 
-r32 pgLowLevelAPI::sqrt(r32 x)
+r32 ckLowLevelAPI::sqrt(r32 x)
 {
     return ::sqrt(x);
 }
 
 
-r32 pgLowLevelAPI::sin(r32 rad)
+r32 ckLowLevelAPI::sin(r32 rad)
 {
     return ::sin(rad);
 }
 
 
-r32 pgLowLevelAPI::cos(r32 rad)
+r32 ckLowLevelAPI::cos(r32 rad)
 {
     return ::cos(rad);
 }
 
 
-r32 pgLowLevelAPI::asin(r32 x)
+r32 ckLowLevelAPI::asin(r32 x)
 {
     return ::asin(x);
 }
 
 
-r32 pgLowLevelAPI::acos(r32 x)
+r32 ckLowLevelAPI::acos(r32 x)
 {
     return ::acos(x);
 }
 
 
-r32 pgLowLevelAPI::atan2(r32 y, r32 x)
+r32 ckLowLevelAPI::atan2(r32 y, r32 x)
 {
     return ::atan2(y, x);
 }
 
 
-void pgLowLevelAPI::srand(s32 seed)
+void ckLowLevelAPI::srand(s32 seed)
 {
     ::srand(seed);
 }
 
 
-s32 pgLowLevelAPI::rand()
+s32 ckLowLevelAPI::rand()
 {
     return ::rand();
 }

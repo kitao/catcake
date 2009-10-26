@@ -29,7 +29,7 @@
 */
 
 
-#ifdef PG_IPHONE
+#ifdef CK_IPHONE
 
 
 #include <sys/time.h>
@@ -38,18 +38,18 @@
 #include <libgen.h>
 #include <pthread.h>
 
-#include "pg_iphone_bridge.h"
+#include "ck_iphone_bridge.h"
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_sys_all.h" // for pgSysMgr::SysFlag and pgSysMgr::sprintf
-#include "pg_task_all.h" // for pgTaskMgr::getAimFPS and pgTaskMgr::resetFrameSkip
-#include "pg_key_all.h" // for pgKeyMgr::KeyType
+#include "ck_sys_all.h" // for ckSysMgr::SysFlag and ckSysMgr::sprintf
+#include "ck_task_all.h" // for ckTaskMgr::getAimFPS and ckTaskMgr::resetFrameSkip
+#include "ck_key_all.h" // for ckKeyMgr::KeyType
 
 
-static pgLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
-static pgLowLevelAPI::MouseEventHandler s_mouse_event_handler = NULL;
-static pgLowLevelAPI::ExtraEventHandler s_extra_event_handler = NULL;
+static ckLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
+static ckLowLevelAPI::MouseEventHandler s_mouse_event_handler = NULL;
+static ckLowLevelAPI::ExtraEventHandler s_extra_event_handler = NULL;
 
 static const char* s_app_name;
 static u16 s_framebuffer_width;
@@ -62,20 +62,20 @@ static bool s_is_mouse_visible;
 
 static void destroyFramebuffer()
 {
-    return pgIPhoneBridge::destroyFramebuffer();
+    return ckIPhoneBridge::destroyFramebuffer();
 }
 
 
 static bool createFramebuffer(u16 new_width, u16 new_height)
 {
-    s_framebuffer_width = pgIPhoneBridge::getFramebufferWidth();
-    s_framebuffer_height = pgIPhoneBridge::getFramebufferHeight();
+    s_framebuffer_width = ckIPhoneBridge::getFramebufferWidth();
+    s_framebuffer_height = ckIPhoneBridge::getFramebufferHeight();
 
-    return pgIPhoneBridge::createFramebuffer();
+    return ckIPhoneBridge::createFramebuffer();
 }
 
 
-bool pgLowLevelAPI::createApplication(const char* title, u16 width, u16 height, u16 sys_flag)
+bool ckLowLevelAPI::createApplication(const char* title, u16 width, u16 height, u16 sys_flag)
 {
     s_app_name = title;
     s_framebuffer_width = width;
@@ -90,13 +90,13 @@ bool pgLowLevelAPI::createApplication(const char* title, u16 width, u16 height, 
         return false;
     }
 
-    setupShaderAPI((sys_flag & pgSysMgr::FLAG_DISABLE_SHADER) ? false : true);
+    setupShaderAPI((sys_flag & ckSysMgr::FLAG_DISABLE_SHADER) ? false : true);
 
     return true;
 }
 
 
-void pgLowLevelAPI::destroyApplication()
+void ckLowLevelAPI::destroyApplication()
 {
     destroyFramebuffer();
 }
@@ -105,94 +105,94 @@ void pgLowLevelAPI::destroyApplication()
 static bool (*s_update_func)(void);
 
 
-void pgLowLevelAPI::startApplication(bool (*update_func)(void))
+void ckLowLevelAPI::startApplication(bool (*update_func)(void))
 {
     s_update_func = update_func;
 
-    pgIPhoneBridge::startApplication();
+    ckIPhoneBridge::startApplication();
 }
 
 
-void pgIPhoneBridge::updateApplication()
+void ckIPhoneBridge::updateApplication()
 {
     int x, y;
 
-    pgIPhoneBridge::getMousePos(&x, &y);
+    ckIPhoneBridge::getMousePos(&x, &y);
     (*s_mouse_event_handler)(static_cast<s16>(x), static_cast<s16>(y));
 
-    pgIPhoneBridge::getInnerMousePos(&x, &y);
+    ckIPhoneBridge::getInnerMousePos(&x, &y);
     (*s_extra_event_handler)(0, static_cast<r32>(x));
     (*s_extra_event_handler)(1, static_cast<r32>(y));
 
-    pgIPhoneBridge::getOuterMousePos(&x, &y);
+    ckIPhoneBridge::getOuterMousePos(&x, &y);
     (*s_extra_event_handler)(2, static_cast<r32>(x));
     (*s_extra_event_handler)(3, static_cast<r32>(y));
 
-    (*s_extra_event_handler)(4, static_cast<r32>(pgIPhoneBridge::getDeviceOrientation()));
+    (*s_extra_event_handler)(4, static_cast<r32>(ckIPhoneBridge::getDeviceOrientation()));
 
     float ax, ay, az;
 
-    pgIPhoneBridge::getAcceleraion(&ax, &ay, &az);
+    ckIPhoneBridge::getAcceleraion(&ax, &ay, &az);
     (*s_extra_event_handler)(5, static_cast<r32>(ax));
     (*s_extra_event_handler)(6, static_cast<r32>(ay));
     (*s_extra_event_handler)(7, static_cast<r32>(az));
 
-    if (pgTaskMgr::getAimFPS() <= 30)
+    if (ckTaskMgr::getAimFPS() <= 30)
     {
-        pgTaskMgr::resetFrameSkip();
+        ckTaskMgr::resetFrameSkip();
     }
 
     while (!(*s_update_func)()) {}
 }
 
 
-void pgIPhoneBridge::setMouseState(int button, bool is_on)
+void ckIPhoneBridge::setMouseState(int button, bool is_on)
 {
     if (button == 0)
     {
-        (*s_key_event_handler)(pgKeyMgr::KEY_LBUTTON, is_on);
+        (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, is_on);
     }
     else
     {
-        (*s_key_event_handler)(pgKeyMgr::KEY_EXT_00, is_on);
+        (*s_key_event_handler)(ckKeyMgr::KEY_EXT_00, is_on);
     }
 }
 
 
-u16 pgLowLevelAPI::getFramebufferWidth()
+u16 ckLowLevelAPI::getFramebufferWidth()
 {
     return s_framebuffer_width;
 }
 
 
-u16 pgLowLevelAPI::getFramebufferHeight()
+u16 ckLowLevelAPI::getFramebufferHeight()
 {
     return s_framebuffer_height;
 }
 
 
-void pgLowLevelAPI::updateFramebufferSize() {}
+void ckLowLevelAPI::updateFramebufferSize() {}
 
 
-bool pgLowLevelAPI::isFramebufferSizeChanged()
+bool ckLowLevelAPI::isFramebufferSizeChanged()
 {
     return s_is_framebuffer_size_changed;
 }
 
 
-void pgLowLevelAPI::swapFramebuffer()
+void ckLowLevelAPI::swapFramebuffer()
 {
-    pgIPhoneBridge::swapFramebuffer();
+    ckIPhoneBridge::swapFramebuffer();
 }
 
 
-bool pgLowLevelAPI::isFullScreen()
+bool ckLowLevelAPI::isFullScreen()
 {
     return s_is_fullscreen;
 }
 
 
-bool pgLowLevelAPI::toggleFullScreen(u16 width, u16 height)
+bool ckLowLevelAPI::toggleFullScreen(u16 width, u16 height)
 {
     destroyFramebuffer();
 
@@ -202,37 +202,37 @@ bool pgLowLevelAPI::toggleFullScreen(u16 width, u16 height)
 }
 
 
-void pgLowLevelAPI::setKeyEventHandler(KeyEventHandler handler)
+void ckLowLevelAPI::setKeyEventHandler(KeyEventHandler handler)
 {
     s_key_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setMouseEventHandler(MouseEventHandler handler)
+void ckLowLevelAPI::setMouseEventHandler(MouseEventHandler handler)
 {
     s_mouse_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setExtraEventHandler(ExtraEventHandler handler)
+void ckLowLevelAPI::setExtraEventHandler(ExtraEventHandler handler)
 {
     s_extra_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y) {}
+void ckLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y) {}
 
 
-bool pgLowLevelAPI::isMouseVisible()
+bool ckLowLevelAPI::isMouseVisible()
 {
     return s_is_mouse_visible;
 }
 
 
-void pgLowLevelAPI::setMouseVisible(bool is_visible) {}
+void ckLowLevelAPI::setMouseVisible(bool is_visible) {}
 
 
-u64 pgLowLevelAPI::getUsecTime()
+u64 ckLowLevelAPI::getUsecTime()
 {
     static u64 s_start_time;
     static bool s_is_first = true;
@@ -255,19 +255,19 @@ u64 pgLowLevelAPI::getUsecTime()
 }
 
 
-void pgLowLevelAPI::sleepUsec(u64 usec)
+void ckLowLevelAPI::sleepUsec(u64 usec)
 {
     usleep(usec);
 }
 
 
-void pgLowLevelAPI::exit(s32 status)
+void ckLowLevelAPI::exit(s32 status)
 {
     exit(status);
 }
 
 
-void pgLowLevelAPI::error(const char* msg)
+void ckLowLevelAPI::error(const char* msg)
 {
     printf(msg);
     printf("\n");
@@ -276,13 +276,13 @@ void pgLowLevelAPI::error(const char* msg)
 }
 
 
-void pgLowLevelAPI::readLittleEndian(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::readLittleEndian(void* dest, const void* src, u32 size)
 {
     memcpy(dest, src, size);
 }
 
 
-void pgLowLevelAPI::writeLittleEndian(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::writeLittleEndian(void* dest, const void* src, u32 size)
 {
     memcpy(dest, src, size);
 }
@@ -301,13 +301,13 @@ static void* threadStartFunc(void* user_param)
 
     func_and_param->start_func(func_and_param->user_param);
 
-    pgLowLevelAPI::free(user_param);
+    ckLowLevelAPI::free(user_param);
 
     return NULL;
 }
 
 
-void* pgLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
+void* ckLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
 {
     static pthread_mutex_t s_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -333,19 +333,19 @@ void* pgLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
 }
 
 
-void pgLowLevelAPI::deleteThread(void* thread_handler)
+void ckLowLevelAPI::deleteThread(void* thread_handler)
 {
     free(thread_handler);
 }
 
 
-void pgLowLevelAPI::joinThread(void* thread_handler)
+void ckLowLevelAPI::joinThread(void* thread_handler)
 {
     pthread_join(*static_cast<pthread_t*>(thread_handler), NULL);
 }
 
 
-void* pgLowLevelAPI::newMutex()
+void* ckLowLevelAPI::newMutex()
 {
     void* mutex_handler = malloc(sizeof(pthread_mutex_t));
 
@@ -362,7 +362,7 @@ void* pgLowLevelAPI::newMutex()
 }
 
 
-void pgLowLevelAPI::deleteMutex(void* mutex_handler)
+void ckLowLevelAPI::deleteMutex(void* mutex_handler)
 {
     pthread_mutex_destroy(static_cast<pthread_mutex_t*>(mutex_handler));
 
@@ -370,19 +370,19 @@ void pgLowLevelAPI::deleteMutex(void* mutex_handler)
 }
 
 
-void pgLowLevelAPI::lockMutex(void* mutex_handler)
+void ckLowLevelAPI::lockMutex(void* mutex_handler)
 {
     pthread_mutex_lock(static_cast<pthread_mutex_t*>(mutex_handler));
 }
 
 
-void pgLowLevelAPI::unlockMutex(void* mutex_handler)
+void ckLowLevelAPI::unlockMutex(void* mutex_handler)
 {
     pthread_mutex_unlock(static_cast<pthread_mutex_t*>(mutex_handler));
 }
 
 
-void pgLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
+void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 {
     if (argc > 0)
     {
@@ -391,10 +391,10 @@ void pgLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 }
 
 
-void pgLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
+void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
 {
     // TODO: Error
 }
 
 
-#endif // PG_IPHONE
+#endif // CK_IPHONE

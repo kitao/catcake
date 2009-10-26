@@ -37,22 +37,22 @@
 #include <shlwapi.h>
 #include <process.h>
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
-#include "pg_sys_all.h" // for pgSysMgr::SysFlag
-#include "pg_key_all.h" // for pgKeyMgr::KeyType
+#include "ck_sys_all.h" // for ckSysMgr::SysFlag
+#include "ck_key_all.h" // for ckKeyMgr::KeyType
 
 
-#ifndef PG_MINGW
+#ifndef CK_MINGW
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "opengl32.lib")
 #endif
 
 
-static pgLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
-static pgLowLevelAPI::MouseEventHandler s_mouse_event_handler = NULL;
-static pgLowLevelAPI::ExtraEventHandler s_extra_event_handler = NULL;
+static ckLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
+static ckLowLevelAPI::MouseEventHandler s_mouse_event_handler = NULL;
+static ckLowLevelAPI::ExtraEventHandler s_extra_event_handler = NULL;
 
 static const char* s_app_name;
 static u16 s_framebuffer_width;
@@ -70,38 +70,38 @@ static HGLRC s_hRC;
 
 static void callKeyEventHandler(u16 vk, bool is_down)
 {
-    static const pgKeyMgr::KeyType s_key_table[] =
+    static const ckKeyMgr::KeyType s_key_table[] =
     {
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_LBUTTON, pgKeyMgr::KEY_RBUTTON, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_MBUTTON, // 0-4
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_BACKSPACE, pgKeyMgr::KEY_TAB, // 5-9
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_ENTER, pgKeyMgr::KEY_NONE, // 10-14
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_SHIFT, pgKeyMgr::KEY_CTRL, pgKeyMgr::KEY_ALT, pgKeyMgr::KEY_NONE, // 15-19
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, // 20-24
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_ESCAPE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, // 25-29
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_SPACE, pgKeyMgr::KEY_PAGEUP, pgKeyMgr::KEY_PAGEDOWN, // 30-34
-        pgKeyMgr::KEY_END, pgKeyMgr::KEY_HOME, pgKeyMgr::KEY_LEFT, pgKeyMgr::KEY_UP, pgKeyMgr::KEY_RIGHT, // 35-39
-        pgKeyMgr::KEY_DOWN, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, // 40-44
-        pgKeyMgr::KEY_INSERT, pgKeyMgr::KEY_DELETE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_0, pgKeyMgr::KEY_1, // 45-49
-        pgKeyMgr::KEY_2, pgKeyMgr::KEY_3, pgKeyMgr::KEY_4, pgKeyMgr::KEY_5, pgKeyMgr::KEY_6, // 50-54
-        pgKeyMgr::KEY_7, pgKeyMgr::KEY_8, pgKeyMgr::KEY_9, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, // 55-59
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, // 60-64
-        pgKeyMgr::KEY_A, pgKeyMgr::KEY_B, pgKeyMgr::KEY_C, pgKeyMgr::KEY_D, pgKeyMgr::KEY_E, // 65-69
-        pgKeyMgr::KEY_F, pgKeyMgr::KEY_G, pgKeyMgr::KEY_H, pgKeyMgr::KEY_I, pgKeyMgr::KEY_J, // 70-74
-        pgKeyMgr::KEY_K, pgKeyMgr::KEY_L, pgKeyMgr::KEY_M, pgKeyMgr::KEY_N, pgKeyMgr::KEY_O, // 75-79
-        pgKeyMgr::KEY_P, pgKeyMgr::KEY_Q, pgKeyMgr::KEY_R, pgKeyMgr::KEY_S, pgKeyMgr::KEY_T, // 80-84
-        pgKeyMgr::KEY_U, pgKeyMgr::KEY_V, pgKeyMgr::KEY_W, pgKeyMgr::KEY_X, pgKeyMgr::KEY_Y, // 85-89
-        pgKeyMgr::KEY_Z, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NONE, // 90-94
-        pgKeyMgr::KEY_NONE, pgKeyMgr::KEY_NUMPAD0, pgKeyMgr::KEY_NUMPAD1, pgKeyMgr::KEY_NUMPAD2, pgKeyMgr::KEY_NUMPAD3, // 95-99
-        pgKeyMgr::KEY_NUMPAD4, pgKeyMgr::KEY_NUMPAD5, pgKeyMgr::KEY_NUMPAD6, pgKeyMgr::KEY_NUMPAD7, pgKeyMgr::KEY_NUMPAD8, // 100-104
-        pgKeyMgr::KEY_NUMPAD9, pgKeyMgr::KEY_MULTIPLY, pgKeyMgr::KEY_ADD, pgKeyMgr::KEY_SEPARATOR, pgKeyMgr::KEY_SUBTRACT, // 105-109
-        pgKeyMgr::KEY_DECIMAL, pgKeyMgr::KEY_DIVIDE, pgKeyMgr::KEY_F1, pgKeyMgr::KEY_F2, pgKeyMgr::KEY_F3, // 110-114
-        pgKeyMgr::KEY_F4, pgKeyMgr::KEY_F5, pgKeyMgr::KEY_F6, pgKeyMgr::KEY_F7, pgKeyMgr::KEY_F8, // 115-119
-        pgKeyMgr::KEY_F9, pgKeyMgr::KEY_F10, pgKeyMgr::KEY_F11, pgKeyMgr::KEY_F12, pgKeyMgr::KEY_NONE // 120-124
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_LBUTTON, ckKeyMgr::KEY_RBUTTON, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_MBUTTON, // 0-4
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_BACKSPACE, ckKeyMgr::KEY_TAB, // 5-9
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_ENTER, ckKeyMgr::KEY_NONE, // 10-14
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_SHIFT, ckKeyMgr::KEY_CTRL, ckKeyMgr::KEY_ALT, ckKeyMgr::KEY_NONE, // 15-19
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, // 20-24
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_ESCAPE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, // 25-29
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_SPACE, ckKeyMgr::KEY_PAGEUP, ckKeyMgr::KEY_PAGEDOWN, // 30-34
+        ckKeyMgr::KEY_END, ckKeyMgr::KEY_HOME, ckKeyMgr::KEY_LEFT, ckKeyMgr::KEY_UP, ckKeyMgr::KEY_RIGHT, // 35-39
+        ckKeyMgr::KEY_DOWN, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, // 40-44
+        ckKeyMgr::KEY_INSERT, ckKeyMgr::KEY_DELETE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_0, ckKeyMgr::KEY_1, // 45-49
+        ckKeyMgr::KEY_2, ckKeyMgr::KEY_3, ckKeyMgr::KEY_4, ckKeyMgr::KEY_5, ckKeyMgr::KEY_6, // 50-54
+        ckKeyMgr::KEY_7, ckKeyMgr::KEY_8, ckKeyMgr::KEY_9, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, // 55-59
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, // 60-64
+        ckKeyMgr::KEY_A, ckKeyMgr::KEY_B, ckKeyMgr::KEY_C, ckKeyMgr::KEY_D, ckKeyMgr::KEY_E, // 65-69
+        ckKeyMgr::KEY_F, ckKeyMgr::KEY_G, ckKeyMgr::KEY_H, ckKeyMgr::KEY_I, ckKeyMgr::KEY_J, // 70-74
+        ckKeyMgr::KEY_K, ckKeyMgr::KEY_L, ckKeyMgr::KEY_M, ckKeyMgr::KEY_N, ckKeyMgr::KEY_O, // 75-79
+        ckKeyMgr::KEY_P, ckKeyMgr::KEY_Q, ckKeyMgr::KEY_R, ckKeyMgr::KEY_S, ckKeyMgr::KEY_T, // 80-84
+        ckKeyMgr::KEY_U, ckKeyMgr::KEY_V, ckKeyMgr::KEY_W, ckKeyMgr::KEY_X, ckKeyMgr::KEY_Y, // 85-89
+        ckKeyMgr::KEY_Z, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NONE, // 90-94
+        ckKeyMgr::KEY_NONE, ckKeyMgr::KEY_NUMPAD0, ckKeyMgr::KEY_NUMPAD1, ckKeyMgr::KEY_NUMPAD2, ckKeyMgr::KEY_NUMPAD3, // 95-99
+        ckKeyMgr::KEY_NUMPAD4, ckKeyMgr::KEY_NUMPAD5, ckKeyMgr::KEY_NUMPAD6, ckKeyMgr::KEY_NUMPAD7, ckKeyMgr::KEY_NUMPAD8, // 100-104
+        ckKeyMgr::KEY_NUMPAD9, ckKeyMgr::KEY_MULTIPLY, ckKeyMgr::KEY_ADD, ckKeyMgr::KEY_SEPARATOR, ckKeyMgr::KEY_SUBTRACT, // 105-109
+        ckKeyMgr::KEY_DECIMAL, ckKeyMgr::KEY_DIVIDE, ckKeyMgr::KEY_F1, ckKeyMgr::KEY_F2, ckKeyMgr::KEY_F3, // 110-114
+        ckKeyMgr::KEY_F4, ckKeyMgr::KEY_F5, ckKeyMgr::KEY_F6, ckKeyMgr::KEY_F7, ckKeyMgr::KEY_F8, // 115-119
+        ckKeyMgr::KEY_F9, ckKeyMgr::KEY_F10, ckKeyMgr::KEY_F11, ckKeyMgr::KEY_F12, ckKeyMgr::KEY_NONE // 120-124
     };
 
-    static const u32 s_key_table_size = sizeof(s_key_table) / sizeof(pgKeyMgr::KeyType);
+    static const u32 s_key_table_size = sizeof(s_key_table) / sizeof(ckKeyMgr::KeyType);
 
-    (*s_key_event_handler)((vk < s_key_table_size) ? s_key_table[vk] : pgKeyMgr::KEY_NONE, is_down);
+    (*s_key_event_handler)((vk < s_key_table_size) ? s_key_table[vk] : ckKeyMgr::KEY_NONE, is_down);
 }
 
 
@@ -190,11 +190,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_MOUSEWHEEL:
         if (static_cast<short>(HIWORD(wParam)) > 0)
         {
-            (*s_key_event_handler)(pgKeyMgr::KEY_WHEELUP, true);
+            (*s_key_event_handler)(ckKeyMgr::KEY_WHEELUP, true);
         }
         else
         {
-            (*s_key_event_handler)(pgKeyMgr::KEY_WHEELDOWN, true);
+            (*s_key_event_handler)(ckKeyMgr::KEY_WHEELDOWN, true);
         }
         break;
     }
@@ -224,7 +224,7 @@ static void destroyFramebuffer()
 
     if (s_hInstance)
     {
-        UnregisterClass("Pogolyn", s_hInstance);
+        UnregisterClass("Catcake", s_hInstance);
         s_hInstance = NULL;
     }
 }
@@ -248,7 +248,7 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = NULL;
     wc.lpszMenuName = NULL;
-    wc.lpszClassName = "Pogolyn";
+    wc.lpszClassName = "Catcake";
 
     if (!RegisterClass(&wc))
     {
@@ -258,7 +258,7 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
     if (s_is_fullscreen)
     {
         DEVMODE dmScreenSettings;
-        pgLowLevelAPI::memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+        ckLowLevelAPI::memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
 
         dmScreenSettings.dmSize = sizeof(dmScreenSettings);
         dmScreenSettings.dmPelsWidth = new_width;
@@ -284,7 +284,7 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
     }
     else
     {
-        if (s_sys_flag & pgSysMgr::FLAG_VARIABLE_SIZE)
+        if (s_sys_flag & ckSysMgr::FLAG_VARIABLE_SIZE)
         {
             dwStyle = WS_OVERLAPPEDWINDOW;
         }
@@ -307,7 +307,7 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
 
     s_hWnd = CreateWindowEx( //
         dwExStyle, // dwExStyle
-        "Pogolyn", // lpClassName
+        "Catcake", // lpClassName
         s_app_name, // lpWindowName
         dwStyle | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, // dwStyle
         CW_USEDEFAULT, // x
@@ -411,14 +411,14 @@ static bool createFramebuffer(u16 new_width, u16 new_height)
 }
 
 
-bool pgLowLevelAPI::createApplication(const char* title, u16 width, u16 height, u16 sys_flag)
+bool ckLowLevelAPI::createApplication(const char* title, u16 width, u16 height, u16 sys_flag)
 {
     s_app_name = title;
     s_framebuffer_width = width;
     s_framebuffer_height = height;
     s_sys_flag = sys_flag;
     s_is_framebuffer_size_changed = false;
-    s_is_fullscreen = (sys_flag & pgSysMgr::FLAG_FULLSCREEN_START) ? true : false;
+    s_is_fullscreen = (sys_flag & ckSysMgr::FLAG_FULLSCREEN_START) ? true : false;
     s_is_mouse_visible = true;
 
     if (!createFramebuffer(width, height))
@@ -426,19 +426,19 @@ bool pgLowLevelAPI::createApplication(const char* title, u16 width, u16 height, 
         return false;
     }
 
-    setupShaderAPI((sys_flag & pgSysMgr::FLAG_DISABLE_SHADER) ? false : true);
+    setupShaderAPI((sys_flag & ckSysMgr::FLAG_DISABLE_SHADER) ? false : true);
 
     return true;
 }
 
 
-void pgLowLevelAPI::destroyApplication()
+void ckLowLevelAPI::destroyApplication()
 {
     destroyFramebuffer();
 }
 
 
-void pgLowLevelAPI::startApplication(bool (*update_func)(void))
+void ckLowLevelAPI::startApplication(bool (*update_func)(void))
 {
     while (true)
     {
@@ -469,19 +469,19 @@ void pgLowLevelAPI::startApplication(bool (*update_func)(void))
 }
 
 
-u16 pgLowLevelAPI::getFramebufferWidth()
+u16 ckLowLevelAPI::getFramebufferWidth()
 {
     return s_framebuffer_width;
 }
 
 
-u16 pgLowLevelAPI::getFramebufferHeight()
+u16 ckLowLevelAPI::getFramebufferHeight()
 {
     return s_framebuffer_height;
 }
 
 
-void pgLowLevelAPI::updateFramebufferSize()
+void ckLowLevelAPI::updateFramebufferSize()
 {
     RECT rect;
     GetClientRect(s_hWnd, &rect);
@@ -499,25 +499,25 @@ void pgLowLevelAPI::updateFramebufferSize()
 }
 
 
-bool pgLowLevelAPI::isFramebufferSizeChanged()
+bool ckLowLevelAPI::isFramebufferSizeChanged()
 {
     return s_is_framebuffer_size_changed;
 }
 
 
-void pgLowLevelAPI::swapFramebuffer()
+void ckLowLevelAPI::swapFramebuffer()
 {
     ::SwapBuffers(s_hDC);
 }
 
 
-bool pgLowLevelAPI::isFullScreen()
+bool ckLowLevelAPI::isFullScreen()
 {
     return s_is_fullscreen;
 }
 
 
-bool pgLowLevelAPI::toggleFullScreen(u16 width, u16 height)
+bool ckLowLevelAPI::toggleFullScreen(u16 width, u16 height)
 {
     destroyFramebuffer();
 
@@ -527,25 +527,25 @@ bool pgLowLevelAPI::toggleFullScreen(u16 width, u16 height)
 }
 
 
-void pgLowLevelAPI::setKeyEventHandler(KeyEventHandler handler)
+void ckLowLevelAPI::setKeyEventHandler(KeyEventHandler handler)
 {
     s_key_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setMouseEventHandler(MouseEventHandler handler)
+void ckLowLevelAPI::setMouseEventHandler(MouseEventHandler handler)
 {
     s_mouse_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setExtraEventHandler(ExtraEventHandler handler)
+void ckLowLevelAPI::setExtraEventHandler(ExtraEventHandler handler)
 {
     s_extra_event_handler = handler;
 }
 
 
-void pgLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y)
+void ckLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y)
 {
     POINT pos;
 
@@ -557,13 +557,13 @@ void pgLowLevelAPI::setMousePos(s16 mouse_x, s16 mouse_y)
 }
 
 
-bool pgLowLevelAPI::isMouseVisible()
+bool ckLowLevelAPI::isMouseVisible()
 {
     return s_is_mouse_visible;
 }
 
 
-void pgLowLevelAPI::setMouseVisible(bool is_visible)
+void ckLowLevelAPI::setMouseVisible(bool is_visible)
 {
     if (is_visible != s_is_mouse_visible)
     {
@@ -574,7 +574,7 @@ void pgLowLevelAPI::setMouseVisible(bool is_visible)
 }
 
 
-u64 pgLowLevelAPI::getUsecTime()
+u64 ckLowLevelAPI::getUsecTime()
 {
     static bool is_first = true;
     static LARGE_INTEGER freq;
@@ -591,79 +591,79 @@ u64 pgLowLevelAPI::getUsecTime()
 }
 
 
-void pgLowLevelAPI::sleepUsec(u64 usec)
+void ckLowLevelAPI::sleepUsec(u64 usec)
 {
     Sleep(static_cast<u32>(usec / 1000));
 }
 
 
-void pgLowLevelAPI::exit(s32 status)
+void ckLowLevelAPI::exit(s32 status)
 {
     ::exit(status);
 }
 
 
-void pgLowLevelAPI::error(const char* msg)
+void ckLowLevelAPI::error(const char* msg)
 {
     printf(msg);
-    MessageBoxA(NULL, msg, "Pogolyn Error", MB_OK | MB_ICONERROR);
+    MessageBoxA(NULL, msg, "Catcake Error", MB_OK | MB_ICONERROR);
 
     exit(1);
 }
 
 
-void pgLowLevelAPI::readLittleEndian(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::readLittleEndian(void* dest, const void* src, u32 size)
 {
     memcpy(dest, src, size);
 }
 
 
-void pgLowLevelAPI::writeLittleEndian(void* dest, const void* src, u32 size)
+void ckLowLevelAPI::writeLittleEndian(void* dest, const void* src, u32 size)
 {
     memcpy(dest, src, size);
 }
 
 
-void* pgLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
+void* ckLowLevelAPI::newThread(void (*start_func)(void*), void* user_param)
 {
     return reinterpret_cast<void*>(_beginthread(start_func, 0, user_param));
 }
 
 
-void pgLowLevelAPI::deleteThread(void* thread_handler) {}
+void ckLowLevelAPI::deleteThread(void* thread_handler) {}
 
 
-void pgLowLevelAPI::joinThread(void* thread_handler)
+void ckLowLevelAPI::joinThread(void* thread_handler)
 {
     WaitForSingleObject(thread_handler, INFINITE);
 }
 
 
-void* pgLowLevelAPI::newMutex()
+void* ckLowLevelAPI::newMutex()
 {
     return CreateMutex(NULL, false, NULL);
 }
 
 
-void pgLowLevelAPI::deleteMutex(void* mutex_handler)
+void ckLowLevelAPI::deleteMutex(void* mutex_handler)
 {
     CloseHandle(mutex_handler);
 }
 
 
-void pgLowLevelAPI::lockMutex(void* mutex_handler)
+void ckLowLevelAPI::lockMutex(void* mutex_handler)
 {
     WaitForSingleObject(mutex_handler, INFINITE);
 }
 
 
-void pgLowLevelAPI::unlockMutex(void* mutex_handler)
+void ckLowLevelAPI::unlockMutex(void* mutex_handler)
 {
     ReleaseMutex(mutex_handler);
 }
 
 
-void pgLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
+void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 {
     if (argc > 0)
     {
@@ -673,11 +673,11 @@ void pgLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 }
 
 
-void pgLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
+void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
 {
     GetWindowsDirectory(buf, buf_size);
 
-#ifdef PG_MINGW
+#ifdef CK_MINGW
     strcat(buf, "\\Fonts\\");
 #else
     strcat_s(buf, buf_size, "\\Fonts\\");

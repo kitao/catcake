@@ -29,413 +29,413 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgDraw::~pgDraw()
+ckDraw::~ckDraw()
 {
-    if (pgDrawMgr::isCreated() && m_private_flag.isOn(FLAG_INITIALIZED) && m_scr_id != pgDrawMgr::INVISIBLE_SCREEN_ID)
+    if (ckDrawMgr::isCreated() && m_private_flag.isOn(FLAG_INITIALIZED) && m_scr_id != ckDrawMgr::INVISIBLE_SCREEN_ID)
     {
         while (hasChild())
         {
-            getFirstChildN()->setScreenID(pgDrawMgr::INVISIBLE_SCREEN_ID);
+            getFirstChildN()->setScreenID(ckDrawMgr::INVISIBLE_SCREEN_ID);
         }
     }
 }
 
 
-bool pgDraw::hasScreen() const
+bool ckDraw::hasScreen() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return (m_tree.hasParent() && !m_tree.getParentN()->hasParent());
 }
 
 
-pgID pgDraw::getScreenID() const
+ckID ckDraw::getScreenID() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!hasScreen())
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     return m_tree.getParentN()->getSelf()->m_scr_id;
 }
 
 
-void pgDraw::setScreenID(pgID scr_id)
+void ckDraw::setScreenID(ckID scr_id)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    if (scr_id == pgID::ZERO)
+    if (scr_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgDrawMgr::getScreen(scr_id)->m_root_draw.m_tree.addLast(&m_tree);
+    ckDrawMgr::getScreen(scr_id)->m_root_draw.m_tree.addLast(&m_tree);
 }
 
 
-bool pgDraw::hasParent() const
+bool ckDraw::hasParent() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return (m_tree.hasParent() && m_tree.getParentN()->hasParent());
 }
 
 
-pgDraw* pgDraw::getParentN() const
+ckDraw* ckDraw::getParentN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return hasParent() ? m_tree.getParentN()->getSelf() : NULL;
 }
 
 
-void pgDraw::setParent(pgDraw* parent)
+void ckDraw::setParent(ckDraw* parent)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!parent)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     parent->m_tree.addLast(&m_tree);
 }
 
 
-pgDraw* pgDraw::getPrevAllN() const
+ckDraw* ckDraw::getPrevAllN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgTree<pgDraw>* prev = m_tree.getPrevAllN();
+    ckTree<ckDraw>* prev = m_tree.getPrevAllN();
 
     return (prev && prev->hasParent()) ? prev->getSelf() : NULL;
 }
 
 
-pgDraw* pgDraw::getNextAllN() const
+ckDraw* ckDraw::getNextAllN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgTree<pgDraw>* next = m_tree.getNextAllN();
+    ckTree<ckDraw>* next = m_tree.getNextAllN();
 
     return next ? next->getSelf() : NULL;
 }
 
 
-pgDraw* pgDraw::getPrevSiblingN() const
+ckDraw* ckDraw::getPrevSiblingN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgTree<pgDraw>* sibling = m_tree.getPrevSiblingN();
+    ckTree<ckDraw>* sibling = m_tree.getPrevSiblingN();
 
     return sibling ? sibling->getSelf() : NULL;
 }
 
 
-pgDraw* pgDraw::getNextSiblingN() const
+ckDraw* ckDraw::getNextSiblingN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgTree<pgDraw>* sibling = m_tree.getNextSiblingN();
+    ckTree<ckDraw>* sibling = m_tree.getNextSiblingN();
 
     return sibling ? sibling->getSelf() : NULL;
 }
 
 
-pgDraw* pgDraw::getLastDescendant() const
+ckDraw* ckDraw::getLastDescendant() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tree.getLastDescendant()->getSelf();
 }
 
 
-bool pgDraw::hasChild() const
+bool ckDraw::hasChild() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_tree.hasChild();
 }
 
 
-pgDraw* pgDraw::getFirstChildN() const
+ckDraw* ckDraw::getFirstChildN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgTree<pgDraw>* child = m_tree.getFirstChildN();
+    ckTree<ckDraw>* child = m_tree.getFirstChildN();
 
     return child ? child->getSelf() : NULL;
 }
 
 
-pgDraw* pgDraw::getLastChildN() const
+ckDraw* ckDraw::getLastChildN() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgTree<pgDraw>* child = m_tree.getLastChildN();
+    ckTree<ckDraw>* child = m_tree.getLastChildN();
 
     return child ? child->getSelf() : NULL;
 }
 
 
-void pgDraw::moveFirst()
+void ckDraw::moveFirst()
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_tree.getParentN()->addFirst(&m_tree);
 }
 
 
-void pgDraw::moveLast()
+void ckDraw::moveLast()
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_tree.getParentN()->addLast(&m_tree);
 }
 
 
-void pgDraw::moveBefore(pgDraw* draw)
+void ckDraw::moveBefore(ckDraw* draw)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!draw || !draw->getParentN())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_tree.joinBefore(&draw->m_tree);
 }
 
 
-void pgDraw::moveAfter(pgDraw* draw)
+void ckDraw::moveAfter(ckDraw* draw)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!draw || !draw->getParentN())
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_tree.joinAfter(&draw->m_tree);
 }
 
 
-pgDraw::DrawType pgDraw::getType() const
+ckDraw::DrawType ckDraw::getType() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_type.getType();
 }
 
 
-bool pgDraw::isVisible() const
+bool ckDraw::isVisible() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_private_flag.isOn(FLAG_VISIBLE);
 }
 
 
-void pgDraw::setVisible(bool is_visible)
+void ckDraw::setVisible(bool is_visible)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_private_flag.set(FLAG_VISIBLE, is_visible);
 }
 
 
-pgCol pgDraw::getColor() const
+ckCol ckDraw::getColor() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_local_col;
 }
 
 
-void pgDraw::setColor(pgCol col)
+void ckDraw::setColor(ckCol col)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_local_col = col;
 }
 
 
-pgDraw::DepthTest pgDraw::getDepthTest() const
+ckDraw::DepthTest ckDraw::getDepthTest() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_depth_test.getType();
 }
 
 
-void pgDraw::setDepthTest(DepthTest depth_test)
+void ckDraw::setDepthTest(DepthTest depth_test)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_depth_test = depth_test;
 }
 
 
-pgDraw::BlendMode pgDraw::getBlendMode() const
+ckDraw::BlendMode ckDraw::getBlendMode() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_blend_mode.getType();
 }
 
 
-void pgDraw::setBlendMode(BlendMode blend_mode)
+void ckDraw::setBlendMode(BlendMode blend_mode)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_blend_mode = blend_mode;
 }
 
 
-bool pgDraw::isDrawFlag(DrawFlag draw_flag) const
+bool ckDraw::isDrawFlag(DrawFlag draw_flag) const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_draw_flag.isOn(draw_flag);
 }
 
 
-void pgDraw::setDrawFlag(DrawFlag draw_flag, bool is_on)
+void ckDraw::setDrawFlag(DrawFlag draw_flag, bool is_on)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_draw_flag.set(draw_flag, is_on);
 }
 
 
-void pgDraw::clearDrawFlag()
+void ckDraw::clearDrawFlag()
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_draw_flag.clear();
 }
 
 
-void pgDraw::copyDrawFlag(const pgDraw* src)
+void ckDraw::copyDrawFlag(const ckDraw* src)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (!src)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (src->m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_draw_flag = src->m_draw_flag;
 }
 
 
-void pgDraw::setPreset_defaultBlendOff()
+void ckDraw::setPreset_defaultBlendOff()
 {
     setDepthTest(DEPTH_TEST_GEQUAL);
     setBlendMode(BLEND_OFF);
@@ -447,7 +447,7 @@ void pgDraw::setPreset_defaultBlendOff()
 }
 
 
-void pgDraw::setPreset_defaultBlendHalf()
+void ckDraw::setPreset_defaultBlendHalf()
 {
     setDepthTest(DEPTH_TEST_GEQUAL);
     setBlendMode(BLEND_HALF);
@@ -459,7 +459,7 @@ void pgDraw::setPreset_defaultBlendHalf()
 }
 
 
-void pgDraw::setPreset_defaultBlendAdd()
+void ckDraw::setPreset_defaultBlendAdd()
 {
     setDepthTest(DEPTH_TEST_GEQUAL);
     setBlendMode(BLEND_ADD);
@@ -471,38 +471,38 @@ void pgDraw::setPreset_defaultBlendAdd()
 }
 
 
-const pgVec& pgDraw::getClipBoundMin() const
+const ckVec& ckDraw::getClipBoundMin() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_bound_min;
 }
 
 
-const pgVec& pgDraw::getClipBoundMax() const
+const ckVec& ckDraw::getClipBoundMax() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_bound_max;
 }
 
 
-void pgDraw::setClipBound(const pgVec& bound_min, const pgVec& bound_max)
+void ckDraw::setClipBound(const ckVec& bound_min, const ckVec& bound_max)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (bound_min.x > bound_max.x || bound_min.y > bound_max.y || bound_min.z > bound_max.z)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_bound_min = bound_min;
@@ -510,93 +510,93 @@ void pgDraw::setClipBound(const pgVec& bound_min, const pgVec& bound_max)
 }
 
 
-const pgVec& pgDraw::getSortCenter() const
+const ckVec& ckDraw::getSortCenter() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_sort_center;
 }
 
 
-void pgDraw::setSortCenter(const pgVec& sort_center)
+void ckDraw::setSortCenter(const ckVec& sort_center)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_sort_center = sort_center;
 }
 
 
-r32 pgDraw::getSortOffset() const
+r32 ckDraw::getSortOffset() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_sort_offset;
 }
 
 
-void pgDraw::setSortOffset(r32 sort_offset)
+void ckDraw::setSortOffset(r32 sort_offset)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_sort_offset = sort_offset;
 }
 
 
-pgID pgDraw::getTextureID() const
+ckID ckDraw::getTextureID() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    return m_tex ? m_tex->getID() : pgID::ZERO;
+    return m_tex ? m_tex->getID() : ckID::ZERO;
 }
 
 
-void pgDraw::setTextureID(pgID tex_id)
+void ckDraw::setTextureID(ckID tex_id)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    m_tex = (tex_id != pgID::ZERO) ? pgDrawMgr::getTexture(tex_id) : NULL;
+    m_tex = (tex_id != ckID::ZERO) ? ckDrawMgr::getTexture(tex_id) : NULL;
 }
 
 
-pgMat& pgDraw::local()
+ckMat& ckDraw::local()
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_local;
 }
 
 
-pgMat pgDraw::calcWorld() const
+ckMat ckDraw::calcWorld() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgMat world = m_local;
+    ckMat world = m_local;
 
-    for (pgDraw* parent = getParentN(); parent; parent = parent->getParentN())
+    for (ckDraw* parent = getParentN(); parent; parent = parent->getParentN())
     {
         world = world.toGlobalFrom(parent->m_local);
     }
@@ -605,16 +605,16 @@ pgMat pgDraw::calcWorld() const
 }
 
 
-pgCol pgDraw::calcFinalColor() const
+ckCol ckDraw::calcFinalColor() const
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
-    pgCol final_col = m_local_col;
+    ckCol final_col = m_local_col;
 
-    for (pgDraw* parent = getParentN(); parent; parent = parent->getParentN())
+    for (ckDraw* parent = getParentN(); parent; parent = parent->getParentN())
     {
         final_col *= parent->m_local_col;
     }
@@ -623,17 +623,17 @@ pgCol pgDraw::calcFinalColor() const
 }
 
 
-pgDraw::pgDraw()
+ckDraw::ckDraw()
 {
-    m_scr_id = pgID::ZERO;
+    m_scr_id = ckID::ZERO;
     m_tex = NULL;
-    m_local = pgMat::UNIT;
-    m_world = pgMat::UNIT;
-    m_local_col = pgCol::FULL;
-    m_final_col = pgCol::FULL;
-    m_bound_min = pgVec::ZERO;
-    m_bound_max = pgVec::ZERO;
-    m_sort_center = pgVec::ZERO;
+    m_local = ckMat::UNIT;
+    m_world = ckMat::UNIT;
+    m_local_col = ckCol::FULL;
+    m_final_col = ckCol::FULL;
+    m_bound_min = ckVec::ZERO;
+    m_bound_max = ckVec::ZERO;
+    m_sort_center = ckVec::ZERO;
     m_sort_offset = 0.0f;
     m_sort_value = 0.0f;
     m_next_sort = NULL;
@@ -648,46 +648,46 @@ pgDraw::pgDraw()
 }
 
 
-void pgDraw::setupWorld()
+void ckDraw::setupWorld()
 {
     m_world = m_local.toGlobalFrom(m_tree.getParentN()->getSelf()->m_world);
 }
 
 
-void pgDraw::setupFinalColor()
+void ckDraw::setupFinalColor()
 {
     m_final_col = m_tree.getParentN()->getSelf()->m_final_col * m_local_col;
 }
 
 
-void pgDraw::setupSortValue(const pgMat& view)
+void ckDraw::setupSortValue(const ckMat& view)
 {
-    pgVec sort_center = m_sort_center.toGlobalFrom(m_world);
+    ckVec sort_center = m_sort_center.toGlobalFrom(m_world);
 
     m_sort_value = (sort_center - view.trans).dot(view.z_axis) + m_sort_offset;
 }
 
 
-void pgDraw::setupDrawState()
+void ckDraw::setupDrawState()
 {
-    pgLowLevelAPI::setDepthTest(static_cast<pgLowLevelAPI::DepthTest>(m_depth_test.getType()));
-    pgLowLevelAPI::setBlendMode(static_cast<pgLowLevelAPI::BlendMode>(m_blend_mode.getType()));
-    pgLowLevelAPI::setWriteMode(m_draw_flag.isOn(FLAG_WRITE_RGB), m_draw_flag.isOn(FLAG_WRITE_ALPHA), m_draw_flag.isOn(FLAG_WRITE_DEPTH));
-    pgLowLevelAPI::setBackfaceCulling(m_draw_flag.isOn(FLAG_BACKFACE_CULLING));
+    ckLowLevelAPI::setDepthTest(static_cast<ckLowLevelAPI::DepthTest>(m_depth_test.getType()));
+    ckLowLevelAPI::setBlendMode(static_cast<ckLowLevelAPI::BlendMode>(m_blend_mode.getType()));
+    ckLowLevelAPI::setWriteMode(m_draw_flag.isOn(FLAG_WRITE_RGB), m_draw_flag.isOn(FLAG_WRITE_ALPHA), m_draw_flag.isOn(FLAG_WRITE_DEPTH));
+    ckLowLevelAPI::setBackfaceCulling(m_draw_flag.isOn(FLAG_BACKFACE_CULLING));
 
     r32 world[16];
     m_world.toR32x16(world);
-    pgLowLevelAPI::setModelView(world);
+    ckLowLevelAPI::setModelView(world);
 }
 
 
-void pgDraw::render(const pgMat& view)
+void ckDraw::render(const ckMat& view)
 {
-    pgThrow(ExceptionInvalidCall);
+    ckThrow(ExceptionInvalidCall);
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgDraw)
+CK_DEFINE_COPY_CONSTRUCTOR(ckDraw)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgDraw)
+CK_DEFINE_OPERATOR_EQUAL(ckDraw)

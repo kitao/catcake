@@ -29,64 +29,64 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_res_all.h"
-#include "pg_private_macro.h"
+#include "ck_res_all.h"
+#include "ck_private_macro.h"
 
 
-pgMdl::pgMdl()
+ckMdl::ckMdl()
 {
     m_draw_ptr = NULL;
     m_rend_ptr = NULL;
 }
 
 
-pgMdl::~pgMdl()
+ckMdl::~ckMdl()
 {
     uninit();
 }
 
 
-void pgMdl::init(pgID mdl_data_id, pgID scr_id)
+void ckMdl::init(ckID mdl_data_id, ckID scr_id)
 {
     init2(mdl_data_id, scr_id, NULL);
 }
 
 
-void pgMdl::init(pgID mdl_data_id, pgDraw* parent)
+void ckMdl::init(ckID mdl_data_id, ckDraw* parent)
 {
-    init2(mdl_data_id, pgID::ZERO, parent);
+    init2(mdl_data_id, ckID::ZERO, parent);
 }
 
 
-const pgMdlData* pgMdl::getModelData() const
+const ckMdlData* ckMdl::getModelData() const
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return &m_mdl_data;
 }
 
 
-pgID pgMdl::getTextureID() const
+ckID ckMdl::getTextureID() const
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_root_node.getTextureID();
 }
 
 
-void pgMdl::setTextureID(pgID tex_id)
+void ckMdl::setTextureID(ckID tex_id)
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_root_node.setTextureID(tex_id);
@@ -98,36 +98,36 @@ void pgMdl::setTextureID(pgID tex_id)
 }
 
 
-pgID pgMdl::getLightSetID() const
+ckID ckMdl::getLightSetID() const
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_lts_id;
 }
 
 
-void pgMdl::setLightSetID(pgID lts_id)
+void ckMdl::setLightSetID(ckID lts_id)
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     m_lts_id = lts_id;
 
     if (m_mdl_data.hasNormal())
     {
-        if (m_lts_id == pgID::ZERO)
+        if (m_lts_id == ckID::ZERO)
         {
             for (s32 i = 0; i < m_node_num; i++)
             {
                 if (m_rend_ptr[i])
                 {
                     m_rend_ptr[i]->setActive(false);
-                    m_rend_ptr[i]->setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+                    m_rend_ptr[i]->setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
                 }
             }
         }
@@ -146,57 +146,57 @@ void pgMdl::setLightSetID(pgID lts_id)
 }
 
 
-pgDraw* pgMdl::getRootDraw()
+ckDraw* ckMdl::getRootDraw()
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return &m_root_node;
 }
 
 
-pgDraw* pgMdl::getNodeDraw(u16 node_index)
+ckDraw* ckMdl::getNodeDraw(u16 node_index)
 {
     if (!m_draw_ptr)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_draw_ptr[node_index];
 }
 
 
-void pgMdl::init2(pgID mdl_data_id, pgID scr_id, pgDraw* parent)
+void ckMdl::init2(ckID mdl_data_id, ckID scr_id, ckDraw* parent)
 {
     uninit();
 
-    if (mdl_data_id == pgID::ZERO)
+    if (mdl_data_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgRes res;
+    ckRes res;
 
-    pgTry
+    ckTry
     {
-        res = pgResMgr::getResource(mdl_data_id);
+        res = ckResMgr::getResource(mdl_data_id);
     }
-    pgCatch(pgResMgr::ExceptionNotFound)
+    ckCatch(ckResMgr::ExceptionNotFound)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
     m_node_num = m_mdl_data.getNodeNum();
-    m_lts_id = pgID::ZERO;
+    m_lts_id = ckID::ZERO;
 
     if (parent)
     {
@@ -207,19 +207,19 @@ void pgMdl::init2(pgID mdl_data_id, pgID scr_id, pgDraw* parent)
         m_root_node.init(scr_id);
     }
 
-    pgNewArray(m_draw_ptr, pgDraw*, m_node_num);
-    pgNewArray(m_rend_ptr, pgRend_Light*, m_node_num);
+    ckNewArray(m_draw_ptr, ckDraw*, m_node_num);
+    ckNewArray(m_rend_ptr, ckRend_Light*, m_node_num);
 
     for (s32 i = 0; i < m_node_num; i++)
     {
         if (m_mdl_data.getNodeVertNum(i) > 0)
         {
-            m_draw_ptr[i] = pgNew(pgPrim);
-            m_rend_ptr[i] = m_mdl_data.hasNormal() ? pgNew(pgRend_Light) : NULL;
+            m_draw_ptr[i] = ckNew(ckPrim);
+            m_rend_ptr[i] = m_mdl_data.hasNormal() ? ckNew(ckRend_Light) : NULL;
         }
         else
         {
-            m_draw_ptr[i] = pgNew(pgNode);
+            m_draw_ptr[i] = ckNew(ckNode);
             m_rend_ptr[i] = NULL;
         }
     }
@@ -231,24 +231,24 @@ void pgMdl::init2(pgID mdl_data_id, pgID scr_id, pgDraw* parent)
 
         if (vert_num > 0)
         {
-            pgPrim* prim = static_cast<pgPrim*>(m_draw_ptr[i]);
-            pgPrim::PrimData* prim_data = const_cast<pgPrim::PrimData*>(m_mdl_data.getNodePrimData(i));
+            ckPrim* prim = static_cast<ckPrim*>(m_draw_ptr[i]);
+            ckPrim::PrimData* prim_data = const_cast<ckPrim::PrimData*>(m_mdl_data.getNodePrimData(i));
 
             prim->init(m_mdl_data.getNodePrimMode(i), prim_data, vert_num, (parent_index == i) ? &m_root_node : m_draw_ptr[parent_index]);
 
             prim->setBlendMode(m_mdl_data.getNodeBlendMode(i));
 
-            if (prim->getBlendMode() != pgDraw::BLEND_OFF)
+            if (prim->getBlendMode() != ckDraw::BLEND_OFF)
             {
-                prim->setDrawFlag(pgDraw::FLAG_SORT, true);
+                prim->setDrawFlag(ckDraw::FLAG_SORT, true);
             }
 
-            prim->setDrawFlag(pgDraw::FLAG_BACKFACE_CULLING, true);
+            prim->setDrawFlag(ckDraw::FLAG_BACKFACE_CULLING, true);
 
-            pgVec bound_min = m_mdl_data.getNodeClipBoundMinForReader(i);
-            pgVec bound_max = m_mdl_data.getNodeClipBoundMaxForReader(i);
+            ckVec bound_min = m_mdl_data.getNodeClipBoundMinForReader(i);
+            ckVec bound_max = m_mdl_data.getNodeClipBoundMaxForReader(i);
 
-            prim->setDrawFlag(pgDraw::FLAG_BOUND_CLIP, true);
+            prim->setDrawFlag(ckDraw::FLAG_BOUND_CLIP, true);
             prim->setClipBound(bound_min, bound_max);
             prim->setSortCenter((bound_min + bound_max) / 2.0f);
 
@@ -256,15 +256,15 @@ void pgMdl::init2(pgID mdl_data_id, pgID scr_id, pgDraw* parent)
 
             if (m_mdl_data.hasNormal())
             {
-                pgRend_Light::RendData* rend_data = const_cast<pgRend_Light::RendData*>(reinterpret_cast<const pgRend_Light::RendData*>(m_mdl_data.getNodeNormalData(i)));
+                ckRend_Light::RendData* rend_data = const_cast<ckRend_Light::RendData*>(reinterpret_cast<const ckRend_Light::RendData*>(m_mdl_data.getNodeNormalData(i)));
 
-                m_rend_ptr[i]->init(prim, rend_data, pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+                m_rend_ptr[i]->init(prim, rend_data, ckDrawMgr::DEFAULT_LIGHT_SET_ID);
                 m_rend_ptr[i]->setActive(false);
             }
         }
         else
         {
-            pgNode* node = static_cast<pgNode*>(m_draw_ptr[i]);
+            ckNode* node = static_cast<ckNode*>(m_draw_ptr[i]);
 
             node->init((parent_index == i) ? &m_root_node : m_draw_ptr[parent_index]);
 
@@ -278,31 +278,31 @@ void pgMdl::init2(pgID mdl_data_id, pgID scr_id, pgDraw* parent)
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgMdl)
+CK_DEFINE_COPY_CONSTRUCTOR(ckMdl)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgMdl)
+CK_DEFINE_OPERATOR_EQUAL(ckMdl)
 
 
-void pgMdl::uninit()
+void ckMdl::uninit()
 {
     if (m_draw_ptr)
     {
         for (s32 i = 0; i < m_node_num; i++)
         {
-            pgDelete(m_draw_ptr[i], pgDraw);
+            ckDelete(m_draw_ptr[i], ckDraw);
 
             if (m_rend_ptr[i])
             {
-                pgDelete(m_rend_ptr[i], pgRend_Light);
+                ckDelete(m_rend_ptr[i], ckRend_Light);
             }
         }
 
-        typedef pgDraw* pgDrawPtr;
-        pgDeleteArray(m_draw_ptr, pgDrawPtr);
+        typedef ckDraw* ckDrawPtr;
+        ckDeleteArray(m_draw_ptr, ckDrawPtr);
 
-        typedef pgRend* pgRendPtr;
-        pgDeleteArray(m_rend_ptr, pgRendPtr);
+        typedef ckRend* ckRendPtr;
+        ckDeleteArray(m_rend_ptr, ckRendPtr);
 
         m_draw_ptr = NULL;
         m_rend_ptr = NULL;

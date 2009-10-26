@@ -31,10 +31,10 @@
 
 #include <stdarg.h>
 
-#include "pg_dbg_all.h"
+#include "ck_dbg_all.h"
 
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
 static const u8 s_debug_font[96 * 8] =
@@ -90,24 +90,24 @@ static const u8 s_debug_font[96 * 8] =
 };
 
 
-void pgDbgMgr::drawString(r32 left, r32 top, pgCol col, u8 scale, const char* str, ...)
+void ckDbgMgr::drawString(r32 left, r32 top, ckCol col, u8 scale, const char* str, ...)
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
     if (scale == 0 || !str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     char buf[256];
-    PG_VSPRINTF(buf, 256, str);
+    CK_VSPRINTF(buf, 256, str);
 
-    pgSprt* font_sprt = &ins->m_font_sprt;
+    ckSprt* font_sprt = &ins->m_font_sprt;
 
     r32 x = left + static_cast<r32>(DEBUG_FONT_WIDTH) * scale / 2.0f;
     r32 y = top - static_cast<r32>(DEBUG_FONT_HEIGHT) * scale / 2.0f;
@@ -134,7 +134,7 @@ void pgDbgMgr::drawString(r32 left, r32 top, pgCol col, u8 scale, const char* st
             r32 v2 = v1 + 1.0f / 8.0f;
 
             font_sprt->dataPos(index).set(x, y, 0.0f);
-            font_sprt->dataCol(index) = (ch == '`') ? pgCol(255, 128, 64, 255) : col;
+            font_sprt->dataCol(index) = (ch == '`') ? ckCol(255, 128, 64, 255) : col;
             font_sprt->setDataSize(index, sprt_size, sprt_size);
             font_sprt->setDataUV(index, u1, v1, u2, v2);
             font_sprt->setCurDataNum(index + 1);
@@ -145,12 +145,12 @@ void pgDbgMgr::drawString(r32 left, r32 top, pgCol col, u8 scale, const char* st
 }
 
 
-void pgDbgMgr::newDebugFontTexture()
+void ckDbgMgr::newDebugFontTexture()
 {
-    pgTex* debug_font_tex = pgDrawMgr::newTexture(DEBUG_FONT_TEXTURE_ID, 128, 64, pgTex::FORMAT_ALPHA);
+    ckTex* debug_font_tex = ckDrawMgr::newTexture(DEBUG_FONT_TEXTURE_ID, 128, 64, ckTex::FORMAT_ALPHA);
     u8* debug_font_image = static_cast<u8*>(debug_font_tex->editImage());
 
-    debug_font_tex->clearImage(pgCol::ZERO);
+    debug_font_tex->clearImage(ckCol::ZERO);
 
     for (u32 i = 0; i < 96; i++)
     {

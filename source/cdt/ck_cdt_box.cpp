@@ -29,34 +29,34 @@
 */
 
 
-#include "pg_cdt_all.h"
+#include "ck_cdt_all.h"
 
 
 const r32 BOX_ENLARGEMENT_RATE = 1.001f;
 
 
-pgCdt::Box::Box()
+ckCdt::Box::Box()
 {
-    m_world = pgMat::UNIT;
-    m_half_size = pgVec::ZERO;
+    m_world = ckMat::UNIT;
+    m_half_size = ckVec::ZERO;
 
     updateAABB();
 }
 
 
-const pgCdt::AABB& pgCdt::Box::getAABB() const
+const ckCdt::AABB& ckCdt::Box::getAABB() const
 {
     return m_aabb;
 }
 
 
-const pgMat& pgCdt::Box::getWorld() const
+const ckMat& ckCdt::Box::getWorld() const
 {
     return m_world;
 }
 
 
-void pgCdt::Box::setWorld(const pgMat& world)
+void ckCdt::Box::setWorld(const ckMat& world)
 {
     m_world = world;
 
@@ -64,35 +64,35 @@ void pgCdt::Box::setWorld(const pgMat& world)
 }
 
 
-r32 pgCdt::Box::getWidth() const
+r32 ckCdt::Box::getWidth() const
 {
     return m_half_size.x * 2.0f;
 }
 
 
-r32 pgCdt::Box::getHeight() const
+r32 ckCdt::Box::getHeight() const
 {
     return m_half_size.y * 2.0f;
 }
 
 
-r32 pgCdt::Box::getDepth() const
+r32 ckCdt::Box::getDepth() const
 {
     return m_half_size.z * 2.0f;
 }
 
 
-const pgVec& pgCdt::Box::getHalfSize() const
+const ckVec& ckCdt::Box::getHalfSize() const
 {
     return m_half_size;
 }
 
 
-void pgCdt::Box::setSize(r32 width, r32 height, r32 depth)
+void ckCdt::Box::setSize(r32 width, r32 height, r32 depth)
 {
     if (width < 0.0f || height < 0.0f || depth < 0.0f)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_half_size.set(width / 2.0f, height / 2.0f, depth / 2.0f);
@@ -101,38 +101,38 @@ void pgCdt::Box::setSize(r32 width, r32 height, r32 depth)
 }
 
 
-void pgCdt::Box::updateAABB()
+void ckCdt::Box::updateAABB()
 {
-    pgVec half_diag( //
-        pgMath::abs(m_world.x_axis.x) * m_half_size.x + pgMath::abs(m_world.y_axis.x) * m_half_size.y + pgMath::abs(m_world.z_axis.x) * m_half_size.z, //
-        pgMath::abs(m_world.x_axis.y) * m_half_size.x + pgMath::abs(m_world.y_axis.y) * m_half_size.y + pgMath::abs(m_world.z_axis.y) * m_half_size.z, //
-        pgMath::abs(m_world.x_axis.z) * m_half_size.x + pgMath::abs(m_world.y_axis.z) * m_half_size.y + pgMath::abs(m_world.z_axis.z) * m_half_size.z);
+    ckVec half_diag( //
+        ckMath::abs(m_world.x_axis.x) * m_half_size.x + ckMath::abs(m_world.y_axis.x) * m_half_size.y + ckMath::abs(m_world.z_axis.x) * m_half_size.z, //
+        ckMath::abs(m_world.x_axis.y) * m_half_size.x + ckMath::abs(m_world.y_axis.y) * m_half_size.y + ckMath::abs(m_world.z_axis.y) * m_half_size.z, //
+        ckMath::abs(m_world.x_axis.z) * m_half_size.x + ckMath::abs(m_world.y_axis.z) * m_half_size.y + ckMath::abs(m_world.z_axis.z) * m_half_size.z);
 
     m_aabb.setBound(m_world.trans - half_diag, m_world.trans + half_diag);
 }
 
 
-bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
+bool ckCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
 {
     if (!checkTouch(box1.m_aabb, box2.m_aabb))
     {
         return false;
     }
 
-    pgMat local_b = box2.m_world.toLocalOf(box1.m_world);
+    ckMat local_b = box2.m_world.toLocalOf(box1.m_world);
 
-    pgMat abs_local_b( //
-        pgVec(pgMath::abs(local_b.x_axis.x), pgMath::abs(local_b.x_axis.y), pgMath::abs(local_b.x_axis.z)), //
-        pgVec(pgMath::abs(local_b.y_axis.x), pgMath::abs(local_b.y_axis.y), pgMath::abs(local_b.y_axis.z)), //
-        pgVec(pgMath::abs(local_b.z_axis.x), pgMath::abs(local_b.z_axis.y), pgMath::abs(local_b.z_axis.z)), //
-        pgVec::ZERO);
+    ckMat abs_local_b( //
+        ckVec(ckMath::abs(local_b.x_axis.x), ckMath::abs(local_b.x_axis.y), ckMath::abs(local_b.x_axis.z)), //
+        ckVec(ckMath::abs(local_b.y_axis.x), ckMath::abs(local_b.y_axis.y), ckMath::abs(local_b.y_axis.z)), //
+        ckVec(ckMath::abs(local_b.z_axis.x), ckMath::abs(local_b.z_axis.y), ckMath::abs(local_b.z_axis.z)), //
+        ckVec::ZERO);
 
-    const pgVec& size_a = box1.m_half_size;
-    const pgVec& size_b = box2.m_half_size;
+    const ckVec& size_a = box1.m_half_size;
+    const ckVec& size_b = box2.m_half_size;
 
-    pgVec t = (box2.m_world.trans - box1.m_world.trans).toLocalOf_noTrans(box1.m_world);
+    ckVec t = (box2.m_world.trans - box1.m_world.trans).toLocalOf_noTrans(box1.m_world);
 
-    pgVec back_dir;
+    ckVec back_dir;
     r32 back_dist = 1000000.0f;
 
     // L = AX
@@ -141,9 +141,9 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
 #define CHECK_BACK_DIST(ra, rb, tl, axis) \
     do \
     { \
-        r32 cur_back_dist = (ra) + (rb) - pgMath::abs(tl); \
+        r32 cur_back_dist = (ra) + (rb) - ckMath::abs(tl); \
     \
-        if (cur_back_dist < pgMath::EPSILON) \
+        if (cur_back_dist < ckMath::EPSILON) \
         { \
             return false; \
         } \
@@ -193,7 +193,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
 #undef CHECK_BACK_DIST
 #undef CHECK_SEPARATING_AXIS
 
-    pgVec sa_back_dir[9];
+    ckVec sa_back_dir[9];
     r32 sa_back_dist[9];
     u8 sa_num = 0;
 
@@ -201,20 +201,20 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
     do \
     { \
         r32 tl = t.x * (lx) + t.y * (ly) + t.z * (lz); \
-        r32 cur_back_dist = ra + rb - pgMath::abs(tl); \
+        r32 cur_back_dist = ra + rb - ckMath::abs(tl); \
     \
-        if (cur_back_dist < pgMath::EPSILON) \
+        if (cur_back_dist < ckMath::EPSILON) \
         { \
             return false; \
         } \
     \
-        sa_back_dir[sa_num] = (tl < 0.0f) ? pgVec(lx, ly, lz) : pgVec(-(lx), -(ly), -(lz)); \
+        sa_back_dir[sa_num] = (tl < 0.0f) ? ckVec(lx, ly, lz) : ckVec(-(lx), -(ly), -(lz)); \
         sa_back_dist[sa_num] = cur_back_dist; \
         sa_num++; \
     } \
     while (false)
 
-#define IS_VALID_AXIS(a, b) ((a) > pgMath::EPSILON || (b) > pgMath::EPSILON)
+#define IS_VALID_AXIS(a, b) ((a) > ckMath::EPSILON || (b) > ckMath::EPSILON)
 
     // L = AX * BX
     if (IS_VALID_AXIS(abs_local_b.x_axis.z, abs_local_b.x_axis.y))
@@ -312,11 +312,11 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
 
     for (s32 i = 0; i < sa_num; i++)
     {
-        if (sa_back_dist[i] > pgMath::EPSILON)
+        if (sa_back_dist[i] > ckMath::EPSILON)
         {
             r32 length = sa_back_dir[i].length();
 
-            if (length > pgMath::EPSILON)
+            if (length > ckMath::EPSILON)
             {
                 sa_back_dist[i] /= length;
 
@@ -339,18 +339,18 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
     /*
         calculate cdt_info.pos
     */
-    pgVec size_b2 = size_b * BOX_ENLARGEMENT_RATE;
+    ckVec size_b2 = size_b * BOX_ENLARGEMENT_RATE;
 
-    pgVec sx = local_b.x_axis * size_b2.x;
-    pgVec sy = local_b.y_axis * size_b2.y;
-    pgVec sz = local_b.z_axis * size_b2.z;
+    ckVec sx = local_b.x_axis * size_b2.x;
+    ckVec sy = local_b.y_axis * size_b2.y;
+    ckVec sz = local_b.z_axis * size_b2.z;
 
-    pgVec inter_pos[8];
+    ckVec inter_pos[8];
     u8 inter_num = 0;
 
     for (s32 i = 0; i < 8; i++)
     {
-        pgVec cur_pos = local_b.trans + ((i % 2 == 0) ? sx : -sx) + ((i % 4 < 2) ? sy : -sy) + ((i < 4) ? sz : -sz);
+        ckVec cur_pos = local_b.trans + ((i % 2 == 0) ? sx : -sx) + ((i % 4 < 2) ? sy : -sy) + ((i < 4) ? sz : -sz);
 
         if (cur_pos.x <= size_a.x && cur_pos.x >= -size_a.x && //
             cur_pos.y <= size_a.y && cur_pos.y >= -size_a.y && //
@@ -384,8 +384,8 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
 
     ////////
 
-    pgVec vert[8];
-    pgMat local_a = box1.m_world.toLocalOf(box2.m_world);
+    ckVec vert[8];
+    ckMat local_a = box1.m_world.toLocalOf(box2.m_world);
 
     sx = local_a.x_axis * size_a.x;
     sy = local_a.y_axis * size_a.y;
@@ -395,7 +395,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
 
     for (s32 i = 0; i < 8; i++)
     {
-        pgVec cur_pos = vert[i] = local_a.trans + ((i % 2 == 0) ? sx : -sx) + ((i % 4 < 2) ? sy : -sy) + ((i < 4) ? sz : -sz);
+        ckVec cur_pos = vert[i] = local_a.trans + ((i % 2 == 0) ? sx : -sx) + ((i % 4 < 2) ? sy : -sy) + ((i < 4) ? sz : -sz);
 
         if (cur_pos.x <= size_b2.x && cur_pos.x >= -size_b2.x && //
             cur_pos.y <= size_b2.y && cur_pos.y >= -size_b2.y && //
@@ -430,7 +430,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
     ////////
 
     r32 min_dist, max_dist;
-    pgVec size_wa = size_a * 2.0f;
+    ckVec size_wa = size_a * 2.0f;
 
     inter_num = 0;
 
@@ -439,7 +439,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
     { \
         if (intersectLocalBox(&min_dist, &max_dist, (ray_pos), (ray_dir), size_b2) && min_dist <= size_wa.compo) \
         { \
-            inter_pos[inter_num] = ray_pos + ray_dir * ((min_dist + pgMath::min(max_dist, size_wa.compo)) / 2.0f); \
+            inter_pos[inter_num] = ray_pos + ray_dir * ((min_dist + ckMath::min(max_dist, size_wa.compo)) / 2.0f); \
             inter_num++; \
         } \
     } \
@@ -490,14 +490,14 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box1, const Box& box2)
     }
 
     cdt_info->pos = box1.m_world.trans;
-    cdt_info->back_dir = pgVec::X_UNIT;
+    cdt_info->back_dir = ckVec::X_UNIT;
     cdt_info->back_dist = 0.0f;
 
     return true; // unexpected case
 }
 
 
-bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Sph& sph)
+bool ckCdt::collide(CdtInfo* cdt_info, const Box& box, const Sph& sph)
 {
     bool res = collide(cdt_info, sph, box);
 
@@ -510,24 +510,24 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Sph& sph)
 }
 
 
-bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
+bool ckCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
 {
     if (!checkTouch(box.m_aabb, tri.m_aabb))
     {
         return false;
     }
 
-    pgVec back_dir;
+    ckVec back_dir;
     r32 back_dist = 1000000.0f;
 
-    pgVec center = (tri.m_pos1 + tri.m_pos2 + tri.m_pos3) / 3.0f;
+    ckVec center = (tri.m_pos1 + tri.m_pos2 + tri.m_pos3) / 3.0f;
 
     // L = Box.X
     // L = Box.Y
     // L = Box.Z
-    pgVec a = tri.m_pos1.toLocalOf(box.m_world);
-    pgVec b = tri.m_pos2.toLocalOf(box.m_world);
-    pgVec c = tri.m_pos3.toLocalOf(box.m_world);
+    ckVec a = tri.m_pos1.toLocalOf(box.m_world);
+    ckVec b = tri.m_pos2.toLocalOf(box.m_world);
+    ckVec c = tri.m_pos3.toLocalOf(box.m_world);
 
     r32 min_dist, max_dist;
 
@@ -536,7 +536,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
     { \
         min_dist = (a.compo < b.compo && a.compo < c.compo) ? a.compo : ((b.compo < c.compo) ? b.compo : c.compo); \
     \
-        if (min_dist > box.m_half_size.compo - pgMath::EPSILON) \
+        if (min_dist > box.m_half_size.compo - ckMath::EPSILON) \
         { \
             return false; \
         } \
@@ -551,7 +551,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
     \
         max_dist = (a.compo > b.compo && a.compo > c.compo) ? a.compo : ((b.compo > c.compo) ? b.compo : c.compo); \
     \
-        if (max_dist < -box.m_half_size.compo + pgMath::EPSILON) \
+        if (max_dist < -box.m_half_size.compo + ckMath::EPSILON) \
         { \
             return false; \
         } \
@@ -572,27 +572,27 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
 
 #undef CHECK_SEPARATING_AXIS
 
-    pgVec p = center.toLocalOf(box.m_world);
+    ckVec p = center.toLocalOf(box.m_world);
 
-    pgVec ap = p - a;
-    pgVec bp = p - b;
-    pgVec cp = p - c;
+    ckVec ap = p - a;
+    ckVec bp = p - b;
+    ckVec cp = p - c;
 
-    pgVec sa_back_dir[10];
+    ckVec sa_back_dir[10];
     r32 sa_back_dist[10];
     u8 sa_num;
 
     // L = Normal of Triangle
     {
-        pgVec n = (a - b).cross(a - c);
+        ckVec n = (a - b).cross(a - c);
 
         r32 ra = 0.0f;
-        r32 rb = pgMath::abs(n.x) * box.m_half_size.x + pgMath::abs(n.y) * box.m_half_size.y + pgMath::abs(n.z) * box.m_half_size.z;
+        r32 rb = ckMath::abs(n.x) * box.m_half_size.x + ckMath::abs(n.y) * box.m_half_size.y + ckMath::abs(n.z) * box.m_half_size.z;
         r32 tl = p.dot(n);
 
-        r32 cur_back_dist = ra + rb - pgMath::abs(tl);
+        r32 cur_back_dist = ra + rb - ckMath::abs(tl);
 
-        if (cur_back_dist < pgMath::EPSILON)
+        if (cur_back_dist < ckMath::EPSILON)
         {
             return false;
         }
@@ -605,7 +605,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
 #define CHECK_SEPARATING_AXIS(lx, ly, lz, abs_lx, abs_ly, abs_lz) \
     do \
     { \
-        if (abs_lx > pgMath::EPSILON || abs_ly > pgMath::EPSILON || abs_lz > pgMath::EPSILON) \
+        if (abs_lx > ckMath::EPSILON || abs_ly > ckMath::EPSILON || abs_lz > ckMath::EPSILON) \
         { \
             r32 apl = a.x * (lx) + a.y * (ly) + a.z * (lz); \
             r32 bpl = b.x * (lx) + b.y * (ly) + b.z * (lz); \
@@ -618,15 +618,15 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
             r32 cur_back_dist1 = ra + max_dist; \
             r32 cur_back_dist2 = ra - min_dist; \
     \
-            if (cur_back_dist1 < pgMath::EPSILON || cur_back_dist2 < pgMath::EPSILON) \
+            if (cur_back_dist1 < ckMath::EPSILON || cur_back_dist2 < ckMath::EPSILON) \
             { \
                 return false; \
             } \
     \
             r32 tl = p.x * (lx) + p.y * (ly) + p.z * (lz); \
     \
-            sa_back_dir[sa_num] = (tl < 0.0f) ? pgVec(lx, ly, lz) : pgVec(-(lx), -(ly), -(lz)); \
-            sa_back_dist[sa_num] = pgMath::min(cur_back_dist1, cur_back_dist2); \
+            sa_back_dir[sa_num] = (tl < 0.0f) ? ckVec(lx, ly, lz) : ckVec(-(lx), -(ly), -(lz)); \
+            sa_back_dist[sa_num] = ckMath::min(cur_back_dist1, cur_back_dist2); \
             sa_num++; \
         } \
     } \
@@ -635,28 +635,28 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
 #define CHECK_SEPARATING_AXIES(edge) \
     do \
     { \
-        CHECK_SEPARATING_AXIS(0.0f, -(edge).z, (edge).y, 0.0f, pgMath::abs((edge).z), pgMath::abs((edge).y)); \
-        CHECK_SEPARATING_AXIS((edge).z, 0.0f, -(edge).x, pgMath::abs((edge).z), 0.0f, pgMath::abs((edge).x)); \
-        CHECK_SEPARATING_AXIS(-(edge).y, (edge).x, 0.0f, pgMath::abs((edge).y), pgMath::abs((edge).x), 0.0f); \
+        CHECK_SEPARATING_AXIS(0.0f, -(edge).z, (edge).y, 0.0f, ckMath::abs((edge).z), ckMath::abs((edge).y)); \
+        CHECK_SEPARATING_AXIS((edge).z, 0.0f, -(edge).x, ckMath::abs((edge).z), 0.0f, ckMath::abs((edge).x)); \
+        CHECK_SEPARATING_AXIS(-(edge).y, (edge).x, 0.0f, ckMath::abs((edge).y), ckMath::abs((edge).x), 0.0f); \
     } \
     while (false)
 
     // L = Box.X * AB
     // L = Box.Y * AB
     // L = Box.Z * AB
-    pgVec ab = b - a;
+    ckVec ab = b - a;
     CHECK_SEPARATING_AXIES(ab);
 
     // L = Box.X * BC
     // L = Box.Y * BC
     // L = Box.Z * BC
-    pgVec bc = c - b;
+    ckVec bc = c - b;
     CHECK_SEPARATING_AXIES(bc);
 
     // L = Box.X * CA
     // L = Box.Y * CA
     // L = Box.Z * CA
-    pgVec ca = a - c;
+    ckVec ca = a - c;
     CHECK_SEPARATING_AXIES(ca);
 
 #undef CHECK_SEPARATING_AXIES
@@ -674,11 +674,11 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
 
     for (s32 i = 0; i < sa_num; i++)
     {
-        if (sa_back_dist[i] > pgMath::EPSILON)
+        if (sa_back_dist[i] > ckMath::EPSILON)
         {
             r32 length = sa_back_dir[i].length();
 
-            if (length > pgMath::EPSILON)
+            if (length > ckMath::EPSILON)
             {
                 sa_back_dist[i] /= length;
 
@@ -701,10 +701,10 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
     /*
         calculate cdt_info.pos
     */
-    pgVec inter_pos[16];
+    ckVec inter_pos[16];
     u8 inter_num = 0;
 
-    pgVec box_half_size2 = box.m_half_size * BOX_ENLARGEMENT_RATE;
+    ckVec box_half_size2 = box.m_half_size * BOX_ENLARGEMENT_RATE;
 
 #define CHECK_VERT_IN_BOX(local_vert, global_vert) \
     do \
@@ -779,7 +779,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
     inter_num = 0;
 
     r32 dist;
-    pgVec ray_pos;
+    ckVec ray_pos;
 
 #define INTERSECT_TRIANGLE(ray_dir, max_dist) \
     do \
@@ -792,9 +792,9 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
     } \
     while (false)
 
-    pgVec vec_x = box.m_world.x_axis * box_half_size2.x;
-    pgVec vec_y = box.m_world.y_axis * box_half_size2.y;
-    pgVec vec_z = box.m_world.z_axis * box_half_size2.z;
+    ckVec vec_x = box.m_world.x_axis * box_half_size2.x;
+    ckVec vec_y = box.m_world.y_axis * box_half_size2.y;
+    ckVec vec_z = box.m_world.z_axis * box_half_size2.z;
 
     r32 size_x = box_half_size2.x * 2.0f;
     r32 size_y = box_half_size2.y * 2.0f;
@@ -839,7 +839,7 @@ bool pgCdt::collide(CdtInfo* cdt_info, const Box& box, const Tri& tri)
     CALC_INTERSECT_POS();
 
     cdt_info->pos = box.m_world.trans;
-    cdt_info->back_dir = pgVec::X_UNIT;
+    cdt_info->back_dir = ckVec::X_UNIT;
     cdt_info->back_dist = 0.0f;
 
     return true; // unexpected case

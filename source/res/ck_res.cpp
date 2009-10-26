@@ -29,10 +29,10 @@
 */
 
 
-#include "pg_res_all.h"
+#include "ck_res_all.h"
 
 
-pgRes::pgRes()
+ckRes::ckRes()
 {
     m_data = NULL;
     m_data_size = 0;
@@ -43,31 +43,31 @@ pgRes::pgRes()
 }
 
 
-pgID pgRes::getID() const
+ckID ckRes::getID() const
 {
     return m_id;
 }
 
 
-pgStr<char, 3> pgRes::getExtension() const
+ckStr<char, 3> ckRes::getExtension() const
 {
     return m_ext;
 }
 
 
-u32 pgRes::getDataSize() const
+u32 ckRes::getDataSize() const
 {
     return m_data_size;
 }
 
 
-bool pgRes::isAutoFree() const
+bool ckRes::isAutoFree() const
 {
     return m_is_auto_free;
 }
 
 
-void pgRes::init(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo, bool is_auto_free)
+void ckRes::init(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo, bool is_auto_free)
 {
     m_id = id;
     m_ext = ext;
@@ -78,7 +78,7 @@ void pgRes::init(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, v
 }
 
 
-pgStr<char, 3> pgRes::toUppercase(pgStr<char, 3> str)
+ckStr<char, 3> ckRes::toUppercase(ckStr<char, 3> str)
 {
     for (s32 i = 0; i < str.getLength(); i++)
     {

@@ -31,372 +31,372 @@
 
 #include <stdarg.h>
 
-#include "pg_sys_all.h"
+#include "ck_sys_all.h"
 
-#include "pg_mem_all.h"
-#include "pg_key_all.h"
-#include "pg_draw_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
-
-
-pgSysMgr* pgSysMgr::m_instance = NULL;
+#include "ck_mem_all.h"
+#include "ck_key_all.h"
+#include "ck_draw_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-void pgSysMgr::printf(const char* str, ...)
+ckSysMgr* ckSysMgr::m_instance = NULL;
+
+
+void ckSysMgr::printf(const char* str, ...)
 {
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     char buf[256];
-    PG_VSPRINTF(buf, 256, str);
+    CK_VSPRINTF(buf, 256, str);
 
-    pgLowLevelAPI::printf(buf);
+    ckLowLevelAPI::printf(buf);
 }
 
 
-void pgSysMgr::wprintf(const wchar_t* str, ...)
+void ckSysMgr::wprintf(const wchar_t* str, ...)
 {
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     wchar_t buf[256];
-    PG_VSWPRINTF(buf, 256, str);
+    CK_VSWPRINTF(buf, 256, str);
 
-    pgLowLevelAPI::wprintf(buf);
+    ckLowLevelAPI::wprintf(buf);
 }
 
 
-void pgSysMgr::sprintf(char* buf, u32 buf_size, const char* str, ...)
+void ckSysMgr::sprintf(char* buf, u32 buf_size, const char* str, ...)
 {
     if (!buf || buf_size == 0 || !str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    PG_VSPRINTF(buf, buf_size, str);
+    CK_VSPRINTF(buf, buf_size, str);
 }
 
 
-void pgSysMgr::swprintf(wchar_t* buf, u32 buf_size, const wchar_t* str, ...)
+void ckSysMgr::swprintf(wchar_t* buf, u32 buf_size, const wchar_t* str, ...)
 {
     if (!buf || buf_size == 0 || !str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    PG_VSWPRINTF(buf, buf_size, str);
+    CK_VSWPRINTF(buf, buf_size, str);
 }
 
 
-void* pgSysMgr::openFile(const char* filename, FileMode file_mode)
+void* ckSysMgr::openFile(const char* filename, FileMode file_mode)
 {
     if (!filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    void* fh = pgLowLevelAPI::openFile(filename, static_cast<pgLowLevelAPI::FileMode>(file_mode));
+    void* fh = ckLowLevelAPI::openFile(filename, static_cast<ckLowLevelAPI::FileMode>(file_mode));
 
     if (!fh)
     {
-        pgThrow(ExceptionCannotOpenFile);
+        ckThrow(ExceptionCannotOpenFile);
     }
 
     return fh;
 }
 
 
-u32 pgSysMgr::getFileSize(void* file_handler)
+u32 ckSysMgr::getFileSize(void* file_handler)
 {
     if (!file_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    s32 file_size = pgLowLevelAPI::getFileSize(file_handler);
+    s32 file_size = ckLowLevelAPI::getFileSize(file_handler);
 
     if (file_size < 0)
     {
-        pgThrow(ExceptionCannotReadFile);
+        ckThrow(ExceptionCannotReadFile);
     }
 
     return file_size;
 }
 
 
-void pgSysMgr::readFile(void* buf, u32 offset, u32 size, void* file_handler)
+void ckSysMgr::readFile(void* buf, u32 offset, u32 size, void* file_handler)
 {
     if (!buf || size == 0 || !file_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    if (!pgLowLevelAPI::readFile(buf, offset, size, file_handler))
+    if (!ckLowLevelAPI::readFile(buf, offset, size, file_handler))
     {
-        pgThrow(ExceptionCannotReadFile);
+        ckThrow(ExceptionCannotReadFile);
     }
 }
 
 
-void pgSysMgr::writeFile(u32 offset, const void* buf, u32 size, void* file_handler)
+void ckSysMgr::writeFile(u32 offset, const void* buf, u32 size, void* file_handler)
 {
     if (!buf || size == 0 || !file_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    if (!pgLowLevelAPI::writeFile(offset, buf, size, file_handler))
+    if (!ckLowLevelAPI::writeFile(offset, buf, size, file_handler))
     {
-        pgThrow(ExceptionCannotWriteFile);
+        ckThrow(ExceptionCannotWriteFile);
     }
 }
 
 
-void pgSysMgr::closeFile(void* file_handler)
+void ckSysMgr::closeFile(void* file_handler)
 {
     if (!file_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::closeFile(file_handler);
+    ckLowLevelAPI::closeFile(file_handler);
 }
 
 
-u64 pgSysMgr::getUsecTime()
+u64 ckSysMgr::getUsecTime()
 {
-    return pgLowLevelAPI::getUsecTime();
+    return ckLowLevelAPI::getUsecTime();
 }
 
 
-void pgSysMgr::sleepUsec(u64 usec)
+void ckSysMgr::sleepUsec(u64 usec)
 {
-    pgLowLevelAPI::sleepUsec(usec);
+    ckLowLevelAPI::sleepUsec(usec);
 }
 
 
-void* pgSysMgr::newThread(void (*start_func)(void*), void* user_param)
+void* ckSysMgr::newThread(void (*start_func)(void*), void* user_param)
 {
     if (!start_func)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    void* th = pgLowLevelAPI::newThread(start_func, user_param);
+    void* th = ckLowLevelAPI::newThread(start_func, user_param);
 
     if (!th)
     {
-        pgThrow(ExceptionCannotCreateMutex);
+        ckThrow(ExceptionCannotCreateMutex);
     }
 
     return th;
 }
 
 
-void pgSysMgr::deleteThread(void* thread_handler)
+void ckSysMgr::deleteThread(void* thread_handler)
 {
     if (!thread_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::deleteThread(thread_handler);
+    ckLowLevelAPI::deleteThread(thread_handler);
 }
 
 
-void pgSysMgr::joinThread(void* thread_handler)
+void ckSysMgr::joinThread(void* thread_handler)
 {
     if (!thread_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::joinThread(thread_handler);
+    ckLowLevelAPI::joinThread(thread_handler);
 }
 
 
-void* pgSysMgr::newMutex()
+void* ckSysMgr::newMutex()
 {
-    void* mh = pgLowLevelAPI::newMutex();
+    void* mh = ckLowLevelAPI::newMutex();
 
     if (!mh)
     {
-        pgThrow(ExceptionCannotCreateMutex);
+        ckThrow(ExceptionCannotCreateMutex);
     }
 
     return mh;
 }
 
 
-void pgSysMgr::deleteMutex(void* mutex_handler)
+void ckSysMgr::deleteMutex(void* mutex_handler)
 {
     if (!mutex_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::deleteMutex(mutex_handler);
+    ckLowLevelAPI::deleteMutex(mutex_handler);
 }
 
 
-void pgSysMgr::lockMutex(void* mutex_handler)
+void ckSysMgr::lockMutex(void* mutex_handler)
 {
     if (!mutex_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::lockMutex(mutex_handler);
+    ckLowLevelAPI::lockMutex(mutex_handler);
 }
 
 
-void pgSysMgr::unlockMutex(void* mutex_handler)
+void ckSysMgr::unlockMutex(void* mutex_handler)
 {
     if (!mutex_handler)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::unlockMutex(mutex_handler);
+    ckLowLevelAPI::unlockMutex(mutex_handler);
 }
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgSysMgr)
+CK_DEFINE_MANAGER_IS_CREATED(ckSysMgr)
 
 
-void pgSysMgr::createAfterMem(const char* title, u16 width, u16 height, u16 sys_flag)
+void ckSysMgr::createAfterMem(const char* title, u16 width, u16 height, u16 sys_flag)
 {
     if (!title || width == 0 || height == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     destroyBeforeMem();
 
-    m_instance = pgNew(pgSysMgr)(title, width, height, sys_flag);
+    m_instance = ckNew(ckSysMgr)(title, width, height, sys_flag);
 }
 
 
-PG_DEFINE_MANAGER_DESTROY(pgSysMgr, BeforeMem)
+CK_DEFINE_MANAGER_DESTROY(ckSysMgr, BeforeMem)
 
 
-u16 pgSysMgr::getFramebufferWidth()
+u16 ckSysMgr::getFramebufferWidth()
 {
     instance();
 
-    u16 width = pgLowLevelAPI::getFramebufferWidth();
+    u16 width = ckLowLevelAPI::getFramebufferWidth();
 
     return (width > 0) ? width : 1;
 }
 
 
-u16 pgSysMgr::getFramebufferHeight()
+u16 ckSysMgr::getFramebufferHeight()
 {
     instance();
 
-    u16 height = pgLowLevelAPI::getFramebufferHeight();
+    u16 height = ckLowLevelAPI::getFramebufferHeight();
 
     return (height > 0) ? height : 1;
 }
 
 
-bool pgSysMgr::isFramebufferSizeChanged()
+bool ckSysMgr::isFramebufferSizeChanged()
 {
     instance();
 
-    return pgLowLevelAPI::isFramebufferSizeChanged();
+    return ckLowLevelAPI::isFramebufferSizeChanged();
 }
 
 
-bool pgSysMgr::isFullScreen()
+bool ckSysMgr::isFullScreen()
 {
     instance();
 
-    return pgLowLevelAPI::isFullScreen();
+    return ckLowLevelAPI::isFullScreen();
 }
 
 
-void pgSysMgr::toggleFullScreen(u16 width, u16 height)
+void ckSysMgr::toggleFullScreen(u16 width, u16 height)
 {
     instance();
 
     if (width == 0 || height == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    if (pgDrawMgr::isCreated())
+    if (ckDrawMgr::isCreated())
     {
-        pgDrawMgr::deleteAllVramObjForSystem();
+        ckDrawMgr::deleteAllVramObjForSystem();
     }
 
-    if (!pgLowLevelAPI::toggleFullScreen(width, height))
+    if (!ckLowLevelAPI::toggleFullScreen(width, height))
     {
-        pgThrow(ExceptionCreateFramebufferFailed);
+        ckThrow(ExceptionCreateFramebufferFailed);
     }
 
-    pgLowLevelAPI::updateFramebufferSize();
-    pgLowLevelAPI::resetDrawState();
+    ckLowLevelAPI::updateFramebufferSize();
+    ckLowLevelAPI::resetDrawState();
 
-    if (pgKeyMgr::isCreated())
+    if (ckKeyMgr::isCreated())
     {
-        pgKeyMgr::resetKeyStateForSystem();
+        ckKeyMgr::resetKeyStateForSystem();
     }
 }
 
 
-void pgSysMgr::updateForSystem()
+void ckSysMgr::updateForSystem()
 {
     instance();
 
-    pgLowLevelAPI::updateFramebufferSize();
+    ckLowLevelAPI::updateFramebufferSize();
 }
 
 
-void pgSysMgr::readLittleEndianForSystem(void* dest, const void* src, u32 size)
+void ckSysMgr::readLittleEndianForSystem(void* dest, const void* src, u32 size)
 {
-    pgLowLevelAPI::readLittleEndian(dest, src, size);
+    ckLowLevelAPI::readLittleEndian(dest, src, size);
 }
 
 
-void pgSysMgr::writeLittleEndianForSystem(void* dest, const void* src, u32 size)
+void ckSysMgr::writeLittleEndianForSystem(void* dest, const void* src, u32 size)
 {
-    pgLowLevelAPI::writeLittleEndian(dest, src, size);
+    ckLowLevelAPI::writeLittleEndian(dest, src, size);
 }
 
 
-void pgSysMgr::setInitialDirectoryForSystem(s32 argc, char** argv)
+void ckSysMgr::setInitialDirectoryForSystem(s32 argc, char** argv)
 {
     if (argc < 0 || (argc > 0 && !argv))
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgLowLevelAPI::setInitialDirectory(argc, argv);
+    ckLowLevelAPI::setInitialDirectory(argc, argv);
 }
 
 
-pgSysMgr::pgSysMgr(const char* title, u16 width, u16 height, u16 sys_flag)
+ckSysMgr::ckSysMgr(const char* title, u16 width, u16 height, u16 sys_flag)
 {
-    if (!pgLowLevelAPI::createApplication(title, width, height, sys_flag))
+    if (!ckLowLevelAPI::createApplication(title, width, height, sys_flag))
     {
-        pgThrow(ExceptionCreateFramebufferFailed);
+        ckThrow(ExceptionCreateFramebufferFailed);
     }
 }
 
 
-pgSysMgr::~pgSysMgr()
+ckSysMgr::~ckSysMgr()
 {
-    pgLowLevelAPI::destroyApplication();
+    ckLowLevelAPI::destroyApplication();
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgSysMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckSysMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgSysMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckSysMgr)

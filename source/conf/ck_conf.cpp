@@ -29,68 +29,68 @@
 */
 
 
-#include "pg_conf_all.h"
+#include "ck_conf_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_util_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
+#include "ck_sys_all.h"
+#include "ck_util_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-pgConf* pgConf::getPrevN() const
+ckConf* ckConf::getPrevN() const
 {
-    pgConfMgr* ins = pgConfMgr::instance();
-    const pgID* id = ins->m_conf_map.getPrevKeyN(m_id);
+    ckConfMgr* ins = ckConfMgr::instance();
+    const ckID* id = ins->m_conf_map.getPrevKeyN(m_id);
 
     return id ? *ins->m_conf_map.get(*id) : NULL;
 }
 
 
-pgConf* pgConf::getNextN() const
+ckConf* ckConf::getNextN() const
 {
-    pgConfMgr* ins = pgConfMgr::instance();
-    const pgID* id = ins->m_conf_map.getNextKeyN(m_id);
+    ckConfMgr* ins = ckConfMgr::instance();
+    const ckID* id = ins->m_conf_map.getNextKeyN(m_id);
 
     return id ? *ins->m_conf_map.get(*id) : NULL;
 }
 
 
-pgID pgConf::getID() const
+ckID ckConf::getID() const
 {
     return m_id;
 }
 
 
-bool pgConf::isValid() const
+bool ckConf::isValid() const
 {
     return (m_err_line_no == 0);
 }
 
 
-u16 pgConf::getErrorLineNo() const
+u16 ckConf::getErrorLineNo() const
 {
     if (isValid())
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     return m_err_line_no;
 }
 
 
-u16 pgConf::getEntryNum(const char* ent_name) const
+u16 ckConf::getEntryNum(const char* ent_name) const
 {
     if (!ent_name)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     u16 ent_num = 0;
-    pgID ent_name_id = pgID::genID(ent_name);
+    ckID ent_name_id = ckID::genID(ent_name);
 
-    for (pgList<pgEnt>::Item* item = m_ent_list.getFirstN(); item; item = item->getNextN())
+    for (ckList<ckEnt>::Item* item = m_ent_list.getFirstN(); item; item = item->getNextN())
     {
-        pgEnt* ent = item->getSelf();
+        ckEnt* ent = item->getSelf();
 
         if (ent->m_name_id == ent_name_id && ent->m_name == ent_name)
         {
@@ -102,18 +102,18 @@ u16 pgConf::getEntryNum(const char* ent_name) const
 }
 
 
-pgEnt* pgConf::getEntryFromFirstN(const char* ent_name) const
+ckEnt* ckConf::getEntryFromFirstN(const char* ent_name) const
 {
     if (!ent_name)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgID ent_name_id = pgID::genID(ent_name);
+    ckID ent_name_id = ckID::genID(ent_name);
 
-    for (pgList<pgEnt>::Item* item = m_ent_list.getFirstN(); item; item = item->getNextN())
+    for (ckList<ckEnt>::Item* item = m_ent_list.getFirstN(); item; item = item->getNextN())
     {
-        pgEnt* ent = item->getSelf();
+        ckEnt* ent = item->getSelf();
 
         if (ent->m_name_id == ent_name_id && ent->m_name == ent_name)
         {
@@ -125,18 +125,18 @@ pgEnt* pgConf::getEntryFromFirstN(const char* ent_name) const
 }
 
 
-pgEnt* pgConf::getEntryFromLastN(const char* ent_name) const
+ckEnt* ckConf::getEntryFromLastN(const char* ent_name) const
 {
     if (!ent_name)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgID ent_name_id = pgID::genID(ent_name);
+    ckID ent_name_id = ckID::genID(ent_name);
 
-    for (pgList<pgEnt>::Item* item = m_ent_list.getLastN(); item; item = item->getPrevN())
+    for (ckList<ckEnt>::Item* item = m_ent_list.getLastN(); item; item = item->getPrevN())
     {
-        pgEnt* ent = item->getSelf();
+        ckEnt* ent = item->getSelf();
 
         if (ent->m_name_id == ent_name_id && ent->m_name == ent_name)
         {
@@ -148,18 +148,18 @@ pgEnt* pgConf::getEntryFromLastN(const char* ent_name) const
 }
 
 
-pgEnt* pgConf::getEntryBeforeN(const char* ent_name, pgEnt* ent) const
+ckEnt* ckConf::getEntryBeforeN(const char* ent_name, ckEnt* ent) const
 {
     if (!ent_name || !ent)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgID ent_name_id = pgID::genID(ent_name);
+    ckID ent_name_id = ckID::genID(ent_name);
 
-    for (pgList<pgEnt>::Item* item = ent->m_item.getPrevN(); item; item = item->getPrevN())
+    for (ckList<ckEnt>::Item* item = ent->m_item.getPrevN(); item; item = item->getPrevN())
     {
-        pgEnt* ent2 = item->getSelf();
+        ckEnt* ent2 = item->getSelf();
 
         if (ent2->m_name_id == ent_name_id && ent2->m_name == ent_name)
         {
@@ -171,18 +171,18 @@ pgEnt* pgConf::getEntryBeforeN(const char* ent_name, pgEnt* ent) const
 }
 
 
-pgEnt* pgConf::getEntryAfterN(const char* ent_name, pgEnt* ent) const
+ckEnt* ckConf::getEntryAfterN(const char* ent_name, ckEnt* ent) const
 {
     if (!ent_name || !ent)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgID ent_name_id = pgID::genID(ent_name);
+    ckID ent_name_id = ckID::genID(ent_name);
 
-    for (pgList<pgEnt>::Item* item = ent->m_item.getNextN(); item; item = item->getNextN())
+    for (ckList<ckEnt>::Item* item = ent->m_item.getNextN(); item; item = item->getNextN())
     {
-        pgEnt* ent2 = item->getSelf();
+        ckEnt* ent2 = item->getSelf();
 
         if (ent2->m_name_id == ent_name_id && ent2->m_name == ent_name)
         {
@@ -194,158 +194,158 @@ pgEnt* pgConf::getEntryAfterN(const char* ent_name, pgEnt* ent) const
 }
 
 
-pgEnt* pgConf::getFirstEntryN() const
+ckEnt* ckConf::getFirstEntryN() const
 {
-    pgList<pgEnt>::Item* first = m_ent_list.getFirstN();
+    ckList<ckEnt>::Item* first = m_ent_list.getFirstN();
 
     return first ? first->getSelf() : NULL;
 }
 
 
-pgEnt* pgConf::getLastEntryN() const
+ckEnt* ckConf::getLastEntryN() const
 {
-    pgList<pgEnt>::Item* last = m_ent_list.getLastN();
+    ckList<ckEnt>::Item* last = m_ent_list.getLastN();
 
     return last ? last->getSelf() : NULL;
 }
 
 
-static void* pogolynMalloc(u32 size)
+static void* catcakeMalloc(u32 size)
 {
-    return pgMalloc(size);
+    return ckMalloc(size);
 }
 
 
-static void pogolynFree(void* ptr)
+static void catcakeFree(void* ptr)
 {
-    pgFree(ptr);
+    ckFree(ptr);
 }
 
 
-pgConf* pgConf::newPriorConfigBeforeInitialization(const char* filename)
+ckConf* ckConf::newPriorConfigBeforeInitialization(const char* filename)
 {
-    if (pgMemMgr::isCreated())
+    if (ckMemMgr::isCreated())
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (!filename)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     void* fh;
 
-    pgTry
+    ckTry
     {
-        fh = pgSysMgr::openFile(filename, pgSysMgr::FILE_MODE_READ);
+        fh = ckSysMgr::openFile(filename, ckSysMgr::FILE_MODE_READ);
     }
-    pgCatch(pgSysMgr::ExceptionCannotOpenFile)
+    ckCatch(ckSysMgr::ExceptionCannotOpenFile)
     {
-        pgThrow(ExceptionCannotOpenFile);
+        ckThrow(ExceptionCannotOpenFile);
     }
 
     u32 data_size;
     void* data = NULL;
 
-    pgTry
+    ckTry
     {
-        data_size = pgSysMgr::getFileSize(fh);
+        data_size = ckSysMgr::getFileSize(fh);
 
         if (data_size == 0)
         {
-            pgThrow(ExceptionCannotReadFile);
+            ckThrow(ExceptionCannotReadFile);
         }
 
-        data = pgLowLevelAPI::malloc(data_size);
+        data = ckLowLevelAPI::malloc(data_size);
 
-        pgSysMgr::readFile(data, 0, data_size, fh);
+        ckSysMgr::readFile(data, 0, data_size, fh);
     }
-    pgCatch(pgSysMgr::ExceptionCannotReadFile)
+    ckCatch(ckSysMgr::ExceptionCannotReadFile)
     {
-        pgSysMgr::closeFile(fh);
+        ckSysMgr::closeFile(fh);
 
         if (data)
         {
-            pgFree(data);
+            ckFree(data);
         }
 
-        pgThrow(ExceptionCannotReadFile);
+        ckThrow(ExceptionCannotReadFile);
     }
 
-    pgSysMgr::closeFile(fh);
+    ckSysMgr::closeFile(fh);
 
-    pgConf* conf = new(pgLowLevelAPI::malloc(sizeof(pgConf)), NULL) pgConf(pgID::genID(pgUtil::getBasename(filename)), data, data_size, NULL);
+    ckConf* conf = new(ckLowLevelAPI::malloc(sizeof(ckConf)), NULL) ckConf(ckID::genID(ckUtil::getBasename(filename)), data, data_size, NULL);
 
-    pgLowLevelAPI::free(data);
+    ckLowLevelAPI::free(data);
 
     return conf;
 }
 
 
-void pgConf::deletePriorConfig(pgConf* conf)
+void ckConf::deletePriorConfig(ckConf* conf)
 {
     if (!conf)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    if (conf->m_malloc == pogolynMalloc)
+    if (conf->m_malloc == catcakeMalloc)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
-    conf->~pgConf();
-    pgLowLevelAPI::free(conf);
+    conf->~ckConf();
+    ckLowLevelAPI::free(conf);
 }
 
 
-pgConf::pgConf(pgID id, const void* data, u32 data_size)
+ckConf::ckConf(ckID id, const void* data, u32 data_size)
 {
     m_id = id;
     m_err_line_no = 0;
-    m_malloc = pogolynMalloc;
-    m_free = pogolynFree;
+    m_malloc = catcakeMalloc;
+    m_free = catcakeFree;
 
     parse(data, data_size);
 
-    pgConfMgr::instance()->m_conf_map.add(m_id, this);
+    ckConfMgr::instance()->m_conf_map.add(m_id, this);
 }
 
 
-pgConf::pgConf(pgID id, const void* data, u32 data_size, void*)
+ckConf::ckConf(ckID id, const void* data, u32 data_size, void*)
 {
     m_id = id;
     m_err_line_no = 0;
-    m_malloc = pgLowLevelAPI::malloc;
-    m_free = pgLowLevelAPI::free;
+    m_malloc = ckLowLevelAPI::malloc;
+    m_free = ckLowLevelAPI::free;
 
     parse(data, data_size);
 }
 
 
-pgConf::~pgConf()
+ckConf::~ckConf()
 {
-    if (m_malloc == pogolynMalloc)
+    if (m_malloc == catcakeMalloc)
     {
-        pgConfMgr::instance()->m_conf_map.remove(m_id);
+        ckConfMgr::instance()->m_conf_map.remove(m_id);
     }
 
-    while (pgList<pgEnt>::Item* item = m_ent_list.getFirstN())
+    while (ckList<ckEnt>::Item* item = m_ent_list.getFirstN())
     {
         deleteEntry(item->getSelf());
     }
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgConf)
+CK_DEFINE_OPERATOR_EQUAL(ckConf)
 
 
-pgEnt* pgConf::newEntry(const char* ent_name, u16 val_num)
+ckEnt* ckConf::newEntry(const char* ent_name, u16 val_num)
 {
-    pgType<u8, pgEnt::ValueType>* val_type = static_cast<pgType<u8, pgEnt::ValueType>*>(m_malloc(sizeof(pgType<u8, pgEnt::ValueType>) * val_num));
-    pgEnt::Value* val = static_cast<pgEnt::Value*>(m_malloc(sizeof(pgEnt::Value) * val_num));
-    pgEnt* ent = new(m_malloc(sizeof(pgEnt)), NULL) pgEnt(ent_name, val_num, val_type, val);
+    ckType<u8, ckEnt::ValueType>* val_type = static_cast<ckType<u8, ckEnt::ValueType>*>(m_malloc(sizeof(ckType<u8, ckEnt::ValueType>) * val_num));
+    ckEnt::Value* val = static_cast<ckEnt::Value*>(m_malloc(sizeof(ckEnt::Value) * val_num));
+    ckEnt* ent = new(m_malloc(sizeof(ckEnt)), NULL) ckEnt(ent_name, val_num, val_type, val);
 
     m_ent_list.addLast(&ent->m_item);
 
@@ -353,13 +353,13 @@ pgEnt* pgConf::newEntry(const char* ent_name, u16 val_num)
 }
 
 
-void pgConf::deleteEntry(pgEnt* ent)
+void ckConf::deleteEntry(ckEnt* ent)
 {
-    ent->~pgEnt();
+    ent->~ckEnt();
 
     for (s32 i = 0; i < ent->m_val_num; i++)
     {
-        if (ent->m_val_type[i] == pgEnt::TYPE_STRING)
+        if (ent->m_val_type[i] == ckEnt::TYPE_STRING)
         {
             m_free(const_cast<char*>(ent->m_val[i].val_str));
         }

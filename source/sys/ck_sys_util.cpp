@@ -31,17 +31,17 @@
 
 #include <stdarg.h>
 
-#include "pg_mem_all.h"
-#include "pg_sys_all.h"
-#include "pg_task_all.h"
-#include "pg_key_all.h"
-#include "pg_res_all.h"
-#include "pg_conf_all.h"
-#include "pg_draw_all.h"
-#include "pg_snd_all.h"
-#include "pg_dbg_all.h"
+#include "ck_mem_all.h"
+#include "ck_sys_all.h"
+#include "ck_task_all.h"
+#include "ck_key_all.h"
+#include "ck_res_all.h"
+#include "ck_conf_all.h"
+#include "ck_draw_all.h"
+#include "ck_snd_all.h"
+#include "ck_dbg_all.h"
 
-#include "pg_low_level_api.h"
+#include "ck_low_level_api.h"
 
 
 static u64 s_one_frame_time;
@@ -49,40 +49,40 @@ static u64 s_next_update_time = 0;
 static u64 s_last_render_time = 0;
 
 
-void pgCreatePogolyn(const char* title, u16 width, u16 height, u16 aim_fps, u16 sys_flag)
+void ckCreateCatcake(const char* title, u16 width, u16 height, u16 aim_fps, u16 sys_flag)
 {
-    pgMemMgr::createFirst();
-    pgSysMgr::createAfterMem(title, width, height, sys_flag);
-    pgTaskMgr::createAfterSys(aim_fps);
-    pgKeyMgr::createAfterTask();
-    pgResMgr::createAfterTask();
-    pgConfMgr::createAfterRes();
-    pgDrawMgr::createAfterRes();
-    pgSndMgr::createAfterRes();
-    pgDbgMgr::createLast();
+    ckMemMgr::createFirst();
+    ckSysMgr::createAfterMem(title, width, height, sys_flag);
+    ckTaskMgr::createAfterSys(aim_fps);
+    ckKeyMgr::createAfterTask();
+    ckResMgr::createAfterTask();
+    ckConfMgr::createAfterRes();
+    ckDrawMgr::createAfterRes();
+    ckSndMgr::createAfterRes();
+    ckDbgMgr::createLast();
 }
 
 
-void pgDestroyPogolyn()
+void ckDestroyCatcake()
 {
-    pgTaskMgr::destroyFirst();
-    pgDbgMgr::destroySecond();
-    pgSndMgr::destroyBeforeRes();
-    pgDrawMgr::destroyBeforeRes();
-    pgConfMgr::destroyBeforeRes();
-    pgResMgr::destroyBeforeSys();
-    pgKeyMgr::destroyBeforeSys();
-    pgSysMgr::destroyBeforeMem();
-    pgMemMgr::destroyLast();
+    ckTaskMgr::destroyFirst();
+    ckDbgMgr::destroySecond();
+    ckSndMgr::destroyBeforeRes();
+    ckDrawMgr::destroyBeforeRes();
+    ckConfMgr::destroyBeforeRes();
+    ckResMgr::destroyBeforeSys();
+    ckKeyMgr::destroyBeforeSys();
+    ckSysMgr::destroyBeforeMem();
+    ckMemMgr::destroyLast();
 }
 
 
-static bool updatePogolyn()
+static bool updateCatcake()
 {
-    u64 cur_time = pgSysMgr::getUsecTime();
+    u64 cur_time = ckSysMgr::getUsecTime();
 
-    if ((pgTaskMgr::isFrameSkipResetForSystem() && cur_time > s_next_update_time) || //
-        cur_time - s_last_render_time >= pgDrawMgr::MAX_RENDER_INTERVAL_MSEC_TIME * 1000)
+    if ((ckTaskMgr::isFrameSkipResetForSystem() && cur_time > s_next_update_time) || //
+        cur_time - s_last_render_time >= ckDrawMgr::MAX_RENDER_INTERVAL_MSEC_TIME * 1000)
     {
         s_next_update_time = cur_time;
     }
@@ -91,16 +91,16 @@ static bool updatePogolyn()
     {
         while (cur_time < s_next_update_time)
         {
-            pgLowLevelAPI::sleepUsec((s_next_update_time - cur_time) / 4);
+            ckLowLevelAPI::sleepUsec((s_next_update_time - cur_time) / 4);
 
-            cur_time = pgSysMgr::getUsecTime();
+            cur_time = ckSysMgr::getUsecTime();
         }
 
-        pgSysMgr::updateForSystem();
-        pgTaskMgr::updateForSystem();
+        ckSysMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
-        pgTaskMgr::measureRenderTimeForSystem(pgDrawMgr::renderForSystem);
-        pgLowLevelAPI::swapFramebuffer();
+        ckTaskMgr::measureRenderTimeForSystem(ckDrawMgr::renderForSystem);
+        ckLowLevelAPI::swapFramebuffer();
 
         s_last_render_time = cur_time;
         s_next_update_time += s_one_frame_time;
@@ -109,8 +109,8 @@ static bool updatePogolyn()
     }
     else
     {
-        pgSysMgr::updateForSystem();
-        pgTaskMgr::updateForSystem();
+        ckSysMgr::updateForSystem();
+        ckTaskMgr::updateForSystem();
 
         s_next_update_time += s_one_frame_time;
 
@@ -119,50 +119,50 @@ static bool updatePogolyn()
 }
 
 
-void pgStartPogolyn()
+void ckStartCatcake()
 {
-    pgTry
+    ckTry
     {
-        s_one_frame_time = 1000000 / pgTaskMgr::getAimFPS();
+        s_one_frame_time = 1000000 / ckTaskMgr::getAimFPS();
 
-        pgLowLevelAPI::startApplication(updatePogolyn);
+        ckLowLevelAPI::startApplication(updateCatcake);
     }
-    pgCatch(pgSysMgr::ExceptionEndPogolyn) {}
-    pgCatch(pgException e)
+    ckCatch(ckSysMgr::ExceptionEndCatcake) {}
+    ckCatch(ckException e)
     {
-#ifndef PG_NO_THROW_EXCEPTION
-        pgError("Unhandled Exception: %s in %s(%d)\n", e.getException(), e.getFile(), e.getLine());
+#ifndef CK_NO_THROW_EXCEPTION
+        ckError("Unhandled Exception: %s in %s(%d)\n", e.getException(), e.getFile(), e.getLine());
 #endif
     }
 }
 
 
-void pgEndPogolyn()
+void ckEndCatcake()
 {
-#ifdef PG_NO_THROW_EXCEPTION
-    pgLowLevelAPI::exit(0);
+#ifdef CK_NO_THROW_EXCEPTION
+    ckLowLevelAPI::exit(0);
 #else
-    pgThrow(pgSysMgr::ExceptionEndPogolyn);
+    ckThrow(ckSysMgr::ExceptionEndCatcake);
 #endif
 }
 
 
-void pgError(const char* msg, ...)
+void ckError(const char* msg, ...)
 {
     char buf[256];
     va_list ap;
 
     va_start(ap, msg);
-    pgLowLevelAPI::vsprintf(buf, 256, msg, &ap);
+    ckLowLevelAPI::vsprintf(buf, 256, msg, &ap);
     va_end(ap);
 
-    pgLowLevelAPI::error(buf);
+    ckLowLevelAPI::error(buf);
 }
 
 
-#ifdef PG_NO_THROW_EXCEPTION
-void pgSubstituteThrow(const char* exception, const char* file, u32 line)
+#ifdef CK_NO_THROW_EXCEPTION
+void ckSubstituteThrow(const char* exception, const char* file, u32 line)
 {
-    pgError("Exception: %s in %s(%d)\n", exception, file, line);
+    ckError("Exception: %s in %s(%d)\n", exception, file, line);
 }
 #endif

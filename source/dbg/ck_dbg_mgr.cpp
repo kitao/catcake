@@ -31,29 +31,29 @@
 
 #include <stdarg.h>
 
-#include "pg_dbg_all.h"
+#include "ck_dbg_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_task_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
-
-
-const pgID pgDbgMgr::DEBUG_MODE_SCREEN_ID = pgID_("DEBUG_MODE_SCREEN");
-const pgID pgDbgMgr::DEBUG_FONT_TEXTURE_ID = pgID_("DEBUG_FONT_TEXTURE");
-pgDbgMgr* pgDbgMgr::m_instance = NULL;
+#include "ck_sys_all.h"
+#include "ck_task_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgDbgMgr)
+const ckID ckDbgMgr::DEBUG_MODE_SCREEN_ID = ckID_("DEBUG_MODE_SCREEN");
+const ckID ckDbgMgr::DEBUG_FONT_TEXTURE_ID = ckID_("DEBUG_FONT_TEXTURE");
+ckDbgMgr* ckDbgMgr::m_instance = NULL;
 
 
-PG_DEFINE_MANAGER_CREATE(pgDbgMgr, Last, Second)
+CK_DEFINE_MANAGER_IS_CREATED(ckDbgMgr)
 
 
-PG_DEFINE_MANAGER_DESTROY(pgDbgMgr, Second)
+CK_DEFINE_MANAGER_CREATE(ckDbgMgr, Last, Second)
 
 
-pgDbgMgr::DebugMode pgDbgMgr::getDebugMode()
+CK_DEFINE_MANAGER_DESTROY(ckDbgMgr, Second)
+
+
+ckDbgMgr::DebugMode ckDbgMgr::getDebugMode()
 {
     if (!m_instance)
     {
@@ -64,14 +64,14 @@ pgDbgMgr::DebugMode pgDbgMgr::getDebugMode()
 }
 
 
-void pgDbgMgr::setDebugMode(DebugMode dbg_mode)
+void ckDbgMgr::setDebugMode(DebugMode dbg_mode)
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
     if (ins->m_dbg_mode == MODE_OFF)
     {
@@ -83,14 +83,14 @@ void pgDbgMgr::setDebugMode(DebugMode dbg_mode)
 }
 
 
-void pgDbgMgr::pageUpConsole()
+void ckDbgMgr::pageUpConsole()
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
     s32 row_num = ins->calcConsoleRowNum();
 
@@ -101,14 +101,14 @@ void pgDbgMgr::pageUpConsole()
 }
 
 
-void pgDbgMgr::pageDownConsole()
+void ckDbgMgr::pageDownConsole()
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
     s32 row_num = ins->calcConsoleRowNum();
 
@@ -121,24 +121,24 @@ void pgDbgMgr::pageDownConsole()
 }
 
 
-void pgDbgMgr::trace(const char* str, ...)
+void ckDbgMgr::trace(const char* str, ...)
 {
     if (!m_instance)
     {
         return;
     }
 
-    pgDbgMgr* ins = instance();
+    ckDbgMgr* ins = instance();
 
     if (!str)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     char buf[256];
-    PG_VSPRINTF(buf, 256, str);
+    CK_VSPRINTF(buf, 256, str);
 
-    pgSysMgr::printf(buf);
+    ckSysMgr::printf(buf);
 
     for (char* c = buf; *c != '\0'; c++)
     {
@@ -180,31 +180,31 @@ void pgDbgMgr::trace(const char* str, ...)
 }
 
 
-class pgDbgDaemon : public pgTask
+class ckDbgDaemon : public ckTask
 {
 public:
-    pgDbgDaemon() : pgTask(ORDER_MINUS_8_FOR_SYSTEM) {}
+    ckDbgDaemon() : ckTask(ORDER_MINUS_8_FOR_SYSTEM) {}
 
     virtual void onUpdate()
     {
-        if (!pgDbgMgr::m_instance)
+        if (!ckDbgMgr::m_instance)
         {
             return;
         }
 
-        pgDbgMgr* ins = pgDbgMgr::instance();
+        ckDbgMgr* ins = ckDbgMgr::instance();
 
-        if (pgSysMgr::isFramebufferSizeChanged())
+        if (ckSysMgr::isFramebufferSizeChanged())
         {
-            ins->m_dbg_mode_scr->setAreaInFramebuffer(0, 0, pgSysMgr::getFramebufferWidth(), pgSysMgr::getFramebufferHeight());
-            ins->m_dbg_mode_scr->setViewSize(pgSysMgr::getFramebufferWidth(), pgSysMgr::getFramebufferHeight());
+            ins->m_dbg_mode_scr->setAreaInFramebuffer(0, 0, ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
+            ins->m_dbg_mode_scr->setViewSize(ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
         }
 
         u32 cur_draw_prim_num = ins->m_cur_draw_prim_num;
 
         for (u32 i = 0; i < cur_draw_prim_num; i++)
         {
-            ins->m_draw_prim[i].setScreenID(pgDrawMgr::INVISIBLE_SCREEN_ID); // TODO
+            ins->m_draw_prim[i].setScreenID(ckDrawMgr::INVISIBLE_SCREEN_ID); // TODO
         }
 
         ins->m_cur_draw_prim_num = 0;
@@ -212,7 +212,7 @@ public:
 
         ins->checkSpecialCommand();
 
-        if (ins->m_dbg_mode != pgDbgMgr::MODE_OFF)
+        if (ins->m_dbg_mode != ckDbgMgr::MODE_OFF)
         {
             ins->drawConsole();
         }
@@ -220,7 +220,7 @@ public:
 };
 
 
-pgDbgMgr::pgDbgMgr()
+ckDbgMgr::ckDbgMgr()
 {
     m_dbg_mode = MODE_OFF;
     m_draw_prim = NULL;
@@ -232,7 +232,7 @@ pgDbgMgr::pgDbgMgr()
 
     newDebugFontTexture();
 
-    m_dbg_mode_scr = pgDrawMgr::newScreen(DEBUG_MODE_SCREEN_ID);
+    m_dbg_mode_scr = ckDrawMgr::newScreen(DEBUG_MODE_SCREEN_ID);
     m_dbg_mode_scr->setClearMode(false, true);
     m_dbg_mode_scr->setPerspective(false);
 
@@ -242,33 +242,33 @@ pgDbgMgr::pgDbgMgr()
     m_font_sprt.setTextureID(DEBUG_FONT_TEXTURE_ID);
     m_font_sprt.setCurDataNum(0);
     m_font_sprt.setPreset_defaultBlendHalf();
-    m_font_sprt.setDrawFlag(pgDraw::FLAG_BILINEAR, false);
+    m_font_sprt.setDrawFlag(ckDraw::FLAG_BILINEAR, false);
 
-    m_dbg_daemon = pgNewTask(pgDbgDaemon);
+    m_dbg_daemon = ckNewTask(ckDbgDaemon);
 }
 
 
-pgDbgMgr::~pgDbgMgr()
+ckDbgMgr::~ckDbgMgr()
 {
-    if (pgTaskMgr::isCreated())
+    if (ckTaskMgr::isCreated())
     {
-        pgDeleteTask(m_dbg_daemon);
+        ckDeleteTask(m_dbg_daemon);
     }
 
-    pgDeleteArray(m_draw_prim, pgPrim);
+    ckDeleteArray(m_draw_prim, ckPrim);
 
-    pgDrawMgr::deleteScreen(DEBUG_MODE_SCREEN_ID);
-    pgDrawMgr::deleteTexture(DEBUG_FONT_TEXTURE_ID);
+    ckDrawMgr::deleteScreen(DEBUG_MODE_SCREEN_ID);
+    ckDrawMgr::deleteTexture(DEBUG_FONT_TEXTURE_ID);
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgDbgMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckDbgMgr)
 
 
-void pgDbgMgr::reallocDrawPrim()
+void ckDbgMgr::reallocDrawPrim()
 {
     u16 new_draw_prim_num;
-    pgPrim* new_draw_prim;
+    ckPrim* new_draw_prim;
 
     if (m_draw_prim)
     {
@@ -279,13 +279,13 @@ void pgDbgMgr::reallocDrawPrim()
         new_draw_prim_num = INITIAL_DRAW_PRIM_NUM;
     }
 
-    pgNewArray(new_draw_prim, pgPrim, new_draw_prim_num);
+    ckNewArray(new_draw_prim, ckPrim, new_draw_prim_num);
 
     for (u32 i = 0; i < new_draw_prim_num; i++)
     {
-        pgPrim* prim = &new_draw_prim[i];
+        ckPrim* prim = &new_draw_prim[i];
 
-        prim->init(pgPrim::MODE_LINES, 4, pgDrawMgr::INVISIBLE_SCREEN_ID);
+        prim->init(ckPrim::MODE_LINES, 4, ckDrawMgr::INVISIBLE_SCREEN_ID);
         prim->setPreset_defaultBlendHalf();
     }
 
@@ -293,8 +293,8 @@ void pgDbgMgr::reallocDrawPrim()
     {
         for (u32 i = 0; i < m_cur_draw_prim_num; i++)
         {
-            pgPrim* src_prim = &m_draw_prim[i];
-            pgPrim* dest_prim = &new_draw_prim[i];
+            ckPrim* src_prim = &m_draw_prim[i];
+            ckPrim* dest_prim = &new_draw_prim[i];
 
             u16 cur_data_num = src_prim->getCurDataNum();
 
@@ -309,7 +309,7 @@ void pgDbgMgr::reallocDrawPrim()
             }
         }
 
-        pgDeleteArray(m_draw_prim, pgPrim);
+        ckDeleteArray(m_draw_prim, ckPrim);
     }
 
     m_draw_prim = new_draw_prim;
@@ -317,58 +317,58 @@ void pgDbgMgr::reallocDrawPrim()
 }
 
 
-void pgDbgMgr::checkSpecialCommand()
+void ckDbgMgr::checkSpecialCommand()
 {
     u8 cmd_no = 0;
 
-    if (pgKeyMgr::isOn(pgKeyMgr::KEY_D))
+    if (ckKeyMgr::isOn(ckKeyMgr::KEY_D))
     {
-        if (pgKeyMgr::isPressed(pgKeyMgr::KEY_1))
+        if (ckKeyMgr::isPressed(ckKeyMgr::KEY_1))
         {
             cmd_no = 1;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_2))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_2))
         {
             cmd_no = 2;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_3))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_3))
         {
             cmd_no = 3;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_4))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_4))
         {
             cmd_no = 4;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_5))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_5))
         {
             cmd_no = 5;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_6))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_6))
         {
             cmd_no = 6;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_7))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_7))
         {
             cmd_no = 7;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_8))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_8))
         {
             cmd_no = 8;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_PAGEUP))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_PAGEUP))
         {
             cmd_no = 100;
         }
-        else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_PAGEDOWN))
+        else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_PAGEDOWN))
         {
             cmd_no = 101;
         }
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_LBUTTON))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_LBUTTON))
     {
-        r32 mouse_x = m_dbg_mode_scr->framebufferXToScreenX(pgKeyMgr::getMouseX());
-        r32 mouse_y = m_dbg_mode_scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+        r32 mouse_x = m_dbg_mode_scr->framebufferXToScreenX(ckKeyMgr::getMouseX());
+        r32 mouse_y = m_dbg_mode_scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
 
         if (mouse_x > 0.0f && mouse_y > 0.0f)
         {
@@ -428,9 +428,9 @@ void pgDbgMgr::checkSpecialCommand()
 
     if (m_dbg_mode.getType() == MODE_CONSOLE)
     {
-        r32 mouse_y = m_dbg_mode_scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+        r32 mouse_y = m_dbg_mode_scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
 
-        if (pgKeyMgr::isOn(pgKeyMgr::KEY_LBUTTON))
+        if (ckKeyMgr::isOn(ckKeyMgr::KEY_LBUTTON))
         {
             if (mouse_y > 0.0f)
             {
@@ -441,7 +441,7 @@ void pgDbgMgr::checkSpecialCommand()
                 m_scroll_hold_cntr--;
             }
 
-            if (pgMath::abs(m_scroll_hold_cntr) >= pgTaskMgr::getAimFPS())
+            if (ckMath::abs(m_scroll_hold_cntr) >= ckTaskMgr::getAimFPS())
             {
                 cmd_no = (m_scroll_hold_cntr > 0) ? 100 : 101;
 
@@ -516,7 +516,7 @@ void pgDbgMgr::checkSpecialCommand()
 }
 
 
-void pgDbgMgr::drawConsole()
+void ckDbgMgr::drawConsole()
 {
     static const r32 FONT_WIDTH = static_cast<r32>(DEBUG_FONT_WIDTH);
     static const r32 FONT_HEIGHT = static_cast<r32>(DEBUG_FONT_HEIGHT);
@@ -549,8 +549,8 @@ void pgDbgMgr::drawConsole()
     r32 frame_width = mon_width - FRAME_MARGIN * 2.0f;
     r32 frame_height = mon_height - FRAME_MARGIN * 2.0f;
 
-    drawRect(frame_left, frame_top, frame_width, frame_height, -1.0f, pgCol(0, 0, 0, 128));
-    drawFrame(frame_left, frame_top, frame_width, frame_height, 0.0f, pgCol(192, 192, 192, 128));
+    drawRect(frame_left, frame_top, frame_width, frame_height, -1.0f, ckCol(0, 0, 0, 128));
+    drawFrame(frame_left, frame_top, frame_width, frame_height, 0.0f, ckCol(192, 192, 192, 128));
 
     /*
         draw monitor
@@ -558,21 +558,21 @@ void pgDbgMgr::drawConsole()
     left += LEFT_MARGIN;
     top -= TOP_MARGIN;
 
-    drawString(left, top, pgCol(255, 192, 192, 192), 1, "%.2f FPS", pgTaskMgr::getCurFPS());
+    drawString(left, top, ckCol(255, 192, 192, 192), 1, "%.2f FPS", ckTaskMgr::getCurFPS());
 
     top -= FONT_HEIGHT;
 
-    r32 execute_rate = static_cast<r32>(static_cast<r64>(pgTaskMgr::getExecuteUsecTime()) * pgTaskMgr::getAimFPS() / 1000000.0);
-    drawRect(left, top, execute_rate * bar_width, 2.0f, 0.0f, pgCol(255, 0, 0, 192));
+    r32 execute_rate = static_cast<r32>(static_cast<r64>(ckTaskMgr::getExecuteUsecTime()) * ckTaskMgr::getAimFPS() / 1000000.0);
+    drawRect(left, top, execute_rate * bar_width, 2.0f, 0.0f, ckCol(255, 0, 0, 192));
 
     top -= FONT_HEIGHT * 0.5f;
 
-    drawString(left, top, pgCol(192, 255, 192, 192), 1, "%d/%d byte", pgMemMgr::getCurUsedMemorySize(), pgMemMgr::getMaxUsedMemorySize());
+    drawString(left, top, ckCol(192, 255, 192, 192), 1, "%d/%d byte", ckMemMgr::getCurUsedMemorySize(), ckMemMgr::getMaxUsedMemorySize());
 
     top -= FONT_HEIGHT;
 
-    r32 memory_rate = static_cast<r32>(pgMemMgr::getCurUsedMemorySize()) / pgMemMgr::getMaxUsedMemorySize();
-    drawRect(left, top, memory_rate * bar_width, 2.0f, 0.0f, pgCol(0, 255, 0, 192));
+    r32 memory_rate = static_cast<r32>(ckMemMgr::getCurUsedMemorySize()) / ckMemMgr::getMaxUsedMemorySize();
+    drawRect(left, top, memory_rate * bar_width, 2.0f, 0.0f, ckCol(0, 255, 0, 192));
 
     top -= FONT_HEIGHT * 0.5f;
 
@@ -610,40 +610,40 @@ void pgDbgMgr::drawConsole()
             break;
         }
 
-        pgCol col = (row + row_num > m_end_row) ? pgCol(255, 255, 255, 192) : pgCol(192, 192, 255, 192);
+        ckCol col = (row + row_num > m_end_row) ? ckCol(255, 255, 255, 192) : ckCol(192, 192, 255, 192);
 
         drawString(left, top - FONT_HEIGHT * i, col, 1, m_console_buf[row % CONSOLE_BUFFER_SIZE].getString());
     }
 }
 
 
-void pgDbgMgr::drawRect(r32 left, r32 top, r32 width, r32 height, r32 z, pgCol col)
+void ckDbgMgr::drawRect(r32 left, r32 top, r32 width, r32 height, r32 z, ckCol col)
 {
     r32 x1 = left;
     r32 y1 = top;
     r32 x2 = left + width;
     r32 y2 = top - height;
 
-    pgVec vec1 = pgVec(x1, y1, z);
-    pgVec vec2 = pgVec(x1, y2, z);
-    pgVec vec3 = pgVec(x2, y1, z);
-    pgVec vec4 = pgVec(x2, y2, z);
+    ckVec vec1 = ckVec(x1, y1, z);
+    ckVec vec2 = ckVec(x1, y2, z);
+    ckVec vec3 = ckVec(x2, y1, z);
+    ckVec vec4 = ckVec(x2, y2, z);
 
-    pgDbgMgr::drawPolygon(vec1, vec2, vec3, vec4, col, DEBUG_MODE_SCREEN_ID);
+    ckDbgMgr::drawPolygon(vec1, vec2, vec3, vec4, col, DEBUG_MODE_SCREEN_ID);
 }
 
 
-void pgDbgMgr::drawFrame(r32 left, r32 top, r32 width, r32 height, r32 z, pgCol col)
+void ckDbgMgr::drawFrame(r32 left, r32 top, r32 width, r32 height, r32 z, ckCol col)
 {
     r32 x1 = left;
     r32 y1 = top;
     r32 x2 = left + width;
     r32 y2 = top - height;
 
-    pgVec vec1 = pgVec(x1, y1, z);
-    pgVec vec2 = pgVec(x1, y2, z);
-    pgVec vec3 = pgVec(x2, y2, z);
-    pgVec vec4 = pgVec(x2, y1, z);
+    ckVec vec1 = ckVec(x1, y1, z);
+    ckVec vec2 = ckVec(x1, y2, z);
+    ckVec vec3 = ckVec(x2, y2, z);
+    ckVec vec4 = ckVec(x2, y1, z);
 
     drawLine(vec1, vec2, col, DEBUG_MODE_SCREEN_ID);
     drawLine(vec2, vec3, col, DEBUG_MODE_SCREEN_ID);
@@ -652,10 +652,10 @@ void pgDbgMgr::drawFrame(r32 left, r32 top, r32 width, r32 height, r32 z, pgCol 
 }
 
 
-s32 pgDbgMgr::calcConsoleRowNum()
+s32 ckDbgMgr::calcConsoleRowNum()
 {
     return static_cast<s32>(m_dbg_mode_scr->getViewHeight() / DEBUG_FONT_HEIGHT) - 5;
 }
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgDbgMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckDbgMgr)

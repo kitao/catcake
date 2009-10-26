@@ -29,26 +29,26 @@
 */
 
 
-#include "pg_util_all.h"
+#include "ck_util_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_res_all.h"
+#include "ck_sys_all.h"
+#include "ck_res_all.h"
 
 
-void pgUtil::import3DS(const char* filename, pgID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+void ckUtil::import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
 {
-    return import3DSAs(pgID::genID(pgUtil::getBasename(filename)), filename, tex_id, has_normal, is_smoothing_normal, scale);
+    return import3DSAs(ckID::genID(ckUtil::getBasename(filename)), filename, tex_id, has_normal, is_smoothing_normal, scale);
 }
 
 
-static void setNodeInfo(pgMdlData* mdl_data, u16 node_index, const pgMat& local, pgDraw::BlendMode blend_mode, //
+static void setNodeInfo(ckMdlData* mdl_data, u16 node_index, const ckMat& local, ckDraw::BlendMode blend_mode, //
     u16 vert_index, u16 vert_num, const u8* vert_array, const u8* uv_array, const u8* face_array, r32 scale)
 {
-    pgMat scaled_local = local;
+    ckMat scaled_local = local;
     scaled_local.trans *= scale;
 
     mdl_data->setNodeLocal(node_index, scaled_local);
-    mdl_data->setNodePrimMode(node_index, pgPrim::MODE_TRIANGLES);
+    mdl_data->setNodePrimMode(node_index, ckPrim::MODE_TRIANGLES);
     mdl_data->setNodeBlendMode(node_index, blend_mode);
     mdl_data->setNodeVertInfo(node_index, vert_index, vert_num);
 
@@ -63,11 +63,11 @@ static void setNodeInfo(pgMdlData* mdl_data, u16 node_index, const pgMat& local,
         {
             for (s32 i = 0; i < vert_num; i++)
             {
-                u16 array_index = pgReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 3;
-                pgVec vert_pos( //
-                    pgReadLittleEndian(vert_array + sizeof(r32) * (array_index + 0), r32), //
-                    pgReadLittleEndian(vert_array + sizeof(r32) * (array_index + 1), r32), //
-                    pgReadLittleEndian(vert_array + sizeof(r32) * (array_index + 2), r32));
+                u16 array_index = ckReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 3;
+                ckVec vert_pos( //
+                    ckReadLittleEndian(vert_array + sizeof(r32) * (array_index + 0), r32), //
+                    ckReadLittleEndian(vert_array + sizeof(r32) * (array_index + 1), r32), //
+                    ckReadLittleEndian(vert_array + sizeof(r32) * (array_index + 2), r32));
 
                 mdl_data->setVertPos(vert_index + i, vert_pos * scale);
             }
@@ -76,11 +76,11 @@ static void setNodeInfo(pgMdlData* mdl_data, u16 node_index, const pgMat& local,
         {
             for (s32 i = 0; i < vert_num; i++)
             {
-                u16 array_index = pgReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 3;
-                pgVec vert_pos( //
-                    pgReadLittleEndian(vert_array + sizeof(r32) * (array_index + 0), r32), //
-                    pgReadLittleEndian(vert_array + sizeof(r32) * (array_index + 1), r32), //
-                    pgReadLittleEndian(vert_array + sizeof(r32) * (array_index + 2), r32));
+                u16 array_index = ckReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 3;
+                ckVec vert_pos( //
+                    ckReadLittleEndian(vert_array + sizeof(r32) * (array_index + 0), r32), //
+                    ckReadLittleEndian(vert_array + sizeof(r32) * (array_index + 1), r32), //
+                    ckReadLittleEndian(vert_array + sizeof(r32) * (array_index + 2), r32));
 
                 mdl_data->setVertPos(vert_index + i, vert_pos);
             }
@@ -91,9 +91,9 @@ static void setNodeInfo(pgMdlData* mdl_data, u16 node_index, const pgMat& local,
     {
         for (s32 i = 0; i < vert_num; i++)
         {
-            u16 array_index = pgReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 2;
-            r32 u = pgReadLittleEndian(uv_array + sizeof(r32) * (array_index + 0), r32);
-            r32 v = pgReadLittleEndian(uv_array + sizeof(r32) * (array_index + 1), r32);
+            u16 array_index = ckReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 2;
+            r32 u = ckReadLittleEndian(uv_array + sizeof(r32) * (array_index + 0), r32);
+            r32 v = ckReadLittleEndian(uv_array + sizeof(r32) * (array_index + 1), r32);
 
             mdl_data->setVertUV(vert_index + i, u, -v);
         }
@@ -101,18 +101,18 @@ static void setNodeInfo(pgMdlData* mdl_data, u16 node_index, const pgMat& local,
 }
 
 
-void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+void ckUtil::import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
 {
     if ((!has_normal && is_smoothing_normal) || scale <= 0.0f)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgID temp_res_id = pgID::genID();
+    ckID temp_res_id = ckID::genID();
 
-    pgResMgr::loadResourceAs(temp_res_id, filename, false);
+    ckResMgr::loadResourceAs(temp_res_id, filename, false);
 
-    pgRes temp_res = pgResMgr::getResource(temp_res_id);
+    ckRes temp_res = ckResMgr::getResource(temp_res_id);
 
     /*
         count up the number of objects and vertices in 3ds file
@@ -125,10 +125,10 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
 
     while (data < data_end)
     {
-        u16 chunk_id = pgReadLittleEndian(data, u16);
+        u16 chunk_id = ckReadLittleEndian(data, u16);
         data += 2;
 
-        u32 chunk_size = pgReadLittleEndian(data, u32);
+        u32 chunk_size = ckReadLittleEndian(data, u32);
         data += 4;
 
         switch (chunk_id)
@@ -141,14 +141,14 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
 
         case 0x4000: // OBJECT BLOCK
             node_num++;
-            data += pgUtil::strlen(reinterpret_cast<const char*>(data)) + 1;
+            data += ckUtil::strlen(reinterpret_cast<const char*>(data)) + 1;
             break;
 
         case 0x4100: // TRIANGULAR MESH
             break;
 
         case 0x4120: // FACES DESCRIPTION
-            vert_num += pgReadLittleEndian(data, u16) * 3;
+            vert_num += ckReadLittleEndian(data, u16) * 3;
             data += chunk_size - 6;
             break;
 
@@ -160,20 +160,20 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
 
     if (node_num == 0 || node_num > 0xffff || vert_num == 0 || vert_num > 0xffff)
     {
-        pgResMgr::removeResource(temp_res_id);
-        pgThrow(ExceptionInvalidData);
+        ckResMgr::removeResource(temp_res_id);
+        ckThrow(ExceptionInvalidData);
     }
 
     /*
-        make pgMdlData from 3ds file
+        make ckMdlData from 3ds file
     */
-    pgMdlData mdl_data;
+    ckMdlData mdl_data;
     mdl_data.initAsWriter(node_num, vert_num, tex_id, has_normal);
 
     bool is_first_node = true;
     u16 node_vert_num = 0;
-    pgMat node_local = pgMat::UNIT;
-    pgDraw::BlendMode node_blend_mode = pgDraw::BLEND_OFF;
+    ckMat node_local = ckMat::UNIT;
+    ckDraw::BlendMode node_blend_mode = ckDraw::BLEND_OFF;
     u16 node_index = 0;
     u16 vert_index = 0;
     u16 tree_node_index = 0;
@@ -185,10 +185,10 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
 
     while (data < data_end)
     {
-        u16 chunk_id = pgReadLittleEndian(data, u16);
+        u16 chunk_id = ckReadLittleEndian(data, u16);
         data += 2;
 
-        u32 chunk_size = pgReadLittleEndian(data, u32);
+        u32 chunk_size = ckReadLittleEndian(data, u32);
         data += 4;
 
         switch (chunk_id)
@@ -212,7 +212,7 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
                 node_index++;
                 vert_index += node_vert_num;
 
-                node_local = pgMat::UNIT;
+                node_local = ckMat::UNIT;
                 node_vert_num = 0;
                 vert_array = NULL;
                 uv_array = NULL;
@@ -222,19 +222,19 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
             switch (*reinterpret_cast<const char*>(data))
             {
             case '*':
-                node_blend_mode = pgDraw::BLEND_HALF;
+                node_blend_mode = ckDraw::BLEND_HALF;
                 break;
 
             case '+':
-                node_blend_mode = pgDraw::BLEND_ADD;
+                node_blend_mode = ckDraw::BLEND_ADD;
                 break;
 
             default:
-                node_blend_mode = pgDraw::BLEND_OFF;
+                node_blend_mode = ckDraw::BLEND_OFF;
                 break;
             }
 
-            data += pgUtil::strlen(reinterpret_cast<const char*>(data)) + 1;
+            data += ckUtil::strlen(reinterpret_cast<const char*>(data)) + 1;
             break;
 
         case 0x4100: // TRIANGULAR MESH
@@ -246,7 +246,7 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
             break;
 
         case 0x4120: // FACES DESCRIPTION
-            node_vert_num = pgReadLittleEndian(data, u16) * 3;
+            node_vert_num = ckReadLittleEndian(data, u16) * 3;
             face_array = data + 2;
             data += chunk_size - 6;
             break;
@@ -257,7 +257,7 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
             break;
 
         case 0x4160: // LOCAL COORDINATES SYSTEM
-            node_local = *reinterpret_cast<const pgMat*>(data);
+            node_local = *reinterpret_cast<const ckMat*>(data);
             data += chunk_size - 6;
             break;
 
@@ -269,8 +269,8 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
 
         case 0xb010: // OBJECT NAME
             {
-                const u8* parent_index_data = data + pgUtil::strlen(reinterpret_cast<const char*>(data)) + 5;
-                s16 parent_index = pgReadLittleEndian(parent_index_data, s16);
+                const u8* parent_index_data = data + ckUtil::strlen(reinterpret_cast<const char*>(data)) + 5;
+                s16 parent_index = ckReadLittleEndian(parent_index_data, s16);
 
                 if (parent_index >= 0 && parent_index < static_cast<u16>(node_num))
                 {
@@ -306,5 +306,5 @@ void pgUtil::import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool ha
 
     mdl_data.registerAsResource(res_id);
 
-    pgResMgr::removeResource(temp_res_id);
+    ckResMgr::removeResource(temp_res_id);
 }

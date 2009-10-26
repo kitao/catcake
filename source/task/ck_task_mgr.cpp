@@ -29,94 +29,94 @@
 */
 
 
-#include "pg_task_all.h"
+#include "ck_task_all.h"
 
-#include "pg_sys_all.h"
-#include "pg_low_level_api.h"
-#include "pg_private_macro.h"
-
-
-pgTaskMgr* pgTaskMgr::m_instance = NULL;
+#include "ck_sys_all.h"
+#include "ck_low_level_api.h"
+#include "ck_private_macro.h"
 
 
-PG_DEFINE_MANAGER_IS_CREATED(pgTaskMgr)
+ckTaskMgr* ckTaskMgr::m_instance = NULL;
 
 
-void pgTaskMgr::createAfterSys(u16 aim_fps)
+CK_DEFINE_MANAGER_IS_CREATED(ckTaskMgr)
+
+
+void ckTaskMgr::createAfterSys(u16 aim_fps)
 {
     if (aim_fps == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     destroyFirst();
 
-    m_instance = pgNew(pgTaskMgr)(aim_fps);
+    m_instance = ckNew(ckTaskMgr)(aim_fps);
 }
 
 
-PG_DEFINE_MANAGER_DESTROY(pgTaskMgr, First)
+CK_DEFINE_MANAGER_DESTROY(ckTaskMgr, First)
 
 
-u16 pgTaskMgr::getAimFPS()
+u16 ckTaskMgr::getAimFPS()
 {
     return instance()->m_aim_fps;
 }
 
 
-r32 pgTaskMgr::getCurFPS()
+r32 ckTaskMgr::getCurFPS()
 {
     return instance()->m_cur_fps;
 }
 
 
-u64 pgTaskMgr::getExecuteUsecTime()
+u64 ckTaskMgr::getExecuteUsecTime()
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
 
     return ins->m_execute_time + ins->m_render_time;
 }
 
 
-u64 pgTaskMgr::getRenderUsecTime()
+u64 ckTaskMgr::getRenderUsecTime()
 {
     return instance()->m_render_time;
 }
 
 
-u32 pgTaskMgr::getFrameCount()
+u32 ckTaskMgr::getFrameCount()
 {
     return instance()->m_frame_count;
 }
 
 
-pgTask* pgTaskMgr::getFirstTaskN(pgTask::TaskOrder order)
+ckTask* ckTaskMgr::getFirstTaskN(ckTask::TaskOrder order)
 {
     return instance()->m_root_task[order].getFirstChildN();
 }
 
 
-pgTask* pgTaskMgr::getLastTaskN(pgTask::TaskOrder order)
+ckTask* ckTaskMgr::getLastTaskN(ckTask::TaskOrder order)
 {
-    pgTask* task = instance()->m_root_task[order].getLastChildN();
+    ckTask* task = instance()->m_root_task[order].getLastChildN();
 
     return task ? task->getLastDescendant() : NULL;
 }
 
 
-bool pgTaskMgr::isOrderActive(pgTask::TaskOrder order)
+bool ckTaskMgr::isOrderActive(ckTask::TaskOrder order)
 {
     return instance()->m_root_task[order].isActive();
 }
 
 
-void pgTaskMgr::setOrderActive(pgTask::TaskOrder from, pgTask::TaskOrder to, bool is_active)
+void ckTaskMgr::setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active)
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
 
     if (from > to)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     for (s32 i = from; i <= to; i++)
@@ -126,34 +126,34 @@ void pgTaskMgr::setOrderActive(pgTask::TaskOrder from, pgTask::TaskOrder to, boo
 }
 
 
-void pgTaskMgr::deleteOrder(pgTask::TaskOrder from, pgTask::TaskOrder to)
+void ckTaskMgr::deleteOrder(ckTask::TaskOrder from, ckTask::TaskOrder to)
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
 
     if (from > to)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     for (s32 i = from; i <= to; i++)
     {
-        pgTask* root = &ins->m_root_task[i];
+        ckTask* root = &ins->m_root_task[i];
 
-        for (pgTask* task = root->getLastChildN(); task; task = root->getLastChildN())
+        for (ckTask* task = root->getLastChildN(); task; task = root->getLastChildN())
         {
-            pgDeleteTask(task);
+            ckDeleteTask(task);
         }
     }
 }
 
 
-void pgTaskMgr::sendMessage(pgID msg_id, pgMsg<4>& msg)
+void ckTaskMgr::sendMessage(ckID msg_id, ckMsg<4>& msg)
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
 
     for (u32 i = 0; i < ORDER_NUM; i++)
     {
-        for (pgTask* task = ins->getFirstTaskN(static_cast<pgTask::TaskOrder>(i)); task; task = ins->m_next_task)
+        for (ckTask* task = ins->getFirstTaskN(static_cast<ckTask::TaskOrder>(i)); task; task = ins->m_next_task)
         {
             ins->m_next_task = task->getNextAllN();
 
@@ -165,23 +165,23 @@ void pgTaskMgr::sendMessage(pgID msg_id, pgMsg<4>& msg)
 }
 
 
-void pgTaskMgr::resetFrameSkip()
+void ckTaskMgr::resetFrameSkip()
 {
     instance()->m_is_frame_skip_reset = true;
 }
 
 
-void pgTaskMgr::updateForSystem()
+void ckTaskMgr::updateForSystem()
 {
-    pgTaskMgr* ins = instance();
-    u64 update_start_time = pgSysMgr::getUsecTime();
+    ckTaskMgr* ins = instance();
+    u64 update_start_time = ckSysMgr::getUsecTime();
     u64 task_start_time = update_start_time;
 
     for (u32 i = 0; i < ORDER_NUM; i++)
     {
         if (ins->m_root_task[i].isActive())
         {
-            for (pgTask* task = ins->getFirstTaskN(static_cast<pgTask::TaskOrder>(i)); task; task = ins->m_next_task)
+            for (ckTask* task = ins->getFirstTaskN(static_cast<ckTask::TaskOrder>(i)); task; task = ins->m_next_task)
             {
                 if (task->isActive())
                 {
@@ -192,7 +192,7 @@ void pgTaskMgr::updateForSystem()
 
                     if (ins->m_cur_task)
                     {
-                        u64 end_time = pgSysMgr::getUsecTime();
+                        u64 end_time = ckSysMgr::getUsecTime();
 
                         task->m_execute_time = end_time - task_start_time;
 
@@ -207,7 +207,7 @@ void pgTaskMgr::updateForSystem()
         }
     }
 
-    u64 update_end_time = pgSysMgr::getUsecTime();
+    u64 update_end_time = ckSysMgr::getUsecTime();
 
     ins->m_execute_time = update_end_time - update_start_time;
     ins->m_render_time = 0;
@@ -218,19 +218,19 @@ void pgTaskMgr::updateForSystem()
 }
 
 
-u32 pgTaskMgr::setNextTaskNameForSystem(const char* name)
+u32 ckTaskMgr::setNextTaskNameForSystem(const char* name)
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
 
     if (!name)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (ins->m_is_in_destructor)
     {
         ins->m_is_in_destructor = false;
-        pgThrow(ExceptionNewTaskInDestructor);
+        ckThrow(ExceptionNewTaskInDestructor);
     }
 
     ins->m_next_task_name = name;
@@ -239,13 +239,13 @@ u32 pgTaskMgr::setNextTaskNameForSystem(const char* name)
 }
 
 
-void pgTaskMgr::deleteTaskForSystem(pgTask* task, bool is_direct_delete)
+void ckTaskMgr::deleteTaskForSystem(ckTask* task, bool is_direct_delete)
 {
-    pgTaskMgr* ins = pgTaskMgr::instance();
+    ckTaskMgr* ins = ckTaskMgr::instance();
 
     if (!task)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (is_direct_delete)
@@ -253,14 +253,14 @@ void pgTaskMgr::deleteTaskForSystem(pgTask* task, bool is_direct_delete)
         if (ins->m_is_in_destructor)
         {
             ins->m_is_in_destructor = false;
-            pgThrow(ExceptionDeleteTaskInDestructor);
+            ckThrow(ExceptionDeleteTaskInDestructor);
         }
 
         ins->m_is_in_destructor = true;
     }
 
-    pgTask* end_task = task->getPrevAllN();
-    pgTask* prev_task;
+    ckTask* end_task = task->getPrevAllN();
+    ckTask* prev_task;
 
     for (task = task->getLastDescendant(); task != end_task; task = prev_task)
     {
@@ -277,16 +277,16 @@ void pgTaskMgr::deleteTaskForSystem(pgTask* task, bool is_direct_delete)
         }
 
         ins->m_next_task_name = reinterpret_cast<const char*>(task);
-        pgDelete(task, pgTask);
+        ckDelete(task, ckTask);
     }
 
     ins->m_is_in_destructor = false;
 }
 
 
-bool pgTaskMgr::isFrameSkipResetForSystem()
+bool ckTaskMgr::isFrameSkipResetForSystem()
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
     bool is_frame_skip_reset = ins->m_is_frame_skip_reset;
 
     ins->m_is_frame_skip_reset = false;
@@ -295,20 +295,20 @@ bool pgTaskMgr::isFrameSkipResetForSystem()
 }
 
 
-void pgTaskMgr::measureRenderTimeForSystem(void (*render_func)())
+void ckTaskMgr::measureRenderTimeForSystem(void (*render_func)())
 {
-    pgTaskMgr* ins = instance();
+    ckTaskMgr* ins = instance();
 
     if (!render_func)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    u64 render_start_time = pgSysMgr::getUsecTime();
+    u64 render_start_time = ckSysMgr::getUsecTime();
 
     render_func();
 
-    ins->m_render_time = pgSysMgr::getUsecTime() - render_start_time;
+    ins->m_render_time = ckSysMgr::getUsecTime() - render_start_time;
 
     if (ins->m_fps_measure_count % FPS_MEASURE_FRAME_NUM == 0)
     {
@@ -320,20 +320,20 @@ void pgTaskMgr::measureRenderTimeForSystem(void (*render_func)())
 }
 
 
-pgTaskMgr::pgTaskMgr(u16 aim_fps)
+ckTaskMgr::ckTaskMgr(u16 aim_fps)
 {
     for (u32 i = 0; i < ORDER_NUM; i++)
     {
-        m_root_task[i].m_order = static_cast<pgTask::TaskOrder>(i);
+        m_root_task[i].m_order = static_cast<ckTask::TaskOrder>(i);
     }
 
     m_aim_fps = aim_fps;
     m_cur_fps = aim_fps;
     m_execute_time = 0;
     m_render_time = 0;
-    m_last_update_time = pgSysMgr::getUsecTime() - 1000000 / m_aim_fps;
+    m_last_update_time = ckSysMgr::getUsecTime() - 1000000 / m_aim_fps;
     m_frame_count = 0;
-    m_fps_measure_time = pgSysMgr::getUsecTime() - 1000000 / m_aim_fps * FPS_MEASURE_FRAME_NUM;
+    m_fps_measure_time = ckSysMgr::getUsecTime() - 1000000 / m_aim_fps * FPS_MEASURE_FRAME_NUM;
     m_fps_measure_count = 0;
     m_cur_task = NULL;
     m_next_task = NULL;
@@ -343,13 +343,13 @@ pgTaskMgr::pgTaskMgr(u16 aim_fps)
 }
 
 
-pgTaskMgr::~pgTaskMgr()
+ckTaskMgr::~ckTaskMgr()
 {
-    deleteOrder(static_cast<pgTask::TaskOrder>(0), static_cast<pgTask::TaskOrder>(ORDER_NUM - 1));
+    deleteOrder(static_cast<ckTask::TaskOrder>(0), static_cast<ckTask::TaskOrder>(ORDER_NUM - 1));
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgTaskMgr)
+CK_DEFINE_OPERATOR_EQUAL(ckTaskMgr)
 
 
-PG_DEFINE_MANAGER_INSTANCE(pgTaskMgr)
+CK_DEFINE_MANAGER_INSTANCE(ckTaskMgr)

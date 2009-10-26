@@ -29,40 +29,40 @@
 */
 
 
-#include "pg_conf_all.h"
+#include "ck_conf_all.h"
 
-#include "pg_private_macro.h"
+#include "ck_private_macro.h"
 
 
-pgEnt* pgEnt::getPrevN() const
+ckEnt* ckEnt::getPrevN() const
 {
-    pgList<pgEnt>::Item* prev = m_item.getPrevN();
+    ckList<ckEnt>::Item* prev = m_item.getPrevN();
 
     return prev ? prev->getSelf() : NULL;
 }
 
 
-pgEnt* pgEnt::getNextN() const
+ckEnt* ckEnt::getNextN() const
 {
-    pgList<pgEnt>::Item* next = m_item.getNextN();
+    ckList<ckEnt>::Item* next = m_item.getNextN();
 
     return next ? next->getSelf() : NULL;
 }
 
 
-const pgStr<char, pgEnt::MAX_NAME_LENGTH>& pgEnt::getName() const
+const ckStr<char, ckEnt::MAX_NAME_LENGTH>& ckEnt::getName() const
 {
     return m_name;
 }
 
 
-u16 pgEnt::getValueNum() const
+u16 ckEnt::getValueNum() const
 {
     return m_val_num;
 }
 
 
-pgEnt::ValueType pgEnt::getValueType(u16 index) const
+ckEnt::ValueType ckEnt::getValueType(u16 index) const
 {
     if (index >= m_val_num)
     {
@@ -73,7 +73,7 @@ pgEnt::ValueType pgEnt::getValueType(u16 index) const
 }
 
 
-s32 pgEnt::getValue_s32(u16 index) const
+s32 ckEnt::getValue_s32(u16 index) const
 {
     if (index >= m_val_num)
     {
@@ -96,7 +96,7 @@ s32 pgEnt::getValue_s32(u16 index) const
 }
 
 
-r32 pgEnt::getValue_r32(u16 index) const
+r32 ckEnt::getValue_r32(u16 index) const
 {
     if (index >= m_val_num)
     {
@@ -119,7 +119,7 @@ r32 pgEnt::getValue_r32(u16 index) const
 }
 
 
-const char* pgEnt::getValue_string(u16 index) const
+const char* ckEnt::getValue_string(u16 index) const
 {
     if (index >= m_val_num)
     {
@@ -139,10 +139,10 @@ const char* pgEnt::getValue_string(u16 index) const
 }
 
 
-pgEnt::pgEnt(const char* name, u16 val_num, pgType<u8, ValueType>* val_type, Value* val)
+ckEnt::ckEnt(const char* name, u16 val_num, ckType<u8, ValueType>* val_type, Value* val)
 {
     m_name = name;
-    m_name_id = pgID::genID(m_name.getString());
+    m_name_id = ckID::genID(m_name.getString());
     m_val_num = val_num;
     m_val_type = val_type;
     m_val = val;
@@ -151,4 +151,4 @@ pgEnt::pgEnt(const char* name, u16 val_num, pgType<u8, ValueType>* val_type, Val
 }
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgEnt)
+CK_DEFINE_OPERATOR_EQUAL(ckEnt)

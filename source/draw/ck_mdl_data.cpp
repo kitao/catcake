@@ -29,38 +29,38 @@
 */
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
-#include "pg_res_all.h"
-#include "pg_util_all.h"
-#include "pg_private_macro.h"
+#include "ck_res_all.h"
+#include "ck_util_all.h"
+#include "ck_private_macro.h"
 
 
-pgMdlData::pgMdlData()
+ckMdlData::ckMdlData()
 {
     m_data = NULL;
 }
 
 
-pgMdlData::~pgMdlData()
+ckMdlData::~ckMdlData()
 {
     if (m_data && m_mode == MODE_WRITE)
     {
-        pgFree(m_data);
+        ckFree(m_data);
     }
 }
 
 
-void pgMdlData::initAsReader(const void* data, u32 data_size)
+void ckMdlData::initAsReader(const void* data, u32 data_size)
 {
     if (!data || data_size == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_data && m_mode == MODE_WRITE)
     {
-        pgFree(m_data);
+        ckFree(m_data);
     }
 
     m_mode = MODE_READ;
@@ -68,49 +68,49 @@ void pgMdlData::initAsReader(const void* data, u32 data_size)
     m_data_size = data_size;
     m_mdl_data_header = reinterpret_cast<ModelDataHeader*>(m_data);
     m_node_info = reinterpret_cast<NodeInfo*>(m_mdl_data_header + 1);
-    m_prim_data = reinterpret_cast<pgPrim::PrimData*>(m_data + m_mdl_data_header->prim_data_offset);
-    m_normal_data = reinterpret_cast<pgVec*>(m_data + m_mdl_data_header->normal_data_offset);
+    m_prim_data = reinterpret_cast<ckPrim::PrimData*>(m_data + m_mdl_data_header->prim_data_offset);
+    m_normal_data = reinterpret_cast<ckVec*>(m_data + m_mdl_data_header->normal_data_offset);
 
-    if (m_mdl_data_header->format_id != pgID_("POGOLYN_MODEL_DATA") || m_mdl_data_header->format_version > MODEL_DATA_VERSION)
+    if (m_mdl_data_header->format_id != ckID_("CATCAKE_MODEL_DATA") || m_mdl_data_header->format_version > MODEL_DATA_VERSION)
     {
-        pgThrow(ExceptionInvalidData);
+        ckThrow(ExceptionInvalidData);
     }
 
-    u32 valid_data_size = sizeof(ModelDataHeader) + sizeof(NodeInfo) * getNodeNum() + (sizeof(pgPrim::PrimData) + (hasNormal() ? sizeof(pgVec) : 0)) * getVertNum();
+    u32 valid_data_size = sizeof(ModelDataHeader) + sizeof(NodeInfo) * getNodeNum() + (sizeof(ckPrim::PrimData) + (hasNormal() ? sizeof(ckVec) : 0)) * getVertNum();
 
     if (m_data_size != valid_data_size)
     {
-        pgThrow(ExceptionInvalidData);
+        ckThrow(ExceptionInvalidData);
     }
 }
 
 
-void pgMdlData::initAsWriter(u16 node_num, u16 vert_num, pgID tex_id, bool has_normal)
+void ckMdlData::initAsWriter(u16 node_num, u16 vert_num, ckID tex_id, bool has_normal)
 {
     if (node_num == 0 || vert_num == 0)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     if (m_data && m_mode == MODE_WRITE)
     {
-        pgFree(m_data);
+        ckFree(m_data);
     }
 
     m_mode = MODE_WRITE;
 
     u32 node_info_size = sizeof(NodeInfo) * node_num;
-    u32 prim_data_size = sizeof(pgPrim::PrimData) * vert_num;
-    u32 normal_data_size = has_normal ? sizeof(pgVec) * vert_num : 0;
+    u32 prim_data_size = sizeof(ckPrim::PrimData) * vert_num;
+    u32 normal_data_size = has_normal ? sizeof(ckVec) * vert_num : 0;
 
     m_data_size = sizeof(ModelDataHeader) + node_info_size + prim_data_size + normal_data_size;
-    m_data = static_cast<u8*>(pgMalloc(m_data_size));
+    m_data = static_cast<u8*>(ckMalloc(m_data_size));
 
-    pgMemMgr::memset(m_data, 0, m_data_size);
+    ckMemMgr::memset(m_data, 0, m_data_size);
 
     m_mdl_data_header = reinterpret_cast<ModelDataHeader*>(m_data);
 
-    m_mdl_data_header->format_id = pgID_("POGOLYN_MODEL_DATA");
+    m_mdl_data_header->format_id = ckID_("CATCAKE_MODEL_DATA");
     m_mdl_data_header->format_version = MODEL_DATA_VERSION;
     m_mdl_data_header->node_num = node_num;
     m_mdl_data_header->vert_num = vert_num;
@@ -120,297 +120,297 @@ void pgMdlData::initAsWriter(u16 node_num, u16 vert_num, pgID tex_id, bool has_n
     m_mdl_data_header->normal_data_offset = m_mdl_data_header->prim_data_offset + prim_data_size;
 
     m_node_info = reinterpret_cast<NodeInfo*>(m_mdl_data_header + 1);
-    m_prim_data = reinterpret_cast<pgPrim::PrimData*>(m_data + m_mdl_data_header->prim_data_offset);
-    m_normal_data = reinterpret_cast<pgVec*>(m_data + m_mdl_data_header->normal_data_offset);
+    m_prim_data = reinterpret_cast<ckPrim::PrimData*>(m_data + m_mdl_data_header->prim_data_offset);
+    m_normal_data = reinterpret_cast<ckVec*>(m_data + m_mdl_data_header->normal_data_offset);
 
     for (s32 i = 0; i < node_num; i++)
     {
-        m_node_info[i].local = pgMat::UNIT;
+        m_node_info[i].local = ckMat::UNIT;
     }
 
     for (s32 i = 0; i < vert_num; i++)
     {
-        m_prim_data[i].col = pgCol::FULL;
+        m_prim_data[i].col = ckCol::FULL;
 
         if (has_normal)
         {
-            m_normal_data[i] = pgVec::Z_UNIT;
+            m_normal_data[i] = ckVec::Z_UNIT;
         }
     }
 }
 
 
-pgMdlData::ModelDataMode pgMdlData::getMode() const
+ckMdlData::ModelDataMode ckMdlData::getMode() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mode.getType();
 }
 
 
-u16 pgMdlData::getNodeNum() const
+u16 ckMdlData::getNodeNum() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mdl_data_header->node_num;
 }
 
 
-u16 pgMdlData::getVertNum() const
+u16 ckMdlData::getVertNum() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mdl_data_header->vert_num;
 }
 
 
-bool pgMdlData::hasNormal() const
+bool ckMdlData::hasNormal() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mdl_data_header->flag.isOn(FLAG_HAS_NORMAL);
 }
 
 
-pgID pgMdlData::getTextureID() const
+ckID ckMdlData::getTextureID() const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     return m_mdl_data_header->tex_id;
 }
 
 
-u16 pgMdlData::getNodeParentIndex(u16 node_index) const
+u16 ckMdlData::getNodeParentIndex(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].parent_index;
 }
 
 
-void pgMdlData::setNodeParentIndex(u16 node_index, u16 parent_index)
+void ckMdlData::setNodeParentIndex(u16 node_index, u16 parent_index)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num || parent_index >= m_mdl_data_header->node_num || node_index == parent_index)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_node_info[node_index].parent_index = parent_index;
 }
 
 
-void pgMdlData::setNodeParentIndex_noParent(u16 node_index)
+void ckMdlData::setNodeParentIndex_noParent(u16 node_index)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_node_info[node_index].parent_index = node_index;
 }
 
 
-const pgMat& pgMdlData::getNodeLocal(u16 node_index) const
+const ckMat& ckMdlData::getNodeLocal(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].local;
 }
 
 
-void pgMdlData::setNodeLocal(u16 node_index, const pgMat& local)
+void ckMdlData::setNodeLocal(u16 node_index, const ckMat& local)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_node_info[node_index].local = local;
 }
 
 
-pgPrim::PrimMode pgMdlData::getNodePrimMode(u16 node_index) const
+ckPrim::PrimMode ckMdlData::getNodePrimMode(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].prim_mode.getType();
 }
 
 
-void pgMdlData::setNodePrimMode(u16 node_index, pgPrim::PrimMode prim_mode)
+void ckMdlData::setNodePrimMode(u16 node_index, ckPrim::PrimMode prim_mode)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_node_info[node_index].prim_mode = prim_mode;
 }
 
 
-pgPrim::BlendMode pgMdlData::getNodeBlendMode(u16 node_index) const
+ckPrim::BlendMode ckMdlData::getNodeBlendMode(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].blend_mode.getType();
 }
 
 
-void pgMdlData::setNodeBlendMode(u16 node_index, pgPrim::BlendMode blend_mode)
+void ckMdlData::setNodeBlendMode(u16 node_index, ckPrim::BlendMode blend_mode)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_node_info[node_index].blend_mode = blend_mode;
 }
 
 
-u16 pgMdlData::getNodeVertIndex(u16 node_index) const
+u16 ckMdlData::getNodeVertIndex(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].vert_index;
 }
 
 
-u16 pgMdlData::getNodeVertNum(u16 node_index) const
+u16 ckMdlData::getNodeVertNum(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].vert_num;
 }
 
 
-void pgMdlData::setNodeVertInfo(u16 node_index, u16 vert_index, u16 vert_num)
+void ckMdlData::setNodeVertInfo(u16 node_index, u16 vert_index, u16 vert_num)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num || vert_index >= m_mdl_data_header->vert_num || vert_index + vert_num > m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     NodeInfo* node_info = &m_node_info[node_index];
@@ -420,267 +420,267 @@ void pgMdlData::setNodeVertInfo(u16 node_index, u16 vert_index, u16 vert_num)
 }
 
 
-const pgPrim::PrimData* pgMdlData::getNodePrimData(u16 node_index) const
+const ckPrim::PrimData* ckMdlData::getNodePrimData(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return &m_prim_data[m_node_info[node_index].vert_index];
 }
 
 
-const pgVec* pgMdlData::getNodeNormalData(u16 node_index) const
+const ckVec* ckMdlData::getNodeNormalData(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return &m_normal_data[m_node_info[node_index].vert_index];
 }
 
 
-const pgVec& pgMdlData::getNodeClipBoundMinForReader(u16 node_index) const
+const ckVec& ckMdlData::getNodeClipBoundMinForReader(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_WRITE)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].bound_min;
 }
 
 
-const pgVec& pgMdlData::getNodeClipBoundMaxForReader(u16 node_index) const
+const ckVec& ckMdlData::getNodeClipBoundMaxForReader(u16 node_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_WRITE)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (node_index >= m_mdl_data_header->node_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_node_info[node_index].bound_max;
 }
 
 
-const pgVec& pgMdlData::getVertPos(u16 vert_index) const
+const ckVec& ckMdlData::getVertPos(u16 vert_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[vert_index].pos;
 }
 
 
-void pgMdlData::setVertPos(u16 vert_index, const pgVec& pos)
+void ckMdlData::setVertPos(u16 vert_index, const ckVec& pos)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_prim_data[vert_index].pos = pos;
 }
 
 
-pgCol pgMdlData::getVertCol(u16 vert_index) const
+ckCol ckMdlData::getVertCol(u16 vert_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[vert_index].col;
 }
 
 
-void pgMdlData::setVertCol(u16 vert_index, pgCol col)
+void ckMdlData::setVertCol(u16 vert_index, ckCol col)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_prim_data[vert_index].col = col;
 }
 
 
-r32 pgMdlData::getVertU(u16 vert_index) const
+r32 ckMdlData::getVertU(u16 vert_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[vert_index].u;
 }
 
 
-r32 pgMdlData::getVertV(u16 vert_index) const
+r32 ckMdlData::getVertV(u16 vert_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_prim_data[vert_index].v;
 }
 
 
-void pgMdlData::setVertUV(u16 vert_index, r32 u, r32 v)
+void ckMdlData::setVertUV(u16 vert_index, r32 u, r32 v)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
-    pgPrim::PrimData* prim_data = &m_prim_data[vert_index];
+    ckPrim::PrimData* prim_data = &m_prim_data[vert_index];
 
     prim_data->u = u;
     prim_data->v = v;
 }
 
 
-const pgVec& pgMdlData::getVertN(u16 vert_index) const
+const ckVec& ckMdlData::getVertN(u16 vert_index) const
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     return m_normal_data[vert_index];
 }
 
 
-void pgMdlData::setVertN(u16 vert_index, const pgVec& n)
+void ckMdlData::setVertN(u16 vert_index, const ckVec& n)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ || m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     if (vert_index >= m_mdl_data_header->vert_num)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_normal_data[vert_index] = n;
 }
 
 
-void pgMdlData::calcNormalAsTriangles(bool is_smoothing)
+void ckMdlData::calcNormalAsTriangles(bool is_smoothing)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ || m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
     for (s32 i = 0; i < m_mdl_data_header->node_num; i++)
@@ -692,34 +692,34 @@ void pgMdlData::calcNormalAsTriangles(bool is_smoothing)
         {
             u16 vert_index = node_info->vert_index;
 
-            pgUtil::calcNormalAsTriangles(&m_normal_data[vert_index], &m_prim_data[vert_index], vert_num, is_smoothing);
+            ckUtil::calcNormalAsTriangles(&m_normal_data[vert_index], &m_prim_data[vert_index], vert_num, is_smoothing);
         }
     }
 }
 
 
-void pgMdlData::registerAsResource(pgID res_id)
+void ckMdlData::registerAsResource(ckID res_id)
 {
     if (!m_data)
     {
-        pgThrow(ExceptionNotInitialized);
+        ckThrow(ExceptionNotInitialized);
     }
 
     if (m_mode == MODE_READ)
     {
-        pgThrow(ExceptionInvalidCall);
+        ckThrow(ExceptionInvalidCall);
     }
 
-    if (res_id == pgID::ZERO)
+    if (res_id == ckID::ZERO)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     for (s32 i = 0; i < m_mdl_data_header->node_num; i++)
     {
         NodeInfo* node_info = &m_node_info[i];
 
-        pgPrim::PrimData* prim_data = &m_prim_data[node_info->vert_index];
+        ckPrim::PrimData* prim_data = &m_prim_data[node_info->vert_index];
 
         node_info->bound_min = node_info->bound_max = prim_data->pos;
 
@@ -761,13 +761,13 @@ void pgMdlData::registerAsResource(pgID res_id)
         }
     }
 
-    pgResMgr::addResource(res_id, "", m_data, m_data_size, true);
+    ckResMgr::addResource(res_id, "", m_data, m_data_size, true);
 
     m_mode = MODE_READ;
 }
 
 
-PG_DEFINE_COPY_CONSTRUCTOR(pgMdlData)
+CK_DEFINE_COPY_CONSTRUCTOR(ckMdlData)
 
 
-PG_DEFINE_OPERATOR_EQUAL(pgMdlData)
+CK_DEFINE_OPERATOR_EQUAL(ckMdlData)

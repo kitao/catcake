@@ -29,26 +29,26 @@
 */
 
 
-#include "pg_cdt_all.h"
+#include "ck_cdt_all.h"
 
 
-const pgVec& pgCdt::AABB::getMin() const
+const ckVec& ckCdt::AABB::getMin() const
 {
     return m_min;
 }
 
 
-const pgVec& pgCdt::AABB::getMax() const
+const ckVec& ckCdt::AABB::getMax() const
 {
     return m_max;
 }
 
 
-void pgCdt::AABB::setBound(const pgVec& min, const pgVec& max)
+void ckCdt::AABB::setBound(const ckVec& min, const ckVec& max)
 {
     if (min.x > max.x || min.y > max.y || min.z > max.z)
     {
-        pgThrow(ExceptionInvalidArgument);
+        ckThrow(ExceptionInvalidArgument);
     }
 
     m_min = min;
@@ -56,7 +56,7 @@ void pgCdt::AABB::setBound(const pgVec& min, const pgVec& max)
 }
 
 
-bool pgCdt::checkTouch(const AABB& aabb1, const AABB& aabb2)
+bool ckCdt::checkTouch(const AABB& aabb1, const AABB& aabb2)
 {
     if (aabb1.m_min.x <= aabb2.m_max.x && aabb1.m_min.y <= aabb2.m_max.y && aabb1.m_min.z <= aabb2.m_max.z && //
         aabb1.m_max.x >= aabb2.m_min.x && aabb1.m_max.y >= aabb2.m_min.y && aabb1.m_max.z >= aabb2.m_min.z)

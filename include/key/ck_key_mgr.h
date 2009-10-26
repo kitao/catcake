@@ -29,20 +29,20 @@
 */
 
 
-class pgKeyDaemon;
+class ckKeyDaemon;
 
 
 /*!
-    @ingroup pgKey
+    @ingroup ckKey
     TODO
 */
-class PG_API pgKeyMgr
+class CK_API ckKeyMgr
 {
-    friend class pgKeyDaemon;
+    friend class ckKeyDaemon;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotInitialized);
 
     static const u32 EXTRA_VALUE_NUM = 16;
 
@@ -135,11 +135,11 @@ private:
         FLAG_LAST_ON = 0x08
     };
 
-    pgKeyMgr();
-    ~pgKeyMgr();
-    void operator=(const pgKeyMgr&);
+    ckKeyMgr();
+    ~ckKeyMgr();
+    void operator=(const ckKeyMgr&);
 
-    static pgKeyMgr* instance();
+    static ckKeyMgr* instance();
 
     KeyEventHandler m_key_event_handler;
     MouseEventHandler m_mouse_event_handler;
@@ -151,7 +151,7 @@ private:
     s16 m_mouse_y;
     s16 m_real_mouse_wheel;
     s16 m_cur_mouse_wheel;
-    pgKeyDaemon* m_key_daemon;
+    ckKeyDaemon* m_key_daemon;
 
-    static pgKeyMgr* m_instance;
+    static ckKeyMgr* m_instance;
 };

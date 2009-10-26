@@ -30,18 +30,18 @@
 
 
 /*!
-    @ingroup pgTask
+    @ingroup ckTask
     TODO
 */
-class PG_API pgTaskMgr
+class CK_API ckTaskMgr
 {
-    friend class pgTask;
+    friend class ckTask;
 
 public:
-    pgDefineException(ExceptionDeleteTaskInDestructor);
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNewTaskInDestructor);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionDeleteTaskInDestructor);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNewTaskInDestructor);
+    ckDefineException(ExceptionNotInitialized);
 
     static bool isCreated();
     static void createAfterSys(u16 aim_fps);
@@ -53,34 +53,34 @@ public:
     static u64 getRenderUsecTime();
     static u32 getFrameCount();
 
-    static pgTask* getFirstTaskN(pgTask::TaskOrder order);
-    static pgTask* getLastTaskN(pgTask::TaskOrder order);
+    static ckTask* getFirstTaskN(ckTask::TaskOrder order);
+    static ckTask* getLastTaskN(ckTask::TaskOrder order);
 
-    static bool isOrderActive(pgTask::TaskOrder order);
-    static void setOrderActive(pgTask::TaskOrder from, pgTask::TaskOrder to, bool is_active);
-    static void deleteOrder(pgTask::TaskOrder from, pgTask::TaskOrder to);
+    static bool isOrderActive(ckTask::TaskOrder order);
+    static void setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active);
+    static void deleteOrder(ckTask::TaskOrder from, ckTask::TaskOrder to);
 
-    static void sendMessage(pgID msg_id, pgMsg<4>& msg);
+    static void sendMessage(ckID msg_id, ckMsg<4>& msg);
 
     static void resetFrameSkip();
 
     static void updateForSystem();
     static void measureRenderTimeForSystem(void (*render_func)());
     static u32 setNextTaskNameForSystem(const char* name);
-    static void deleteTaskForSystem(pgTask* task, bool is_direct_delete);
+    static void deleteTaskForSystem(ckTask* task, bool is_direct_delete);
     static bool isFrameSkipResetForSystem();
 
 private:
     static const u32 ORDER_NUM = 8 + 1 + 8;
     static const u32 FPS_MEASURE_FRAME_NUM = 10;
 
-    pgTaskMgr(u16 aim_fps);
-    ~pgTaskMgr();
-    void operator=(const pgTaskMgr&);
+    ckTaskMgr(u16 aim_fps);
+    ~ckTaskMgr();
+    void operator=(const ckTaskMgr&);
 
-    static pgTaskMgr* instance();
+    static ckTaskMgr* instance();
 
-    pgTask m_root_task[ORDER_NUM];
+    ckTask m_root_task[ORDER_NUM];
     u16 m_aim_fps;
     r32 m_cur_fps;
     u64 m_execute_time;
@@ -89,11 +89,11 @@ private:
     u32 m_frame_count;
     u64 m_fps_measure_time;
     u32 m_fps_measure_count;
-    pgTask* m_cur_task;
-    pgTask* m_next_task;
+    ckTask* m_cur_task;
+    ckTask* m_next_task;
     const char* m_next_task_name;
     bool m_is_frame_skip_reset;
     bool m_is_in_destructor;
 
-    static pgTaskMgr* m_instance;
+    static ckTaskMgr* m_instance;
 };

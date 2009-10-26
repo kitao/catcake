@@ -29,17 +29,17 @@
 */
 
 
-#ifndef PG_UTIL_ALL_H_
-#define PG_UTIL_ALL_H_
+#ifndef CK_UTIL_ALL_H_
+#define CK_UTIL_ALL_H_
 
 
-#include "pg_draw_all.h"
+#include "ck_draw_all.h"
 
 /*!
-    @defgroup pgUtil pgUtil -- Utility module
+    @defgroup ckUtil ckUtil -- Utility module
     Provides the functions for various purposes.
 */
-#include "util/pg_util.h"
+#include "util/ck_util.h"
 
 
-#endif // !PG_UTIL_ALL_H_
+#endif // !CK_UTIL_ALL_H_

@@ -29,23 +29,23 @@
 */
 
 
-class pgDbgDaemon;
+class ckDbgDaemon;
 
 
 /*!
-    @ingroup pgDbg
+    @ingroup ckDbg
     TODO
 */
-class PG_API pgDbgMgr
+class CK_API ckDbgMgr
 {
-    friend class pgDbgDaemon;
+    friend class ckDbgDaemon;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotInitialized);
 
-    static const pgID DEBUG_MODE_SCREEN_ID;
-    static const pgID DEBUG_FONT_TEXTURE_ID;
+    static const ckID DEBUG_MODE_SCREEN_ID;
+    static const ckID DEBUG_FONT_TEXTURE_ID;
 
     enum DebugMode
     {
@@ -64,19 +64,19 @@ public:
     static void pageUpConsole();
     static void pageDownConsole();
 
-    static void drawLine(const pgVec& pos1, const pgVec& pos2, pgCol col, pgID scr_id);
-    static void drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, pgCol col, pgID scr_id);
-    static void drawPolygon(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, const pgVec& pos4, pgCol col, pgID scr_id);
+    static void drawLine(const ckVec& pos1, const ckVec& pos2, ckCol col, ckID scr_id);
+    static void drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, ckCol col, ckID scr_id);
+    static void drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, const ckVec& pos4, ckCol col, ckID scr_id);
 
-    static void drawBox(const pgMat& center, const pgVec& size, pgCol poly_col, pgCol line_col, pgID scr_id);
-    static void drawSphere(const pgVec& center, r32 radius, pgCol poly_col, pgCol line_col, pgID scr_id);
-    static void drawAxis(const pgMat& world, r32 size, pgID scr_id);
+    static void drawBox(const ckMat& center, const ckVec& size, ckCol poly_col, ckCol line_col, ckID scr_id);
+    static void drawSphere(const ckVec& center, r32 radius, ckCol poly_col, ckCol line_col, ckID scr_id);
+    static void drawAxis(const ckMat& world, r32 size, ckID scr_id);
 
-    static void drawString(r32 left, r32 top, pgCol col, u8 scale, const char* str, ...);
+    static void drawString(r32 left, r32 top, ckCol col, u8 scale, const char* str, ...);
     static void trace(const char* str, ...);
 
-    static void dumpVector(const pgVec& vec, const char* name = NULL);
-    static void dumpMatrix(const pgMat& mat, const char* name = NULL);
+    static void dumpVector(const ckVec& vec, const char* name = NULL);
+    static void dumpMatrix(const ckMat& mat, const char* name = NULL);
 
     static void dumpMemory();
     static void dumpTask();
@@ -95,35 +95,35 @@ private:
     static const u32 CONSOLE_BUFFER_SIZE = 1000;
     static const u32 CONSOLE_TAB_WIDTH = 4;
 
-    pgDbgMgr();
-    ~pgDbgMgr();
-    void operator=(const pgDbgMgr&);
+    ckDbgMgr();
+    ~ckDbgMgr();
+    void operator=(const ckDbgMgr&);
 
     void newDebugFontTexture();
     void reallocDrawPrim();
     void checkSpecialCommand();
 
     void drawConsole();
-    static void drawRect(r32 left, r32 top, r32 width, r32 height, r32 z, pgCol col);
-    static void drawFrame(r32 left, r32 top, r32 width, r32 height, r32 z, pgCol col);
+    static void drawRect(r32 left, r32 top, r32 width, r32 height, r32 z, ckCol col);
+    static void drawFrame(r32 left, r32 top, r32 width, r32 height, r32 z, ckCol col);
     s32 calcConsoleRowNum();
 
-    static pgDbgMgr* instance();
+    static ckDbgMgr* instance();
 
-    pgType<u8, DebugMode> m_dbg_mode;
-    pgScr* m_dbg_mode_scr;
-    pgPrim* m_draw_prim;
+    ckType<u8, DebugMode> m_dbg_mode;
+    ckScr* m_dbg_mode_scr;
+    ckPrim* m_draw_prim;
     u32 m_cur_draw_prim_num;
     u32 m_max_draw_prim_num;
-    pgSprt m_font_sprt;
-    pgStr<char, CONSOLE_COLUMN_NUM> m_console_buf[CONSOLE_BUFFER_SIZE];
+    ckSprt m_font_sprt;
+    ckStr<char, CONSOLE_COLUMN_NUM> m_console_buf[CONSOLE_BUFFER_SIZE];
     s32 m_end_row;
     s32 m_aim_row;
     s32 m_cur_row;
     u8 m_dbg_mode_tap_cntr;
     u8 m_dbg_dump_tap_cntr;
     s16 m_scroll_hold_cntr;
-    pgDbgDaemon* m_dbg_daemon;
+    ckDbgDaemon* m_dbg_daemon;
 
-    static pgDbgMgr* m_instance;
+    static ckDbgMgr* m_instance;
 };

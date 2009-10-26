@@ -29,17 +29,17 @@
 */
 
 
-#ifndef PG_KEY_ALL_H_
-#define PG_KEY_ALL_H_
+#ifndef CK_KEY_ALL_H_
+#define CK_KEY_ALL_H_
 
 
-#include "pg_gen_all.h"
+#include "ck_gen_all.h"
 
 /*!
-    @defgroup pgKey pgKey -- Input device module
+    @defgroup ckKey ckKey -- Input device module
     Provides the functionality to handle input devices.
 */
-#include "key/pg_key_mgr.h"
+#include "key/ck_key_mgr.h"
 
 
-#endif // !PG_KEY_ALL_H_
+#endif // !CK_KEY_ALL_H_

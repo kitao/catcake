@@ -29,54 +29,54 @@
 */
 
 
-class pgLts;
+class ckLts;
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgLit
+class CK_API ckLit
 {
-    friend class pgLts;
+    friend class ckLts;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidArgument);
 
-    pgLit* getPrevN() const;
-    pgLit* getNextN() const;
+    ckLit* getPrevN() const;
+    ckLit* getNextN() const;
 
-    pgID getID() const;
+    ckID getID() const;
 
     bool isActive() const;
     void setActive(bool is_active);
 
-    const pgVec& getPos() const;
-    void setPos(const pgVec& pos);
+    const ckVec& getPos() const;
+    void setPos(const ckVec& pos);
 
     r32 getInnerRadius() const;
     r32 getOuterRadius() const;
     void setRadius(r32 inner_rad, r32 outer_rad);
 
-    pgCol getColor() const;
-    void setColor(pgCol col);
+    ckCol getColor() const;
+    void setColor(ckCol col);
 
 private:
-    pgLit(pgID lts_id);
-    void operator=(const pgLit&);
+    ckLit(ckID lts_id);
+    void operator=(const ckLit&);
 
     void updateBound();
 
-    pgList<pgLit>::Item m_item;
-    pgID m_id;
-    pgType<u8, bool> m_is_active;
-    pgVec m_pos;
+    ckList<ckLit>::Item m_item;
+    ckID m_id;
+    ckType<u8, bool> m_is_active;
+    ckVec m_pos;
     r32 m_inner_rad;
     r32 m_outer_rad;
-    pgCol m_col;
+    ckCol m_col;
     u16 m_col_int;
-    pgVec m_min_bound;
-    pgVec m_max_bound;
+    ckVec m_min_bound;
+    ckVec m_max_bound;
     r32 m_sq_inner_rad;
     r32 m_sq_outer_rad;
 };

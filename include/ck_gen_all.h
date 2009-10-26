@@ -29,25 +29,25 @@
 */
 
 
-#ifndef PG_GEN_ALL_H_
-#define PG_GEN_ALL_H_
+#ifndef CK_GEN_ALL_H_
+#define CK_GEN_ALL_H_
 
 
-#include "pg_mem_all.h"
+#include "ck_mem_all.h"
 
 /*!
-    @defgroup pgGen pgGen -- General purpose module
+    @defgroup ckGen ckGen -- General purpose module
     Provides the general purpose classes.
 */
-#include "gen/pg_id.h"
-#include "gen/pg_type.h"
-#include "gen/pg_flag.h"
-#include "gen/pg_list.h"
-#include "gen/pg_tree.h"
-#include "gen/pg_buf.h"
-#include "gen/pg_map.h"
-#include "gen/pg_str.h"
-#include "gen/pg_msg.h"
+#include "gen/ck_id.h"
+#include "gen/ck_type.h"
+#include "gen/ck_flag.h"
+#include "gen/ck_list.h"
+#include "gen/ck_tree.h"
+#include "gen/ck_buf.h"
+#include "gen/ck_map.h"
+#include "gen/ck_str.h"
+#include "gen/ck_msg.h"
 
 
-#endif // !PG_GEN_ALL_H_
+#endif // !CK_GEN_ALL_H_

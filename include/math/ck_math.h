@@ -30,10 +30,10 @@
 
 
 /*!
-    @ingroup pgMath
+    @ingroup ckMath
     Provides mathematical functions.
 */
-class PG_API pgMath
+class CK_API ckMath
 {
 public:
     static const r32 EPSILON; //!< If the difference of two numbers is less than this value, two numbers are considered equal.

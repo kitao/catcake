@@ -29,19 +29,19 @@
 */
 
 
-#ifndef PG_TASK_ALL_H_
-#define PG_TASK_ALL_H_
+#ifndef CK_TASK_ALL_H_
+#define CK_TASK_ALL_H_
 
 
-#include "pg_gen_all.h"
+#include "ck_gen_all.h"
 
 /*!
-    @defgroup pgTask pgTask -- Task management module
+    @defgroup ckTask ckTask -- Task management module
     Provides the functionality to handle tasks.
 */
-#include "task/pg_task.h"
-#include "task/pg_task_mgr.h"
-#include "task/pg_task_util.h"
+#include "task/ck_task.h"
+#include "task/ck_task_mgr.h"
+#include "task/ck_task_util.h"
 
 
-#endif // !PG_TASK_ALL_H_
+#endif // !CK_TASK_ALL_H_

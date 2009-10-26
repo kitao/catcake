@@ -30,17 +30,17 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgMot
+class CK_API ckMot
 {
-    friend class pgJoin;
+    friend class ckJoin;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionNotInitialized);
 
     enum PlayMode
     {
@@ -49,10 +49,10 @@ public:
         PLAY_KEEP
     };
 
-    pgMot();
-    ~pgMot();
+    ckMot();
+    ~ckMot();
 
-    void init(pgMdl* mdl, pgID mot_data_id);
+    void init(ckMdl* mdl, ckID mot_data_id);
 
     u16 getMotionIndex() const;
     PlayMode getPlayMode() const;
@@ -60,11 +60,11 @@ public:
     u16 getInterpFrame() const;
 
     bool isPlaying() const;
-    void play(pgMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame);
+    void play(ckMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame);
     void stop();
 
     r32 getNextUpdateFrame() const;
-    void update(pgMdl* mdl);
+    void update(ckMdl* mdl);
 
 private:
     /*!
@@ -72,18 +72,18 @@ private:
     */
     struct InterpInfo
     {
-        pgQuat quat;
-        pgVec trans;
+        ckQuat quat;
+        ckVec trans;
     };
 
-    pgMot(const pgMot&);
-    void operator=(const pgMot&);
+    ckMot(const ckMot&);
+    void operator=(const ckMot&);
 
     void uninit();
 
-    pgMotData m_mot_data;
+    ckMotData m_mot_data;
     InterpInfo* m_interp_info;
-    pgType<u8, PlayMode> m_play_mode;
+    ckType<u8, PlayMode> m_play_mode;
     u16 m_mot_index;
     u16 m_interp_frame;
     r32 m_play_speed;

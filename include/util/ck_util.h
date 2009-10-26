@@ -30,14 +30,14 @@
 
 
 /*!
-    @ingroup pgUtil
+    @ingroup ckUtil
     TODO
 */
-class PG_API pgUtil
+class CK_API ckUtil
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidData);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidData);
 
     static u32 strlen(const char* str);
     static u32 wcslen(const wchar_t* str);
@@ -46,18 +46,18 @@ public:
     static const char* getBasename(const char* filename);
     static const char* getExtension(const char* filename);
 
-    static void calcNormalAsTriangles(pgVec* normal, const pgPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing);
+    static void calcNormalAsTriangles(ckVec* normal, const ckPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing);
 
-    static bool readPNGInfo(u16* width, u16* height, pgTex::TexFormat* format, const void* data, u32 data_size);
+    static bool readPNGInfo(u16* width, u16* height, ckTex::TexFormat* format, const void* data, u32 data_size);
     static bool readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size);
 
     static void loadWindowsFont(const char* filename);
 
-    static void loadShader(pgID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num);
+    static void loadShader(ckID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num);
 
     static void loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale);
-    static void loadPixelArtModelAs(pgID res_id, const char* pxm_file, const char* png_file, r32 scale);
+    static void loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* png_file, r32 scale);
 
-    static void import3DS(const char* filename, pgID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
-    static void import3DSAs(pgID res_id, const char* filename, pgID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
+    static void import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
+    static void import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
 };

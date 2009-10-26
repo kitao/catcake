@@ -30,21 +30,21 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgShd
+class CK_API ckShd
 {
-    friend class pgRend;
-    friend class pgPrim;
-    friend class pgSprt;
-    friend class pgDrawMgr;
+    friend class ckRend;
+    friend class ckPrim;
+    friend class ckSprt;
+    friend class ckDrawMgr;
 
 public:
-    pgShd* getPrevN() const;
-    pgShd* getNextN() const;
+    ckShd* getPrevN() const;
+    ckShd* getNextN() const;
 
-    pgID getID() const;
+    ckID getID() const;
     u8 getUniformNum() const;
     u8 getAttribNum() const;
     u8 getTextureNum() const;
@@ -57,13 +57,13 @@ private:
         FLAG_COMPILE_ERROR
     };
 
-    pgShd(pgID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num);
-    ~pgShd();
-    void operator=(const pgShd&);
+    ckShd(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num);
+    ~ckShd();
+    void operator=(const ckShd&);
 
     u32 getShdObj();
 
-    pgID m_id;
+    ckID m_id;
     char* m_vert_code;
     char* m_frag_code;
     u8 m_uni_num;
@@ -77,5 +77,5 @@ private:
     u32* m_uni_loc_tbl;
     u32* m_att_loc_tbl;
     u32 m_tex_loc_tbl[3];
-    pgFlag<u8, ShdFlag> m_flag;
+    ckFlag<u8, ShdFlag> m_flag;
 };

@@ -29,56 +29,56 @@
 */
 
 
-class pgConfMgr;
+class ckConfMgr;
 
 
 /*!
-    @ingroup pgConf
+    @ingroup ckConf
     TODO
 */
-class PG_API pgConf
+class CK_API ckConf
 {
-    friend class pgConfMgr;
+    friend class ckConfMgr;
 
 public:
-    pgDefineException(ExceptionCannotOpenFile);
-    pgDefineException(ExceptionCannotReadFile);
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionCannotOpenFile);
+    ckDefineException(ExceptionCannotReadFile);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
 
-    pgConf* getPrevN() const;
-    pgConf* getNextN() const;
+    ckConf* getPrevN() const;
+    ckConf* getNextN() const;
 
-    pgID getID() const;
+    ckID getID() const;
     bool isValid() const;
     u16 getErrorLineNo() const;
 
     u16 getEntryNum(const char* ent_name) const;
-    pgEnt* getEntryFromFirstN(const char* ent_name) const;
-    pgEnt* getEntryFromLastN(const char* ent_name) const;
-    pgEnt* getEntryBeforeN(const char* ent_name, pgEnt* ent) const;
-    pgEnt* getEntryAfterN(const char* ent_name, pgEnt* ent) const;
+    ckEnt* getEntryFromFirstN(const char* ent_name) const;
+    ckEnt* getEntryFromLastN(const char* ent_name) const;
+    ckEnt* getEntryBeforeN(const char* ent_name, ckEnt* ent) const;
+    ckEnt* getEntryAfterN(const char* ent_name, ckEnt* ent) const;
 
-    pgEnt* getFirstEntryN() const;
-    pgEnt* getLastEntryN() const;
+    ckEnt* getFirstEntryN() const;
+    ckEnt* getLastEntryN() const;
 
-    static pgConf* newPriorConfigBeforeInitialization(const char* filename);
-    static void deletePriorConfig(pgConf* conf);
+    static ckConf* newPriorConfigBeforeInitialization(const char* filename);
+    static void deletePriorConfig(ckConf* conf);
 
 private:
-    pgConf(pgID id, const void* data, u32 data_size);
-    pgConf(pgID id, const void* data, u32 data_size, void* dummy);
-    ~pgConf();
-    void operator=(const pgConf&);
+    ckConf(ckID id, const void* data, u32 data_size);
+    ckConf(ckID id, const void* data, u32 data_size, void* dummy);
+    ~ckConf();
+    void operator=(const ckConf&);
 
-    pgEnt* newEntry(const char* ent_name, u16 val_num);
-    void deleteEntry(pgEnt* ent);
+    ckEnt* newEntry(const char* ent_name, u16 val_num);
+    void deleteEntry(ckEnt* ent);
 
     void parse(const void* data, u32 data_size);
 
-    pgID m_id;
+    ckID m_id;
     u16 m_err_line_no;
-    pgList<pgEnt> m_ent_list;
+    ckList<ckEnt> m_ent_list;
     void* (*m_malloc)(u32 size);
     void (*m_free)(void* ptr);
 };

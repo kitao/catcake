@@ -30,13 +30,13 @@
 
 
 /*!
-    @ingroup pgTask
+    @ingroup ckTask
     TODO
 */
-#define pgNewTask(type) new(pgMemMgr::mallocForSystem(sizeof(type) + pgTaskMgr::setNextTaskNameForSystem(__FILE__), 0, __FILE__), NULL) type
+#define ckNewTask(type) new(ckMemMgr::mallocForSystem(sizeof(type) + ckTaskMgr::setNextTaskNameForSystem(__FILE__), 0, __FILE__), NULL) type
 
 /*!
-    @ingroup pgTask
+    @ingroup ckTask
     TODO
 */
-#define pgDeleteTask(task) pgTaskMgr::deleteTaskForSystem(task, true)
+#define ckDeleteTask(task) ckTaskMgr::deleteTaskForSystem(task, true)

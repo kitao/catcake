@@ -29,55 +29,55 @@
 */
 
 
-#ifndef POGOLYN_MAIN_H_
-#define POGOLYN_MAIN_H_
+#ifndef CATCAKE_MAIN_H_
+#define CATCAKE_MAIN_H_
 
 
 #ifdef WIN32
 #include <windows.h>
 #endif
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
 #ifdef _MSC_VER
 #ifdef _DEBUG
-#pragma comment(lib, "pogolynd.lib")
+#pragma comment(lib, "catcaked.lib")
 #else
-#pragma comment(lib, "pogolyn.lib")
+#pragma comment(lib, "catcake.lib")
 #endif
 #endif
 
 
 /*!
-    @ingroup pgSys
-    The entry function of Pogolyn.
+    @ingroup ckSys
+    The entry function of Catcake.
 */
 #ifdef WIN32
-#define pgMain() \
+#define ckMain() \
     int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) \
     { \
-        pgSysMgr::setInitialDirectoryForSystem(__argc, __argv); \
+        ckSysMgr::setInitialDirectoryForSystem(__argc, __argv); \
     \
-        extern void pgMain_(); \
-        pgMain_(); \
+        extern void ckMain_(); \
+        ckMain_(); \
     \
         return 0; \
     } \
-    void pgMain_()
+    void ckMain_()
 #else
-#define pgMain() \
+#define ckMain() \
     int main(int argc, char* argv[]) \
     { \
-        pgSysMgr::setInitialDirectoryForSystem(argc, argv); \
+        ckSysMgr::setInitialDirectoryForSystem(argc, argv); \
     \
-        extern void pgMain_(); \
-        pgMain_(); \
+        extern void ckMain_(); \
+        ckMain_(); \
     \
         return 0; \
     } \
-    void pgMain_()
+    void ckMain_()
 #endif
 
 
-#endif // !POGOLYN_MAIN_H_
+#endif // !CATCAKE_MAIN_H_

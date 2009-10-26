@@ -29,28 +29,28 @@
 */
 
 
-#ifndef PG_DEF_H_
-#define PG_DEF_H_
+#ifndef CK_DEF_H_
+#define CK_DEF_H_
 
 
 /*!
-    @defgroup pgDef pgDef -- Basic difinitions
-    Provides the basic definitions used by the all modules of Pogolyn.
+    @defgroup ckDef ckDef -- Basic difinitions
+    Provides the basic definitions used by the all modules of Catcake.
 */
 
 
-// #define PG_NO_THROW_EXCEPTION
+// #define CK_NO_THROW_EXCEPTION
 
 
-#ifndef PG_API
+#ifndef CK_API
 #ifdef _MSC_VER
-#ifdef POGOLYN_EXPORTS
-#define PG_API __declspec(dllexport)
+#ifdef CATCAKE_EXPORTS
+#define CK_API __declspec(dllexport)
 #else
-#define PG_API __declspec(dllimport)
+#define CK_API __declspec(dllimport)
 #endif
 #else
-#define PG_API
+#define CK_API
 #endif
 #endif
 
@@ -75,10 +75,10 @@ typedef __SIZE_TYPE__ size_t;
 
 
 /*!
-    @ingroup pgDef
-    The basic types of Pogolyn.
+    @ingroup ckDef
+    The basic types of Catcake.
 */
-namespace pgBasicType
+namespace ckBasicType
 {
     typedef signed char s8; //!< 8-bit signed type.
     typedef signed short s16; //!< 16-bit signed type.
@@ -102,30 +102,30 @@ namespace pgBasicType
 #endif
 }
 
-using namespace pgBasicType;
+using namespace ckBasicType;
 
 
 /*!
-    @ingroup pgDef
-    The version number of Pogolyn.
+    @ingroup ckDef
+    The version number of Catcake.
 */
-const u32 POGOLYN_VERSION = 80; // 0.8.0
+const u32 CATCAKE_VERSION = 80; // 0.8.0
 
 
 /*!
-    @ingroup pgDef
-    The base class for the exceptions of Pogolyn.
+    @ingroup ckDef
+    The base class for the exceptions of Catcake.
 */
-class pgException
+class ckException
 {
 public:
     /*!
-        Constructs and initializes a pgException.
+        Constructs and initializes a ckException.
         @param[in] exception The name of an exception.
         @param[in] file The file name in where an exception occurred.
         @param[in] line The line number at where an exception occurred.
     */
-    pgException(const char* exception, const char* file, u32 line)
+    ckException(const char* exception, const char* file, u32 line)
     {
         m_exception = exception;
         m_file = file;
@@ -166,53 +166,53 @@ private:
 };
 
 
-#ifdef PG_NO_THROW_EXCEPTION
+#ifdef CK_NO_THROW_EXCEPTION
 
-PG_API void pgSubstituteThrow(const char* exception, const char* file, u32 line);
+CK_API void ckSubstituteThrow(const char* exception, const char* file, u32 line);
 
-#define pgDefineException(e)
-#define pgTry if (true)
-#define pgThrow(e) pgSubstituteThrow(#e, __FILE__, __LINE__)
-#define pgCatch(...) if (false)
+#define ckDefineException(e)
+#define ckTry if (true)
+#define ckThrow(e) ckSubstituteThrow(#e, __FILE__, __LINE__)
+#define ckCatch(...) if (false)
 
 #else
 
 /*!
-    @ingroup pgDef
-    Defines an exception class of Pogolyn.
+    @ingroup ckDef
+    Defines an exception class of Catcake.
     @param[in] e The name of an exception class.
 */
-#define pgDefineException(e) \
-    class e : public pgException \
+#define ckDefineException(e) \
+    class e : public ckException \
     { \
     public: \
-        e(const char* exception, const char* file, u32 line) : pgException(exception, file, line) {} \
+        e(const char* exception, const char* file, u32 line) : ckException(exception, file, line) {} \
     }
 
 
 /*!
-    @ingroup pgDef
+    @ingroup ckDef
     Tries to catch an exception in the following block.
 */
-#define pgTry try
+#define ckTry try
 
 
 /*!
-    @ingroup pgDef
+    @ingroup ckDef
     Throws an exception.
     @param[in] e The name of an exception class.
 */
-#define pgThrow(e) throw e(#e, __FILE__, __LINE__)
+#define ckThrow(e) throw e(#e, __FILE__, __LINE__)
 
 
 /*!
-    @ingroup pgDef
+    @ingroup ckDef
     Catches the specified exception.
     @param[in] ... The name of an exception class.
 */
-#define pgCatch(...) catch (__VA_ARGS__)
+#define ckCatch(...) catch (__VA_ARGS__)
 
-#endif // PG_NO_THROW_EXCEPTION
+#endif // CK_NO_THROW_EXCEPTION
 
 
-#endif // !PG_DEF_H_
+#endif // !CK_DEF_H_

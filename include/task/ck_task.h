@@ -29,20 +29,20 @@
 */
 
 
-class pgTaskMgr;
+class ckTaskMgr;
 
 
 /*!
-    @ingroup pgTask
+    @ingroup ckTask
     TODO
 */
-class PG_API pgTask
+class CK_API ckTask
 {
-    friend class pgTaskMgr;
+    friend class ckTaskMgr;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
 
     /*!
         TODO
@@ -60,17 +60,17 @@ public:
     TaskOrder getOrder() const;
 
     bool hasParent() const;
-    pgTask* getParentN() const;
+    ckTask* getParentN() const;
 
-    pgTask* getPrevAllN() const;
-    pgTask* getNextAllN() const;
-    pgTask* getPrevSiblingN() const;
-    pgTask* getNextSiblingN() const;
-    pgTask* getLastDescendant() const;
+    ckTask* getPrevAllN() const;
+    ckTask* getNextAllN() const;
+    ckTask* getPrevSiblingN() const;
+    ckTask* getNextSiblingN() const;
+    ckTask* getLastDescendant() const;
 
     bool hasChild() const;
-    pgTask* getFirstChildN() const;
-    pgTask* getLastChildN() const;
+    ckTask* getFirstChildN() const;
+    ckTask* getLastChildN() const;
 
     const char* getName() const;
     u64 getExecuteUsecTime() const;
@@ -79,12 +79,12 @@ public:
     void setActive(bool is_active);
 
     virtual void onUpdate();
-    virtual void onMessage(pgID msg_id, pgMsg<4>& msg);
+    virtual void onMessage(ckID msg_id, ckMsg<4>& msg);
 
 protected:
-    pgTask(TaskOrder order);
-    pgTask(pgTask* parent);
-    virtual ~pgTask();
+    ckTask(TaskOrder order);
+    ckTask(ckTask* parent);
+    virtual ~ckTask();
 
 private:
     enum TaskFlag
@@ -92,13 +92,13 @@ private:
         FLAG_ACTIVE
     };
 
-    pgTask();
-    pgTask(const pgTask&);
-    void operator=(const pgTask&);
+    ckTask();
+    ckTask(const ckTask&);
+    void operator=(const ckTask&);
 
-    pgTree<pgTask> m_tree;
-    pgType<u8, TaskOrder> m_order;
-    pgFlag<u8, TaskFlag> m_flag;
+    ckTree<ckTask> m_tree;
+    ckType<u8, TaskOrder> m_order;
+    ckFlag<u8, TaskFlag> m_flag;
     const char* m_name;
     u64 m_execute_time;
 };

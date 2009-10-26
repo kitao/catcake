@@ -29,17 +29,17 @@
 */
 
 
-#ifndef PG_CDT_ALL_H_
-#define PG_CDT_ALL_H_
+#ifndef CK_CDT_ALL_H_
+#define CK_CDT_ALL_H_
 
 
-#include "pg_math_all.h"
+#include "ck_math_all.h"
 
 /*!
-    @defgroup pgCdt pgCdt -- Collision detection module
+    @defgroup ckCdt ckCdt -- Collision detection module
     Provides the functionality to detect collisions.
 */
-#include "cdt/pg_cdt.h"
+#include "cdt/ck_cdt.h"
 
 
-#endif // !PG_CDT_ALL_H_
+#endif // !CK_CDT_ALL_H_

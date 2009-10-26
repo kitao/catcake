@@ -30,43 +30,43 @@
 
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgNew(type) new(pgMemMgr::mallocForSystem(sizeof(type), 0, __FILE__), NULL) type
+#define ckNew(type) new(ckMemMgr::mallocForSystem(sizeof(type), 0, __FILE__), NULL) type
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgDelete(ptr, type) \
+#define ckDelete(ptr, type) \
     do \
     { \
-        if (!pgMemMgr::isCreated()) \
+        if (!ckMemMgr::isCreated()) \
         { \
             break; \
         } \
     \
         void* ptr_ = ptr; \
     \
-        if (pgMemMgr::getMemoryBlockArraySize(ptr_) > 0) \
+        if (ckMemMgr::getMemoryBlockArraySize(ptr_) > 0) \
         { \
-            pgThrow(pgMemMgr::ExceptionInvalidCall); \
+            ckThrow(ckMemMgr::ExceptionInvalidCall); \
         } \
     \
         reinterpret_cast<type*>(ptr_)->~type(); \
-        pgMemMgr::freeForSystem(ptr_); \
+        ckMemMgr::freeForSystem(ptr_); \
     } \
     while (false)
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgNewArray(var, type, array_size) \
+#define ckNewArray(var, type, array_size) \
     do \
     { \
-        var = reinterpret_cast<type*>(pgMemMgr::mallocForSystem(sizeof(type) * array_size, array_size, __FILE__)); \
+        var = reinterpret_cast<type*>(ckMemMgr::mallocForSystem(sizeof(type) * array_size, array_size, __FILE__)); \
     \
         for (u32 i = 0; i < array_size; i++) \
         { \
@@ -76,23 +76,23 @@
     while (false)
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgDeleteArray(ptr, type) \
+#define ckDeleteArray(ptr, type) \
     do \
     { \
-        if (!pgMemMgr::isCreated()) \
+        if (!ckMemMgr::isCreated()) \
         { \
             break; \
         } \
     \
         void* ptr_ = ptr; \
-        u32 array_size = pgMemMgr::getMemoryBlockArraySize(ptr_); \
+        u32 array_size = ckMemMgr::getMemoryBlockArraySize(ptr_); \
     \
         if (array_size == 0) \
         { \
-            pgThrow(pgMemMgr::ExceptionInvalidCall); \
+            ckThrow(ckMemMgr::ExceptionInvalidCall); \
         } \
     \
         for (u32 i = 0; i < array_size; i++) \
@@ -100,28 +100,28 @@
             reinterpret_cast<type*>(ptr_)[i].~type(); \
         } \
     \
-        pgMemMgr::freeForSystem(ptr_); \
+        ckMemMgr::freeForSystem(ptr_); \
     } \
     while (false)
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgMalloc(size) pgMemMgr::mallocForSystem(size, 0, __FILE__)
+#define ckMalloc(size) ckMemMgr::mallocForSystem(size, 0, __FILE__)
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgRealloc(ptr, size) pgMemMgr::reallocForSystem(ptr, size, 0, __FILE__)
+#define ckRealloc(ptr, size) ckMemMgr::reallocForSystem(ptr, size, 0, __FILE__)
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-#define pgFree(ptr) pgMemMgr::freeForSystem(ptr)
+#define ckFree(ptr) ckMemMgr::freeForSystem(ptr)
 
 
-PG_API void* operator new(size_t, void* ptr, pgException*);
-PG_API void operator delete(void*, void*, pgException*);
+CK_API void* operator new(size_t, void* ptr, ckException*);
+CK_API void operator delete(void*, void*, ckException*);

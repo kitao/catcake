@@ -30,35 +30,35 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgScr
+class CK_API ckScr
 {
-    friend class pgDraw;
-    friend class pgDrawMgr;
+    friend class ckDraw;
+    friend class ckDrawMgr;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
 
     static const u32 DEFAULT_FOCUS_DIST = 1000;
     static const u32 DEFAULT_NEAR_CLIP_DIST = 10;
     static const u32 DEFAULT_FAR_CLIP_DIST = 100000;
     static const u32 GUEST_SCREEN_NUM = 4;
 
-    pgScr* getPrevN() const;
-    pgScr* getNextN() const;
+    ckScr* getPrevN() const;
+    ckScr* getNextN() const;
 
     void moveFirst();
     void moveLast();
-    void moveBefore(pgID id);
-    void moveAfter(pgID id);
+    void moveBefore(ckID id);
+    void moveAfter(ckID id);
 
-    pgDraw* getFirstDrawN();
-    pgDraw* getLastDrawN();
+    ckDraw* getFirstDrawN();
+    ckDraw* getLastDrawN();
 
-    pgID getID() const;
+    ckID getID() const;
 
     s16 getLeftInFramebuffer() const;
     s16 getTopInFramebuffer() const;
@@ -77,8 +77,8 @@ public:
     bool isClearDepth() const;
     void setClearMode(bool is_clear_color, bool is_clear_depth);
 
-    pgCol getClearColor() const;
-    void setClearColor(pgCol col);
+    ckCol getClearColor() const;
+    void setClearColor(ckCol col);
 
     bool isPerspective() const;
     void setPerspective(bool is_perspective);
@@ -90,31 +90,31 @@ public:
     r32 getFarClipDist() const;
     void setClipDist(r32 near, r32 far);
 
-    pgMat& view();
+    ckMat& view();
 
     bool hasScreenTexture() const;
-    pgID getScreenTextureID() const;
-    void attachScreenTexture(pgTex::TexFormat format);
+    ckID getScreenTextureID() const;
+    void attachScreenTexture(ckTex::TexFormat format);
     void detachScreenTexture();
     void updateScreenTexture(bool is_frame_skip_reset);
 
-    pgID getGuestScreenID(u8 index) const;
-    void setGuestScreenID(u8 index, pgID scr_id);
+    ckID getGuestScreenID(u8 index) const;
+    void setGuestScreenID(u8 index, ckID scr_id);
 
     r32 screenXToFramebufferX(r32 x_in_screen) const;
     r32 screenYToFramebufferY(r32 y_in_screen) const;
     r32 framebufferXToScreenX(r32 x_in_framebuffer) const;
     r32 framebufferYToScreenY(r32 y_in_framebuffer) const;
 
-    pgVec worldToScreen(const pgVec& pos_in_world);
-    pgVec worldToFramebuffer(const pgVec& pos_in_world);
-    pgVec screenToPlane(r32 x_in_screen, r32 y_in_screen, const pgMat& xy_plane) const;
-    pgVec framebufferToPlane(r32 x_in_framebuffer, r32 y_in_framebuffer, const pgMat& xy_plane) const;
+    ckVec worldToScreen(const ckVec& pos_in_world);
+    ckVec worldToFramebuffer(const ckVec& pos_in_world);
+    ckVec screenToPlane(r32 x_in_screen, r32 y_in_screen, const ckMat& xy_plane) const;
+    ckVec framebufferToPlane(r32 x_in_framebuffer, r32 y_in_framebuffer, const ckMat& xy_plane) const;
 
-    bool isInScreen(const pgVec& pos_in_world);
-    bool canBoundClip(const pgMat& world, const pgVec& bound_max, const pgVec& bound_min);
+    bool isInScreen(const ckVec& pos_in_world);
+    bool canBoundClip(const ckMat& world, const ckVec& bound_max, const ckVec& bound_min);
 
-    pgVec calcVisibleVector(const pgVec& pos1, const pgVec& pos2);
+    ckVec calcVisibleVector(const ckVec& pos1, const ckVec& pos2);
 
 private:
     enum ScrFlag
@@ -126,32 +126,32 @@ private:
         FLAG_COPY_SCREEN
     };
 
-    pgScr(pgID scr_id);
-    ~pgScr();
-    void operator=(const pgScr&);
+    ckScr(ckID scr_id);
+    ~ckScr();
+    void operator=(const ckScr&);
 
     void calcProjection();
     void setupProjection();
-    pgVec worldToClip_noCalcProjection(const pgVec& pos_in_world) const;
-    bool canBoundClip_noCalcProjection(const pgMat& world, const pgVec& bound_max, const pgVec& bound_min) const;
+    ckVec worldToClip_noCalcProjection(const ckVec& pos_in_world) const;
+    bool canBoundClip_noCalcProjection(const ckMat& world, const ckVec& bound_max, const ckVec& bound_min) const;
     void copyScreenTexture();
 
-    pgFlag<u8, ScrFlag> m_flag;
-    pgID m_id;
+    ckFlag<u8, ScrFlag> m_flag;
+    ckID m_id;
     s16 m_left_in_framebuffer;
     s16 m_top_in_framebuffer;
     u16 m_width_in_framebuffer;
     u16 m_height_in_framebuffer;
     r32 m_view_width;
     r32 m_view_height;
-    pgCol m_clear_col;
+    ckCol m_clear_col;
     r32 m_focus_dist;
     r32 m_near_clip_dist;
     r32 m_far_clip_dist;
-    pgMat m_view;
-    pgDraw m_root_draw;
-    pgTex* m_scr_tex;
-    pgID m_guest_id[GUEST_SCREEN_NUM];
+    ckMat m_view;
+    ckDraw m_root_draw;
+    ckTex* m_scr_tex;
+    ckID m_guest_id[GUEST_SCREEN_NUM];
     r32 m_view_to_clip[16];
     r32 m_world_to_view[16];
     r32 m_world_to_clip[16];

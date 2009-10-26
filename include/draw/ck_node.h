@@ -30,17 +30,17 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgNode : public pgDraw
+class CK_API ckNode : public ckDraw
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidArgument);
 
-    pgNode();
-    virtual ~pgNode();
+    ckNode();
+    virtual ~ckNode();
 
-    void init(pgID scr_id);
-    void init(pgDraw* parent);
+    void init(ckID scr_id);
+    void init(ckDraw* parent);
 };

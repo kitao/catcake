@@ -29,18 +29,18 @@
 */
 
 
-#ifndef PG_MEM_ALL_H_
-#define PG_MEM_ALL_H_
+#ifndef CK_MEM_ALL_H_
+#define CK_MEM_ALL_H_
 
 
-#include "pg_def.h"
+#include "ck_def.h"
 
 /*!
-    @defgroup pgMem pgMem -- Memory management module
+    @defgroup ckMem ckMem -- Memory management module
     Provides the functionality to handle memory.
 */
-#include "mem/pg_mem_mgr.h"
-#include "mem/pg_mem_util.h"
+#include "mem/ck_mem_mgr.h"
+#include "mem/ck_mem_util.h"
 
 
-#endif // !PG_MEM_ALL_H_
+#endif // !CK_MEM_ALL_H_

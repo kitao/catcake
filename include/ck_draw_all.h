@@ -29,37 +29,37 @@
 */
 
 
-#ifndef PG_DRAW_ALL_H_
-#define PG_DRAW_ALL_H_
+#ifndef CK_DRAW_ALL_H_
+#define CK_DRAW_ALL_H_
 
 
-#include "pg_math_all.h"
-#include "pg_gen_all.h"
+#include "ck_math_all.h"
+#include "ck_gen_all.h"
 
 /*!
-    @defgroup pgDraw pgDraw -- Graphics module
+    @defgroup ckDraw ckDraw -- Graphics module
     Provides the functionality to draw graphics.
 */
-#include "draw/pg_col.h"
-#include "draw/pg_tex.h"
-#include "draw/pg_font.h"
-#include "draw/pg_shd.h"
-#include "draw/pg_lit.h"
-#include "draw/pg_lts.h"
-#include "draw/pg_rend.h"
-#include "draw/pg_draw.h"
-#include "draw/pg_node.h"
-#include "draw/pg_prim.h"
-#include "draw/pg_sprt.h"
-#include "draw/pg_mdl_data.h"
-#include "draw/pg_mdl.h"
-#include "draw/pg_mot_data.h"
-#include "draw/pg_mot.h"
-#include "draw/pg_scr.h"
-#include "draw/pg_draw_mgr.h"
+#include "draw/ck_col.h"
+#include "draw/ck_tex.h"
+#include "draw/ck_font.h"
+#include "draw/ck_shd.h"
+#include "draw/ck_lit.h"
+#include "draw/ck_lts.h"
+#include "draw/ck_rend.h"
+#include "draw/ck_draw.h"
+#include "draw/ck_node.h"
+#include "draw/ck_prim.h"
+#include "draw/ck_sprt.h"
+#include "draw/ck_mdl_data.h"
+#include "draw/ck_mdl.h"
+#include "draw/ck_mot_data.h"
+#include "draw/ck_mot.h"
+#include "draw/ck_scr.h"
+#include "draw/ck_draw_mgr.h"
 
-#include "draw/rend/pg_rend_shader.h"
-#include "draw/rend/pg_rend_light.h"
+#include "draw/rend/ck_rend_shader.h"
+#include "draw/rend/ck_rend_light.h"
 
 
-#endif // !PG_DRAW_ALL_H_
+#endif // !CK_DRAW_ALL_H_

@@ -30,37 +30,37 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     An enum type with specified size.
     @tparam D The data type to store a value of the enum type.
     @tparam T The enum type stored in the data type.
 */
-template<class D, class T> class pgType
+template<class D, class T> class ckType
 {
 public:
     /*!
-        Constructs and initializes a pgType to zero.
+        Constructs and initializes a ckType to zero.
     */
-    pgType()
+    ckType()
     {
         m_type = 0;
     }
 
     /*!
-        Constructs and initializes a pgType from the specified type.
+        Constructs and initializes a ckType from the specified type.
         @param[in] type A type.
     */
-    pgType(T type)
+    ckType(T type)
     {
         m_type = static_cast<D>(type);
     }
 
     /*!
-        Assigns the right hand side type to this pgType.
+        Assigns the right hand side type to this ckType.
         @param[in] type The right hand side type.
-        @return A reference to this pgType.
+        @return A reference to this ckType.
     */
-    pgType<D, T>& operator=(T type)
+    ckType<D, T>& operator=(T type)
     {
         m_type = static_cast<D>(type);
 
@@ -68,19 +68,19 @@ public:
     }
 
     /*!
-        Returns whether this pgType is equal to the right hand side pgType.
-        @param[in] type The right hand side pgType.
-        @return Whether this pgType is equal to the right hand side pgType.
+        Returns whether this ckType is equal to the right hand side ckType.
+        @param[in] type The right hand side ckType.
+        @return Whether this ckType is equal to the right hand side ckType.
     */
-    bool operator==(pgType<D, T> type) const
+    bool operator==(ckType<D, T> type) const
     {
         return (getType() == type.getType());
     }
 
     /*!
-        Returns whether this pgType is equal to the right hand side type.
+        Returns whether this ckType is equal to the right hand side type.
         @param[in] type The right hand side type.
-        @return Whether this pgType is equal to the right hand side type.
+        @return Whether this ckType is equal to the right hand side type.
     */
     bool operator==(T type) const
     {
@@ -88,30 +88,30 @@ public:
     }
 
     /*!
-        Returns whether the left hand side type is equal to the right hand side pgType.
+        Returns whether the left hand side type is equal to the right hand side ckType.
         @param[in] type1 The left hand side type.
-        @param[in] type2 The right hand side pgType.
-        @return Whether the left hand side type is equal to the right hand side pgType.
+        @param[in] type2 The right hand side ckType.
+        @return Whether the left hand side type is equal to the right hand side ckType.
     */
-    friend bool operator==(T type1, pgType<D, T> type2)
+    friend bool operator==(T type1, ckType<D, T> type2)
     {
         return (type1 == type2.getType());
     }
 
     /*!
-        Returns whether this pgType is unequal to the right hand side pgType.
-        @param[in] type The right hand side pgType.
-        @return Whether this pgType is unequal to the right hand side pgType.
+        Returns whether this ckType is unequal to the right hand side ckType.
+        @param[in] type The right hand side ckType.
+        @return Whether this ckType is unequal to the right hand side ckType.
     */
-    bool operator!=(pgType<D, T> type) const
+    bool operator!=(ckType<D, T> type) const
     {
         return (getType() != type.getType());
     }
 
     /*!
-        Returns whether this pgType is unequal to the right hand side type.
+        Returns whether this ckType is unequal to the right hand side type.
         @param[in] type The right hand side type.
-        @return Whether this pgType is unequal to the right hand side type.
+        @return Whether this ckType is unequal to the right hand side type.
     */
     bool operator!=(T type) const
     {
@@ -119,19 +119,19 @@ public:
     }
 
     /*!
-        Returns whether the left hand side type is unequal to the right hand side pgType.
+        Returns whether the left hand side type is unequal to the right hand side ckType.
         @param[in] type1 The left hand side type.
-        @param[in] type2 The right hand side pgType.
-        @return Whether the left hand side type is unequal to the right hand side pgType.
+        @param[in] type2 The right hand side ckType.
+        @return Whether the left hand side type is unequal to the right hand side ckType.
     */
-    friend bool operator!=(T type1, pgType<D, T> type2)
+    friend bool operator!=(T type1, ckType<D, T> type2)
     {
         return (type1 != type2.getType());
     }
 
     /*!
-        Returns the value of this pgType as the enum type.
-        @return The value of this pgType as the enum type.
+        Returns the value of this ckType as the enum type.
+        @return The value of this ckType as the enum type.
     */
     T getType() const
     {
@@ -139,8 +139,8 @@ public:
     }
 
     /*!
-        Returns the value of this pgType as the data type.
-        @return The value of this pgType as the data type.
+        Returns the value of this ckType as the data type.
+        @return The value of this ckType as the data type.
     */
     D getValue() const
     {
@@ -152,27 +152,27 @@ private:
 };
 
 
-template<class D> class pgType<D, bool>
+template<class D> class ckType<D, bool>
 {
 public:
-    pgType()
+    ckType()
     {
         m_type = 0;
     }
 
-    pgType(bool type)
+    ckType(bool type)
     {
         m_type = static_cast<D>(type);
     }
 
-    pgType<D, bool>& operator=(bool type)
+    ckType<D, bool>& operator=(bool type)
     {
         m_type = static_cast<D>(type);
 
         return *this;
     }
 
-    bool operator==(pgType<D, bool> type) const
+    bool operator==(ckType<D, bool> type) const
     {
         return (getType() == type.getType());
     }
@@ -182,12 +182,12 @@ public:
         return (getType() == type);
     }
 
-    friend bool operator==(bool type1, pgType<D, bool> type2)
+    friend bool operator==(bool type1, ckType<D, bool> type2)
     {
         return (type1 == type2.getType());
     }
 
-    bool operator!=(pgType<D, bool> type) const
+    bool operator!=(ckType<D, bool> type) const
     {
         return (getType() != type.getType());
     }
@@ -197,7 +197,7 @@ public:
         return (getType() != type);
     }
 
-    friend bool operator!=(bool type1, pgType<D, bool> type2)
+    friend bool operator!=(bool type1, ckType<D, bool> type2)
     {
         return (type1 != type2.getType());
     }

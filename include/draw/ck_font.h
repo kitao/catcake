@@ -30,23 +30,23 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgFont
+class CK_API ckFont
 {
 public:
-    pgDefineException(ExceptionDrawStringFailed);
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionDrawStringFailed);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionNotInitialized);
 
-    pgFont();
-    ~pgFont();
+    ckFont();
+    ~ckFont();
 
     void init(u16 width, u16 height);
 
-    pgID getTextureID() const;
+    ckID getTextureID() const;
     u16 getWidth() const;
     u16 getHeight() const;
     const void* getImage() const;
@@ -59,5 +59,5 @@ public:
     u16 drawString(s16 x, s16 y, const wchar_t* str, ...);
 
 private:
-    pgTex* m_tex;
+    ckTex* m_tex;
 };

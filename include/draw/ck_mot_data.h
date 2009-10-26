@@ -30,16 +30,16 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgMotData
+class CK_API ckMotData
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionInvalidData);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionInvalidData);
+    ckDefineException(ExceptionNotInitialized);
 
     static const u32 MOTION_DATA_VERSION = 70; // 0.7.0
 
@@ -49,8 +49,8 @@ public:
         MODE_WRITE
     };
 
-    pgMotData();
-    ~pgMotData();
+    ckMotData();
+    ~ckMotData();
 
     void initAsReader(const void* data, u32 data_size);
     void initAsWriter(u16 node_num, u16 mot_num, u32 key_frame_num);
@@ -68,16 +68,16 @@ public:
     u32 getKeyFramePlayFrame(u32 key_frame_index) const;
     void setKeyFramePlayFrame(u32 key_frame_index, u32 play_frame);
 
-    const pgQuat& getNodeRotate(u16 node_index, u32 key_frame_index) const;
-    const pgVec& getNodeTrans(u16 node_index, u32 key_frame_index) const;
-    void setNodeLocal(u16 node_index, u32 key_frame_index, const pgMat& local);
+    const ckQuat& getNodeRotate(u16 node_index, u32 key_frame_index) const;
+    const ckVec& getNodeTrans(u16 node_index, u32 key_frame_index) const;
+    void setNodeLocal(u16 node_index, u32 key_frame_index, const ckMat& local);
 
-    void registerAsResource(pgID res_id);
+    void registerAsResource(ckID res_id);
 
 private:
     struct MotionDataHeader
     {
-        pgID format_id;
+        ckID format_id;
         u16 format_version;
         u16 node_num;
         u16 mot_num;
@@ -100,15 +100,15 @@ private:
 
     struct NodeInfo
     {
-        pgQuat m_quat;
-        pgVec m_trans;
-        pgVec m_scale;
+        ckQuat m_quat;
+        ckVec m_trans;
+        ckVec m_scale;
     };
 
-    pgMotData(const pgMotData&);
-    void operator=(const pgMotData&);
+    ckMotData(const ckMotData&);
+    void operator=(const ckMotData&);
 
-    pgType<u8, MotionDataMode> m_mode;
+    ckType<u8, MotionDataMode> m_mode;
     u8* m_data;
     u32 m_data_size;
     MotionDataHeader* m_mot_data_header;

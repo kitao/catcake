@@ -30,21 +30,21 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A general purpose message with fixed number parameters.
     @tparam N The number of parameters. This value must be more than zero.
 */
-template<u8 N> class pgMsg
+template<u8 N> class ckMsg
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionInvalidType);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionInvalidType);
 
     /*!
-        Constructs a pgMsg.
+        Constructs a ckMsg.
     */
-    pgMsg()
+    ckMsg()
     {
         for (s32 i = 0; i < N; i++)
         {
@@ -62,17 +62,17 @@ public:
     {
         if (index >= N)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         if (m_param_size[index] == 0)
         {
-            pgThrow(ExceptionInvalidCall);
+            ckThrow(ExceptionInvalidCall);
         }
 
         if (sizeof(T) != m_param_size[index])
         {
-            pgThrow(ExceptionInvalidType);
+            ckThrow(ExceptionInvalidType);
         }
 
         return *reinterpret_cast<T*>(&m_param[index]);
@@ -88,12 +88,12 @@ public:
     {
         if (index >= N)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         if (sizeof(T) > sizeof(MsgParam))
         {
-            pgThrow(ExceptionInvalidType);
+            ckThrow(ExceptionInvalidType);
         }
 
         *reinterpret_cast<T*>(&m_param[index]) = param;
@@ -111,8 +111,8 @@ private:
 };
 
 
-template<> class pgMsg<0>
+template<> class ckMsg<0>
 {
 private:
-    pgMsg() {}
+    ckMsg() {}
 };

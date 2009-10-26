@@ -30,16 +30,16 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgSprt : public pgDraw
+class CK_API ckSprt : public ckDraw
 {
 public:
-    struct PG_API SprtData
+    struct CK_API SprtData
     {
-        pgVec pos;
-        pgCol col;
+        ckVec pos;
+        ckCol col;
         r32 w, h;
         r32 u1, v1, u2, v2;
         s32 ang;
@@ -47,14 +47,14 @@ public:
         SprtData();
     };
 
-    pgSprt();
-    virtual ~pgSprt();
+    ckSprt();
+    virtual ~ckSprt();
 
-    void init(u16 max_data_num, pgID scr_id);
-    void init(u16 max_data_num, pgDraw* parent);
+    void init(u16 max_data_num, ckID scr_id);
+    void init(u16 max_data_num, ckDraw* parent);
 
-    void init(SprtData* sprt_data, u16 max_data_num, pgID scr_id);
-    void init(SprtData* sprt_data, u16 max_data_num, pgDraw* parent);
+    void init(SprtData* sprt_data, u16 max_data_num, ckID scr_id);
+    void init(SprtData* sprt_data, u16 max_data_num, ckDraw* parent);
 
     bool isShareData() const;
 
@@ -62,10 +62,10 @@ public:
     void setCurDataNum(u16 cur_data_num);
     u16 getMaxDataNum() const;
     void reallocData(u16 max_data_num);
-    void copyData(u16 dest_index, const pgSprt* src_sprt, u16 src_index);
+    void copyData(u16 dest_index, const ckSprt* src_sprt, u16 src_index);
 
-    pgVec& dataPos(u16 index);
-    pgCol& dataCol(u16 index);
+    ckVec& dataPos(u16 index);
+    ckCol& dataCol(u16 index);
     r32& dataW(u16 index);
     r32& dataH(u16 index);
     r32& dataU1(u16 index);
@@ -77,13 +77,13 @@ public:
     void setDataUV(u16 index, r32 u1, r32 v1, r32 u2, r32 v2);
 
 private:
-    void init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, pgID scr_id, pgDraw* parent);
+    void init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, ckID scr_id, ckDraw* parent);
 
-    virtual void render(const pgMat& view);
-    void render_soft(const pgMat& view);
-    void render_shader(const pgMat& view);
+    virtual void render(const ckMat& view);
+    void render_soft(const ckMat& view);
+    void render_shader(const ckMat& view);
 
-    pgType<u8, bool> m_is_share_data;
+    ckType<u8, bool> m_is_share_data;
     SprtData* m_sprt_data;
     u16 m_cur_data_num;
     u16 m_max_data_num;

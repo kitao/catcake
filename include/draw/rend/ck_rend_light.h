@@ -30,36 +30,36 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgRend_Light : public pgRend
+class CK_API ckRend_Light : public ckRend
 {
 public:
     struct RendData
     {
-        pgVec normal;
+        ckVec normal;
     };
 
-    void init(pgPrim* prim, pgID lts_id);
-    void init(pgPrim* prim, RendData* rend_data, pgID lts_id);
+    void init(ckPrim* prim, ckID lts_id);
+    void init(ckPrim* prim, RendData* rend_data, ckID lts_id);
 
-    pgID getLightSetID();
-    void setLightSetID(pgID lts_id);
+    ckID getLightSetID();
+    void setLightSetID(ckID lts_id);
 
-    pgVec& dataN(u16 index);
+    ckVec& dataN(u16 index);
 
     void calcNormalAsTriangles(bool is_smoothing);
 
 private:
     struct RendBody
     {
-        pgLts* lts;
+        ckLts* lts;
     };
 
-    virtual pgID getClassID();
+    virtual ckID getClassID();
     virtual void initData(void* data, u16 data_num);
-    virtual void render(const pgMat& view);
-    void render_soft(const pgMat& view);
-    void render_shader(const pgMat& view);
+    virtual void render(const ckMat& view);
+    void render_soft(const ckMat& view);
+    void render_shader(const ckMat& view);
 };

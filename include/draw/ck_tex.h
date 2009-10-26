@@ -29,29 +29,29 @@
 */
 
 
-class pgRend;
-class pgPrim;
-class pgSprt;
-class pgScr;
-class pgDrawMgr;
+class ckRend;
+class ckPrim;
+class ckSprt;
+class ckScr;
+class ckDrawMgr;
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgTex
+class CK_API ckTex
 {
-    friend class pgRend;
-    friend class pgPrim;
-    friend class pgSprt;
-    friend class pgScr;
-    friend class pgDrawMgr;
+    friend class ckRend;
+    friend class ckPrim;
+    friend class ckSprt;
+    friend class ckScr;
+    friend class ckDrawMgr;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionVolatileTextureUploaded);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionVolatileTextureUploaded);
 
     enum TexFormat
     {
@@ -72,10 +72,10 @@ public:
         MODE_VOLATILE
     };
 
-    pgTex* getPrevN() const;
-    pgTex* getNextN() const;
+    ckTex* getPrevN() const;
+    ckTex* getNextN() const;
 
-    pgID getID() const;
+    ckID getID() const;
     u16 getWidth() const;
     u16 getHeight() const;
     TexFormat getFormat() const;
@@ -84,13 +84,13 @@ public:
     u32 getImageSize() const;
 
     void* editImage();
-    void clearImage(pgCol col);
+    void clearImage(ckCol col);
     void resizeImage(u16 width, u16 height);
 
     void setVolatile();
 
-    pgID getProxyTextureID() const;
-    void setProxyTextureID(pgID tex_id);
+    ckID getProxyTextureID() const;
+    void setProxyTextureID(ckID tex_id);
 
 private:
     enum TexFlag
@@ -99,20 +99,20 @@ private:
         FLAG_UV_ADJUST
     };
 
-    pgTex(pgID tex_id, u16 width, u16 height, TexFormat format, TexMode mode, const void* image, u32 image_size);
-    ~pgTex();
-    void operator=(const pgTex&);
+    ckTex(ckID tex_id, u16 width, u16 height, TexFormat format, TexMode mode, const void* image, u32 image_size);
+    ~ckTex();
+    void operator=(const ckTex&);
 
     u32 getTexObj();
     void expandAndRegisterTexture_ptx();
     void expandAndRegisterTexture_png();
 
-    pgID m_id;
+    ckID m_id;
     u16 m_width;
     u16 m_height;
-    pgType<u8, TexFormat> m_format;
-    pgType<u8, TexMode> m_mode;
-    pgFlag<u8, TexFlag> m_flag;
+    ckType<u8, TexFormat> m_format;
+    ckType<u8, TexMode> m_mode;
+    ckFlag<u8, TexFlag> m_flag;
     const void* m_image;
     u32 m_image_size;
     u32 m_tex_obj;
@@ -120,5 +120,5 @@ private:
     r32 m_u_param_b;
     r32 m_v_param_a;
     r32 m_v_param_b;
-    pgTex* m_proxy_tex;
+    ckTex* m_proxy_tex;
 };

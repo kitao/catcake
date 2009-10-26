@@ -30,54 +30,54 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgDrawMgr
+class CK_API ckDrawMgr
 {
-    friend class pgTex;
-    friend class pgFont;
-    friend class pgShd;
-    friend class pgLts;
-    friend class pgScr;
+    friend class ckTex;
+    friend class ckFont;
+    friend class ckShd;
+    friend class ckLts;
+    friend class ckScr;
 
 public:
-    pgDefineException(ExceptionCalcFontDrawWidthFailed);
-    pgDefineException(ExceptionCreateFreeTypeFailed);
-    pgDefineException(ExceptionDestroyFreeTypeFailed);
-    pgDefineException(ExceptionFontFinalizerFailed);
-    pgDefineException(ExceptionFontInitializerFailed);
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionNotFound);
-    pgDefineException(ExceptionNotInitialized);
-    pgDefineException(ExceptionSameIDExists);
-    pgDefineException(ExceptionTextureInitializerFailed);
+    ckDefineException(ExceptionCalcFontDrawWidthFailed);
+    ckDefineException(ExceptionCreateFreeTypeFailed);
+    ckDefineException(ExceptionDestroyFreeTypeFailed);
+    ckDefineException(ExceptionFontFinalizerFailed);
+    ckDefineException(ExceptionFontInitializerFailed);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionNotFound);
+    ckDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionSameIDExists);
+    ckDefineException(ExceptionTextureInitializerFailed);
 
     /*!
         The ID of the invisible screen.
     */
-    static const pgID INVISIBLE_SCREEN_ID;
+    static const ckID INVISIBLE_SCREEN_ID;
 
     /*!
         The ID of the default 3D screen.
     */
-    static const pgID DEFAULT_3D_SCREEN_ID;
+    static const ckID DEFAULT_3D_SCREEN_ID;
 
     /*!
         The ID of the defualt 2D screen.
     */
-    static const pgID DEFAULT_2D_SCREEN_ID;
+    static const ckID DEFAULT_2D_SCREEN_ID;
 
     /*!
         The ID of the default light set.
     */
-    static const pgID DEFAULT_LIGHT_SET_ID;
+    static const ckID DEFAULT_LIGHT_SET_ID;
 
     /*!
         The ID of the default shader.
     */
-    static const pgID DEFAULT_SHADER_ID;
+    static const ckID DEFAULT_SHADER_ID;
 
     /*!
         The maximum rendering interval time [msec].
@@ -104,7 +104,7 @@ public:
     /*!
         TODO
     */
-    static u16 getTexturePixelSize(pgTex::TexFormat format);
+    static u16 getTexturePixelSize(ckTex::TexFormat format);
 
     /*!
         TODO
@@ -135,78 +135,78 @@ public:
     /*!
         TODO
     */
-    static bool hasScreen(pgID scr_id);
+    static bool hasScreen(ckID scr_id);
 
     /*!
         TODO
     */
-    static pgScr* getScreen(pgID scr_id);
+    static ckScr* getScreen(ckID scr_id);
 
     /*!
         TODO
     */
-    static pgScr* newScreen(pgID scr_id);
+    static ckScr* newScreen(ckID scr_id);
 
     /*!
         TODO
     */
-    static void deleteScreen(pgID scr_id);
+    static void deleteScreen(ckID scr_id);
 
     /*!
         TODO
     */
-    static pgScr* getFirstScreenN();
+    static ckScr* getFirstScreenN();
 
     /*!
         TODO
     */
-    static pgScr* getLastScreenN();
+    static ckScr* getLastScreenN();
 
 
     /*!
         TODO
     */
-    static bool hasTexture(pgID tex_id);
+    static bool hasTexture(ckID tex_id);
 
     /*!
         TODO
     */
-    static pgTex* getTexture(pgID tex_id);
+    static ckTex* getTexture(ckID tex_id);
 
     /*!
         TODO
     */
-    static pgTex* newTexture(pgID tex_id, u16 width, u16 height, pgTex::TexFormat format);
+    static ckTex* newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format);
 
     /*!
         TODO
     */
-    static pgTex* newTexture(pgID tex_id, u16 width, u16 height, pgTex::TexFormat format, const void* image, u32 image_size);
+    static ckTex* newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format, const void* image, u32 image_size);
 
     /*!
         TODO
     */
-    static void deleteTexture(pgID tex_id);
+    static void deleteTexture(ckID tex_id);
 
     /*!
         TODO
     */
-    static pgTex* getFirstTextureN();
+    static ckTex* getFirstTextureN();
 
     /*!
         TODO
     */
-    static pgTex* getLastTextureN();
+    static ckTex* getLastTextureN();
 
     /*!
         TODO
     */
-    static u16 getFontIndexNum(pgID font_id);
+    static u16 getFontIndexNum(ckID font_id);
 
     /*!
         TODO
     */
-    static pgID getFontID();
+    static ckID getFontID();
 
     /*!
         TODO
@@ -216,7 +216,7 @@ public:
     /*!
         TODO
     */
-    static void setFont(pgID font_id, u16 font_index);
+    static void setFont(ckID font_id, u16 font_index);
 
     /*!
         TODO
@@ -241,62 +241,62 @@ public:
     /*!
         TODO
     */
-    static bool hasShader(pgID shd_id);
+    static bool hasShader(ckID shd_id);
 
     /*!
         TODO
     */
-    static pgShd* getShader(pgID shd_id);
+    static ckShd* getShader(ckID shd_id);
 
     /*!
         TODO
     */
-    static pgShd* newShader(pgID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num);
+    static ckShd* newShader(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num);
 
     /*!
         TODO
     */
-    static void deleteShader(pgID shd_id);
+    static void deleteShader(ckID shd_id);
 
     /*!
         TODO
     */
-    static pgShd* getFirstShaderN();
+    static ckShd* getFirstShaderN();
 
     /*!
         TODO
     */
-    static pgShd* getLastShaderN();
+    static ckShd* getLastShaderN();
 
     /*!
         TODO
     */
-    static bool hasLightSet(pgID lts_id);
+    static bool hasLightSet(ckID lts_id);
 
     /*!
         TODO
     */
-    static pgLts* getLightSet(pgID lts_id);
+    static ckLts* getLightSet(ckID lts_id);
 
     /*!
         TODO
     */
-    static pgLts* newLightSet(pgID lts_id);
+    static ckLts* newLightSet(ckID lts_id);
 
     /*!
         TODO
     */
-    static void deleteLightSet(pgID lts_id);
+    static void deleteLightSet(ckID lts_id);
 
     /*!
         TODO
     */
-    static pgLts* getFirstLightSetN();
+    static ckLts* getFirstLightSetN();
 
     /*!
         TODO
     */
-    static pgLts* getLastLightSetN();
+    static ckLts* getLastLightSetN();
 
     /*!
         TODO
@@ -315,30 +315,30 @@ private:
     static const u32 LIGHTSET_HASH_SIZE = 10;
     static const u32 FONT_NAME_BUFFER_SIZE = 64;
 
-    pgDrawMgr();
-    ~pgDrawMgr();
-    void operator=(const pgDrawMgr&);
+    ckDrawMgr();
+    ~ckDrawMgr();
+    void operator=(const ckDrawMgr&);
 
-    static pgDrawMgr* instance();
+    static ckDrawMgr* instance();
 
-    static void renderScreen(pgScr* scr, pgDraw** sort_list, const pgMat& view);
-    static void sortList(pgDraw** sorted_start, pgDraw** sorted_end, pgDraw* target_list);
+    static void renderScreen(ckScr* scr, ckDraw** sort_list, const ckMat& view);
+    static void sortList(ckDraw** sorted_start, ckDraw** sorted_end, ckDraw* target_list);
 
-    static void textureInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
-    static void textureFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
+    static void textureInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
+    static void textureFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
 
-    static void fontInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
-    static void fontFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
+    static void fontInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
+    static void fontFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
 
-    pgMap<pgID, pgScr*> m_scr_map;
-    pgMap<pgID, pgTex*> m_tex_map;
-    pgMap<pgID, pgShd*> m_shd_map;
-    pgMap<pgID, pgLts*> m_lts_map;
+    ckMap<ckID, ckScr*> m_scr_map;
+    ckMap<ckID, ckTex*> m_tex_map;
+    ckMap<ckID, ckShd*> m_shd_map;
+    ckMap<ckID, ckLts*> m_lts_map;
     bool m_is_render;
-    pgID m_font_id;
+    ckID m_font_id;
     u16 m_font_index;
     u16 m_font_size;
     void* m_font_info;
 
-    static pgDrawMgr* m_instance;
+    static ckDrawMgr* m_instance;
 };

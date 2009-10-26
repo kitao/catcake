@@ -30,23 +30,23 @@
 
 
 /*!
-    @ingroup pgMem
+    @ingroup ckMem
     TODO
 */
-class PG_API pgMemMgr
+class CK_API ckMemMgr
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionInvalidSizeOfType);
-    pgDefineException(ExceptionInvalidVersionOfHeader);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionInvalidSizeOfType);
+    ckDefineException(ExceptionInvalidVersionOfHeader);
+    ckDefineException(ExceptionNotInitialized);
 
     static void memset(void* buf, u8 value, u32 size);
     static void memcpy(void* dest, const void* src, u32 size);
 
     static bool isCreated();
-    static void createFirst(u32 pogolyn_version = POGOLYN_VERSION);
+    static void createFirst(u32 catcake_version = CATCAKE_VERSION);
     static void destroyLast();
 
     static u32 getCurUsedMemorySize();
@@ -77,11 +77,11 @@ private:
         u32 array_size;
     };
 
-    pgMemMgr();
-    ~pgMemMgr();
-    void operator=(const pgMemMgr&);
+    ckMemMgr();
+    ~ckMemMgr();
+    void operator=(const ckMemMgr&);
 
-    static pgMemMgr* instance();
+    static ckMemMgr* instance();
 
     MemoryBlockHeader m_mbh_start;
     MemoryBlockHeader m_mbh_end;
@@ -90,5 +90,5 @@ private:
     void* m_temp_buf;
     u32 m_temp_buf_size;
 
-    static pgMemMgr* m_instance;
+    static ckMemMgr* m_instance;
 };

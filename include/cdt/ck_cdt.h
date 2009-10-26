@@ -30,47 +30,47 @@
 
 
 /*!
-    @ingroup pgCdt
+    @ingroup ckCdt
     TODO
 */
-class PG_API pgCdt
+class CK_API ckCdt
 {
 public:
     /*!
         TODO
     */
-    class PG_API AABB
+    class CK_API AABB
     {
-        friend class pgCdt;
+        friend class ckCdt;
 
     public:
-        pgDefineException(ExceptionInvalidArgument);
+        ckDefineException(ExceptionInvalidArgument);
 
-        const pgVec& getMin() const;
-        const pgVec& getMax() const;
-        void setBound(const pgVec& min, const pgVec& max);
+        const ckVec& getMin() const;
+        const ckVec& getMax() const;
+        void setBound(const ckVec& min, const ckVec& max);
 
     private:
-        pgVec m_min;
-        pgVec m_max;
+        ckVec m_min;
+        ckVec m_max;
     };
 
     /*!
         TODO
     */
-    class PG_API Sph
+    class CK_API Sph
     {
-        friend class pgCdt;
+        friend class ckCdt;
 
     public:
-        pgDefineException(ExceptionInvalidArgument);
+        ckDefineException(ExceptionInvalidArgument);
 
         Sph();
 
         const AABB& getAABB() const;
 
-        const pgVec& getPos() const;
-        void setPos(const pgVec& pos);
+        const ckVec& getPos() const;
+        void setPos(const ckVec& pos);
 
         r32 getRadius() const;
         void setRadius(r32 radius);
@@ -79,89 +79,89 @@ public:
         void updateAABB();
 
         AABB m_aabb;
-        pgVec m_pos;
+        ckVec m_pos;
         r32 m_radius;
     };
 
     /*!
         TODO
     */
-    class PG_API Box
+    class CK_API Box
     {
-        friend class pgCdt;
+        friend class ckCdt;
 
     public:
-        pgDefineException(ExceptionInvalidArgument);
+        ckDefineException(ExceptionInvalidArgument);
 
         Box();
 
         const AABB& getAABB() const;
 
-        const pgMat& getWorld() const;
-        void setWorld(const pgMat& world);
+        const ckMat& getWorld() const;
+        void setWorld(const ckMat& world);
 
         r32 getWidth() const;
         r32 getHeight() const;
         r32 getDepth() const;
-        const pgVec& getHalfSize() const;
+        const ckVec& getHalfSize() const;
         void setSize(r32 width, r32 height, r32 depth);
 
     private:
         void updateAABB();
 
         AABB m_aabb;
-        pgMat m_world;
-        pgVec m_half_size;
+        ckMat m_world;
+        ckVec m_half_size;
     };
 
     /*!
         TODO
     */
-    class PG_API Tri
+    class CK_API Tri
     {
-        friend class pgCdt;
+        friend class ckCdt;
 
     public:
         Tri();
 
         const AABB& getAABB() const;
 
-        const pgVec& getPos1() const;
-        const pgVec& getPos2() const;
-        const pgVec& getPos3() const;
-        void setPos(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3);
+        const ckVec& getPos1() const;
+        const ckVec& getPos2() const;
+        const ckVec& getPos3() const;
+        void setPos(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3);
 
     private:
         void updateAABB();
 
         AABB m_aabb;
-        pgVec m_pos1;
-        pgVec m_pos2;
-        pgVec m_pos3;
+        ckVec m_pos1;
+        ckVec m_pos2;
+        ckVec m_pos3;
     };
 
     /*!
         TODO
     */
-    class PG_API Ray
+    class CK_API Ray
     {
-        friend class pgCdt;
+        friend class ckCdt;
 
     public:
         Ray();
 
         const AABB& getAABB() const;
 
-        const pgVec& getFrom() const;
-        const pgVec& getTo() const;
-        void setPos(const pgVec& from, const pgVec& to);
+        const ckVec& getFrom() const;
+        const ckVec& getTo() const;
+        void setPos(const ckVec& from, const ckVec& to);
 
     private:
         void updateAABB();
 
         AABB m_aabb;
-        pgVec m_from;
-        pgVec m_to;
+        ckVec m_from;
+        ckVec m_to;
     };
 
     /*!
@@ -169,8 +169,8 @@ public:
     */
     struct CdtInfo
     {
-        pgVec pos;
-        pgVec back_dir;
+        ckVec pos;
+        ckVec back_dir;
         r32 back_dist;
     };
 
@@ -184,11 +184,11 @@ public:
     static bool collide(CdtInfo* cdt_info, const Box& box, const Sph& sph);
     static bool collide(CdtInfo* cdt_info, const Box& box, const Tri& tri);
 
-    static bool intersect(pgVec* pos, const Ray& ray, const Sph& sph);
-    static bool intersect(pgVec* pos, const Ray& ray, const Box& box);
-    static bool intersect(pgVec* pos, const Ray& ray, const Tri& tri);
+    static bool intersect(ckVec* pos, const Ray& ray, const Sph& sph);
+    static bool intersect(ckVec* pos, const Ray& ray, const Box& box);
+    static bool intersect(ckVec* pos, const Ray& ray, const Tri& tri);
 
 private:
-    static bool intersectLocalBox(r32* min_dist, r32* max_dist, const pgVec& local_ray_pos, const pgVec& local_ray_dir, const pgVec& box_half_size);
-    static bool intersectTri(r32* dist, const pgVec& ray_pos, const pgVec& ray_dir, const Tri& tri);
+    static bool intersectLocalBox(r32* min_dist, r32* max_dist, const ckVec& local_ray_pos, const ckVec& local_ray_dir, const ckVec& box_half_size);
+    static bool intersectTri(r32* dist, const ckVec& ray_pos, const ckVec& ray_dir, const Tri& tri);
 };

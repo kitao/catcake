@@ -30,21 +30,21 @@
 
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-class PG_API pgSysMgr
+class CK_API ckSysMgr
 {
 public:
-    pgDefineException(ExceptionCannotCreateMutex);
-    pgDefineException(ExceptionCannotCreateThread);
-    pgDefineException(ExceptionCannotOpenFile);
-    pgDefineException(ExceptionCannotReadFile);
-    pgDefineException(ExceptionCannotWriteFile);
-    pgDefineException(ExceptionCreateFramebufferFailed);
-    pgDefineException(ExceptionEndPogolyn);
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionCannotCreateMutex);
+    ckDefineException(ExceptionCannotCreateThread);
+    ckDefineException(ExceptionCannotOpenFile);
+    ckDefineException(ExceptionCannotReadFile);
+    ckDefineException(ExceptionCannotWriteFile);
+    ckDefineException(ExceptionCreateFramebufferFailed);
+    ckDefineException(ExceptionEndCatcake);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotInitialized);
 
     /*!
         TODO
@@ -116,11 +116,11 @@ public:
     static void setInitialDirectoryForSystem(s32 argc, char** argv);
 
 private:
-    pgSysMgr(const char* title, u16 width, u16 height, u16 sys_flag);
-    ~pgSysMgr();
-    void operator=(const pgSysMgr&);
+    ckSysMgr(const char* title, u16 width, u16 height, u16 sys_flag);
+    ~ckSysMgr();
+    void operator=(const ckSysMgr&);
 
-    static pgSysMgr* instance();
+    static ckSysMgr* instance();
 
-    static pgSysMgr* m_instance;
+    static ckSysMgr* m_instance;
 };

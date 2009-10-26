@@ -29,24 +29,24 @@
 */
 
 
-class pgSndDaemon;
+class ckSndDaemon;
 
 
 /*!
-    @ingroup pgSnd
+    @ingroup ckSnd
     TODO
 */
-class PG_API pgSndMgr
+class CK_API ckSndMgr
 {
-    friend class pgSndDaemon;
+    friend class ckSndDaemon;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionInvalidType);
-    pgDefineException(ExceptionNotFound);
-    pgDefineException(ExceptionNotInitialized);
-    pgDefineException(ExceptionWaveInitializerFailed);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionInvalidType);
+    ckDefineException(ExceptionNotFound);
+    ckDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionWaveInitializerFailed);
 
     static const u32 TRACK_NUM = 4;
 
@@ -75,19 +75,19 @@ public:
     static SampleRate getSoundDeviceSampleRate();
     static u16 getSoundMixBufferMsec();
 
-    static ChannelNum getChannelNum(pgID snd_id);
-    static SampleRate getSampleRate(pgID snd_id);
-    static u32 getSampleNum(pgID snd_id);
+    static ChannelNum getChannelNum(ckID snd_id);
+    static SampleRate getSampleRate(ckID snd_id);
+    static u32 getSampleNum(ckID snd_id);
 
     static u8 getTrackVolume(u8 trk_no);
     static void setTrackVolume(u8 trk_no, u8 trk_vol);
     static void fadeTrackVolume(u8 trk_no, u8 to_trk_vol, r32 delta_per_frame);
 
     static bool isPlaying(u8 trk_no);
-    static void play(u8 trk_no, pgID snd_id, u8 snd_vol, bool is_play_loop, u32 play_pos = 0);
+    static void play(u8 trk_no, ckID snd_id, u8 snd_vol, bool is_play_loop, u32 play_pos = 0);
     static void stop(u8 trk_no);
 
-    static pgID getPlayingSoundID(u8 trk_no);
+    static ckID getPlayingSoundID(u8 trk_no);
     static u8 getPlayingSoundVolume(u8 trk_no);
     static bool isPlayingLoop(u8 trk_no);
     static u32 getPlayingPosition(u8 trk_no);
@@ -102,8 +102,8 @@ private:
 
     struct SoundInfo
     {
-        pgType<u8, ChannelNum> channel_num;
-        pgType<u16, SampleRate> sample_rate;
+        ckType<u8, ChannelNum> channel_num;
+        ckType<u16, SampleRate> sample_rate;
         const void* data;
         u32 data_size;
         u32 sample_num;
@@ -111,9 +111,9 @@ private:
 
     struct TrackInfo
     {
-        pgType<u8, TrackState> trk_state;
+        ckType<u8, TrackState> trk_state;
         r32 trk_vol;
-        pgID snd_id;
+        ckID snd_id;
         u8 snd_vol;
         const SoundInfo* snd_info;
         u32 play_pos;
@@ -122,19 +122,19 @@ private:
         r32 fade_delta_per_frame;
     };
 
-    pgSndMgr();
-    ~pgSndMgr();
-    void operator=(const pgSndMgr&);
+    ckSndMgr();
+    ~ckSndMgr();
+    void operator=(const ckSndMgr&);
 
-    static pgSndMgr* instance();
+    static ckSndMgr* instance();
 
     static bool soundMixFunction(void* snd_mix_buf);
 
-    static void waveInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
-    static void waveFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
+    static void waveInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
+    static void waveFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
 
     TrackInfo m_trk_info[TRACK_NUM];
-    pgSndDaemon* m_snd_daemon;
+    ckSndDaemon* m_snd_daemon;
 
-    static pgSndMgr* m_instance;
+    static ckSndMgr* m_instance;
 };

@@ -29,23 +29,23 @@
 */
 
 
-#ifndef POGOLYN_H_
-#define POGOLYN_H_
+#ifndef CATCAKE_H_
+#define CATCAKE_H_
 
 
-#include "pg_mem_all.h"
-#include "pg_math_all.h"
-#include "pg_gen_all.h"
-#include "pg_cdt_all.h"
-#include "pg_sys_all.h"
-#include "pg_task_all.h"
-#include "pg_key_all.h"
-#include "pg_res_all.h"
-#include "pg_conf_all.h"
-#include "pg_draw_all.h"
-#include "pg_snd_all.h"
-#include "pg_dbg_all.h"
-#include "pg_util_all.h"
+#include "ck_mem_all.h"
+#include "ck_math_all.h"
+#include "ck_gen_all.h"
+#include "ck_cdt_all.h"
+#include "ck_sys_all.h"
+#include "ck_task_all.h"
+#include "ck_key_all.h"
+#include "ck_res_all.h"
+#include "ck_conf_all.h"
+#include "ck_draw_all.h"
+#include "ck_snd_all.h"
+#include "ck_dbg_all.h"
+#include "ck_util_all.h"
 
 
-#endif // !POGOLYN_H_
+#endif // !CATCAKE_H_

@@ -30,80 +30,80 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgLts
+class CK_API ckLts
 {
-    friend class pgDrawMgr;
+    friend class ckDrawMgr;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotFound);
-    pgDefineException(ExceptionSameIDExists);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotFound);
+    ckDefineException(ExceptionSameIDExists);
 
     static const u32 MAX_PARA_LIGHT_NUM = 3;
     static const u32 MAX_NEAR_LIGHT_NUM = 3;
 
-    pgLts* getPrevN() const;
-    pgLts* getNextN() const;
+    ckLts* getPrevN() const;
+    ckLts* getNextN() const;
 
-    pgID getID() const;
+    ckID getID() const;
 
-    pgCol getAmbientColor() const;
-    void setAmbientColor(pgCol col);
+    ckCol getAmbientColor() const;
+    void setAmbientColor(ckCol col);
 
     bool isParaLightActive(u8 index) const;
     void setParaLightActive(u8 index, bool is_active);
 
-    const pgVec& getParaLightDir(u8 index) const;
-    void setParaLightDir(u8 index, const pgVec& dir);
+    const ckVec& getParaLightDir(u8 index) const;
+    void setParaLightDir(u8 index, const ckVec& dir);
 
-    pgCol getParaLightColor(u8 index) const;
-    void setParaLightColor(u8 index, pgCol col);
+    ckCol getParaLightColor(u8 index) const;
+    void setParaLightColor(u8 index, ckCol col);
 
     u32 getPointLightNum() const;
-    pgLit* getPointLight(pgID lit_id);
-    pgLit* newPointLight(pgID lit_id);
-    void deletePointLight(pgID lit_id);
-    pgLit* getFirstPointLightN() const;
-    pgLit* getLastPointLightN() const;
+    ckLit* getPointLight(ckID lit_id);
+    ckLit* newPointLight(ckID lit_id);
+    void deletePointLight(ckID lit_id);
+    ckLit* getFirstPointLightN() const;
+    ckLit* getLastPointLightN() const;
     void clearPointLight();
 
-    void findNearLight(const pgVec& pos);
+    void findNearLight(const ckVec& pos);
     u8 getNearLightNum() const;
-    const pgVec& getNearLightDir(u8 index) const;
-    pgCol getNearLightColor(u8 index) const;
+    const ckVec& getNearLightDir(u8 index) const;
+    ckCol getNearLightColor(u8 index) const;
 
 private:
     struct ParaLight
     {
-        pgType<u8, bool> is_active;
-        pgVec dir;
-        pgCol col;
+        ckType<u8, bool> is_active;
+        ckVec dir;
+        ckCol col;
         u16 col_int;
     };
 
     struct NearLight
     {
-        pgVec dir;
-        pgCol col;
+        ckVec dir;
+        ckCol col;
         u16 col_int;
     };
 
-    pgLts(pgID lts_id);
-    ~pgLts();
-    void operator=(const pgLts&);
+    ckLts(ckID lts_id);
+    ~ckLts();
+    void operator=(const ckLts&);
 
-    pgLit* getPointLightN(pgID lit_id);
+    ckLit* getPointLightN(ckID lit_id);
 
-    void addLightToNearLight(const pgVec& dir, pgCol col, u16 col_int);
+    void addLightToNearLight(const ckVec& dir, ckCol col, u16 col_int);
 
-    pgID m_id;
-    pgCol m_amb_col;
+    ckID m_id;
+    ckCol m_amb_col;
     ParaLight m_para_lit[MAX_PARA_LIGHT_NUM];
     u8 m_near_lit_num;
     u8 m_near_lit_index_tbl[MAX_NEAR_LIGHT_NUM];
     NearLight m_near_lit[MAX_NEAR_LIGHT_NUM];
-    pgList<pgLit> m_lit_list;
+    ckList<ckLit> m_lit_list;
 };

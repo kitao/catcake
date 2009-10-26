@@ -29,21 +29,21 @@
 */
 
 
-class pgResMgr;
+class ckResMgr;
 
 
 /*!
-    @ingroup pgRes
+    @ingroup ckRes
     TODO
 */
-class PG_API pgRes
+class CK_API ckRes
 {
-    friend class pgResMgr;
+    friend class ckResMgr;
 
 public:
-    pgRes();
-    pgID getID() const;
-    pgStr<char, 3> getExtension() const;
+    ckRes();
+    ckID getID() const;
+    ckStr<char, 3> getExtension() const;
 
     template<class T> const T* getData() const
     {
@@ -60,12 +60,12 @@ public:
     bool isAutoFree() const;
 
 private:
-    void init(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo, bool is_auto_free);
+    void init(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo, bool is_auto_free);
 
-    static pgStr<char, 3> toUppercase(pgStr<char, 3> str);
+    static ckStr<char, 3> toUppercase(ckStr<char, 3> str);
 
-    pgID m_id;
-    pgStr<char, 3> m_ext;
+    ckID m_id;
+    ckStr<char, 3> m_ext;
     const void* m_data;
     u32 m_data_size;
     void* m_exinfo;

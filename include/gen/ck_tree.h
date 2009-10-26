@@ -30,21 +30,21 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A tree container which can have a parent and children.
-    @tparam T The type which is stored in the pgTree.
+    @tparam T The type which is stored in the ckTree.
 */
-template<class T> class pgTree
+template<class T> class ckTree
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionNotInitialized);
 
     /*!
-        Constructs a pgTree.
+        Constructs a ckTree.
     */
-    pgTree()
+    ckTree()
     {
         m_self = NULL;
         m_parent = NULL;
@@ -53,16 +53,16 @@ public:
     }
 
     /*!
-        Destructs this pgTree.
+        Destructs this ckTree.
     */
-    ~pgTree()
+    ~ckTree()
     {
         leave();
         clear();
     }
 
     /*!
-        Initializes this pgTree to have the specified value.
+        Initializes this ckTree to have the specified value.
         This method can be called more than once.
         @param[in] self The pointer to a value.
     */
@@ -70,29 +70,29 @@ public:
     {
         if (!self)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         m_self = self;
     }
 
     /*!
-        Returns the value of this pgTree.
-        @return The value of this pgTree.
+        Returns the value of this ckTree.
+        @return The value of this ckTree.
     */
     T* getSelf() const
     {
         if (!m_self)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         return m_self;
     }
 
     /*!
-        Returns whether this pgTree has a parent pgTree.
-        @return Whether this pgTree has a parent pgTree.
+        Returns whether this ckTree has a parent ckTree.
+        @return Whether this ckTree has a parent ckTree.
     */
     bool hasParent() const
     {
@@ -100,52 +100,52 @@ public:
     }
 
     /*!
-        Returns the parent pgTree of this pgTree.
-        If this pgTree has no parent pgTree, returns NULL.
-        @return The parent pgTree of this pgTree.
+        Returns the parent ckTree of this ckTree.
+        If this ckTree has no parent ckTree, returns NULL.
+        @return The parent ckTree of this ckTree.
     */
-    pgTree<T>* getParentN() const
+    ckTree<T>* getParentN() const
     {
         return m_parent;
     }
 
     /*!
-        Returns the previous pgTree of this pgTree.
-        If this pgTree has no previous pgTree, returns NULL.
+        Returns the previous ckTree of this ckTree.
+        If this ckTree has no previous ckTree, returns NULL.
         This method is used to follow the whole tree as list structure.
-        @return The previous pgTree of this pgTree.
+        @return The previous ckTree of this ckTree.
     */
-    pgTree<T>* getPrevAllN() const
+    ckTree<T>* getPrevAllN() const
     {
         return m_prev;
     }
 
     /*!
-        Returns the next pgTree of this pgTree.
-        If this pgTree has no next pgTree, returns NULL.
+        Returns the next ckTree of this ckTree.
+        If this ckTree has no next ckTree, returns NULL.
         This method is used to follow the whole tree as list structure.
-        @return The next pgTree of this pgTree.
+        @return The next ckTree of this ckTree.
     */
-    pgTree<T>* getNextAllN() const
+    ckTree<T>* getNextAllN() const
     {
         return m_next;
     }
 
     /*!
-        Returns the previous sibling pgTree of this pgTree.
-        If this pgTree has no previous sibling pgTree, returns NULL.
-        @return The previous sibling pgTree of this pgTree.
+        Returns the previous sibling ckTree of this ckTree.
+        If this ckTree has no previous sibling ckTree, returns NULL.
+        @return The previous sibling ckTree of this ckTree.
     */
-    pgTree<T>* getPrevSiblingN() const
+    ckTree<T>* getPrevSiblingN() const
     {
         if (!hasParent())
         {
-            pgThrow(ExceptionInvalidCall);
+            ckThrow(ExceptionInvalidCall);
         }
 
         if (m_prev != m_parent)
         {
-            pgTree<T>* prev = m_prev;
+            ckTree<T>* prev = m_prev;
 
             while (prev->m_parent != m_parent)
             {
@@ -161,45 +161,45 @@ public:
     }
 
     /*!
-        Returns the next sibling pgTree of this pgTree.
-        If this pgTree has no next sibling pgTree, returns NULL.
-        @return The next sibling pgTree of this pgTree.
+        Returns the next sibling ckTree of this ckTree.
+        If this ckTree has no next sibling ckTree, returns NULL.
+        @return The next sibling ckTree of this ckTree.
     */
-    pgTree<T>* getNextSiblingN() const
+    ckTree<T>* getNextSiblingN() const
     {
         if (!hasParent())
         {
-            pgThrow(ExceptionInvalidCall);
+            ckThrow(ExceptionInvalidCall);
         }
 
-        pgTree<T>* desc = getLastDescendant();
-        pgTree<T>* next = desc->m_next;
+        ckTree<T>* desc = getLastDescendant();
+        ckTree<T>* next = desc->m_next;
 
         return (next && next->m_parent == m_parent) ? next : NULL;
     }
 
     /*!
-        Insertes this pgTree before the specified pgTree.
-        @param[in] tree A pgTree.
+        Insertes this ckTree before the specified ckTree.
+        @param[in] tree A ckTree.
     */
-    void joinBefore(pgTree<T>* tree)
+    void joinBefore(ckTree<T>* tree)
     {
         if (!tree || tree == this || !tree->hasParent())
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
-        for (pgTree<T>* parent = tree->m_parent; parent; parent = parent->m_parent)
+        for (ckTree<T>* parent = tree->m_parent; parent; parent = parent->m_parent)
         {
             if (parent == this)
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
         }
 
         leave();
 
-        pgTree<T>* desc = getLastDescendant();
+        ckTree<T>* desc = getLastDescendant();
 
         m_parent = tree->m_parent;
         m_prev = tree->m_prev;
@@ -210,28 +210,28 @@ public:
     }
 
     /*!
-        Insertes this pgTree after the specified pgTree.
-        @param[in] tree A pgTree.
+        Insertes this ckTree after the specified ckTree.
+        @param[in] tree A ckTree.
     */
-    void joinAfter(pgTree<T>* tree)
+    void joinAfter(ckTree<T>* tree)
     {
         if (!tree || tree == this || !tree->hasParent())
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
-        for (pgTree<T>* parent = tree->m_parent; parent; parent = parent->m_parent)
+        for (ckTree<T>* parent = tree->m_parent; parent; parent = parent->m_parent)
         {
             if (parent == this)
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
         }
 
         leave();
 
-        pgTree<T>* tree_desc = tree->getLastDescendant();
-        pgTree<T>* this_desc = getLastDescendant();
+        ckTree<T>* tree_desc = tree->getLastDescendant();
+        ckTree<T>* this_desc = getLastDescendant();
 
         m_parent = tree->m_parent;
         m_prev = tree_desc;
@@ -251,13 +251,13 @@ public:
     }
 
     /*!
-        Removes this pgTree from the parent pgTree.
+        Removes this ckTree from the parent ckTree.
     */
     void leave()
     {
         if (hasParent())
         {
-            pgTree<T>* desc = getLastDescendant();
+            ckTree<T>* desc = getLastDescendant();
 
             if (m_parent->m_last_child == this)
             {
@@ -277,8 +277,8 @@ public:
     }
 
     /*!
-        Returns Whether this pgTree has any child pgTree.
-        @return Whether this pgTree has any child pgTree.
+        Returns Whether this ckTree has any child ckTree.
+        @return Whether this ckTree has any child ckTree.
     */
     bool hasChild() const
     {
@@ -286,33 +286,33 @@ public:
     }
 
     /*!
-        Returns the first child pgTree of this pgTree.
-        If this pgTree has no child pgTree, returns NULL.
-        @return The first child pgTree of this pgTree.
+        Returns the first child ckTree of this ckTree.
+        If this ckTree has no child ckTree, returns NULL.
+        @return The first child ckTree of this ckTree.
     */
-    pgTree<T>* getFirstChildN() const
+    ckTree<T>* getFirstChildN() const
     {
         return hasChild() ? m_next : NULL;
     }
 
     /*!
-        Returns the last child pgTree of this pgTree.
-        If this pgTree has no child pgTree, returns NULL.
-        @return The last child pgTree of this pgTree.
+        Returns the last child ckTree of this ckTree.
+        If this ckTree has no child ckTree, returns NULL.
+        @return The last child ckTree of this ckTree.
     */
-    pgTree<T>* getLastChildN() const
+    ckTree<T>* getLastChildN() const
     {
         return m_last_child;
     }
 
     /*!
-        Returns the last descendant of this pgTree.
-        If this pgTree has no child, returns itself.
-        @return The last descendant of this pgTree.
+        Returns the last descendant of this ckTree.
+        If this ckTree has no child, returns itself.
+        @return The last descendant of this ckTree.
     */
-    pgTree<T>* getLastDescendant() const
+    ckTree<T>* getLastDescendant() const
     {
-        pgTree<T>* desc = const_cast<pgTree<T>*>(this);
+        ckTree<T>* desc = const_cast<ckTree<T>*>(this);
 
         while (desc->m_last_child)
         {
@@ -323,27 +323,27 @@ public:
     }
 
     /*!
-        Adds the specified pgTree to this pgTree as the first child pgTree.
-        @param[in] child A pgTree.
+        Adds the specified ckTree to this ckTree as the first child ckTree.
+        @param[in] child A ckTree.
     */
-    void addFirst(pgTree<T>* child)
+    void addFirst(ckTree<T>* child)
     {
         if (!child || child == this)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
-        for (pgTree<T>* parent = m_parent; parent; parent = parent->m_parent)
+        for (ckTree<T>* parent = m_parent; parent; parent = parent->m_parent)
         {
             if (parent == child)
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
         }
 
         child->leave();
 
-        pgTree<T>* child_desc = child->getLastDescendant();
+        ckTree<T>* child_desc = child->getLastDescendant();
 
         child->m_parent = this;
         child->m_prev = this;
@@ -363,28 +363,28 @@ public:
     }
 
     /*!
-        Adds the specified pgTree to this pgTree as the last child pgTree.
-        @param[in] child A pgTree.
+        Adds the specified ckTree to this ckTree as the last child ckTree.
+        @param[in] child A ckTree.
     */
-    void addLast(pgTree<T>* child)
+    void addLast(ckTree<T>* child)
     {
         if (!child || child == this)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
-        for (pgTree<T>* parent = m_parent; parent; parent = parent->m_parent)
+        for (ckTree<T>* parent = m_parent; parent; parent = parent->m_parent)
         {
             if (parent == child)
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
         }
 
         child->leave();
 
-        pgTree<T>* this_desc = getLastDescendant();
-        pgTree<T>* child_desc = child->getLastDescendant();
+        ckTree<T>* this_desc = getLastDescendant();
+        ckTree<T>* child_desc = child->getLastDescendant();
 
         child->m_parent = this;
         child->m_prev = this_desc;
@@ -401,7 +401,7 @@ public:
     }
 
     /*!
-        Removes all child pgTrees from this pgTree.
+        Removes all child ckTrees from this ckTree.
     */
     void clear()
     {
@@ -412,12 +412,12 @@ public:
     }
 
 private:
-    pgTree(const pgTree<T>&) {}
-    void operator=(const pgTree<T>&) {}
+    ckTree(const ckTree<T>&) {}
+    void operator=(const ckTree<T>&) {}
 
     T* m_self;
-    pgTree<T>* m_parent;
-    pgTree<T>* m_last_child;
-    pgTree<T>* m_prev;
-    pgTree<T>* m_next;
+    ckTree<T>* m_parent;
+    ckTree<T>* m_last_child;
+    ckTree<T>* m_prev;
+    ckTree<T>* m_next;
 };

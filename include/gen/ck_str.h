@@ -30,68 +30,68 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A string with fixed length.
-    @tparam T The type of the elements of pgStr. Typically, either char or wchar_t is used.
-    @tparam N The length of pgStr. This value must be more than zero.
+    @tparam T The type of the elements of ckStr. Typically, either char or wchar_t is used.
+    @tparam N The length of ckStr. This value must be more than zero.
 */
-template<class T, u8 N> class pgStr
+template<class T, u8 N> class ckStr
 {
 public:
-    pgDefineException(ExceptionOutOfRange);
+    ckDefineException(ExceptionOutOfRange);
 
     /*!
-        Constructs and initializes a pgStr whose length is zero.
+        Constructs and initializes a ckStr whose length is zero.
     */
-    pgStr()
+    ckStr()
     {
         m_str[0] = 0;
         m_length = 0;
     }
 
     /*!
-        Constructs and initializes a pgStr from the specified character.
+        Constructs and initializes a ckStr from the specified character.
         @param[in] ch A character.
     */
-    pgStr(T ch)
+    ckStr(T ch)
     {
         *this = ch;
     }
 
     /*!
-        Constructs and initializes a pgStr from the specified string.
+        Constructs and initializes a ckStr from the specified string.
         @param[in] str A string. NULL is allowed.
     */
-    pgStr(const T* str)
+    ckStr(const T* str)
     {
         *this = str;
     }
 
     /*!
-        Constructs and initializes a pgStr from the specified pgStr.
-        @param[in] str A pgStr.
+        Constructs and initializes a ckStr from the specified ckStr.
+        @param[in] str A ckStr.
     */
-    pgStr(const pgStr<T, N>& str)
+    ckStr(const ckStr<T, N>& str)
     {
         *this = str;
     }
 
     /*!
-        Constructs and initializes a pgStr from the specified pgStr with different length.
-        @tparam N2 The length of a pgStr.
-        @param[in] str A pgStr with different length.
+        Constructs and initializes a ckStr from the specified ckStr with different length.
+        @tparam N2 The length of a ckStr.
+        @param[in] str A ckStr with different length.
     */
-    template<u8 N2> pgStr(const pgStr<T, N2>& str)
+    template<u8 N2> ckStr(const ckStr<T, N2>& str)
     {
         *this = str;
     }
 
     /*!
-        Assigns the right hand side character to this pgStr.
+        Assigns the right hand side character to this ckStr.
         @param[in] ch The right hand side character.
-        @return A reference to this pgStr.
+        @return A reference to this ckStr.
     */
-    pgStr<T, N>& operator=(T ch)
+    ckStr<T, N>& operator=(T ch)
     {
         m_str[0] = ch;
         m_str[1] = 0;
@@ -102,11 +102,11 @@ public:
     }
 
     /*!
-        Assigns the right hand side string to this pgStr.
+        Assigns the right hand side string to this ckStr.
         @param[in] str The right hand side string.
-        @return A reference to this pgStr.
+        @return A reference to this ckStr.
     */
-    pgStr<T, N>& operator=(const T* str)
+    ckStr<T, N>& operator=(const T* str)
     {
         for (m_length = 0; m_length < N; m_length++)
         {
@@ -126,30 +126,30 @@ public:
     }
 
     /*!
-        Assigns the right hand side pgStr to this pgStr.
-        @param[in] str The right hand side pgStr.
-        @return A reference to this pgStr.
+        Assigns the right hand side ckStr to this ckStr.
+        @param[in] str The right hand side ckStr.
+        @return A reference to this ckStr.
     */
-    pgStr<T, N>& operator=(const pgStr<T, N>& str)
+    ckStr<T, N>& operator=(const ckStr<T, N>& str)
     {
         m_length = str.m_length;
 
-        pgMemMgr::memcpy(m_str, str.m_str, sizeof(T) * (m_length + 1));
+        ckMemMgr::memcpy(m_str, str.m_str, sizeof(T) * (m_length + 1));
 
         return *this;
     }
 
     /*!
-        Assigns the right hand side pgStr with different length to this pgStr.
-        @tparam N2 The length of the right hand side pgStr.
-        @param[in] str The right hand side pgStr with different length.
-        @return A referenct to this pgStr.
+        Assigns the right hand side ckStr with different length to this ckStr.
+        @tparam N2 The length of the right hand side ckStr.
+        @param[in] str The right hand side ckStr with different length.
+        @return A referenct to this ckStr.
     */
-    template<u8 N2> pgStr<T, N>& operator=(const pgStr<T, N2>& str)
+    template<u8 N2> ckStr<T, N>& operator=(const ckStr<T, N2>& str)
     {
         m_length = (str.getLength() < N) ? str.getLength() : N;
 
-        pgMemMgr::memcpy(m_str, str.getString(), sizeof(T) * (m_length + 1));
+        ckMemMgr::memcpy(m_str, str.getString(), sizeof(T) * (m_length + 1));
 
         m_str[m_length] = 0;
 
@@ -157,19 +157,19 @@ public:
     }
 
     /*!
-        Returns whether this pgStr is equal to the right hand side character.
+        Returns whether this ckStr is equal to the right hand side character.
         @param[in] ch The right hand side character.
-        @return Whether this pgStr is equal to the right hand side character.
+        @return Whether this ckStr is equal to the right hand side character.
     */
     bool operator==(T ch) const
     {
-        return (*this == pgStr<T, N>(ch));
+        return (*this == ckStr<T, N>(ch));
     }
 
     /*!
-        Returns whether this pgStr is equal to the right hand side string.
+        Returns whether this ckStr is equal to the right hand side string.
         @param[in] str The right hand side string.
-        @return Whether this pgStr is equal to the right hand side string.
+        @return Whether this ckStr is equal to the right hand side string.
     */
     bool operator==(const T* str) const
     {
@@ -192,12 +192,12 @@ public:
     }
 
     /*!
-        Returns whether this pgStr is equal to the right hand side pgStr with different length.
-        @tparam N2 The length of the right hand side pgStr.
-        @param[in] str The right hand side pgStr with defferent length.
-        @return Whether this pgStr is equal to the right hand side pgStr.
+        Returns whether this ckStr is equal to the right hand side ckStr with different length.
+        @tparam N2 The length of the right hand side ckStr.
+        @param[in] str The right hand side ckStr with defferent length.
+        @return Whether this ckStr is equal to the right hand side ckStr.
     */
-    template<u8 N2> bool operator==(const pgStr<T, N2>& str) const
+    template<u8 N2> bool operator==(const ckStr<T, N2>& str) const
     {
         if (m_length == str.getLength())
         {
@@ -223,9 +223,9 @@ public:
     }
 
     /*!
-        Returns whether this pgStr is unequal to the right hand side character.
+        Returns whether this ckStr is unequal to the right hand side character.
         @param[in] ch The right hand side character.
-        @return Whether this pgStr is unequal to the right hand side character.
+        @return Whether this ckStr is unequal to the right hand side character.
     */
     bool operator!=(T ch) const
     {
@@ -233,9 +233,9 @@ public:
     }
 
     /*!
-        Returns whether this pgStr is unequal to the right hand side string.
+        Returns whether this ckStr is unequal to the right hand side string.
         @param[in] str The right hand side string.
-        @return Whether this pgStr is unequal to the right hand side string.
+        @return Whether this ckStr is unequal to the right hand side string.
     */
     bool operator!=(const T* str) const
     {
@@ -243,39 +243,39 @@ public:
     }
 
     /*!
-        Returns whether this pgStr is unequal to the right hand side pgStr with different length.
-        @tparam N2 The length of the right hand side pgStr.
-        @param[in] str The right hand side pgStr with defferent length.
-        @return Whether this pgStr is unequal to the right hand side pgStr.
+        Returns whether this ckStr is unequal to the right hand side ckStr with different length.
+        @tparam N2 The length of the right hand side ckStr.
+        @param[in] str The right hand side ckStr with defferent length.
+        @return Whether this ckStr is unequal to the right hand side ckStr.
     */
-    template<u8 N2> bool operator!=(const pgStr<T, N2>& str) const
+    template<u8 N2> bool operator!=(const ckStr<T, N2>& str) const
     {
         return !(*this == str);
     }
 
     /*!
-        Returns a reference to the character of this pgStr at the position specified by the parameter index.
+        Returns a reference to the character of this ckStr at the position specified by the parameter index.
         @param[in] index The index of the position of the element to be referenced.
-        @return A reference to the character of this pgStr at the position specified by the parameter index.
+        @return A reference to the character of this ckStr at the position specified by the parameter index.
     */
     T& operator[](u8 index)
     {
         if (index >= m_length)
         {
-            pgThrow(ExceptionOutOfRange);
+            ckThrow(ExceptionOutOfRange);
         }
 
         return m_str[index];
     }
 
     /*!
-        Returns a pgStr which is the concatenation of this pgStr and the right hand side character.
+        Returns a ckStr which is the concatenation of this ckStr and the right hand side character.
         @param[in] ch The right hand side character.
-        @return A pgStr which is the concatenation of this pgStr and the right hand side character.
+        @return A ckStr which is the concatenation of this ckStr and the right hand side character.
     */
-    pgStr<T, N> operator+(T ch) const
+    ckStr<T, N> operator+(T ch) const
     {
-        pgStr<T, N> res = *this;
+        ckStr<T, N> res = *this;
 
         res += ch;
 
@@ -283,13 +283,13 @@ public:
     }
 
     /*!
-        Returns a pgStr which is the concatenation of this pgStr and the right hand side string.
+        Returns a ckStr which is the concatenation of this ckStr and the right hand side string.
         @param[in] str The right hand side string.
-        @return A pgStr which is the concatenation of this pgStr and the right hand side string.
+        @return A ckStr which is the concatenation of this ckStr and the right hand side string.
     */
-    pgStr<T, N> operator+(const T* str) const
+    ckStr<T, N> operator+(const T* str) const
     {
-        pgStr<T, N> res = *this;
+        ckStr<T, N> res = *this;
 
         res += str;
 
@@ -297,14 +297,14 @@ public:
     }
 
     /*!
-        Returns a pgStr which is the concatenation of this pgStr and the right hand side pgStr width differenct length.
-        @tparam N2 The length of the right hand side pgStr.
-        @param[in] str The right hand side pgStr with different length.
-        @return A pgStr which is the concatenation of this pgStr and the right hand side pgStr width differenct length.
+        Returns a ckStr which is the concatenation of this ckStr and the right hand side ckStr width differenct length.
+        @tparam N2 The length of the right hand side ckStr.
+        @param[in] str The right hand side ckStr with different length.
+        @return A ckStr which is the concatenation of this ckStr and the right hand side ckStr width differenct length.
     */
-    template<u8 N2> pgStr<T, N> operator+(const pgStr<T, N2>& str) const
+    template<u8 N2> ckStr<T, N> operator+(const ckStr<T, N2>& str) const
     {
-        pgStr<T, N> res = *this;
+        ckStr<T, N> res = *this;
 
         res += str;
 
@@ -312,16 +312,16 @@ public:
     }
 
     /*!
-        Concatenates the right hand side character to the end of this pgStr.
+        Concatenates the right hand side character to the end of this ckStr.
         @param[in] ch The right hand side character.
     */
     void operator+=(T ch)
     {
-        *this += pgStr<T, N>(ch);
+        *this += ckStr<T, N>(ch);
     }
 
     /*!
-        Concatenates the right hand side string to the end of this pgStr.
+        Concatenates the right hand side string to the end of this ckStr.
         @param[in] str The right hand side string.
     */
     void operator+=(const T* str)
@@ -342,11 +342,11 @@ public:
     }
 
     /*!
-        Concatenates the right hand side pgStr with different length to the end of this pgStr.
-        @tparam N2 The length of the right hand side pgStr.
-        @param[in] str The right hand side pgStr with different length.
+        Concatenates the right hand side ckStr with different length to the end of this ckStr.
+        @tparam N2 The length of the right hand side ckStr.
+        @param[in] str The right hand side ckStr with different length.
     */
-    template<u8 N2> void operator+=(const pgStr<T, N2>& str)
+    template<u8 N2> void operator+=(const ckStr<T, N2>& str)
     {
         const T* str2 = str.getString();
 
@@ -367,7 +367,7 @@ public:
 
     /*!
         Returns a hash value which is less than the specified value.
-        This method is used when pgStr is used as the key type of pgMap.
+        This method is used when ckStr is used as the key type of ckMap.
         @param[in] n A value.
         @return A hash value.
     */
@@ -384,8 +384,8 @@ public:
     }
 
     /*!
-        Returns the pointer to the c-string of this pgStr.
-        @return The pointer to the c-string of this pgStr.
+        Returns the pointer to the c-string of this ckStr.
+        @return The pointer to the c-string of this ckStr.
     */
     const T* getString() const
     {
@@ -393,8 +393,8 @@ public:
     }
 
     /*!
-        Returns the length of this pgStr.
-        @return The length of this pgStr.
+        Returns the length of this ckStr.
+        @return The length of this ckStr.
     */
     u8 getLength() const
     {
@@ -402,14 +402,14 @@ public:
     }
 
     /*!
-        Returns the extracted pgStr from this pgStr in the specified range.
+        Returns the extracted ckStr from this ckStr in the specified range.
         @param[in] index The index of the position of the element to be extracted.
-        @param[in] length The length of the extracted pgStr. If not specified, the length of this pgStr is used.
-        @return The extracted pgStr from this pgStr in the specified range.
+        @param[in] length The length of the extracted ckStr. If not specified, the length of this ckStr is used.
+        @return The extracted ckStr from this ckStr in the specified range.
     */
-    pgStr<T, N> getSubStr(u8 index, u8 length = 0) const
+    ckStr<T, N> getSubStr(u8 index, u8 length = 0) const
     {
-        pgStr<T, N> res;
+        ckStr<T, N> res;
 
         if (length == 0)
         {
@@ -439,8 +439,8 @@ private:
 };
 
 
-template<class T> class pgStr<T, 0>
+template<class T> class ckStr<T, 0>
 {
 private:
-    pgStr() {}
+    ckStr() {}
 };

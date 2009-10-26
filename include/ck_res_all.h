@@ -29,18 +29,18 @@
 */
 
 
-#ifndef PG_RES_ALL_H_
-#define PG_RES_ALL_H_
+#ifndef CK_RES_ALL_H_
+#define CK_RES_ALL_H_
 
 
-#include "pg_gen_all.h"
+#include "ck_gen_all.h"
 
 /*!
-    @defgroup pgRes pgRes -- Resource management module
+    @defgroup ckRes ckRes -- Resource management module
     Provides the functionality to handle resources.
 */
-#include "res/pg_res.h"
-#include "res/pg_res_mgr.h"
+#include "res/ck_res.h"
+#include "res/ck_res_mgr.h"
 
 
-#endif // !PG_RES_ALL_H_
+#endif // !CK_RES_ALL_H_

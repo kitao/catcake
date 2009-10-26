@@ -29,16 +29,16 @@
 */
 
 
-class pgConf;
+class ckConf;
 
 
 /*!
-    @ingroup pgConf
+    @ingroup ckConf
     TODO
 */
-class PG_API pgEnt
+class CK_API ckEnt
 {
-    friend class pgConf;
+    friend class ckConf;
 
 public:
     static const u32 MAX_NAME_LENGTH = 20;
@@ -50,10 +50,10 @@ public:
         TYPE_STRING
     };
 
-    pgEnt* getPrevN() const;
-    pgEnt* getNextN() const;
+    ckEnt* getPrevN() const;
+    ckEnt* getNextN() const;
 
-    const pgStr<char, MAX_NAME_LENGTH>& getName() const;
+    const ckStr<char, MAX_NAME_LENGTH>& getName() const;
     u16 getValueNum() const;
     ValueType getValueType(u16 index) const;
     s32 getValue_s32(u16 index) const;
@@ -68,13 +68,13 @@ private:
         const char* val_str;
     };
 
-    pgEnt(const char* name, u16 val_num, pgType<u8, ValueType>* val_type, Value* val);
-    void operator=(const pgEnt&);
+    ckEnt(const char* name, u16 val_num, ckType<u8, ValueType>* val_type, Value* val);
+    void operator=(const ckEnt&);
 
-    pgList<pgEnt>::Item m_item;
-    pgStr<char, MAX_NAME_LENGTH> m_name;
-    pgID m_name_id;
+    ckList<ckEnt>::Item m_item;
+    ckStr<char, MAX_NAME_LENGTH> m_name;
+    ckID m_name_id;
     u16 m_val_num;
-    pgType<u8, ValueType>* m_val_type;
+    ckType<u8, ValueType>* m_val_type;
     Value* m_val;
 };

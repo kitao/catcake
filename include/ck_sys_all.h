@@ -29,18 +29,18 @@
 */
 
 
-#ifndef PG_SYS_ALL_H_
-#define PG_SYS_ALL_H_
+#ifndef CK_SYS_ALL_H_
+#define CK_SYS_ALL_H_
 
 
-#include "pg_def.h"
+#include "ck_def.h"
 
 /*!
-    @defgroup pgSys pgSys -- System module
+    @defgroup ckSys ckSys -- System module
     Provides the functionality to control the system.
 */
-#include "sys/pg_sys_mgr.h"
-#include "sys/pg_sys_util.h"
+#include "sys/ck_sys_mgr.h"
+#include "sys/ck_sys_util.h"
 
 
-#endif // !PG_SYS_ALL_H_
+#endif // !CK_SYS_ALL_H_

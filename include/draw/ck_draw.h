@@ -30,18 +30,18 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     The base class of the drawable-object classes.
 */
-class PG_API pgDraw
+class CK_API ckDraw
 {
-    friend class pgScr;
-    friend class pgDrawMgr;
+    friend class ckScr;
+    friend class ckDrawMgr;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionInvalidCall);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidCall);
+    ckDefineException(ExceptionNotInitialized);
 
     /*!
         The types of the drawable-objects.
@@ -91,161 +91,161 @@ public:
     };
 
     /*!
-        Destructs this pgDraw.
+        Destructs this ckDraw.
     */
-    virtual ~pgDraw();
+    virtual ~ckDraw();
 
     /*!
-        Returns whether this pgDraw belongs to a screen directly.
-        @return Whether this pgDraw belongs to a screen directly.
+        Returns whether this ckDraw belongs to a screen directly.
+        @return Whether this ckDraw belongs to a screen directly.
     */
     bool hasScreen() const;
 
     /*!
-        Returns the ID of the screen which this pgDraw belongs to directly.
-        If this pgDraw belongs to no screen, an exception occurs.
-        @return The ID of the screen which this pgDraw belongs to directly.
+        Returns the ID of the screen which this ckDraw belongs to directly.
+        If this ckDraw belongs to no screen, an exception occurs.
+        @return The ID of the screen which this ckDraw belongs to directly.
     */
-    pgID getScreenID() const;
+    ckID getScreenID() const;
 
     /*!
-        Makes this pgDraw belong to the specified screen.
+        Makes this ckDraw belong to the specified screen.
         @param[in] The id of a screen.
     */
-    void setScreenID(pgID scr_id);
+    void setScreenID(ckID scr_id);
 
     /*!
-        Returns whether this pgDraw has a parent pgDraw.
-        @return Whether this pgDraw has a parent pgDraw.
+        Returns whether this ckDraw has a parent ckDraw.
+        @return Whether this ckDraw has a parent ckDraw.
     */
     bool hasParent() const;
 
     /*!
-        Returns the parent pgDraw of this pgDraw.
-        If this pgDraw has no parent pgDraw, returns NULL.
-        @return The parent pgDraw of this pgDraw.
+        Returns the parent ckDraw of this ckDraw.
+        If this ckDraw has no parent ckDraw, returns NULL.
+        @return The parent ckDraw of this ckDraw.
     */
-    pgDraw* getParentN() const;
+    ckDraw* getParentN() const;
 
     /*!
-        Sets the parent pgDraw of this pgDraw.
-        This pgDraw belongs to the specified pgDraw as the last child.
-        @param[in] parent A parent pgDraw.
+        Sets the parent ckDraw of this ckDraw.
+        This ckDraw belongs to the specified ckDraw as the last child.
+        @param[in] parent A parent ckDraw.
     */
-    void setParent(pgDraw* parent);
+    void setParent(ckDraw* parent);
 
     /*!
-        Returns the previous pgDraw of this pgDraw.
-        If this pgDraw has no previous pgDraw, returns NULL.
+        Returns the previous ckDraw of this ckDraw.
+        If this ckDraw has no previous ckDraw, returns NULL.
         This method is used to follow the whole tree as list structure.
-        @return The previous pgDraw of this pgDraw.
+        @return The previous ckDraw of this ckDraw.
     */
-    pgDraw* getPrevAllN() const;
+    ckDraw* getPrevAllN() const;
 
     /*!
-        Returns the next pgDraw of this pgDraw.
-        If this pgDraw has no next pgDraw, returns NULL.
+        Returns the next ckDraw of this ckDraw.
+        If this ckDraw has no next ckDraw, returns NULL.
         This method is used to follow the whole tree as list structure.
-        @return The previous pgDraw of this pgDraw.
+        @return The previous ckDraw of this ckDraw.
     */
-    pgDraw* getNextAllN() const;
+    ckDraw* getNextAllN() const;
 
     /*!
-        Returns the previous sibling pgDraw of this pgDraw.
-        If this pgDraw has no previous sibling pgDraw, returns NULL.
-        @return The previous sibling pgDraw of this pgDraw.
+        Returns the previous sibling ckDraw of this ckDraw.
+        If this ckDraw has no previous sibling ckDraw, returns NULL.
+        @return The previous sibling ckDraw of this ckDraw.
     */
-    pgDraw* getPrevSiblingN() const;
+    ckDraw* getPrevSiblingN() const;
 
     /*!
-        Returns the next sibling pgDraw of this pgDraw.
-        If this pgDraw has no next sibling pgDraw, returns NULL.
-        @return The next sibling pgDraw of this pgDraw.
+        Returns the next sibling ckDraw of this ckDraw.
+        If this ckDraw has no next sibling ckDraw, returns NULL.
+        @return The next sibling ckDraw of this ckDraw.
     */
-    pgDraw* getNextSiblingN() const;
+    ckDraw* getNextSiblingN() const;
 
     /*!
-        Returns the last descendant pgDraw of this pgDraw.
-        If this pgDraw has no descendant, returns this pgDraw.
-        @return The last descendant pgDraw of this pgDraw.
+        Returns the last descendant ckDraw of this ckDraw.
+        If this ckDraw has no descendant, returns this ckDraw.
+        @return The last descendant ckDraw of this ckDraw.
     */
-    pgDraw* getLastDescendant() const;
+    ckDraw* getLastDescendant() const;
 
     /*!
-        Returns whether this pgDraw has a child pgDraw.
-        @return Whether this pgDraw has a child pgDraw.
+        Returns whether this ckDraw has a child ckDraw.
+        @return Whether this ckDraw has a child ckDraw.
     */
     bool hasChild() const;
 
     /*!
-        Returns the first child pgDraw of this pgDraw.
-        If this pgDraw has no child pgDraw, returns NULL.
-        @return The first child pgDraw of this pgDraw.
+        Returns the first child ckDraw of this ckDraw.
+        If this ckDraw has no child ckDraw, returns NULL.
+        @return The first child ckDraw of this ckDraw.
     */
-    pgDraw* getFirstChildN() const;
+    ckDraw* getFirstChildN() const;
 
     /*!
-        Returns the last child pgDraw of this pgDraw.
-        If this pgDraw has no child pgDraw, returns NULL.
-        @return The last child pgDraw of this pgDraw.
+        Returns the last child ckDraw of this ckDraw.
+        If this ckDraw has no child ckDraw, returns NULL.
+        @return The last child ckDraw of this ckDraw.
     */
-    pgDraw* getLastChildN() const;
+    ckDraw* getLastChildN() const;
 
     /*!
-        Changes the order of this pgDraw in the siblings to the first.
-        This pgDraw must belong to a screen or have a parent.
+        Changes the order of this ckDraw in the siblings to the first.
+        This ckDraw must belong to a screen or have a parent.
     */
     void moveFirst();
 
     /*!
-        Changes the order of this pgDraw in the siblings to the last.
-        This pgDraw must belong to a screen or have a parent.
+        Changes the order of this ckDraw in the siblings to the last.
+        This ckDraw must belong to a screen or have a parent.
     */
     void moveLast();
 
     /*!
-        Changes the order of this pgDraw to the previous of the specified pgDraw.
-        The specified pgDraw must belong to a screen or have a parent.
-        @param[in] draw A pgDraw.
+        Changes the order of this ckDraw to the previous of the specified ckDraw.
+        The specified ckDraw must belong to a screen or have a parent.
+        @param[in] draw A ckDraw.
     */
-    void moveBefore(pgDraw* draw);
+    void moveBefore(ckDraw* draw);
 
     /*!
-        Changes the order of this pgDraw to the next of the specified pgDraw.
-        The specified pgDraw must belong to a screen or have a parent.
-        @param[in] draw A pgDraw.
+        Changes the order of this ckDraw to the next of the specified ckDraw.
+        The specified ckDraw must belong to a screen or have a parent.
+        @param[in] draw A ckDraw.
     */
-    void moveAfter(pgDraw* draw);
+    void moveAfter(ckDraw* draw);
 
     /*!
-        Returns the draw-type of this pgDraw.
-        @return The draw-type of this pgDraw.
+        Returns the draw-type of this ckDraw.
+        @return The draw-type of this ckDraw.
     */
     DrawType getType() const;
 
     /*!
-        Returns whether this pgDraw is visible.
-        @return Whether this pgDraw is visible.
+        Returns whether this ckDraw is visible.
+        @return Whether this ckDraw is visible.
     */
     bool isVisible() const;
 
     /*!
-        Determines whether this pgDraw is visible.
-        @param[in] is_visible Whether this pgDraw is visible.
+        Determines whether this ckDraw is visible.
+        @param[in] is_visible Whether this ckDraw is visible.
     */
     void setVisible(bool is_visible);
 
     /*!
-        Returns the filter color of this pgDraw.
-        @return The filter color of this pgDraw.
+        Returns the filter color of this ckDraw.
+        @return The filter color of this ckDraw.
     */
-    pgCol getColor() const;
+    ckCol getColor() const;
 
     /*!
-        Sets the filter color of this pgDraw.
+        Sets the filter color of this ckDraw.
         @param[in] col A filter color.
     */
-    void setColor(pgCol col);
+    void setColor(ckCol col);
 
     /*!
         Returns the type of depth test.
@@ -291,10 +291,10 @@ public:
     void clearDrawFlag();
 
     /*!
-        Copies the draw flags from the specified pgDraw.
-        @param[in] src A source pgDraw.
+        Copies the draw flags from the specified ckDraw.
+        @param[in] src A source ckDraw.
     */
-    void copyDrawFlag(const pgDraw* src);
+    void copyDrawFlag(const ckDraw* src);
 
     /*!
         Sets the type of depth test, the type of blend mode, and the draw flags to the standard blend off mode.
@@ -336,35 +336,35 @@ public:
     void setPreset_defaultBlendAdd();
 
     /*!
-        Returns the minimum clip bound of this pgDraw.
-        @return The minimum clip bound of this pgDraw.
+        Returns the minimum clip bound of this ckDraw.
+        @return The minimum clip bound of this ckDraw.
     */
-    const pgVec& getClipBoundMin() const;
+    const ckVec& getClipBoundMin() const;
 
     /*!
-        Returns the maximum clip bound of this pgDraw.
-        @return The maximum clip bound of this pgDraw.
+        Returns the maximum clip bound of this ckDraw.
+        @return The maximum clip bound of this ckDraw.
     */
-    const pgVec& getClipBoundMax() const;
+    const ckVec& getClipBoundMax() const;
 
     /*!
-        Sets the clip bound of this pgDraw.
+        Sets the clip bound of this ckDraw.
         @param[in] bound_min The minimum clip bound.
         @param[in] bound_max The maximum clip bound.
     */
-    void setClipBound(const pgVec& bound_min, const pgVec& bound_max);
+    void setClipBound(const ckVec& bound_min, const ckVec& bound_max);
 
     /*!
-        Returns the center position for sorting pgDraws.
-        @return The center position for sorting pgDraws.
+        Returns the center position for sorting ckDraws.
+        @return The center position for sorting ckDraws.
     */
-    const pgVec& getSortCenter() const;
+    const ckVec& getSortCenter() const;
 
     /*!
-        Sets the center position for sorting pgDraws.
-        @param[in] The center position for sorting pgDraws.
+        Sets the center position for sorting ckDraws.
+        @param[in] The center position for sorting ckDraws.
     */
-    void setSortCenter(const pgVec& sort_center);
+    void setSortCenter(const ckVec& sort_center);
 
     /*!
         Returns the value of sort offset.
@@ -379,36 +379,36 @@ public:
     void setSortOffset(r32 sort_offset);
 
     /*!
-        Returns the texture ID which this pgDraw uses.
-        If no texture is used, returns pgID::ZERO.
-        @return The texture ID which this pgDraw uses.
+        Returns the texture ID which this ckDraw uses.
+        If no texture is used, returns ckID::ZERO.
+        @return The texture ID which this ckDraw uses.
     */
-    pgID getTextureID() const;
+    ckID getTextureID() const;
 
     /*!
-        Sets the specified texture ID to this pgDraw.
-        If pgID::ZERO is specified, uses no texture.
+        Sets the specified texture ID to this ckDraw.
+        If ckID::ZERO is specified, uses no texture.
         @param tex_id A texture ID.
     */
-    void setTextureID(pgID tex_id);
+    void setTextureID(ckID tex_id);
 
     /*!
         Returns the reference to the local matrix.
         @return The reference to the local matrix.
     */
-    pgMat& local();
+    ckMat& local();
 
     /*!
         Calculates and returns the world matrix at present.
         @return The world matrix at present.
     */
-    pgMat calcWorld() const;
+    ckMat calcWorld() const;
 
     /*!
         Calculates and returns the final drawing color at present.
         @return The final drawing color at present.
     */
-    pgCol calcFinalColor() const;
+    ckCol calcFinalColor() const;
 
 protected:
     enum PrivateFlag
@@ -417,35 +417,35 @@ protected:
         FLAG_VISIBLE
     };
 
-    pgDraw();
+    ckDraw();
 
     void setupWorld();
     void setupFinalColor();
-    void setupSortValue(const pgMat& view);
+    void setupSortValue(const ckMat& view);
     void setupDrawState();
 
-    virtual void render(const pgMat& view);
+    virtual void render(const ckMat& view);
 
-    pgTree<pgDraw> m_tree;
-    pgType<u8, DrawType> m_type;
-    pgType<u8, DepthTest> m_depth_test;
-    pgType<u8, BlendMode> m_blend_mode;
-    pgFlag<u8, PrivateFlag> m_private_flag;
-    pgFlag<u16, DrawFlag> m_draw_flag;
-    pgID m_scr_id;
-    pgTex* m_tex;
-    pgMat m_local;
-    pgMat m_world;
-    pgCol m_local_col;
-    pgCol m_final_col;
-    pgVec m_bound_min;
-    pgVec m_bound_max;
-    pgVec m_sort_center;
+    ckTree<ckDraw> m_tree;
+    ckType<u8, DrawType> m_type;
+    ckType<u8, DepthTest> m_depth_test;
+    ckType<u8, BlendMode> m_blend_mode;
+    ckFlag<u8, PrivateFlag> m_private_flag;
+    ckFlag<u16, DrawFlag> m_draw_flag;
+    ckID m_scr_id;
+    ckTex* m_tex;
+    ckMat m_local;
+    ckMat m_world;
+    ckCol m_local_col;
+    ckCol m_final_col;
+    ckVec m_bound_min;
+    ckVec m_bound_max;
+    ckVec m_sort_center;
     r32 m_sort_offset;
     r32 m_sort_value;
-    pgDraw* m_next_sort;
+    ckDraw* m_next_sort;
 
 private:
-    pgDraw(const pgDraw&);
-    void operator=(const pgDraw&);
+    ckDraw(const ckDraw&);
+    void operator=(const ckDraw&);
 };

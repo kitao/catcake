@@ -30,44 +30,44 @@
 
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-#define pgReadLittleEndian(data, type) pgSysMgr::readLittleEndianForSystem<type>(data)
+#define ckReadLittleEndian(data, type) ckSysMgr::readLittleEndianForSystem<type>(data)
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-#define pgWriteLittleEndian(dest, value, type) pgSysMgr::writeLittleEndianForSystem<type>(dest, value)
+#define ckWriteLittleEndian(dest, value, type) ckSysMgr::writeLittleEndianForSystem<type>(dest, value)
 
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-PG_API void pgCreatePogolyn(const char* title, u16 width, u16 height, u16 aim_fps, u16 sys_flag = 0);
+CK_API void ckCreateCatcake(const char* title, u16 width, u16 height, u16 aim_fps, u16 sys_flag = 0);
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-PG_API void pgDestroyPogolyn();
+CK_API void ckDestroyCatcake();
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-PG_API void pgStartPogolyn();
+CK_API void ckStartCatcake();
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-PG_API void pgEndPogolyn();
+CK_API void ckEndCatcake();
 
 /*!
-    @ingroup pgSys
+    @ingroup ckSys
     TODO
 */
-PG_API void pgError(const char* msg, ...);
+CK_API void ckError(const char* msg, ...);

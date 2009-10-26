@@ -29,18 +29,18 @@
 */
 
 
-#ifndef PG_DBG_ALL_H_
-#define PG_DBG_ALL_H_
+#ifndef CK_DBG_ALL_H_
+#define CK_DBG_ALL_H_
 
 
-#include "pg_key_all.h"
-#include "pg_draw_all.h"
+#include "ck_key_all.h"
+#include "ck_draw_all.h"
 
 /*!
-    @defgroup pgDbg pgDbg -- Debug module
+    @defgroup ckDbg ckDbg -- Debug module
     Provides the functionality to debug.
 */
-#include "dbg/pg_dbg_mgr.h"
+#include "dbg/ck_dbg_mgr.h"
 
 
-#endif // !PG_DBG_ALL_H_
+#endif // !CK_DBG_ALL_H_

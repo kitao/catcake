@@ -30,21 +30,21 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A memory pool for the specified type.
     @tparam T The type which is managed by the memory pool.
 */
-template<class T> class pgBuf
+template<class T> class ckBuf
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotInitialized);
-    pgDefineException(ExceptionOutOfBuffer);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionOutOfBuffer);
 
     /*!
-        Constructs and initialize a pgBuf whose size is zero.
+        Constructs and initialize a ckBuf whose size is zero.
     */
-    pgBuf()
+    ckBuf()
     {
         m_elem = NULL;
         m_state = NULL;
@@ -53,9 +53,9 @@ public:
     }
 
     /*!
-        Destructs this pgBuf.
+        Destructs this ckBuf.
     */
-    ~pgBuf()
+    ~ckBuf()
     {
         if (m_elem)
         {
@@ -67,31 +67,31 @@ public:
                 }
             }
 
-            pgFree(m_elem);
-            pgDeleteArray(m_state, u8);
-            pgDeleteArray(m_index_tbl, u16);
+            ckFree(m_elem);
+            ckDeleteArray(m_state, u8);
+            ckDeleteArray(m_index_tbl, u16);
         }
     }
 
     /*!
-        Initializes this pgBuf with the specified size.
-        @param[in] size The size of this pgBuf.
+        Initializes this ckBuf with the specified size.
+        @param[in] size The size of this ckBuf.
     */
     void init(u16 size)
     {
         if (size == 0)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
-        this->~pgBuf();
+        this->~ckBuf();
 
         m_size = size;
         m_used_size = 0;
 
-        m_elem = static_cast<T*>(pgMalloc(sizeof(T) * m_size));
-        pgNewArray(m_state, u8, m_size);
-        pgNewArray(m_index_tbl, u16, m_size);
+        m_elem = static_cast<T*>(ckMalloc(sizeof(T) * m_size));
+        ckNewArray(m_state, u8, m_size);
+        ckNewArray(m_index_tbl, u16, m_size);
 
         for (s32 i = 0; i < m_size; i++)
         {
@@ -101,8 +101,8 @@ public:
     }
 
     /*!
-        Returns the size of this pgBuf.
-        @return The size of this pgBuf.
+        Returns the size of this ckBuf.
+        @return The size of this ckBuf.
     */
     u16 getSize() const
     {
@@ -110,8 +110,8 @@ public:
     }
 
     /*!
-        Returns the used size of this pgBuf.
-        @return The used size of this pgBuf.
+        Returns the used size of this ckBuf.
+        @return The used size of this ckBuf.
     */
     u16 getUsedSize() const
     {
@@ -119,8 +119,8 @@ public:
     }
 
     /*!
-        Returns the available size of this pgBuf.
-        @return The available size of this pgBuf.
+        Returns the available size of this ckBuf.
+        @return The available size of this ckBuf.
     */
     u16 getFreeSize() const
     {
@@ -128,15 +128,15 @@ public:
     }
 
     /*!
-        Returns the first value in this pgBuf.
-        If this pgBuf has no value, returns NULL.
-        @return The first value in this pgBuf.
+        Returns the first value in this ckBuf.
+        If this ckBuf has no value, returns NULL.
+        @return The first value in this ckBuf.
     */
     T* getFirstN() const
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         for (s32 i = 0; i < m_size; i++)
@@ -151,15 +151,15 @@ public:
     }
 
     /*!
-        Returns the last value in this pgBuf.
-        If this pgBuf has no value, returns NULL.
-        @return The last value in this pgBuf.
+        Returns the last value in this ckBuf.
+        If this ckBuf has no value, returns NULL.
+        @return The last value in this ckBuf.
     */
     T* getLastN() const
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         for (s32 i = m_size - 1; i >= 0; i--)
@@ -176,26 +176,26 @@ public:
     /*!
         Returns the previous value of the specified value.
         If the specified value has no previous value, returns NULL.
-        @param[in] elem A value in this pgBuf.
+        @param[in] elem A value in this ckBuf.
         @return The previous value of the specified value.
     */
     T* getPrevN(const T* elem) const
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (elem < m_elem || elem >= m_elem + m_size)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         u16 index = static_cast<u16>(elem - m_elem);
 
         if (m_state[index] == STATE_FREE)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         if (index > 0)
@@ -215,26 +215,26 @@ public:
     /*!
         Returns the next value of the specified value.
         If the specified value has no next value, returns NULL.
-        @param[in] elem A value in this pgBuf.
+        @param[in] elem A value in this ckBuf.
         @return The next value of the specified value.
     */
     T* getNextN(const T* elem) const
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (elem < m_elem || elem >= m_elem + m_size)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         u16 index = static_cast<u16>(elem - m_elem);
 
         if (m_state[index] == STATE_FREE)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         if (index + 1 < m_size)
@@ -252,19 +252,19 @@ public:
     }
 
     /*!
-        Allocates a value from this pgBuf.
+        Allocates a value from this ckBuf.
         @return An allocated value.
     */
     T* newElement()
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (m_used_size >= m_size)
         {
-            pgThrow(ExceptionOutOfBuffer);
+            ckThrow(ExceptionOutOfBuffer);
         }
 
         u16 index = m_index_tbl[m_used_size];
@@ -280,26 +280,26 @@ public:
     }
 
     /*!
-        Deletes the specified value in this pgBuf.
-        @param[in] elem A value in this pgBuf.
+        Deletes the specified value in this ckBuf.
+        @param[in] elem A value in this ckBuf.
     */
     void deleteElement(T* elem)
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (elem < m_elem || elem >= m_elem + m_size)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         u16 index = static_cast<u16>(elem - m_elem);
 
         if (m_state[index] == STATE_FREE)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         elem->~T();
@@ -311,13 +311,13 @@ public:
     }
 
     /*!
-        Deletes all values in this pgBuf.
+        Deletes all values in this ckBuf.
     */
     void clear()
     {
         if (!m_elem)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         m_used_size = 0;
@@ -341,8 +341,8 @@ private:
         STATE_USED
     };
 
-    pgBuf(const pgBuf<T>&) {}
-    void operator=(const pgBuf<T>&) {}
+    ckBuf(const ckBuf<T>&) {}
+    void operator=(const ckBuf<T>&) {}
 
     T* m_elem;
     u8* m_state;

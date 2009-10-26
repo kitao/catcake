@@ -30,45 +30,45 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A set of bits as a data structure.
     @tparam D The data type to store flag bits.
     @tparam T The enum type whose constant values mean bit number. The each value of the enum constants must be less than the number of bits of the data type.
 */
-template<class D, class T> class pgFlag
+template<class D, class T> class ckFlag
 {
 public:
     /*!
-        Constructs and initializes a pgFlag whose all bits are off.
+        Constructs and initializes a ckFlag whose all bits are off.
     */
-    pgFlag()
+    ckFlag()
     {
         clear();
     }
 
     /*!
-        Returns whether this pgFlag is equal to the right hand side pgFlag.
-        @param[in] flag The right hand side pgFlag.
-        @return Whether this pgFlag is equal to the right hand side pgFlag.
+        Returns whether this ckFlag is equal to the right hand side ckFlag.
+        @param[in] flag The right hand side ckFlag.
+        @return Whether this ckFlag is equal to the right hand side ckFlag.
     */
-    bool operator==(pgFlag<D, T> flag) const
+    bool operator==(ckFlag<D, T> flag) const
     {
         return (m_flag == flag.m_flag);
     }
 
     /*!
-        Returns whether this pgFlag is unequal to the right hand side pgFlag.
-        @param[in] flag The right hand side pgFlag.
-        @return Whether this pgFlag is unequal to the right hand side pgFlag.
+        Returns whether this ckFlag is unequal to the right hand side ckFlag.
+        @param[in] flag The right hand side ckFlag.
+        @return Whether this ckFlag is unequal to the right hand side ckFlag.
     */
-    bool operator!=(pgFlag<D, T> flag) const
+    bool operator!=(ckFlag<D, T> flag) const
     {
         return (m_flag != flag.m_flag);
     }
 
     /*!
-        Returns the bits of this pgFlag as the data type.
-        @return The bits of this pgFlag as the data type.
+        Returns the bits of this ckFlag as the data type.
+        @return The bits of this ckFlag as the data type.
     */
     D getValue() const
     {
@@ -131,7 +131,7 @@ public:
     }
 
     /*!
-        Sets all bits of this pgFlag off.
+        Sets all bits of this ckFlag off.
     */
     void clear()
     {

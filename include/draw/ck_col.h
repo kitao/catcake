@@ -30,35 +30,35 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     A 32-bit color which is represented by red, green, blue and alpha components.
 */
-struct PG_API pgCol
+struct CK_API ckCol
 {
-    static const pgCol ZERO; //!< The color whose all components are 0s.
-    static const pgCol FULL; //!< The color whose all components are 255s.
+    static const ckCol ZERO; //!< The color whose all components are 0s.
+    static const ckCol FULL; //!< The color whose all components are 255s.
 
     u8 r, g, b, a;
 
     /*!
-        Constructs a pgCol.
+        Constructs a ckCol.
     */
-    pgCol();
+    ckCol();
 
     /*!
-        Constructs and initializes a pgCol from the specified pgCol.
-        @param[in] col A pgCol.
+        Constructs and initializes a ckCol from the specified ckCol.
+        @param[in] col A ckCol.
     */
-    pgCol(const pgCol& col);
+    ckCol(const ckCol& col);
 
     /*!
-        Constructs and initializes a pgCol from the specified components.
+        Constructs and initializes a ckCol from the specified components.
         @param[in] r_ A red component.
         @param[in] g_ A green component.
         @param[in] b_ A blue component.
         @param[in] a_ An alpha component. If not specified, 255 is used.
     */
-    pgCol(u8 r_, u8 g_, u8 b_, u8 a_ = 255);
+    ckCol(u8 r_, u8 g_, u8 b_, u8 a_ = 255);
 
     /*!
         Sets all components from the specified components.
@@ -70,108 +70,108 @@ struct PG_API pgCol
     void set(u8 r_, u8 g_, u8 b_, u8 a_ = 255);
 
     /*!
-        Returns whether this pgCol is equal to the right hand side pgCol.
-        @param[in] col The right hand side pgCol.
-        @return Whether this pgCol is equal to the right hand side pgCol.
+        Returns whether this ckCol is equal to the right hand side ckCol.
+        @param[in] col The right hand side ckCol.
+        @return Whether this ckCol is equal to the right hand side ckCol.
     */
-    bool operator==(pgCol col) const;
+    bool operator==(ckCol col) const;
 
     /*!
-        Returns whether this pgCol is unequal to the right hand side pgCol.
-        @param[in] col The right hand side pgCol.
-        @return Whether this pgCol is unequal to the right hand side pgCol.
+        Returns whether this ckCol is unequal to the right hand side ckCol.
+        @param[in] col The right hand side ckCol.
+        @return Whether this ckCol is unequal to the right hand side ckCol.
     */
-    bool operator!=(pgCol col) const;
+    bool operator!=(ckCol col) const;
 
     /*!
-        Returns a pgCol which is the sum of this pgCol and the right hand side pgCol.
+        Returns a ckCol which is the sum of this ckCol and the right hand side ckCol.
         The values of the components are clamped between 0 and 255.
-        @param[in] col The right hand side pgCol.
-        @return A pgCol which is the sum of two pgCols.
+        @param[in] col The right hand side ckCol.
+        @return A ckCol which is the sum of two ckCols.
     */
-    pgCol operator+(pgCol col) const;
+    ckCol operator+(ckCol col) const;
 
     /*!
-        Adds the right hand side pgCol to this pgCol.
+        Adds the right hand side ckCol to this ckCol.
         The values of the components are clamped between 0 and 255.
-        @param[in] col The right hand side pgCol.
+        @param[in] col The right hand side ckCol.
     */
-    void operator+=(pgCol col);
+    void operator+=(ckCol col);
 
     /*!
-        Returns a pgCol which is the right hand side pgCol subtracted from this pgCol.
+        Returns a ckCol which is the right hand side ckCol subtracted from this ckCol.
         The values of the components are clamped between 0 and 255.
-        @param[in] col The right hand side pgCol.
-        @return A pgCol which is the right hand side pgCol subtracted from this pgCol.
+        @param[in] col The right hand side ckCol.
+        @return A ckCol which is the right hand side ckCol subtracted from this ckCol.
     */
-    pgCol operator-(pgCol col) const;
+    ckCol operator-(ckCol col) const;
 
     /*!
-        Subtracts the right hand side pgCol from this pgCol.
+        Subtracts the right hand side ckCol from this ckCol.
         The values of the components are clamped between 0 and 255.
-        @param[in] col The right hand side pgCol.
+        @param[in] col The right hand side ckCol.
     */
-    void operator-=(pgCol col);
+    void operator-=(ckCol col);
 
     /*!
-        Returns a pgCol which is this pgCol multiplied with right hand side pgCol and divided by 255.
+        Returns a ckCol which is this ckCol multiplied with right hand side ckCol and divided by 255.
         The values of the components are clamped between 0 and 255.
-        @param[in] col The right hand side pgCol.
-        @return A pgCol which is this pgCol multiplied with right hand side pgCol and divided by 255.
+        @param[in] col The right hand side ckCol.
+        @return A ckCol which is this ckCol multiplied with right hand side ckCol and divided by 255.
     */
-    pgCol operator*(pgCol col) const;
+    ckCol operator*(ckCol col) const;
 
     /*!
-        Multiplies this pgVec with the right hand side pgCol and divides by 255.
+        Multiplies this ckVec with the right hand side ckCol and divides by 255.
         The values of the components are clamped between 0 and 255.
-        @param[in] col The right hand side pgCol.
+        @param[in] col The right hand side ckCol.
     */
-    void operator*=(pgCol col);
+    void operator*=(ckCol col);
 
     /*!
-        Returns a pgCol which is this pgCol multiplied with right hand side scalar and divided by 255.
+        Returns a ckCol which is this ckCol multiplied with right hand side scalar and divided by 255.
         The values of the components are clamped between 0 and 255.
         @param[in] The right hand side scalar.
-        @return A pgCol which is this pgCol multiplied with right hand side scalar and divided by 255.
+        @return A ckCol which is this ckCol multiplied with right hand side scalar and divided by 255.
     */
-    pgCol operator*(r32 s) const;
+    ckCol operator*(r32 s) const;
 
     /*!
-        Returns a pgCol which is the right hand side pgCol multiplied with the left hand side scalar.
+        Returns a ckCol which is the right hand side ckCol multiplied with the left hand side scalar.
         The values of the components are clamped between 0 and 255.
         @param[in] s The left hand side scalar.
-        @param[in] col The right hand side pgCol.
-        @return A pgCol which is the right hand side pgCol multiplied with the left hand side scalar.
+        @param[in] col The right hand side ckCol.
+        @return A ckCol which is the right hand side ckCol multiplied with the left hand side scalar.
     */
-    PG_API friend pgCol operator*(r32 s, pgCol col);
+    CK_API friend ckCol operator*(r32 s, ckCol col);
 
     /*!
-        Multiplies this pgCol with the right hand side scalar.
+        Multiplies this ckCol with the right hand side scalar.
         The values of the components are clamped between 0 and 255.
         @param[in] The right hand side scalar.
     */
     void operator*=(r32 s);
 
     /*!
-        Returns a pgCol which is this pgCol divided by the right hand side scalar.
+        Returns a ckCol which is this ckCol divided by the right hand side scalar.
         The values of the components are clamped between 0 and 255.
         @param[in] s The right hand side scalar.
-        @return A pgCol which is this pgCol divided by the right hand side scalar.
+        @return A ckCol which is this ckCol divided by the right hand side scalar.
     */
-    pgCol operator/(r32 s) const;
+    ckCol operator/(r32 s) const;
 
     /*!
-        Divides this pgCol by the right hand side scalar.
+        Divides this ckCol by the right hand side scalar.
         The values of the components are clamped between 0 and 255.
         @param[in] s The right hand side scalar.
     */
     void operator/=(r32 s);
 
     /*!
-        Returns a pgCol which is interpolated between this pgCol and an another pgCol by the specified ratio, using linear interpolation.
-        param[in] to An another pgCol.
-        @param[in] ratio The value which indicates how far to interpolate between two pgCols. This value is clamped between 0.0f and 1.0f.
-        @return A pgCol which is interpolated between two pgCols.
+        Returns a ckCol which is interpolated between this ckCol and an another ckCol by the specified ratio, using linear interpolation.
+        param[in] to An another ckCol.
+        @param[in] ratio The value which indicates how far to interpolate between two ckCols. This value is clamped between 0.0f and 1.0f.
+        @return A ckCol which is interpolated between two ckCols.
     */
-    pgCol interp(pgCol to, r32 ratio) const;
+    ckCol interp(ckCol to, r32 ratio) const;
 };

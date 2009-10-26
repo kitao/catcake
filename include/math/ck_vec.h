@@ -29,36 +29,36 @@
 */
 
 
-struct pgMat;
+struct ckMat;
 
 
 /*!
-    @ingroup pgMath
+    @ingroup ckMath
     A 3-element vector which is represented by xyz coordinates.
 */
-struct PG_API pgVec
+struct CK_API ckVec
 {
-    static const pgVec ZERO; //!< The zero vector.
-    static const pgVec X_UNIT; //!< The orthonormal x-axis.
-    static const pgVec Y_UNIT; //!< The orthonormal y-axis.
-    static const pgVec Z_UNIT; //!< The orthonormal z-axis.
+    static const ckVec ZERO; //!< The zero vector.
+    static const ckVec X_UNIT; //!< The orthonormal x-axis.
+    static const ckVec Y_UNIT; //!< The orthonormal y-axis.
+    static const ckVec Z_UNIT; //!< The orthonormal z-axis.
 
     r32 x; //!< The x-coordinate.
     r32 y; //!< The y-coordinate.
     r32 z; //!< The z-coordinate.
 
     /*!
-        Constructs a pgVec.
+        Constructs a ckVec.
     */
-    pgVec();
+    ckVec();
 
     /*!
-        Constructs and initializes a pgVec from the specified xyz coordinates.
+        Constructs and initializes a ckVec from the specified xyz coordinates.
         @param[in] x_ The x-coordinate.
         @param[in] y_ The y-coordinate.
         @param[in] z_ The z-coordinate. If not specified, 0.0f is used.
     */
-    pgVec(r32 x_, r32 y_, r32 z_ = 0.0f);
+    ckVec(r32 x_, r32 y_, r32 z_ = 0.0f);
 
     /*!
         Sets all components from the specified xyz coordinates.
@@ -69,221 +69,221 @@ struct PG_API pgVec
     void set(r32 x_, r32 y_, r32 z_ = 0.0f);
 
     /*!
-        Returns a pgVec which is the sum of this pgVec and the right hand side pgVec.
-        @param[in] vec The right hand side pgVec.
-        @return A pgVec which is the sum of two pgVecs.
+        Returns a ckVec which is the sum of this ckVec and the right hand side ckVec.
+        @param[in] vec The right hand side ckVec.
+        @return A ckVec which is the sum of two ckVecs.
     */
-    pgVec operator+(const pgVec& vec) const;
+    ckVec operator+(const ckVec& vec) const;
 
     /*!
-        Adds the right hand side pgVec to this pgVec.
-        @param[in] vec The right hand side pgVec.
+        Adds the right hand side ckVec to this ckVec.
+        @param[in] vec The right hand side ckVec.
     */
-    void operator+=(const pgVec& vec);
+    void operator+=(const ckVec& vec);
 
     /*!
-        Returns a pgVec which is the negative of this pgVec.
-        @return A pgVec which is the negative of this pgVec.
+        Returns a ckVec which is the negative of this ckVec.
+        @return A ckVec which is the negative of this ckVec.
     */
-    pgVec operator-() const;
+    ckVec operator-() const;
 
     /*!
-        Returns a pgVec which is the right hand side pgVec subtracted from this pgVec.
-        @param[in] vec The right hand side pgVec.
-        @return A pgVec which is the right hand side pgVec subtracted from this pgVec.
+        Returns a ckVec which is the right hand side ckVec subtracted from this ckVec.
+        @param[in] vec The right hand side ckVec.
+        @return A ckVec which is the right hand side ckVec subtracted from this ckVec.
     */
-    pgVec operator-(const pgVec& vec) const;
+    ckVec operator-(const ckVec& vec) const;
 
     /*!
-        Subtracts the right hand side pgVec from this pgVec.
-        @param[in] vec The right hand side pgVec.
+        Subtracts the right hand side ckVec from this ckVec.
+        @param[in] vec The right hand side ckVec.
     */
-    void operator-=(const pgVec& vec);
+    void operator-=(const ckVec& vec);
 
     /*!
-        Returns a pgVec which is this pgVec multiplied with the right hand side scalar.
+        Returns a ckVec which is this ckVec multiplied with the right hand side scalar.
         @param[in] s The right hand side scalar.
-        @return A pgVec which is this pgVec multiplied with the right hand side scalar.
+        @return A ckVec which is this ckVec multiplied with the right hand side scalar.
     */
-    pgVec operator*(r32 s) const;
+    ckVec operator*(r32 s) const;
 
     /*!
-        Returns a pgVec which is the right hand side pgVec multiplied with the left hand side scalar.
+        Returns a ckVec which is the right hand side ckVec multiplied with the left hand side scalar.
         @param[in] s The left hand side scalar.
-        @param[in] vec The right hand side pgVec.
-        @return A pgVec which is the right hand side pgVec multiplied with the left hand side scalar.
+        @param[in] vec The right hand side ckVec.
+        @return A ckVec which is the right hand side ckVec multiplied with the left hand side scalar.
     */
-    PG_API friend pgVec operator*(r32 s, const pgVec& vec);
+    CK_API friend ckVec operator*(r32 s, const ckVec& vec);
 
     /*!
-        Multiplies this pgVec with the right hand side scalar.
+        Multiplies this ckVec with the right hand side scalar.
         @param[in] s The right hand side scalar.
     */
     void operator*=(r32 s);
 
     /*!
-        Returns a pgVec which is this pgVec divided by the right hand side scalar.
+        Returns a ckVec which is this ckVec divided by the right hand side scalar.
         @param[in] s The right hand side scalar.
-        @return A pgVec which is this pgVec divided by the right hand side scalar.
+        @return A ckVec which is this ckVec divided by the right hand side scalar.
     */
-    pgVec operator/(r32 s) const;
+    ckVec operator/(r32 s) const;
 
     /*!
-        Divides this pgVec by the right hand side scalar.
+        Divides this ckVec by the right hand side scalar.
         @param[in] s The right hand side scalar.
     */
     void operator/=(r32 s);
 
     /*!
-        Returns the length of this pgVec.
-        @return The length of this pgVec.
+        Returns the length of this ckVec.
+        @return The length of this ckVec.
     */
     r32 length() const;
 
     /*!
-        Returns the squared length of this pgVec.
-        @return The squared length of this pgVec.
+        Returns the squared length of this ckVec.
+        @return The squared length of this ckVec.
     */
     r32 sqLength() const;
 
     /*!
-        Returns the distance between this pgVec and an another pgVec.
-        @param[in] vec An another pgVec.
-        @return The distance between two pgVecs.
+        Returns the distance between this ckVec and an another ckVec.
+        @param[in] vec An another ckVec.
+        @return The distance between two ckVecs.
     */
-    r32 dist(const pgVec& vec) const;
+    r32 dist(const ckVec& vec) const;
 
     /*!
-        Returns the squared distance between this pgVec and an another pgVec.
-        @param[in] vec An another pgVec.
-        @return The squared distance between two pgVecs.
+        Returns the squared distance between this ckVec and an another ckVec.
+        @param[in] vec An another ckVec.
+        @return The squared distance between two ckVecs.
     */
-    r32 sqDist(const pgVec& vec) const;
+    r32 sqDist(const ckVec& vec) const;
 
     /*!
-        Returns the inner product of this pgVec and an another pgVec.
-        @param[in] vec An another pgVec.
-        @return The inner product of two pgVecs.
+        Returns the inner product of this ckVec and an another ckVec.
+        @param[in] vec An another ckVec.
+        @return The inner product of two ckVecs.
     */
-    r32 dot(const pgVec& vec) const;
+    r32 dot(const ckVec& vec) const;
 
     /*!
-        Returns the outer product of this pgVec and an another pgVec.
-        @param[in] vec An another pgVec.
-        @return The outer product of two pgVecs.
+        Returns the outer product of this ckVec and an another ckVec.
+        @param[in] vec An another ckVec.
+        @return The outer product of two ckVecs.
     */
-    pgVec cross(const pgVec& vec) const;
+    ckVec cross(const ckVec& vec) const;
 
     /*!
-        Returns a pgVec which is this pgVec rotated around the orthonormal x-axis.
+        Returns a ckVec which is this ckVec rotated around the orthonormal x-axis.
         @param[in] deg An r32 angle of rotation in degrees.
-        @return A pgVec which is this pgVec rotated around the orthonormal x-axis.
+        @return A ckVec which is this ckVec rotated around the orthonormal x-axis.
     */
-    pgVec rotateX_r32(r32 deg) const;
+    ckVec rotateX_r32(r32 deg) const;
 
     /*!
-        Returns a pgVec which is this pgVec rotated around the orthonormal y-axis.
+        Returns a ckVec which is this ckVec rotated around the orthonormal y-axis.
         @param[in] deg An r32 angle of rotation in degrees.
-        @return A pgVec which is this pgVec rotated around the orthonormal y-axis.
+        @return A ckVec which is this ckVec rotated around the orthonormal y-axis.
     */
-    pgVec rotateY_r32(r32 deg) const;
+    ckVec rotateY_r32(r32 deg) const;
 
     /*!
-        Returns a pgVec which is this pgVec rotated around the orthonormal z-axis.
+        Returns a ckVec which is this ckVec rotated around the orthonormal z-axis.
         @param[in] deg An r32 angle of rotation in degrees.
-        @return A pgVec which is this pgVec rotated around the orthonormal z-axis.
+        @return A ckVec which is this ckVec rotated around the orthonormal z-axis.
     */
-    pgVec rotateZ_r32(r32 deg) const;
+    ckVec rotateZ_r32(r32 deg) const;
 
     /*!
-        Returns a pgVec which is this pgVec rotated around the orthonormal x-axis.
+        Returns a ckVec which is this ckVec rotated around the orthonormal x-axis.
         This method allows only an s32 type as an angle, but is faster than its r32 version.
         @param[in] deg An s32 angle of rotation in degrees.
-        @return A pgVec which is this pgVec rotated around the orthonormal x-axis.
+        @return A ckVec which is this ckVec rotated around the orthonormal x-axis.
     */
-    pgVec rotateX_s32(s32 deg) const;
+    ckVec rotateX_s32(s32 deg) const;
 
     /*!
-        Returns a pgVec which is this pgVec rotated around the orthonormal y-axis.
+        Returns a ckVec which is this ckVec rotated around the orthonormal y-axis.
         This method allows only an s32 type as an angle, but is faster than its r32 version.
         @param[in] deg An s32 angle of rotation in degrees.
-        @return A pgVec which is this pgVec rotated around the orthonormal y-axis.
+        @return A ckVec which is this ckVec rotated around the orthonormal y-axis.
     */
-    pgVec rotateY_s32(s32 deg) const;
+    ckVec rotateY_s32(s32 deg) const;
 
     /*!
-        Returns a pgVec which is this pgVec rotated around the orthonormal z-axis.
+        Returns a ckVec which is this ckVec rotated around the orthonormal z-axis.
         This method allows only an s32 type as an angle, but is faster than its r32 version.
         @param[in] deg An s32 angle of rotation in degrees.
-        @return A pgVec which is this pgVec rotated around the orthonormal z-axis.
+        @return A ckVec which is this ckVec rotated around the orthonormal z-axis.
     */
-    pgVec rotateZ_s32(s32 deg) const;
+    ckVec rotateZ_s32(s32 deg) const;
 
     /*!
-        Returns a pgVec which is the normalized this pgVec.
-        @return A pgVec which is the normalized this pgVec.
+        Returns a ckVec which is the normalized this ckVec.
+        @return A ckVec which is the normalized this ckVec.
     */
-    pgVec normalize() const;
+    ckVec normalize() const;
 
     /*!
-        Returns a pgVec which is interpolated between this pgVec and an another pgVec by the specified ratio, using linear interpolation.
-        @param[in] to An another pgVec.
-        @param[in] ratio The value which indicates how far to interpolate between two pgVecs. This value is clamped between 0.0f and 1.0f.
-        @return A pgVec which is interpolated between two pgVecs.
+        Returns a ckVec which is interpolated between this ckVec and an another ckVec by the specified ratio, using linear interpolation.
+        @param[in] to An another ckVec.
+        @param[in] ratio The value which indicates how far to interpolate between two ckVecs. This value is clamped between 0.0f and 1.0f.
+        @return A ckVec which is interpolated between two ckVecs.
     */
-    pgVec interp(const pgVec& to, r32 ratio) const;
+    ckVec interp(const ckVec& to, r32 ratio) const;
 
     /*!
-        Returns a pgVec which is interpolated between this pgVec and an another pgVec by the specified ratio, using spherical linear interpolation.
-        @param[in] to An another pgVec.
-        @param[in] ratio The value which indicates how far to interpolate between two pgVecs. This value is clamped between 0.0f and 1.0f.
-        @return A pgVec which is interpolated between two pgVecs.
+        Returns a ckVec which is interpolated between this ckVec and an another ckVec by the specified ratio, using spherical linear interpolation.
+        @param[in] to An another ckVec.
+        @param[in] ratio The value which indicates how far to interpolate between two ckVecs. This value is clamped between 0.0f and 1.0f.
+        @return A ckVec which is interpolated between two ckVecs.
     */
-    pgVec slerp(const pgVec& to, r32 ratio) const;
+    ckVec slerp(const ckVec& to, r32 ratio) const;
 
     /*!
-        Returns a pgVec which is this pgVec converted from in the world coordinate system to in the local coordinate system of the specified pgMat.
-        @param[in] mat The origin pgMat of the local coordinate system.
-        @return A pgVec which is this pgVec in the local coordinate system.
+        Returns a ckVec which is this ckVec converted from in the world coordinate system to in the local coordinate system of the specified ckMat.
+        @param[in] mat The origin ckMat of the local coordinate system.
+        @return A ckVec which is this ckVec in the local coordinate system.
     */
-    pgVec toLocalOf(const pgMat& mat) const;
+    ckVec toLocalOf(const ckMat& mat) const;
 
     /*!
-        Returns a pgVec which is this pgVec converted from in the local coordinate system of the specified pgMat to in the world coordinate system.
-        @param[in] mat The origin pgMat of the local coordinate system.
-        @return A pgVec which is this pgVec in the world coordinate system.
+        Returns a ckVec which is this ckVec converted from in the local coordinate system of the specified ckMat to in the world coordinate system.
+        @param[in] mat The origin ckMat of the local coordinate system.
+        @return A ckVec which is this ckVec in the world coordinate system.
     */
-    pgVec toGlobalFrom(const pgMat& mat) const;
+    ckVec toGlobalFrom(const ckMat& mat) const;
 
     /*!
-        Returns a pgVec which is this pgVec converted from in the world coordinate system to
-        in the local coordinate system of the specified pgMat whose translation is ignored.
-        @param[in] mat The origin pgMat of the local coordinate system, whose translation is ignored.
-        @return A pgVec which is this pgVec in the local coordinate system.
+        Returns a ckVec which is this ckVec converted from in the world coordinate system to
+        in the local coordinate system of the specified ckMat whose translation is ignored.
+        @param[in] mat The origin ckMat of the local coordinate system, whose translation is ignored.
+        @return A ckVec which is this ckVec in the local coordinate system.
     */
-    pgVec toLocalOf_noTrans(const pgMat& mat) const;
+    ckVec toLocalOf_noTrans(const ckMat& mat) const;
 
     /*!
-        Returns a pgVec which is this pgVec converted from in the local coordinate system of
-        the specified pgMat whose translation is ignored to in the world coordinate system.
-        @param[in] mat The origin pgMat of the local coordinate system, whose translation is ignored.
-        @return A pgVec which is this pgVec in the world coordinate system.
+        Returns a ckVec which is this ckVec converted from in the local coordinate system of
+        the specified ckMat whose translation is ignored to in the world coordinate system.
+        @param[in] mat The origin ckMat of the local coordinate system, whose translation is ignored.
+        @return A ckVec which is this ckVec in the world coordinate system.
     */
-    pgVec toGlobalFrom_noTrans(const pgMat& mat) const;
+    ckVec toGlobalFrom_noTrans(const ckMat& mat) const;
 
     /*!
-        Converts this pgVec to a 4-element array.
+        Converts this ckVec to a 4-element array.
         @param[out] r32x4 A destination of the converted 4-element array.
-        @param[in] w The 4th coordinate of this pgVec.
+        @param[in] w The 4th coordinate of this ckVec.
     */
     void toR32x4(r32* r32x4, r32 w) const;
 
     /*!
-        Returns a pgVec which is converted from a 4-element array.
+        Returns a ckVec which is converted from a 4-element array.
         @param[in] r32x4 A 4-element array to be converted.
-        @return A pgVec which is converted from the 4-element array.
+        @return A ckVec which is converted from the 4-element array.
     */
-    static pgVec fromR32x4(const r32* r32x4);
+    static ckVec fromR32x4(const r32* r32x4);
 
     /*!
         Multiplies a 16-element array by a 4-element array as a matrix and a vector respectively.

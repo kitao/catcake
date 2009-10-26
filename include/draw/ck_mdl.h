@@ -29,47 +29,47 @@
 */
 
 
-class pgRend_Light;
+class ckRend_Light;
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgMdl
+class CK_API ckMdl
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotInitialized);
 
-    pgMdl();
-    ~pgMdl();
+    ckMdl();
+    ~ckMdl();
 
-    void init(pgID mdl_data_id, pgID scr_id);
-    void init(pgID mdl_data_id, pgDraw* parent);
+    void init(ckID mdl_data_id, ckID scr_id);
+    void init(ckID mdl_data_id, ckDraw* parent);
 
-    const pgMdlData* getModelData() const;
+    const ckMdlData* getModelData() const;
 
-    pgID getTextureID() const;
-    void setTextureID(pgID tex_id);
+    ckID getTextureID() const;
+    void setTextureID(ckID tex_id);
 
-    pgID getLightSetID() const;
-    void setLightSetID(pgID lts_id);
+    ckID getLightSetID() const;
+    void setLightSetID(ckID lts_id);
 
-    pgDraw* getRootDraw();
-    pgDraw* getNodeDraw(u16 node_index);
+    ckDraw* getRootDraw();
+    ckDraw* getNodeDraw(u16 node_index);
 
 private:
-    pgMdl(const pgMdl&);
-    void operator=(const pgMdl&);
+    ckMdl(const ckMdl&);
+    void operator=(const ckMdl&);
 
-    void init2(pgID mdl_data_id, pgID scr_id, pgDraw* parent);
+    void init2(ckID mdl_data_id, ckID scr_id, ckDraw* parent);
     void uninit();
 
-    pgMdlData m_mdl_data;
-    pgDraw** m_draw_ptr;
-    pgRend_Light** m_rend_ptr;
-    pgNode m_root_node;
+    ckMdlData m_mdl_data;
+    ckDraw** m_draw_ptr;
+    ckRend_Light** m_rend_ptr;
+    ckNode m_root_node;
     u16 m_node_num;
-    pgID m_lts_id;
+    ckID m_lts_id;
 };

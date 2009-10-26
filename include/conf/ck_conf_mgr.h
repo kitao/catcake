@@ -30,44 +30,44 @@
 
 
 /*!
-    @ingroup pgConf
+    @ingroup ckConf
     TODO
 */
-class PG_API pgConfMgr
+class CK_API ckConfMgr
 {
-    friend class pgConf;
+    friend class ckConf;
 
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotFound);
-    pgDefineException(ExceptionNotInitialized);
-    pgDefineException(ExceptionSameIDExists);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotFound);
+    ckDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionSameIDExists);
 
     static bool isCreated();
     static void createAfterRes();
     static void destroyBeforeRes();
 
-    static bool hasConfig(pgID id);
-    static pgConf* getConfig(pgID id);
-    static pgConf* newConfig(pgID id, const void* data, u32 data_size);
-    static void deleteConfig(pgID id);
+    static bool hasConfig(ckID id);
+    static ckConf* getConfig(ckID id);
+    static ckConf* newConfig(ckID id, const void* data, u32 data_size);
+    static void deleteConfig(ckID id);
 
-    static pgConf* getFirstConfigN();
-    static pgConf* getLastConfigN();
+    static ckConf* getFirstConfigN();
+    static ckConf* getLastConfigN();
 
 private:
     static const u32 CONFIG_HASH_SIZE = 10;
 
-    pgConfMgr();
-    ~pgConfMgr();
-    void operator=(const pgConfMgr&);
+    ckConfMgr();
+    ~ckConfMgr();
+    void operator=(const ckConfMgr&);
 
-    static pgConfMgr* instance();
+    static ckConfMgr* instance();
 
-    static void configInitializer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
-    static void configFinalizer(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
+    static void configInitializer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
+    static void configFinalizer(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
 
-    pgMap<pgID, pgConf*> m_conf_map;
+    ckMap<ckID, ckConf*> m_conf_map;
 
-    static pgConfMgr* m_instance;
+    static ckConfMgr* m_instance;
 };

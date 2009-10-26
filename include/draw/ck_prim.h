@@ -30,18 +30,18 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgPrim : public pgDraw
+class CK_API ckPrim : public ckDraw
 {
-    friend class pgRend;
+    friend class ckRend;
 
 public:
-    struct PG_API PrimData
+    struct CK_API PrimData
     {
-        pgVec pos;
-        pgCol col;
+        ckVec pos;
+        ckCol col;
         r32 u, v;
 
         PrimData();
@@ -58,14 +58,14 @@ public:
         MODE_TRIANGLE_FAN
     };
 
-    pgPrim();
-    virtual ~pgPrim();
+    ckPrim();
+    virtual ~ckPrim();
 
-    void init(PrimMode prim_mode, u16 max_data_num, pgID scr_id);
-    void init(PrimMode prim_mode, u16 max_data_num, pgDraw* parent);
+    void init(PrimMode prim_mode, u16 max_data_num, ckID scr_id);
+    void init(PrimMode prim_mode, u16 max_data_num, ckDraw* parent);
 
-    void init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, pgID scr_id);
-    void init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, pgDraw* parent);
+    void init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, ckID scr_id);
+    void init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, ckDraw* parent);
 
     PrimMode getPrimMode() const;
     void setPrimMode(PrimMode prim_mode);
@@ -76,26 +76,26 @@ public:
     void setCurDataNum(u16 cur_data_num);
     u16 getMaxDataNum() const;
     void reallocData(u16 max_data_num);
-    void copyData(u16 dest_index, const pgPrim* src_prim, u16 src_index);
+    void copyData(u16 dest_index, const ckPrim* src_prim, u16 src_index);
 
-    pgVec& dataPos(u16 index);
-    pgCol& dataCol(u16 index);
+    ckVec& dataPos(u16 index);
+    ckCol& dataCol(u16 index);
     r32& dataU(u16 index);
     r32& dataV(u16 index);
     void setDataUV(u16 index, r32 u, r32 v);
-    void setDataRect(u16 index, const pgVec& center, r32 width, r32 height, pgCol col, r32 u1, r32 v1, r32 u2, r32 v2);
+    void setDataRect(u16 index, const ckVec& center, r32 width, r32 height, ckCol col, r32 u1, r32 v1, r32 u2, r32 v2);
 
 private:
-    void init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, u16 max_data_num, pgID scr_id, pgDraw* parent);
+    void init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, u16 max_data_num, ckID scr_id, ckDraw* parent);
 
-    virtual void render(const pgMat& view);
-    void render_soft(const pgMat& view);
-    void render_shader(const pgMat& view);
+    virtual void render(const ckMat& view);
+    void render_soft(const ckMat& view);
+    void render_shader(const ckMat& view);
 
-    pgType<u8, PrimMode> m_prim_mode;
-    pgType<u8, bool> m_is_share_data;
+    ckType<u8, PrimMode> m_prim_mode;
+    ckType<u8, bool> m_is_share_data;
     PrimData* m_prim_data;
     u16 m_cur_data_num;
     u16 m_max_data_num;
-    pgRend* m_rend;
+    ckRend* m_rend;
 };

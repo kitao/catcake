@@ -29,21 +29,21 @@
 */
 
 
-#ifndef PG_MATH_ALL_H_
-#define PG_MATH_ALL_H_
+#ifndef CK_MATH_ALL_H_
+#define CK_MATH_ALL_H_
 
 
-#include "pg_def.h"
+#include "ck_def.h"
 
 /*!
-    @defgroup pgMath pgMath -- Mathematics module
+    @defgroup ckMath ckMath -- Mathematics module
     Provides the functionality for mathematics.
 */
-#include "math/pg_math.h"
-#include "math/pg_vec.h"
-#include "math/pg_mat.h"
-#include "math/pg_quat.h"
-#include "math/pg_fix.h"
+#include "math/ck_math.h"
+#include "math/ck_vec.h"
+#include "math/ck_mat.h"
+#include "math/ck_quat.h"
+#include "math/ck_fix.h"
 
 
-#endif // !PG_MATH_ALL_H_
+#endif // !CK_MATH_ALL_H_

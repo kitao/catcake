@@ -29,19 +29,19 @@
 */
 
 
-#ifndef PG_CONF_ALL_H_
-#define PG_CONF_ALL_H_
+#ifndef CK_CONF_ALL_H_
+#define CK_CONF_ALL_H_
 
 
-#include "pg_gen_all.h"
+#include "ck_gen_all.h"
 
 /*!
-    @defgroup pgConf pgConf -- Configuration file parser module
+    @defgroup ckConf ckConf -- Configuration file parser module
     Provides the functionality to handle config files.
 */
-#include "conf/pg_ent.h"
-#include "conf/pg_conf.h"
-#include "conf/pg_conf_mgr.h"
+#include "conf/ck_ent.h"
+#include "conf/ck_conf.h"
+#include "conf/ck_conf_mgr.h"
 
 
-#endif // !PG_CONF_ALL_H_
+#endif // !CK_CONF_ALL_H_

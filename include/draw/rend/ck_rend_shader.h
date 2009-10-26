@@ -30,44 +30,44 @@
 
 
 /*!
-    @ingroup pgDraw
+    @ingroup ckDraw
     TODO
 */
-class PG_API pgRend_Shader : public pgRend
+class CK_API ckRend_Shader : public ckRend
 {
 public:
-    void init(pgPrim* prim, pgID shd_id);
-    void init(pgPrim* prim, r32* rend_data, pgID shd_id);
+    void init(ckPrim* prim, ckID shd_id);
+    void init(ckPrim* prim, r32* rend_data, ckID shd_id);
 
-    pgID getShaderID();
+    ckID getShaderID();
 
-    pgID get2ndTextureID();
-    void set2ndTextureID(pgID tex_id);
-    pgID get3rdTextureID();
-    void set3rdTextureID(pgID tex_id);
+    ckID get2ndTextureID();
+    void set2ndTextureID(ckID tex_id);
+    ckID get3rdTextureID();
+    void set3rdTextureID(ckID tex_id);
 
     r32& uniform(u8 uni_index);
-    void setUniformVec(u8 uni_index, const pgVec& vec);
-    void setUniformCol3x255(u8 uni_index, pgCol col);
-    void setUniformCol4x255(u8 uni_index, pgCol col);
+    void setUniformVec(u8 uni_index, const ckVec& vec);
+    void setUniformCol3x255(u8 uni_index, ckCol col);
+    void setUniformCol4x255(u8 uni_index, ckCol col);
 
     r32& attrib(u16 data_index, u8 att_index);
-    void setAttribVec(u16 data_index, u8 att_index, const pgVec& vec);
-    void setAttribCol3x255(u16 data_index, u8 att_index, pgCol col);
-    void setAttribCol4x255(u16 data_index, u8 att_index, pgCol col);
+    void setAttribVec(u16 data_index, u8 att_index, const ckVec& vec);
+    void setAttribCol3x255(u16 data_index, u8 att_index, ckCol col);
+    void setAttribCol4x255(u16 data_index, u8 att_index, ckCol col);
 
 private:
     struct RendBody
     {
-        pgShd* shd;
-        pgTex* tex2;
-        pgTex* tex3;
+        ckShd* shd;
+        ckTex* tex2;
+        ckTex* tex3;
         r32* uni;
         r32* att;
         u32 rend_data_size;
     };
 
-    virtual pgID getClassID();
+    virtual ckID getClassID();
     virtual void initData(void* data, u16 data_num);
-    virtual void render(const pgMat& view);
+    virtual void render(const ckMat& view);
 };

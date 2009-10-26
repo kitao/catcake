@@ -29,17 +29,17 @@
 */
 
 
-#ifndef PG_SND_ALL_H_
-#define PG_SND_ALL_H_
+#ifndef CK_SND_ALL_H_
+#define CK_SND_ALL_H_
 
 
-#include "pg_gen_all.h"
+#include "ck_gen_all.h"
 
 /*!
-    @defgroup pgSnd pgSnd -- Sound module
+    @defgroup ckSnd ckSnd -- Sound module
     Provides the functionality to play sounds.
 */
-#include "snd/pg_snd_mgr.h"
+#include "snd/ck_snd_mgr.h"
 
 
-#endif // !PG_SND_ALL_H_
+#endif // !CK_SND_ALL_H_

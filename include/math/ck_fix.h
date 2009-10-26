@@ -30,220 +30,220 @@
 
 
 /*!
-    @ingroup pgMath
+    @ingroup ckMath
     A 32-bit fixed point number.
 */
-class PG_API pgFix
+class CK_API ckFix
 {
 public:
-    pgDefineException(ExceptionOverflow);
-    pgDefineException(ExceptionUnderflow);
+    ckDefineException(ExceptionOverflow);
+    ckDefineException(ExceptionUnderflow);
 
     /*!
-        Constructs a pgFix.
+        Constructs a ckFix.
     */
-    pgFix();
+    ckFix();
 
     /*!
-        Constructs and initialize a pgFix from the specified s32 value.
+        Constructs and initialize a ckFix from the specified s32 value.
         @param[in] n An s32 value.
     */
-    pgFix(s32 n);
+    ckFix(s32 n);
 
     /*!
-        Constructs and initialize a pgFix from the specified r32 value.
+        Constructs and initialize a ckFix from the specified r32 value.
         @param[in] r An r32 value.
     */
-    pgFix(r32 r);
+    ckFix(r32 r);
 
     /*!
-        Returns whether this pgFix is equal to the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return Whether this pgFix is equal to the right hand side pgFix.
+        Returns whether this ckFix is equal to the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return Whether this ckFix is equal to the right hand side ckFix.
     */
-    bool operator==(pgFix fix) const;
+    bool operator==(ckFix fix) const;
 
     /*!
-        Returns whether this pgFix is unequal to the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return Whether this pgFix is unequal to the right hand side pgFix.
+        Returns whether this ckFix is unequal to the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return Whether this ckFix is unequal to the right hand side ckFix.
     */
-    bool operator!=(pgFix fix) const;
+    bool operator!=(ckFix fix) const;
 
     /*!
-        Returns whether this pgFix is less than the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return Whether this pgFix is less than the pgFix.
+        Returns whether this ckFix is less than the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return Whether this ckFix is less than the ckFix.
     */
-    bool operator<(pgFix fix) const;
+    bool operator<(ckFix fix) const;
 
     /*!
-        Returns whether this pgFix is greater than the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return Whether this pgFix is greater than the pgFix.
+        Returns whether this ckFix is greater than the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return Whether this ckFix is greater than the ckFix.
     */
-    bool operator>(pgFix fix) const;
+    bool operator>(ckFix fix) const;
 
     /*!
-        Returns whether this pgFix is less than or equal to the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return Whether this pgFix is less than or equal to the pgFix.
+        Returns whether this ckFix is less than or equal to the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return Whether this ckFix is less than or equal to the ckFix.
     */
-    bool operator<=(pgFix fix) const;
+    bool operator<=(ckFix fix) const;
 
     /*!
-        Returns whether this pgFix is greater than or equal to the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return Whether this pgFix is greater than or equal to the pgFix.
+        Returns whether this ckFix is greater than or equal to the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return Whether this ckFix is greater than or equal to the ckFix.
     */
-    bool operator>=(pgFix fix) const;
+    bool operator>=(ckFix fix) const;
 
     /*!
-        Returns a pgFix which is the sum of this pgFix and the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the sum of two pgFixes.
+        Returns a ckFix which is the sum of this ckFix and the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the sum of two ckFixes.
     */
-    pgFix operator+(pgFix fix) const;
+    ckFix operator+(ckFix fix) const;
 
     /*!
-        Returns a pgFix which is the sum of the left hand side s32 value and the right hand side pgFix.
+        Returns a ckFix which is the sum of the left hand side s32 value and the right hand side ckFix.
         @param[in] n The left hand side s32 value.
-        @param[in] fix The right hand side pgFix.
-        @return a pgFix which is the sum of the left hand side s32 value and the right hand side pgFix.
+        @param[in] fix The right hand side ckFix.
+        @return a ckFix which is the sum of the left hand side s32 value and the right hand side ckFix.
     */
-    PG_API friend pgFix operator+(s32 n, pgFix fix);
+    CK_API friend ckFix operator+(s32 n, ckFix fix);
 
     /*!
-        Returns a pgFix which is the sum of the left hand side r32 value and the right hand side pgFix.
+        Returns a ckFix which is the sum of the left hand side r32 value and the right hand side ckFix.
         @param[in] r The left hand side r32 value.
-        @param[in] fix The right hand side pgFix.
-        @return a pgFix which is the sum of the left hand side r32 value and the right hand side pgFix.
+        @param[in] fix The right hand side ckFix.
+        @return a ckFix which is the sum of the left hand side r32 value and the right hand side ckFix.
     */
-    PG_API friend pgFix operator+(r32 r, pgFix fix);
+    CK_API friend ckFix operator+(r32 r, ckFix fix);
 
     /*!
-        Adds the right hand side pgFix to this pgFix.
-        @param[in] fix The right hand side pgFix.
+        Adds the right hand side ckFix to this ckFix.
+        @param[in] fix The right hand side ckFix.
     */
-    void operator+=(pgFix fix);
+    void operator+=(ckFix fix);
 
     /*!
-        Returns a pgFix which is the negative of this pgFix.
-        @return A pgFix which is the negative of this pgFix.
+        Returns a ckFix which is the negative of this ckFix.
+        @return A ckFix which is the negative of this ckFix.
     */
-    pgFix operator-() const;
+    ckFix operator-() const;
 
     /*!
-        Returns a pgFix which is the right hand side pgFix subtracted from this pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the right hand side pgFix subtracted from this pgFix.
+        Returns a ckFix which is the right hand side ckFix subtracted from this ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the right hand side ckFix subtracted from this ckFix.
     */
-    pgFix operator-(pgFix fix) const;
+    ckFix operator-(ckFix fix) const;
 
     /*!
-        Returns a pgFix which is the right hand side pgFix subtracted from the left hand side s32 value.
+        Returns a ckFix which is the right hand side ckFix subtracted from the left hand side s32 value.
         @param[in] n The left hand side s32 value.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the right hand side pgFix subtracted from the left hand side s32 value.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the right hand side ckFix subtracted from the left hand side s32 value.
     */
-    PG_API friend pgFix operator-(s32 n, pgFix fix);
+    CK_API friend ckFix operator-(s32 n, ckFix fix);
 
     /*!
-        Returns a pgFix which is the right hand side pgFix subtracted from the left hand side r32 value.
+        Returns a ckFix which is the right hand side ckFix subtracted from the left hand side r32 value.
         @param[in] r The left hand side r32 value.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the right hand side pgFix subtracted from the left hand side r32 value.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the right hand side ckFix subtracted from the left hand side r32 value.
     */
-    PG_API friend pgFix operator-(r32 r, pgFix fix);
+    CK_API friend ckFix operator-(r32 r, ckFix fix);
 
     /*!
-        Subtracts the right hand side pgFix from this pgFix.
-        @param[in] fix The right hand side pgFix.
+        Subtracts the right hand side ckFix from this ckFix.
+        @param[in] fix The right hand side ckFix.
     */
-    void operator-=(pgFix fix);
+    void operator-=(ckFix fix);
 
     /*!
-        Returns a pgFix which is this pgFix multiplied with the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is this pgFix multiplied with the right hand side pgFix.
+        Returns a ckFix which is this ckFix multiplied with the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is this ckFix multiplied with the right hand side ckFix.
     */
-    pgFix operator*(pgFix fix) const;
+    ckFix operator*(ckFix fix) const;
 
     /*!
-        Returns a pgFix which is the left hand side s32 value multiplied with the right hand side pgFix.
+        Returns a ckFix which is the left hand side s32 value multiplied with the right hand side ckFix.
         @param[in] n The left hand side s32 value.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the left hand side s32 value multiplied with the right hand side pgFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the left hand side s32 value multiplied with the right hand side ckFix.
     */
-    PG_API friend pgFix operator*(s32 n, pgFix fix);
+    CK_API friend ckFix operator*(s32 n, ckFix fix);
 
     /*!
-        Returns a pgFix which is the left hand side r32 value multiplied with the right hand side pgFix.
+        Returns a ckFix which is the left hand side r32 value multiplied with the right hand side ckFix.
         @param[in] r The left hand side r32 value.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the left hand side r32 value multiplied with the right hand side pgFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the left hand side r32 value multiplied with the right hand side ckFix.
     */
-    PG_API friend pgFix operator*(r32 r, pgFix fix);
+    CK_API friend ckFix operator*(r32 r, ckFix fix);
 
     /*!
-        Multiplies this pgFix with the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
+        Multiplies this ckFix with the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
     */
-    void operator*=(pgFix fix);
+    void operator*=(ckFix fix);
 
     /*!
-        Returns a pgFix which is this pgFix divided by the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
-        @return A pgVec which is this pgFix divided by the right hand side pgFix.
+        Returns a ckFix which is this ckFix divided by the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckVec which is this ckFix divided by the right hand side ckFix.
     */
-    pgFix operator/(pgFix fix) const;
+    ckFix operator/(ckFix fix) const;
 
     /*!
-        Returns a pgFix which is the left hand side s32 value divided by the right hand side pgFix.
+        Returns a ckFix which is the left hand side s32 value divided by the right hand side ckFix.
         @param[in] n The left hand side s32 value.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the left hand side s32 value devided by the right hand side pgFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the left hand side s32 value devided by the right hand side ckFix.
     */
-    PG_API friend pgFix operator/(s32 n, pgFix fix);
+    CK_API friend ckFix operator/(s32 n, ckFix fix);
 
     /*!
-        Returns a pgFix which is the left hand side r32 value divided by the right hand side pgFix.
+        Returns a ckFix which is the left hand side r32 value divided by the right hand side ckFix.
         @param[in] r The left hand side r32 value.
-        @param[in] fix The right hand side pgFix.
-        @return A pgFix which is the left hand side r32 value divided by the right hand side pgFix.
+        @param[in] fix The right hand side ckFix.
+        @return A ckFix which is the left hand side r32 value divided by the right hand side ckFix.
     */
-    PG_API friend pgFix operator/(r32 r, pgFix fix);
+    CK_API friend ckFix operator/(r32 r, ckFix fix);
 
     /*!
-        Divides this pgFix by the right hand side pgFix.
-        @param[in] fix The right hand side pgFix.
+        Divides this ckFix by the right hand side ckFix.
+        @param[in] fix The right hand side ckFix.
     */
-    void operator/=(pgFix fix);
+    void operator/=(ckFix fix);
 
     /*!
-        Returns an s32 value which is converted from this pgFix.
-        @return An s32 value which is converted from this pgFix.
+        Returns an s32 value which is converted from this ckFix.
+        @return An s32 value which is converted from this ckFix.
     */
     s32 toS32() const;
 
     /*!
-        Returns an r32 value which is converted from this pgFix.
-        @return An r32 value which is converted from this pgFix.
+        Returns an r32 value which is converted from this ckFix.
+        @return An r32 value which is converted from this ckFix.
     */
     r32 toR32() const;
 
     /*!
-        Returns the value of this pgFix in the internal format.
-        @return The value of thie pgFix in the internal format.
+        Returns the value of this ckFix in the internal format.
+        @return The value of thie ckFix in the internal format.
     */
     s32 getValue() const;
 
     /*!
-        Returns a pgFix which is constructed from the specified value in the internal format.
+        Returns a ckFix which is constructed from the specified value in the internal format.
         @param[in] value A value in the internal format.
-        @return A pgFix which is constructed from the specified value in the internal format.
+        @return A ckFix which is constructed from the specified value in the internal format.
     */
-    static pgFix fromValue(s32 value);
+    static ckFix fromValue(s32 value);
 
 private:
     static const u32 BIT_NUM = 32;

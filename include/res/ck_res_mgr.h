@@ -30,22 +30,22 @@
 
 
 /*!
-    @ingroup pgRes
+    @ingroup ckRes
     TODO
 */
-class PG_API pgResMgr
+class CK_API ckResMgr
 {
 public:
-    pgDefineException(ExceptionCannotOpenFile);
-    pgDefineException(ExceptionCannotReadFile);
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotFound);
-    pgDefineException(ExceptionNotInitialized);
-    pgDefineException(ExceptionSameExtensionExists);
-    pgDefineException(ExceptionSameIDExists);
+    ckDefineException(ExceptionCannotOpenFile);
+    ckDefineException(ExceptionCannotReadFile);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotFound);
+    ckDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionSameExtensionExists);
+    ckDefineException(ExceptionSameIDExists);
 
-    typedef void (*Initializer)(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
-    typedef void (*Finalizer)(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
+    typedef void (*Initializer)(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void** exinfo);
+    typedef void (*Finalizer)(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, void* exinfo);
 
     static bool isCreated();
     static void createAfterTask();
@@ -54,22 +54,22 @@ public:
     static u16 getTypeNum();
     static u16 getResourceNum();
 
-    static void addType(pgStr<char, 3> ext, Initializer init, Finalizer final);
-    static void removeType(pgStr<char, 3> ext);
+    static void addType(ckStr<char, 3> ext, Initializer init, Finalizer final);
+    static void removeType(ckStr<char, 3> ext);
 
-    static bool hasResource(pgID id);
-    static pgRes getResource(pgID id);
-    static void addResource(pgID id, pgStr<char, 3> ext, const void* data, u32 data_size, bool is_auto_free);
-    static void removeResource(pgID id);
+    static bool hasResource(ckID id);
+    static ckRes getResource(ckID id);
+    static void addResource(ckID id, ckStr<char, 3> ext, const void* data, u32 data_size, bool is_auto_free);
+    static void removeResource(ckID id);
 
     static void loadResource(const char* filename, bool is_type_detect);
-    static void loadResourceAs(pgID id, const char* filename, bool is_type_detect);
+    static void loadResourceAs(ckID id, const char* filename, bool is_type_detect);
 
-    static const pgStr<char, 3>* getFirstTypeN();
-    static const pgStr<char, 3>* getNextTypeN(pgStr<char, 3> ext);
+    static const ckStr<char, 3>* getFirstTypeN();
+    static const ckStr<char, 3>* getNextTypeN(ckStr<char, 3> ext);
 
-    static const pgRes* getFirstResourceN();
-    static const pgRes* getNextResourceN(pgID id);
+    static const ckRes* getFirstResourceN();
+    static const ckRes* getNextResourceN(ckID id);
 
 private:
     static const u32 TYPE_HASH_SIZE = 1;
@@ -77,19 +77,19 @@ private:
 
     struct TypeInfo
     {
-        pgStr<char, 3> ext;
+        ckStr<char, 3> ext;
         Initializer init;
         Finalizer final;
     };
 
-    pgResMgr();
-    ~pgResMgr();
-    void operator=(const pgResMgr&);
+    ckResMgr();
+    ~ckResMgr();
+    void operator=(const ckResMgr&);
 
-    static pgResMgr* instance();
+    static ckResMgr* instance();
 
-    pgMap<pgStr<char, 3>, TypeInfo> m_type_info_map;
-    pgMap<pgID, pgRes> m_res_map;
+    ckMap<ckStr<char, 3>, TypeInfo> m_type_info_map;
+    ckMap<ckID, ckRes> m_res_map;
 
-    static pgResMgr* m_instance;
+    static ckResMgr* m_instance;
 };

@@ -30,10 +30,10 @@
 
 
 /*!
-    @ingroup pgMath
+    @ingroup ckMath
     A quaternion.
 */
-struct PG_API pgQuat
+struct CK_API ckQuat
 {
     r32 x; //!< The x-coordinate.
     r32 y; //!< The y-coordinate.
@@ -41,18 +41,18 @@ struct PG_API pgQuat
     r32 w; //!< The w-coordinate.
 
     /*!
-        Constructs a pgQuat.
+        Constructs a ckQuat.
     */
-    pgQuat();
+    ckQuat();
 
     /*!
-        Constructs and initialize a pgQaut from the specified xyzw coordinates.
+        Constructs and initialize a ckQaut from the specified xyzw coordinates.
         @param[in] x_ The x-coordinate.
         @param[in] y_ The y-coordinate.
         @param[in] z_ The z-coordinate.
         @param[in] w_ The w-coordinate.
     */
-    pgQuat(r32 x_, r32 y_, r32 z_, r32 w_);
+    ckQuat(r32 x_, r32 y_, r32 z_, r32 w_);
 
     /*!
         Sets all components from the specified xyzw coordinates.
@@ -64,24 +64,24 @@ struct PG_API pgQuat
     void set(r32 x_, r32 y_, r32 z_, r32 w_);
 
     /*!
-        Returns a pgQuat which is interpolated between this pgQuat and an another pgQuat by the specified ratio, using spherical linear interpolation.
-        @param[in] to An another pgQuat.
-        @param[in] ratio The value which indicates how far to interpolate between two pgQuats. This value is clamped between 0.0f and 1.0f.
-        @return A pgQuat which is interpolated between two pgQuats.
+        Returns a ckQuat which is interpolated between this ckQuat and an another ckQuat by the specified ratio, using spherical linear interpolation.
+        @param[in] to An another ckQuat.
+        @param[in] ratio The value which indicates how far to interpolate between two ckQuats. This value is clamped between 0.0f and 1.0f.
+        @return A ckQuat which is interpolated between two ckQuats.
     */
-    pgQuat slerp(const pgQuat& to, r32 ratio) const;
+    ckQuat slerp(const ckQuat& to, r32 ratio) const;
 
     /*!
-        Returns a pgMat which is converted from the axes of this pgQuat and the translation of the specified pgVec.
+        Returns a ckMat which is converted from the axes of this ckQuat and the translation of the specified ckVec.
         @param[in] trans The translation.
-        @return A pgMat which is converted from the axes of this pgQuat and the translation of the specified pgVec.
+        @return A ckMat which is converted from the axes of this ckQuat and the translation of the specified ckVec.
     */
-    pgMat toMat(const pgVec& trans) const;
+    ckMat toMat(const ckVec& trans) const;
 
     /*!
-        Returns a pgQuat which is converted from the specified pgMat.
-        @param[in] mat A pgMat, whose translation is ignored.
-        @return A pgQuat which is converted from the specified pgMat.
+        Returns a ckQuat which is converted from the specified ckMat.
+        @param[in] mat A ckMat, whose translation is ignored.
+        @return A ckQuat which is converted from the specified ckMat.
     */
-    static pgQuat fromMat(const pgMat& mat);
+    static ckQuat fromMat(const ckMat& mat);
 };

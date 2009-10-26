@@ -30,29 +30,29 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A Sequence of elements stored in a linked list.
-    @tparam T The type which is stored in the pgList.
+    @tparam T The type which is stored in the ckList.
 */
-template<class T> class pgList
+template<class T> class ckList
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionInvalidArgument);
 
     /*!
-        An element of pgList.
+        An element of ckList.
     */
     class Item
     {
-        friend class pgList<T>;
+        friend class ckList<T>;
 
     public:
-        pgDefineException(ExceptionInvalidArgument);
-        pgDefineException(ExceptionInvalidCall);
-        pgDefineException(ExceptionNotInitialized);
+        ckDefineException(ExceptionInvalidArgument);
+        ckDefineException(ExceptionInvalidCall);
+        ckDefineException(ExceptionNotInitialized);
 
         /*!
-            Constructs a pgList::Item.
+            Constructs a ckList::Item.
         */
         Item()
         {
@@ -62,7 +62,7 @@ public:
         }
 
         /*!
-            Destructs this pgList::Item.
+            Destructs this ckList::Item.
         */
         ~Item()
         {
@@ -70,7 +70,7 @@ public:
         }
 
         /*!
-            Initializes this pgList::Item to have the specified value.
+            Initializes this ckList::Item to have the specified value.
             This method can be called more than once.
             @param[in] self The pointer to a value.
         */
@@ -78,59 +78,59 @@ public:
         {
             if (!self)
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
 
             m_self = self;
         }
 
         /*!
-            Returns the value of this pgList::Item.
-            @return The value of this pgList::Item.
+            Returns the value of this ckList::Item.
+            @return The value of this ckList::Item.
         */
         T* getSelf() const
         {
             if (!m_self)
             {
-                pgThrow(ExceptionNotInitialized);
+                ckThrow(ExceptionNotInitialized);
             }
 
             return m_self;
         }
 
         /*!
-            Returns the previous pgList::Item of this pgList::Item.
-            If the pgList::Item has no previous pgList::Item, returns NULL.
-            @return The previous pgList::Item of this pgList::Item.
+            Returns the previous ckList::Item of this ckList::Item.
+            If the ckList::Item has no previous ckList::Item, returns NULL.
+            @return The previous ckList::Item of this ckList::Item.
         */
         Item* getPrevN() const
         {
             if (!hasList())
             {
-                pgThrow(ExceptionInvalidCall);
+                ckThrow(ExceptionInvalidCall);
             }
 
             return (m_prev != &m_list->m_start) ? m_prev : NULL;
         }
 
         /*!
-            Returns the next pgList::Item of this pgList::Item.
-            If the pgList::Item has no next pgList::Item, returns NULL.
-            @return The next pgList::Item of this pgList::Item.
+            Returns the next ckList::Item of this ckList::Item.
+            If the ckList::Item has no next ckList::Item, returns NULL.
+            @return The next ckList::Item of this ckList::Item.
         */
         Item* getNextN() const
         {
             if (!hasList())
             {
-                pgThrow(ExceptionInvalidCall);
+                ckThrow(ExceptionInvalidCall);
             }
 
             return (m_next != &m_list->m_end) ? m_next : NULL;
         }
 
         /*!
-            Returns whether this pgList::Item belongs to a pgList.
-            @return Wheter this pgList::Item belongs to a pgList.
+            Returns whether this ckList::Item belongs to a ckList.
+            @return Wheter this ckList::Item belongs to a ckList.
         */
         bool hasList() const
         {
@@ -138,24 +138,24 @@ public:
         }
 
         /*!
-            Returns the pgList which this pgList::Item belongs to.
-            If ths pgList::Item does not belong to any pgList, returns NULL.
-            @return The pgList which this pgList::Item belongs to.
+            Returns the ckList which this ckList::Item belongs to.
+            If ths ckList::Item does not belong to any ckList, returns NULL.
+            @return The ckList which this ckList::Item belongs to.
         */
-        pgList<T>* getListN() const
+        ckList<T>* getListN() const
         {
             return m_list;
         }
 
         /*!
-            Insertes this pgList::Item before the specified pgList::Item.
-            @param[in] item A pgList::Item.
+            Insertes this ckList::Item before the specified ckList::Item.
+            @param[in] item A ckList::Item.
         */
         void joinBefore(Item* item)
         {
             if (!item || item == this || !item->hasList())
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
 
             leave();
@@ -171,14 +171,14 @@ public:
         }
 
         /*!
-            Insertes this pgList::Item after the specified pgList::Item.
-            @param[in] item A pgList::Item.
+            Insertes this ckList::Item after the specified ckList::Item.
+            @param[in] item A ckList::Item.
         */
         void joinAfter(Item* item)
         {
             if (!item || item == this || !item->hasList())
             {
-                pgThrow(ExceptionInvalidArgument);
+                ckThrow(ExceptionInvalidArgument);
             }
 
             leave();
@@ -194,7 +194,7 @@ public:
         }
 
         /*!
-            Removes this pgList::Item from the pgList which the pgList::Item belongs to.
+            Removes this ckList::Item from the ckList which the ckList::Item belongs to.
         */
         void leave()
         {
@@ -215,15 +215,15 @@ public:
         void operator=(const Item&) {}
 
         T* m_self;
-        pgList<T>* m_list;
+        ckList<T>* m_list;
         Item* m_prev;
         Item* m_next;
     };
 
     /*!
-        Constructs a pgList with no item.
+        Constructs a ckList with no item.
     */
-    pgList()
+    ckList()
     {
         m_item_num = 0;
 
@@ -233,16 +233,16 @@ public:
     }
 
     /*!
-        Destructs this pgList.
+        Destructs this ckList.
     */
-    ~pgList()
+    ~ckList()
     {
         clear();
     }
 
     /*!
-        Returns the number of pgList::Items in this pgList.
-        @return The number of pgList::Items in this pgList.
+        Returns the number of ckList::Items in this ckList.
+        @return The number of ckList::Items in this ckList.
     */
     u32 getItemNum() const
     {
@@ -250,8 +250,8 @@ public:
     }
 
     /*!
-        Returns whether this pgList has any pgList::Item.
-        @return Whether this pgList has any pgList::Item.
+        Returns whether this ckList has any ckList::Item.
+        @return Whether this ckList has any ckList::Item.
     */
     bool hasItem() const
     {
@@ -259,9 +259,9 @@ public:
     }
 
     /*!
-        Returns the first pgList::Item in this pgList.
-        If this pgList has no pgList::Item, returns NULL.
-        @return The first pgList::Item in this pgList.
+        Returns the first ckList::Item in this ckList.
+        If this ckList has no ckList::Item, returns NULL.
+        @return The first ckList::Item in this ckList.
     */
     Item* getFirstN() const
     {
@@ -269,9 +269,9 @@ public:
     }
 
     /*!
-        Returns the last pgList::Item in this pgList.
-        If this list has no pgList::Item, returns NULL.
-        @return The last pgList::Item in this pgList.
+        Returns the last ckList::Item in this ckList.
+        If this list has no ckList::Item, returns NULL.
+        @return The last ckList::Item in this ckList.
     */
     Item* getLastN() const
     {
@@ -279,35 +279,35 @@ public:
     }
 
     /*!
-        Adds the specified pgList::Item to this pgList as the first pgList::Item.
-        @param[in] item A pgList::Item.
+        Adds the specified ckList::Item to this ckList as the first ckList::Item.
+        @param[in] item A ckList::Item.
     */
     void addFirst(Item* item)
     {
         if (!item)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         item->joinAfter(&m_start);
     }
 
     /*!
-        Adds the specified pgList::Item to this pgList as the last pgList::Item.
-        @param[in] item A pgList::Item.
+        Adds the specified ckList::Item to this ckList as the last ckList::Item.
+        @param[in] item A ckList::Item.
     */
     void addLast(Item* item)
     {
         if (!item)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         item->joinBefore(&m_end);
     }
 
     /*!
-        Removes all pgList::Items from this pgList.
+        Removes all ckList::Items from this ckList.
     */
     void clear()
     {
@@ -318,8 +318,8 @@ public:
     }
 
 private:
-    pgList(const pgList<T>&) {}
-    void operator=(const pgList<T>&) {}
+    ckList(const ckList<T>&) {}
+    void operator=(const ckList<T>&) {}
 
     Item m_start;
     Item m_end;

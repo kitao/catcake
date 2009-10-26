@@ -30,185 +30,185 @@
 
 
 /*!
-    @ingroup pgMath
-    A 3x4 matrix which is represented by four pgVecs.
+    @ingroup ckMath
+    A 3x4 matrix which is represented by four ckVecs.
 */
-struct PG_API pgMat
+struct CK_API ckMat
 {
-    static const pgMat ZERO; //!< The zero matrix.
-    static const pgMat UNIT; //!< The unit matrix.
+    static const ckMat ZERO; //!< The zero matrix.
+    static const ckMat UNIT; //!< The unit matrix.
 
-    pgVec x_axis; //!< The 1st row, which is usually used as the x-axis.
-    pgVec y_axis; //!< The 2nd row, which is usually used as the y-axis.
-    pgVec z_axis; //!< The 3rd row, which is usually used as the z-axis.
-    pgVec trans; //!< The 4th row, which is usually used as the translation.
+    ckVec x_axis; //!< The 1st row, which is usually used as the x-axis.
+    ckVec y_axis; //!< The 2nd row, which is usually used as the y-axis.
+    ckVec z_axis; //!< The 3rd row, which is usually used as the z-axis.
+    ckVec trans; //!< The 4th row, which is usually used as the translation.
 
     /*!
-        Constructs a pgMat.
+        Constructs a ckMat.
     */
-    pgMat();
+    ckMat();
 
     /*!
-        Constructs and initialize a pgMat from the specified four pgVecs.
+        Constructs and initialize a ckMat from the specified four ckVecs.
         @param[in] x_axis_ The x-axis.
         @param[in] y_axis_ The y-axis.
         @param[in] z_axis_ The z-axis.
         @param[in] trans_ The translation.
     */
-    pgMat(const pgVec& x_axis_, const pgVec& y_axis_, const pgVec& z_axis_, const pgVec& trans_);
+    ckMat(const ckVec& x_axis_, const ckVec& y_axis_, const ckVec& z_axis_, const ckVec& trans_);
 
     /*!
-        Sets all components from the specified four pgVecs.
+        Sets all components from the specified four ckVecs.
         @param[in] x_axis_ The x-axis.
         @param[in] y_axis_ The y-axis.
         @param[in] z_axis_ The z-axis.
         @param[in] trans_ The translation.
     */
-    void set(const pgVec& x_axis_, const pgVec& y_axis_, const pgVec& z_axis_, const pgVec& trans_);
+    void set(const ckVec& x_axis_, const ckVec& y_axis_, const ckVec& z_axis_, const ckVec& trans_);
 
     /*!
-        Returns whether this pgMat is equal to the unit matrix.
-        @return Whether this pgMat is equal to the unit matrix.
+        Returns whether this ckMat is equal to the unit matrix.
+        @return Whether this ckMat is equal to the unit matrix.
     */
     bool isUnit() const;
 
     /*!
-        Returns a pgMat which is this pgMat rotated around its x-axis.
+        Returns a ckMat which is this ckMat rotated around its x-axis.
         @param[in] deg An r32 angle of rotation in degrees.
-        @return A pgMat which is this pgMat rotated around its x-axis.
+        @return A ckMat which is this ckMat rotated around its x-axis.
     */
-    pgMat rotateX_r32(r32 deg) const;
+    ckMat rotateX_r32(r32 deg) const;
 
     /*!
-        Returns a pgMat which is this pgMat rotated around its y-axis.
+        Returns a ckMat which is this ckMat rotated around its y-axis.
         @param[in] deg An r32 angle of rotation in degrees.
-        @return A pgMat which is this pgMat rotated around its y-axis.
+        @return A ckMat which is this ckMat rotated around its y-axis.
     */
-    pgMat rotateY_r32(r32 deg) const;
+    ckMat rotateY_r32(r32 deg) const;
 
     /*!
-        Returns a pgMat which is this pgMat rotated around its z-axis.
+        Returns a ckMat which is this ckMat rotated around its z-axis.
         @param[in] deg An r32 angle of rotation in degrees.
-        @return A pgMat which is this pgMat rotated around its z-axis.
+        @return A ckMat which is this ckMat rotated around its z-axis.
     */
-    pgMat rotateZ_r32(r32 deg) const;
+    ckMat rotateZ_r32(r32 deg) const;
 
     /*!
-        Returns a pgMat which is this pgMat rotated around its x-axis.
+        Returns a ckMat which is this ckMat rotated around its x-axis.
         This method allows only an s32 type as an angle, but is faster than its r32 version.
         @param[in] deg An s32 angle of rotation in degrees.
-        @return A pgMat which is this pgMat rotated around its x-axis.
+        @return A ckMat which is this ckMat rotated around its x-axis.
     */
-    pgMat rotateX_s32(s32 deg) const;
+    ckMat rotateX_s32(s32 deg) const;
 
     /*!
-        Returns a pgMat which is this pgMat rotated around its y-axis.
+        Returns a ckMat which is this ckMat rotated around its y-axis.
         This method allows only an s32 type as an angle, but is faster than its r32 version.
         @param[in] deg An s32 angle of rotation in degrees.
-        @return A pgMat which is this pgMat rotated around its y-axis.
+        @return A ckMat which is this ckMat rotated around its y-axis.
     */
-    pgMat rotateY_s32(s32 deg) const;
+    ckMat rotateY_s32(s32 deg) const;
 
     /*!
-        Returns a pgMat which is this pgMat rotated around its z-axis.
+        Returns a ckMat which is this ckMat rotated around its z-axis.
         This method allows only an s32 type as an angle, but is faster than its r32 version.
         @param[in] deg An s32 angle of rotation in degrees.
-        @return A pgMat which is this pgMat rotated around its z-axis.
+        @return A ckMat which is this ckMat rotated around its z-axis.
     */
-    pgMat rotateZ_s32(s32 deg) const;
+    ckMat rotateZ_s32(s32 deg) const;
 
     /*!
-        Returns a pgMat which is this pgMat scaled by the specified values.
+        Returns a ckMat which is this ckMat scaled by the specified values.
         @param[in] x_scale The x-axis scale factor.
         @param[in] y_scale The y-axis scale factor.
         @param[in] z_scale The z-axis scale factor. If not specified, 1.0f is used.
-        @return A pgMat which is this pgMat scaled by the specified values.
+        @return A ckMat which is this ckMat scaled by the specified values.
     */
-    pgMat scale(r32 x_scale, r32 y_scale, r32 z_scale = 1.0f) const;
+    ckMat scale(r32 x_scale, r32 y_scale, r32 z_scale = 1.0f) const;
 
     /*!
-        Returns a pgMat which is this pgMat translated along its axes for the specified lengths.
+        Returns a ckMat which is this ckMat translated along its axes for the specified lengths.
         @param[in] x A length of translation along the x-axis.
         @param[in] y A length of translation along the y-axis.
         @param[in] z A length of translation along the z-axis. If not specified, 0.0f is used.
-        @return A pgMat which is this pgMat translated along its axes for the specified lengths.
+        @return A ckMat which is this ckMat translated along its axes for the specified lengths.
     */
-    pgMat translate(r32 x, r32 y, r32 z = 0.0f) const;
+    ckMat translate(r32 x, r32 y, r32 z = 0.0f) const;
 
     /*!
-        Returns a pgMat which is interpolated between this pgMat and an another pgMat by the specified ratio, using spherical linear interpolation.
-        @param[in] to An another pgMat.
-        @param[in] ratio The value which indicates how far to interpolate between two pgMats. This value is clamped between 0.0f and 1.0f.
-        @return A pgMat which is interpolated between two pgMats.
+        Returns a ckMat which is interpolated between this ckMat and an another ckMat by the specified ratio, using spherical linear interpolation.
+        @param[in] to An another ckMat.
+        @param[in] ratio The value which indicates how far to interpolate between two ckMats. This value is clamped between 0.0f and 1.0f.
+        @return A ckMat which is interpolated between two ckMats.
     */
-    pgMat slerp(const pgMat& to, r32 ratio) const;
+    ckMat slerp(const ckMat& to, r32 ratio) const;
 
     /*!
-        Returns a pgMat whose components except the translation is interpolated between this pgMat and an another pgMat by the specified ratio,
-        using spherical linear interpolation, and whose translation is equal to the translation of this pgMat.
-        @param[in] to An another pgMat.
-        @param[in] ratio The value which indicates how far to interpolate between two pgMats. This value is clamped between 0.0f and 1.0f.
-        @return A pgMat whose components except the translation is interpolated between two pgMats.
+        Returns a ckMat whose components except the translation is interpolated between this ckMat and an another ckMat by the specified ratio,
+        using spherical linear interpolation, and whose translation is equal to the translation of this ckMat.
+        @param[in] to An another ckMat.
+        @param[in] ratio The value which indicates how far to interpolate between two ckMats. This value is clamped between 0.0f and 1.0f.
+        @return A ckMat whose components except the translation is interpolated between two ckMats.
     */
-    pgMat slerp_noTrans(const pgMat& to, r32 ratio) const;
+    ckMat slerp_noTrans(const ckMat& to, r32 ratio) const;
 
     /*!
-        Returns a pgMat which is orthonormalized version of this pgMat.
-        @return A pgMat which is orthonormalized version of this pgMat.
+        Returns a ckMat which is orthonormalized version of this ckMat.
+        @return A ckMat which is orthonormalized version of this ckMat.
     */
-    pgMat orthonormal() const;
+    ckMat orthonormal() const;
 
     /*!
-        Returns a pgMat which is this pgMat converted from in the world coordinate system to in the local coordinate system of the specified pgMat.
-        @param[in] mat The origin pgMat of the local coordinate system.
-        @return A pgMat which is this pgMat in the local coordinate system.
+        Returns a ckMat which is this ckMat converted from in the world coordinate system to in the local coordinate system of the specified ckMat.
+        @param[in] mat The origin ckMat of the local coordinate system.
+        @return A ckMat which is this ckMat in the local coordinate system.
     */
-    pgMat toLocalOf(const pgMat& mat) const;
+    ckMat toLocalOf(const ckMat& mat) const;
 
     /*!
-        Returns a pgMat which is this pgMat converted from in the local coordinate system of the specified pgMat to in the world coordinate system.
-        @param[in] mat The origin pgMat of the local coordinate system.
-        @return A pgMat which is this pgMat in the world coordinate system.
+        Returns a ckMat which is this ckMat converted from in the local coordinate system of the specified ckMat to in the world coordinate system.
+        @param[in] mat The origin ckMat of the local coordinate system.
+        @return A ckMat which is this ckMat in the world coordinate system.
     */
-    pgMat toGlobalFrom(const pgMat& mat) const;
+    ckMat toGlobalFrom(const ckMat& mat) const;
 
     /*!
-        Returns a pgMat which is this pgMat converted from in the world coordinate system to
-        in the local coordinate system of the specified pgMat whose translation is ignored.
-        @param[in] mat The origin pgMat of the local coordinate system, whose translation is ignored.
-        @return A pgMat which is this pgMat in the local coordinate system.
+        Returns a ckMat which is this ckMat converted from in the world coordinate system to
+        in the local coordinate system of the specified ckMat whose translation is ignored.
+        @param[in] mat The origin ckMat of the local coordinate system, whose translation is ignored.
+        @return A ckMat which is this ckMat in the local coordinate system.
     */
-    pgMat toLocalOf_noTrans(const pgMat& mat) const;
+    ckMat toLocalOf_noTrans(const ckMat& mat) const;
 
     /*!
-        Returns a pgMat which is this pgMat converted from in the local coordinate system of
-        the specified pgMat whose translation is ignored to in the world coordinate system.
-        @param[in] mat The origin pgMat of the local coordinate system, whose translation is ignored.
-        @return A pgMat which is this pgMat in the world coordinate system.
+        Returns a ckMat which is this ckMat converted from in the local coordinate system of
+        the specified ckMat whose translation is ignored to in the world coordinate system.
+        @param[in] mat The origin ckMat of the local coordinate system, whose translation is ignored.
+        @return A ckMat which is this ckMat in the world coordinate system.
     */
-    pgMat toGlobalFrom_noTrans(const pgMat& mat) const;
+    ckMat toGlobalFrom_noTrans(const ckMat& mat) const;
 
     /*!
-        Returns a pgMat which is the look-at matrix built by the specified values.
+        Returns a ckMat which is the look-at matrix built by the specified values.
         @param[in] from The position of the camera.
         @param[in] to The position of the camera look-at target.
         @param[in] up The up direction of the camera.
-        @return A pgMat which is the look-at matrix built by the specified values.
+        @return A ckMat which is the look-at matrix built by the specified values.
     */
-    static pgMat lookAt(const pgVec& from, const pgVec& to, const pgVec& up);
+    static ckMat lookAt(const ckVec& from, const ckVec& to, const ckVec& up);
 
     /*!
-        Converts this pgMat to a 16-element array.
+        Converts this ckMat to a 16-element array.
         @param[out] r32x16 A destination of the converted 16-element array.
     */
     void toR32x16(r32* r32x16) const;
 
     /*!
-        Returns a pgMat which is converted from a 16-element array.
+        Returns a ckMat which is converted from a 16-element array.
         @param[in] r32x16 A 16-element array to be converted.
-        @return A pgMat which is converted from the 16-element array.
+        @return A ckMat which is converted from the 16-element array.
     */
-    static pgMat fromR32x16(const r32* r32x16);
+    static ckMat fromR32x16(const r32* r32x16);
 
     /*!
         Multiplies two 16-element arrays as two matrices.

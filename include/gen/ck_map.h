@@ -30,23 +30,23 @@
 
 
 /*!
-    @ingroup pgGen
+    @ingroup ckGen
     A sorted associative containers that contain unique key/value pairs.
     @tparam K The key type which is used to find the associated value.
     @tparam D The value type which is associated with the key type.
 */
-template<class K, class D> class pgMap
+template<class K, class D> class ckMap
 {
 public:
-    pgDefineException(ExceptionInvalidArgument);
-    pgDefineException(ExceptionNotFound);
-    pgDefineException(ExceptionNotInitialized);
-    pgDefineException(ExceptionSameKeyExists);
+    ckDefineException(ExceptionInvalidArgument);
+    ckDefineException(ExceptionNotFound);
+    ckDefineException(ExceptionNotInitialized);
+    ckDefineException(ExceptionSameKeyExists);
 
     /*!
-        Constructs a pgMap.
+        Constructs a ckMap.
     */
-    pgMap()
+    ckMap()
     {
         m_hash_list = NULL;
         m_last_item1 = m_last_item2 = m_last_item3 = NULL;
@@ -55,44 +55,44 @@ public:
     }
 
     /*!
-        Destructs this pgMap.
+        Destructs this ckMap.
     */
-    ~pgMap()
+    ~ckMap()
     {
         clear();
 
         if (m_hash_list)
         {
-            pgDeleteArray(m_hash_list, pgList<MapItem>);
+            ckDeleteArray(m_hash_list, ckList<MapItem>);
         }
     }
 
     /*!
-        Initializes this pgMap whose hash list has the specified size.
+        Initializes this ckMap whose hash list has the specified size.
         The size of the hash list must be more than zero.
-        @param[in] hash_size The size of the hash list of this pgMap.
+        @param[in] hash_size The size of the hash list of this ckMap.
     */
     void init(u16 hash_size)
     {
         if (hash_size == 0)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         clear();
 
         if (m_hash_list)
         {
-            pgDeleteArray(m_hash_list, pgList<MapItem>);
+            ckDeleteArray(m_hash_list, ckList<MapItem>);
         }
 
         m_hash_size = hash_size;
-        pgNewArray(m_hash_list, pgList<MapItem>, m_hash_size);
+        ckNewArray(m_hash_list, ckList<MapItem>, m_hash_size);
     }
 
     /*!
-        Returns the size of the hash list of this pgMap.
-        @return The size of the hash list of this pgMap.
+        Returns the size of the hash list of this ckMap.
+        @return The size of the hash list of this ckMap.
     */
     u16 getHashSize() const
     {
@@ -100,8 +100,8 @@ public:
     }
 
     /*!
-        Returns the number of the key/value pairs in this pgMap.
-        @return The number of the key/value pairs in this pgMap.
+        Returns the number of the key/value pairs in this ckMap.
+        @return The number of the key/value pairs in this ckMap.
     */
     u16 getDataNum() const
     {
@@ -110,7 +110,7 @@ public:
 
     /*!
         Returns the value which is associated with the specified key.
-        @param[in] key A key in this pgMap.
+        @param[in] key A key in this ckMap.
         @return The value which is associated with the specified key.
     */
     D* get(K key)
@@ -119,7 +119,7 @@ public:
 
         if (!data)
         {
-            pgThrow(ExceptionNotFound);
+            ckThrow(ExceptionNotFound);
         }
 
         return data;
@@ -127,15 +127,15 @@ public:
 
     /*!
         Returns the value which is associated with the specified key.
-        If the specified key isn't in this pgMap, returns NULL.
-        @param[in] key A key in this pgMap.
+        If the specified key isn't in this ckMap, returns NULL.
+        @param[in] key A key in this ckMap.
         @return The value which is associated with the specified key.
     */
     D* getN(K key)
     {
         if (!m_hash_list)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (m_last_item1 && m_last_item1->key == key)
@@ -162,9 +162,9 @@ public:
         else
         {
             s32 index = key % m_hash_size;
-            pgList<MapItem>* hash_list = &m_hash_list[(index < 0) ? -index : index];
+            ckList<MapItem>* hash_list = &m_hash_list[(index < 0) ? -index : index];
 
-            for (typename pgList<MapItem>::Item* item = hash_list->getFirstN(); item; item = item->getNextN())
+            for (typename ckList<MapItem>::Item* item = hash_list->getFirstN(); item; item = item->getNextN())
             {
                 if (item->getSelf()->key == key)
                 {
@@ -183,7 +183,7 @@ public:
     }
 
     /*!
-        Adds a key/value pair to this pgMap.
+        Adds a key/value pair to this ckMap.
         @param[in] key A key.
         @param[in] data A value.
     */
@@ -191,15 +191,15 @@ public:
     {
         if (!m_hash_list)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (getN(key))
         {
-            pgThrow(ExceptionSameKeyExists);
+            ckThrow(ExceptionSameKeyExists);
         }
 
-        MapItem* new_item = pgNew(MapItem);
+        MapItem* new_item = ckNew(MapItem);
 
         new_item->order_item.init(new_item);
         new_item->hash_item.init(new_item);
@@ -215,19 +215,19 @@ public:
     }
 
     /*!
-        Removes the specified key/value pair from this pgMap.
-        @param[in] key A key in this pgMap.
+        Removes the specified key/value pair from this ckMap.
+        @param[in] key A key in this ckMap.
     */
     void remove(K key)
     {
         if (!m_hash_list)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         if (m_last_item1 && m_last_item1->key == key)
         {
-            pgDelete(m_last_item1, MapItem);
+            ckDelete(m_last_item1, MapItem);
             m_data_num--;
 
             m_last_item1 = m_last_item2;
@@ -236,7 +236,7 @@ public:
         }
         else if (m_last_item2 && m_last_item2->key == key)
         {
-            pgDelete(m_last_item2, MapItem);
+            ckDelete(m_last_item2, MapItem);
             m_data_num--;
 
             m_last_item2 = m_last_item3;
@@ -244,7 +244,7 @@ public:
         }
         else if (m_last_item3 && m_last_item3->key == key)
         {
-            pgDelete(m_last_item3, MapItem);
+            ckDelete(m_last_item3, MapItem);
             m_data_num--;
 
             m_last_item3 = NULL;
@@ -252,25 +252,25 @@ public:
         else
         {
             s32 index = key % m_hash_size;
-            pgList<MapItem>* hash_list = &m_hash_list[(index < 0) ? -index : index];
+            ckList<MapItem>* hash_list = &m_hash_list[(index < 0) ? -index : index];
 
-            for (typename pgList<MapItem>::Item* item = hash_list->getFirstN(); item; item = item->getNextN())
+            for (typename ckList<MapItem>::Item* item = hash_list->getFirstN(); item; item = item->getNextN())
             {
                 if (item->getSelf()->key == key)
                 {
-                    pgDelete(item->getSelf(), MapItem);
+                    ckDelete(item->getSelf(), MapItem);
                     m_data_num--;
 
                     return;
                 }
             }
 
-            pgThrow(ExceptionNotFound);
+            ckThrow(ExceptionNotFound);
         }
     }
 
     /*!
-        Removes all key/value pairs from this pgMap.
+        Removes all key/value pairs from this ckMap.
     */
     void clear()
     {
@@ -280,11 +280,11 @@ public:
         {
             for (s32 i = 0; i < m_hash_size; i++)
             {
-                pgList<MapItem>* hash_list = &m_hash_list[i];
+                ckList<MapItem>* hash_list = &m_hash_list[i];
 
                 while (hash_list->hasItem())
                 {
-                    pgDelete(hash_list->getFirstN()->getSelf(), MapItem);
+                    ckDelete(hash_list->getFirstN()->getSelf(), MapItem);
                 }
             }
 
@@ -294,28 +294,28 @@ public:
     }
 
     /*!
-        Returns the first key in this pgMap. If the pgMap has no key/value pair, returns NULL.
-        @return The first key in this pgMap.
+        Returns the first key in this ckMap. If the ckMap has no key/value pair, returns NULL.
+        @return The first key in this ckMap.
     */
     const K* getFirstKeyN() const
     {
         if (!m_hash_list)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         return m_order_list.hasItem() ? &m_order_list.getFirstN()->getSelf()->key : NULL;
     }
 
     /*!
-        Returns the last key in this pgMap. If the pgMap has no key/value pair, returns NULL.
-        @return The last key in this pgMap.
+        Returns the last key in this ckMap. If the ckMap has no key/value pair, returns NULL.
+        @return The last key in this ckMap.
     */
     const K* getLastKeyN() const
     {
         if (!m_hash_list)
         {
-            pgThrow(ExceptionNotInitialized);
+            ckThrow(ExceptionNotInitialized);
         }
 
         return m_order_list.hasItem() ? &m_order_list.getLastN()->getSelf()->key : NULL;
@@ -324,20 +324,20 @@ public:
     /*!
         Returns the previous key of the specified key.
         If the specified key has no previous key, returns NULL.
-        @param[in] key A key in this pgMap.
+        @param[in] key A key in this ckMap.
         @return The previous key of the specified key.
     */
     const K* getPrevKeyN(K key)
     {
-        pgTry
+        ckTry
         {
-            typename pgList<MapItem>::Item* prev = reinterpret_cast<MapItem*>(get(key))->order_item.getPrevN();
+            typename ckList<MapItem>::Item* prev = reinterpret_cast<MapItem*>(get(key))->order_item.getPrevN();
 
             return prev ? &prev->getSelf()->key : NULL;
         }
-        pgCatch(ExceptionNotFound)
+        ckCatch(ExceptionNotFound)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         return NULL;
@@ -346,98 +346,98 @@ public:
     /*!
         Returns the next key of the specified key.
         If the specified key has no next key, returns NULL.
-        @param[in] key A key in this pgMap.
+        @param[in] key A key in this ckMap.
         @return The next key of the specified key.
     */
     const K* getNextKeyN(K key)
     {
-        pgTry
+        ckTry
         {
-            typename pgList<MapItem>::Item* next = reinterpret_cast<MapItem*>(get(key))->order_item.getNextN();
+            typename ckList<MapItem>::Item* next = reinterpret_cast<MapItem*>(get(key))->order_item.getNextN();
 
             return next ? &next->getSelf()->key : NULL;
         }
-        pgCatch(ExceptionNotFound)
+        ckCatch(ExceptionNotFound)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
 
         return NULL;
     }
 
     /*!
-        Move the specified key/value pair to the first in this pgMap.
-        @param[in] key A key in this pgMap.
+        Move the specified key/value pair to the first in this ckMap.
+        @param[in] key A key in this ckMap.
     */
     void moveFirst(K key)
     {
-        pgTry
+        ckTry
         {
-            typename pgList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
+            typename ckList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
 
             m_order_list.addFirst(item);
         }
-        pgCatch(ExceptionNotFound)
+        ckCatch(ExceptionNotFound)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
     }
 
     /*!
-        Move the specified key/value pair to the last in this pgMap.
-        @param[in] key A key in this pgMap.
+        Move the specified key/value pair to the last in this ckMap.
+        @param[in] key A key in this ckMap.
     */
     void moveLast(K key)
     {
-        pgTry
+        ckTry
         {
-            typename pgList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
+            typename ckList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
 
             m_order_list.addLast(item);
         }
-        pgCatch(ExceptionNotFound)
+        ckCatch(ExceptionNotFound)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
     }
 
     /*!
         Move the specified key/value pair before the another pair.
-        @param[in] key A key in this pgMap.
-        @param[in] next_key An another key in this pgMap.
+        @param[in] key A key in this ckMap.
+        @param[in] next_key An another key in this ckMap.
     */
     void moveBefore(K key, K next_key)
     {
-        pgTry
+        ckTry
         {
-            typename pgList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
-            typename pgList<MapItem>::Item* next = &reinterpret_cast<MapItem*>(get(next_key))->order_item;
+            typename ckList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
+            typename ckList<MapItem>::Item* next = &reinterpret_cast<MapItem*>(get(next_key))->order_item;
 
             item->joinBefore(next);
         }
-        pgCatch(ExceptionNotFound)
+        ckCatch(ExceptionNotFound)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
     }
 
     /*!
         Move the specified key/value pair after the another pair.
-        @param[in] key A key in this pgMap.
-        @param[in] prev_key An another key in this pgMap.
+        @param[in] key A key in this ckMap.
+        @param[in] prev_key An another key in this ckMap.
     */
     void moveAfter(K key, K prev_key)
     {
-        pgTry
+        ckTry
         {
-            typename pgList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
-            typename pgList<MapItem>::Item* prev = &reinterpret_cast<MapItem*>(get(prev_key))->order_item;
+            typename ckList<MapItem>::Item* item = &reinterpret_cast<MapItem*>(get(key))->order_item;
+            typename ckList<MapItem>::Item* prev = &reinterpret_cast<MapItem*>(get(prev_key))->order_item;
 
             item->joinAfter(prev);
         }
-        pgCatch(ExceptionNotFound)
+        ckCatch(ExceptionNotFound)
         {
-            pgThrow(ExceptionInvalidArgument);
+            ckThrow(ExceptionInvalidArgument);
         }
     }
 
@@ -445,16 +445,16 @@ private:
     struct MapItem
     {
         D data; // This data member must be at the top of this structure.
-        typename pgList<MapItem>::Item order_item;
-        typename pgList<MapItem>::Item hash_item;
+        typename ckList<MapItem>::Item order_item;
+        typename ckList<MapItem>::Item hash_item;
         K key;
     };
 
-    pgMap(const pgMap<K, D>&) {}
-    void operator=(const pgMap<K, D>&) {}
+    ckMap(const ckMap<K, D>&) {}
+    void operator=(const ckMap<K, D>&) {}
 
-    pgList<MapItem> m_order_list;
-    pgList<MapItem>* m_hash_list;
+    ckList<MapItem> m_order_list;
+    ckList<MapItem>* m_hash_list;
     MapItem* m_last_item1;
     MapItem* m_last_item2;
     MapItem* m_last_item3;

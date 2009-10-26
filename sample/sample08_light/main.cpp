@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newStage();
 void newTetrahedron();
 void newFog();
@@ -48,20 +48,20 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample08 - Light", 640, 480, 60);
+    ckCreateCatcake("Sample08 - Light", 640, 480, 60);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
-    pgResMgr::loadResource("../data/fog_128x128.png", true);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/fog_128x128.png", true);
 
-    pgMath::srand(static_cast<u32>(pgSysMgr::getUsecTime()));
+    ckMath::srand(static_cast<u32>(ckSysMgr::getUsecTime()));
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newStage();
     newTetrahedron();
     newFog();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

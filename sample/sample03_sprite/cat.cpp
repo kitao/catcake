@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Cat : public pgTask
+class Cat : public ckTask
 {
 public:
     Cat();
@@ -42,65 +42,65 @@ private:
 
     virtual void onUpdate();
 
-    pgNode m_cat_root;
-    pgSprt m_cat_sprt[CAT_NUM];
+    ckNode m_cat_root;
+    ckSprt m_cat_sprt[CAT_NUM];
 };
 
 
 void newCat()
 {
-    pgNewTask(Cat);
+    ckNewTask(Cat);
 }
 
 
-Cat::Cat() : pgTask(ORDER_ZERO)
+Cat::Cat() : ckTask(ORDER_ZERO)
 {
-    m_cat_root.init(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_cat_root.init(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
     for (u32 i = 0; i < CAT_NUM; i++)
     {
-        pgSprt* sprt = &m_cat_sprt[i];
+        ckSprt* sprt = &m_cat_sprt[i];
 
         sprt->init(1, &m_cat_root);
-        sprt->setTextureID(pgID_("stephanie_275x196.png"));
+        sprt->setTextureID(ckID_("stephanie_275x196.png"));
         sprt->setPreset_defaultBlendHalf();
 
         sprt->setDataSize(0, 275.0f * 0.5f, 196.0f * 0.5f);
-        sprt->dataAng(0) = pgMath::rand(-30, 30);
+        sprt->dataAng(0) = ckMath::rand(-30, 30);
 
         sprt->local().trans.set( //
-            pgMath::rand(-200.0f, 200.0f, 20.0f), //
-            pgMath::rand(-200.0f, 200.0f, 20.0f), //
-            pgMath::rand(-200.0f, 200.0f, 20.0f));
+            ckMath::rand(-200.0f, 200.0f, 20.0f), //
+            ckMath::rand(-200.0f, 200.0f, 20.0f), //
+            ckMath::rand(-200.0f, 200.0f, 20.0f));
     }
 }
 
 
 void Cat::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    pgDbgMgr::drawBox(pgMat::UNIT, pgVec(400.0f, 400.0f, 400.0f), pgCol::ZERO, pgCol(128, 128, 128), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawBox(ckMat::UNIT, ckVec(400.0f, 400.0f, 400.0f), ckCol::ZERO, ckCol(128, 128, 128), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
     m_cat_root.local() = m_cat_root.local().rotateY_r32(0.2f);
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_A))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_A))
     {
         if (m_cat_root.getColor().a == 255)
         {
-            m_cat_root.setColor(pgCol(255, 255, 255, 96));
+            m_cat_root.setColor(ckCol(255, 255, 255, 96));
         }
         else
         {
-            m_cat_root.setColor(pgCol::FULL);
+            m_cat_root.setColor(ckCol::FULL);
         }
     }
 }

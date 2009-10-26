@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-class Jeep : public pgTask
+class Jeep : public ckTask
 {
 public:
     Jeep();
@@ -41,24 +41,24 @@ private:
     virtual void onUpdate();
     void resetPivot();
 
-    pgMdl m_jeep_mdl;
-    pgMat m_world;
-    pgVec m_pivot;
+    ckMdl m_jeep_mdl;
+    ckMat m_world;
+    ckVec m_pivot;
 };
 
 
 void newJeep()
 {
-    pgNewTask(Jeep);
+    ckNewTask(Jeep);
 }
 
 
-Jeep::Jeep() : pgTask(ORDER_ZERO)
+Jeep::Jeep() : ckTask(ORDER_ZERO)
 {
-    m_jeep_mdl.init(pgID_("jeep.3ds"), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_jeep_mdl.setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_jeep_mdl.init(ckID_("jeep.3ds"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_jeep_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-    m_world = pgMat::UNIT.translate(pgMath::rand(-100.0f, 100.0f, 10.0f), 0.0f, pgMath::rand(-100.0f, 100.0f, 10.0f));
+    m_world = ckMat::UNIT.translate(ckMath::rand(-100.0f, 100.0f, 10.0f), 0.0f, ckMath::rand(-100.0f, 100.0f, 10.0f));
 
     resetPivot();
 }
@@ -66,14 +66,14 @@ Jeep::Jeep() : pgTask(ORDER_ZERO)
 
 void Jeep::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_T))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_T))
     {
-        m_jeep_mdl.setTextureID((m_jeep_mdl.getTextureID() == pgID::ZERO) ? pgID_("jeep.png") : pgID::ZERO);
+        m_jeep_mdl.setTextureID((m_jeep_mdl.getTextureID() == ckID::ZERO) ? ckID_("jeep.png") : ckID::ZERO);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_L))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_L))
     {
-        m_jeep_mdl.setLightSetID((m_jeep_mdl.getLightSetID() == pgID::ZERO) ? pgDrawMgr::DEFAULT_LIGHT_SET_ID : pgID::ZERO);
+        m_jeep_mdl.setLightSetID((m_jeep_mdl.getLightSetID() == ckID::ZERO) ? ckDrawMgr::DEFAULT_LIGHT_SET_ID : ckID::ZERO);
     }
 
     r32 sq_dist = m_world.trans.sqDist(m_pivot);
@@ -83,7 +83,7 @@ void Jeep::onUpdate()
         resetPivot();
     }
 
-    pgVec local_pivot = m_pivot.toLocalOf(m_world);
+    ckVec local_pivot = m_pivot.toLocalOf(m_world);
 
     if (local_pivot.x > 10.0f)
     {
@@ -103,13 +103,13 @@ void Jeep::onUpdate()
 
     m_jeep_mdl.getRootDraw()->local() = m_world.rotateY_s32(180).rotateX_s32(-90);
 
-    pgMat mat = pgMat::UNIT;
+    ckMat mat = ckMat::UNIT;
     mat.trans = m_pivot;
-    pgDbgMgr::drawAxis(mat, 50.0f, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawAxis(mat, 50.0f, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 }
 
 
 void Jeep::resetPivot()
 {
-    m_pivot = pgVec::X_UNIT.rotateY_s32(pgMath::rand(-180, 180)) * 400.0f;
+    m_pivot = ckVec::X_UNIT.rotateY_s32(ckMath::rand(-180, 180)) * 400.0f;
 }

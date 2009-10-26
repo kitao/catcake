@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newScenarioPlayer();
 
 
@@ -43,31 +43,31 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    // special method to load a config file before initializing Pogolyn
-    pgConf* conf = pgConf::newPriorConfigBeforeInitialization("../data/setting.pgc");
+    // special method to load a config file before initializing Catcake
+    ckConf* conf = ckConf::newPriorConfigBeforeInitialization("../data/setting.ckc");
 
-    pgEnt* ent1 = conf->getEntryFromFirstN("title");
-    pgEnt* ent2 = conf->getEntryFromFirstN("framebuffer_size");
-    pgEnt* ent3 = conf->getEntryFromFirstN("frame_rate");
-    pgEnt* ent4 = conf->getEntryFromFirstN("resources");
+    ckEnt* ent1 = conf->getEntryFromFirstN("title");
+    ckEnt* ent2 = conf->getEntryFromFirstN("framebuffer_size");
+    ckEnt* ent3 = conf->getEntryFromFirstN("frame_rate");
+    ckEnt* ent4 = conf->getEntryFromFirstN("resources");
 
-    pgCreatePogolyn(ent1->getValue_string(0), ent2->getValue_s32(0), ent2->getValue_s32(1), ent3->getValue_s32(0));
+    ckCreateCatcake(ent1->getValue_string(0), ent2->getValue_s32(0), ent2->getValue_s32(1), ent3->getValue_s32(0));
 
     for (s32 i = 0; i < ent4->getValueNum(); i++)
     {
-        pgResMgr::loadResource(ent4->getValue_string(i), true);
+        ckResMgr::loadResource(ent4->getValue_string(i), true);
     }
 
     // normal way to load config file
-    pgResMgr::loadResource("../data/scenario.pgc", true);
+    ckResMgr::loadResource("../data/scenario.ckc", true);
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newScenarioPlayer();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 
-    pgConf::deletePriorConfig(conf);
+    ckConf::deletePriorConfig(conf);
 }

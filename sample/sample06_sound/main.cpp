@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newSoundMonitor();
 void newSoundMixer();
 
@@ -46,22 +46,22 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample06 - Sound", 640, 480, 30);
+    ckCreateCatcake("Sample06 - Sound", 640, 480, 30);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
-    pgResMgr::loadResource("../data/mono_11khz.wav", true);
-    pgResMgr::loadResource("../data/mono_22khz.wav", true);
-    pgResMgr::loadResource("../data/mono_44khz.wav", true);
-    pgResMgr::loadResource("../data/stereo_11khz.wav", true);
-    pgResMgr::loadResource("../data/stereo_22khz.wav", true);
-    pgResMgr::loadResource("../data/stereo_44khz.wav", true);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/mono_11khz.wav", true);
+    ckResMgr::loadResource("../data/mono_22khz.wav", true);
+    ckResMgr::loadResource("../data/mono_44khz.wav", true);
+    ckResMgr::loadResource("../data/stereo_11khz.wav", true);
+    ckResMgr::loadResource("../data/stereo_22khz.wav", true);
+    ckResMgr::loadResource("../data/stereo_44khz.wav", true);
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newSoundMonitor();
     newSoundMixer();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

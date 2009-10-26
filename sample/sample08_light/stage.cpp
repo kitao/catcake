@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Stage : public pgTask
+class Stage : public ckTask
 {
 public:
     Stage();
@@ -42,19 +42,19 @@ private:
 
     r32 m_rot_x;
     r32 m_rot_y;
-    pgLts* m_lts1;
-    pgLts* m_lts2;
-    pgLts* m_cur_lts;
+    ckLts* m_lts1;
+    ckLts* m_lts2;
+    ckLts* m_cur_lts;
 };
 
 
 void newStage()
 {
-    pgNewTask(Stage);
+    ckNewTask(Stage);
 }
 
 
-Stage::Stage() : pgTask(ORDER_ZERO)
+Stage::Stage() : ckTask(ORDER_ZERO)
 {
     m_rot_y = 0.0f;
     m_rot_x = -30.0f;
@@ -62,42 +62,42 @@ Stage::Stage() : pgTask(ORDER_ZERO)
     /*
         setup lightset1
     */
-    m_lts1 = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_lts1 = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-    m_lts1->setAmbientColor(pgCol(64, 32, 64));
+    m_lts1->setAmbientColor(ckCol(64, 32, 64));
 
     m_lts1->setParaLightActive(0, true);
-    m_lts1->setParaLightDir(0, pgVec(1.0f, -1.0f, -1.0f));
-    m_lts1->setParaLightColor(0, pgCol(64, 64, 64));
+    m_lts1->setParaLightDir(0, ckVec(1.0f, -1.0f, -1.0f));
+    m_lts1->setParaLightColor(0, ckCol(64, 64, 64));
 
-    pgLit* lit1 = m_lts1->newPointLight(pgID::genID());
-    lit1->setPos(pgVec(200.0f, 50.0f, 200.0f));
+    ckLit* lit1 = m_lts1->newPointLight(ckID::genID());
+    lit1->setPos(ckVec(200.0f, 50.0f, 200.0f));
     lit1->setRadius(50.0f, 400.0f);
-    lit1->setColor(pgCol(0, 255, 255));
+    lit1->setColor(ckCol(0, 255, 255));
 
-    pgLit* lit2 = m_lts1->newPointLight(pgID::genID());
-    lit2->setPos(pgVec(-200.0f, -50.0f, -200.0f));
+    ckLit* lit2 = m_lts1->newPointLight(ckID::genID());
+    lit2->setPos(ckVec(-200.0f, -50.0f, -200.0f));
     lit2->setRadius(50.0f, 400.0f);
-    lit2->setColor(pgCol(255, 0, 0));
+    lit2->setColor(ckCol(255, 0, 0));
 
     /*
         setup lightset2
     */
-    m_lts2 = pgDrawMgr::newLightSet(pgID::genID());
+    m_lts2 = ckDrawMgr::newLightSet(ckID::genID());
 
-    m_lts2->setAmbientColor(pgCol::ZERO);
+    m_lts2->setAmbientColor(ckCol::ZERO);
 
     m_lts2->setParaLightActive(0, true);
-    m_lts2->setParaLightDir(0, pgVec(-1.0f, -1.0f, 0.0f));
-    m_lts2->setParaLightColor(0, pgCol(255, 0, 0));
+    m_lts2->setParaLightDir(0, ckVec(-1.0f, -1.0f, 0.0f));
+    m_lts2->setParaLightColor(0, ckCol(255, 0, 0));
 
     m_lts2->setParaLightActive(1, true);
-    m_lts2->setParaLightDir(1, pgVec(0.0f, -1.0f, -1.0f));
-    m_lts2->setParaLightColor(1, pgCol(0, 255, 0));
+    m_lts2->setParaLightDir(1, ckVec(0.0f, -1.0f, -1.0f));
+    m_lts2->setParaLightColor(1, ckCol(0, 255, 0));
 
     m_lts2->setParaLightActive(2, true);
-    m_lts2->setParaLightDir(2, pgVec(-1.0f, 0.0f, -1.0f));
-    m_lts2->setParaLightColor(2, pgCol(0, 0, 255));
+    m_lts2->setParaLightDir(2, ckVec(-1.0f, 0.0f, -1.0f));
+    m_lts2->setParaLightColor(2, ckCol(0, 0, 255));
 
     m_cur_lts = m_lts1;
 }
@@ -105,62 +105,62 @@ Stage::Stage() : pgTask(ORDER_ZERO)
 
 void Stage::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    pgVec pos1(200.0f, 0.0f, 200.0f);
-    pgVec pos2(-200.0f, 0.0f, 200.0f);
-    pgVec pos3(-200.0f, 0.0f, -200.0f);
-    pgVec pos4(200.0f, 0.0f, -200.0f);
-    pgCol col(128, 128, 128);
+    ckVec pos1(200.0f, 0.0f, 200.0f);
+    ckVec pos2(-200.0f, 0.0f, 200.0f);
+    ckVec pos3(-200.0f, 0.0f, -200.0f);
+    ckVec pos4(200.0f, 0.0f, -200.0f);
+    ckCol col(128, 128, 128);
 
-    pgDbgMgr::drawLine(pos1, pos2, col, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    pgDbgMgr::drawLine(pos2, pos3, col, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    pgDbgMgr::drawLine(pos3, pos4, col, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    pgDbgMgr::drawLine(pos4, pos1, col, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawLine(pos1, pos2, col, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawLine(pos2, pos3, col, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawLine(pos3, pos4, col, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawLine(pos4, pos1, col, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
     m_rot_y += 0.1f;
 
-    if (pgKeyMgr::isOn(pgKeyMgr::KEY_RIGHT))
+    if (ckKeyMgr::isOn(ckKeyMgr::KEY_RIGHT))
     {
         m_rot_y += 1.0f;
     }
 
-    if (pgKeyMgr::isOn(pgKeyMgr::KEY_LEFT))
+    if (ckKeyMgr::isOn(ckKeyMgr::KEY_LEFT))
     {
         m_rot_y -= 1.0f;
     }
 
-    if (pgKeyMgr::isOn(pgKeyMgr::KEY_UP))
+    if (ckKeyMgr::isOn(ckKeyMgr::KEY_UP))
     {
         m_rot_x -= 1.0f;
     }
 
-    if (pgKeyMgr::isOn(pgKeyMgr::KEY_DOWN))
+    if (ckKeyMgr::isOn(ckKeyMgr::KEY_DOWN))
     {
         m_rot_x += 1.0f;
     }
 
-    m_rot_x = pgMath::clamp(m_rot_x, -80.0f, -20.0f);
+    m_rot_x = ckMath::clamp(m_rot_x, -80.0f, -20.0f);
 
-    pgScr* scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    scr->view() = pgMat::UNIT.rotateY_r32(m_rot_y).rotateX_r32(m_rot_x).translate(0.0f, 0.0f, 650.0f + m_rot_x);
+    ckScr* scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    scr->view() = ckMat::UNIT.rotateY_r32(m_rot_y).rotateX_r32(m_rot_x).translate(0.0f, 0.0f, 650.0f + m_rot_x);
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_L))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_L))
     {
-        pgMsg<4> msg;
+        ckMsg<4> msg;
 
         m_cur_lts = (m_cur_lts == m_lts1) ? m_lts2 : m_lts1;
 
         msg.setParam(0, m_cur_lts->getID());
 
-        pgTaskMgr::sendMessage(pgID_("CHANGE LIGHT SET"), msg);
+        ckTaskMgr::sendMessage(ckID_("CHANGE LIGHT SET"), msg);
     }
 }

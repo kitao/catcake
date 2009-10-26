@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Coin : public pgTask
+class Coin : public ckTask
 {
 public:
     Coin();
@@ -40,20 +40,20 @@ public:
 private:
     virtual void onUpdate();
 
-    pgSprt m_coin_sprt;
+    ckSprt m_coin_sprt;
 };
 
 
 void newCoin()
 {
-    pgNewTask(Coin);
+    ckNewTask(Coin);
 }
 
 
-Coin::Coin() : pgTask(ORDER_ZERO)
+Coin::Coin() : ckTask(ORDER_ZERO)
 {
-    m_coin_sprt.init(6, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    m_coin_sprt.setTextureID(pgID_("coin_400x200.png"));
+    m_coin_sprt.init(6, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_coin_sprt.setTextureID(ckID_("coin_400x200.png"));
     m_coin_sprt.setPreset_defaultBlendHalf();
 
     m_coin_sprt.dataPos(0).set(-200.0f, 150.0f);
@@ -81,9 +81,9 @@ Coin::Coin() : pgTask(ORDER_ZERO)
 
 void Coin::onUpdate()
 {
-    pgScr* scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    r32 mouse_x = scr->framebufferXToScreenX(pgKeyMgr::getMouseX());
-    r32 mouse_y = scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+    ckScr* scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    r32 mouse_x = scr->framebufferXToScreenX(ckKeyMgr::getMouseX());
+    r32 mouse_y = scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
 
     for (s32 i = 0; i < 6; i++)
     {
@@ -94,6 +94,6 @@ void Coin::onUpdate()
 
         r32 aim_size = (diff_x * diff_x + diff_y * diff_y <= 48.0f * 48.0f) ? 192.0f : 96.0f;
 
-        m_coin_sprt.dataW(i) = m_coin_sprt.dataH(i) = pgMath::interp(m_coin_sprt.dataW(i), aim_size, 0.1f);
+        m_coin_sprt.dataW(i) = m_coin_sprt.dataH(i) = ckMath::interp(m_coin_sprt.dataW(i), aim_size, 0.1f);
     }
 }

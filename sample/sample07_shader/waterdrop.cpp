@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Waterdrop : public pgTask
+class Waterdrop : public ckTask
 {
 public:
     Waterdrop(r32 x, r32 y);
@@ -41,8 +41,8 @@ private:
     void resetParam(r32 x, r32 y);
     virtual void onUpdate();
 
-    pgPrim m_water_prim;
-    pgRend_Shader m_water_rend;
+    ckPrim m_water_prim;
+    ckRend_Shader m_water_rend;
 
     r32 m_speed;
     r32 m_aim_rate;
@@ -51,20 +51,20 @@ private:
 
 void newWaterdrop(r32 x, r32 y)
 {
-    pgNewTask(Waterdrop)(x, y);
+    ckNewTask(Waterdrop)(x, y);
 }
 
 
-Waterdrop::Waterdrop(r32 x, r32 y) : pgTask(ORDER_ZERO)
+Waterdrop::Waterdrop(r32 x, r32 y) : ckTask(ORDER_ZERO)
 {
     m_aim_rate = 0.6f;
 
-    m_water_prim.init(pgPrim::MODE_TRIANGLE_FAN, 4, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    m_water_prim.setTextureID(pgID_("bg_512x512.png"));
+    m_water_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_water_prim.setTextureID(ckID_("bg_512x512.png"));
     m_water_prim.setPreset_defaultBlendHalf();
 
-    m_water_rend.init(&m_water_prim, pgID_("refract.shd"));
-    m_water_rend.set2ndTextureID(pgID_("waterdrop_64x64.png"));
+    m_water_rend.init(&m_water_prim, ckID_("refract.shd"));
+    m_water_rend.set2ndTextureID(ckID_("waterdrop_64x64.png"));
 
     m_water_rend.uniform(0) = m_aim_rate;
 
@@ -86,18 +86,18 @@ Waterdrop::Waterdrop(r32 x, r32 y) : pgTask(ORDER_ZERO)
 
 void Waterdrop::resetParam(r32 x, r32 y)
 {
-    r32 scale = pgMath::rand(0.5f, 1.0f, 0.1f);
+    r32 scale = ckMath::rand(0.5f, 1.0f, 0.1f);
 
-    m_water_prim.setDataRect(0, pgVec::ZERO, 48.0f * scale, 64.0f * scale, pgCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
+    m_water_prim.setDataRect(0, ckVec::ZERO, 48.0f * scale, 64.0f * scale, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
     m_water_prim.local().trans.set(x, y, scale);
 
-    m_speed = pgMath::rand(2.0f, 4.0f, 0.1f) * scale;
+    m_speed = ckMath::rand(2.0f, 4.0f, 0.1f) * scale;
 }
 
 
 void Waterdrop::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_R))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_R))
     {
         m_aim_rate = -m_aim_rate;
     }
@@ -125,6 +125,6 @@ void Waterdrop::onUpdate()
 
     if (m_water_prim.local().trans.y < -320)
     {
-        resetParam(pgMath::rand(-320.0f, 320.0f, 1.0f), pgMath::rand(300.0f, 340.0f, 1.0f));
+        resetParam(ckMath::rand(-320.0f, 320.0f, 1.0f), ckMath::rand(300.0f, 340.0f, 1.0f));
     }
 }

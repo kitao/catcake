@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class SoundMixer : public pgTask
+class SoundMixer : public ckTask
 {
 public:
     SoundMixer();
@@ -48,11 +48,11 @@ private:
 
 void newSoundMixer()
 {
-    pgNewTask(SoundMixer);
+    ckNewTask(SoundMixer);
 }
 
 
-SoundMixer::SoundMixer() : pgTask(ORDER_ZERO)
+SoundMixer::SoundMixer() : ckTask(ORDER_ZERO)
 {
     m_is_button_down = false;
     m_track_no = 0;
@@ -62,24 +62,24 @@ SoundMixer::SoundMixer() : pgTask(ORDER_ZERO)
 
 static bool checkClick(u8* trk_no, u8* btn_no)
 {
-    pgScr* scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    r32 mouse_x = scr->framebufferXToScreenX(pgKeyMgr::getMouseX());
-    r32 mouse_y = scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+    ckScr* scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    r32 mouse_x = scr->framebufferXToScreenX(ckKeyMgr::getMouseX());
+    r32 mouse_y = scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
 
     *trk_no = static_cast<u8>((mouse_x + 300.0f) / 150.0f);
     mouse_x += -150.0f * *trk_no + 300.0f;
 
     for (s32 i = 0; i < 4; i++)
     {
-        if (pgMath::abs(-35.0f * i + 130.0f - mouse_y) < 10.0f)
+        if (ckMath::abs(-35.0f * i + 130.0f - mouse_y) < 10.0f)
         {
-            if (pgMath::abs(40.0f - mouse_x) < 20.0f)
+            if (ckMath::abs(40.0f - mouse_x) < 20.0f)
             {
                 *btn_no = i * 2;
 
                 return true;
             }
-            else if (pgMath::abs(105.0f - mouse_x) < 20.0f)
+            else if (ckMath::abs(105.0f - mouse_x) < 20.0f)
             {
                 *btn_no = i * 2 + 1;
 
@@ -88,9 +88,9 @@ static bool checkClick(u8* trk_no, u8* btn_no)
         }
     }
 
-    r32 fader_y = 110.0f * pgSndMgr::getTrackVolume(*trk_no) / 255.0f - 130.0f;
+    r32 fader_y = 110.0f * ckSndMgr::getTrackVolume(*trk_no) / 255.0f - 130.0f;
 
-    if (pgMath::abs(75.0f - mouse_x) < 30.0f && pgMath::abs(fader_y - mouse_y) < 7.5f)
+    if (ckMath::abs(75.0f - mouse_x) < 30.0f && ckMath::abs(fader_y - mouse_y) < 7.5f)
     {
         *btn_no = 8;
 
@@ -101,27 +101,27 @@ static bool checkClick(u8* trk_no, u8* btn_no)
 }
 
 
-static void drawLine(const pgVec& pos1, const pgVec& pos2)
+static void drawLine(const ckVec& pos1, const ckVec& pos2)
 {
-    pgVec offset1(pgMath::rand(-2.0f, 2.0f, 1.0f), pgMath::rand(-2.0f, 2.0f, 1.0f));
-    pgVec offset2(pgMath::rand(-2.0f, 2.0f, 1.0f), pgMath::rand(-2.0f, 2.0f, 1.0f));
+    ckVec offset1(ckMath::rand(-2.0f, 2.0f, 1.0f), ckMath::rand(-2.0f, 2.0f, 1.0f));
+    ckVec offset2(ckMath::rand(-2.0f, 2.0f, 1.0f), ckMath::rand(-2.0f, 2.0f, 1.0f));
 
-    pgDbgMgr::drawLine(pos1 + offset1, pos2 + offset2, pgCol::FULL, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    ckDbgMgr::drawLine(pos1 + offset1, pos2 + offset2, ckCol::FULL, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 }
 
 
-static void drawRect(const pgVec& center, r32 width, r32 height, bool is_active)
+static void drawRect(const ckVec& center, r32 width, r32 height, bool is_active)
 {
     width /= 2.0f;
     height /= 2.0f;
 
-    pgVec pos1(center.x - width, center.y + height);
-    pgVec pos2(center.x - width, center.y - height);
-    pgVec pos3(center.x + width, center.y + height);
-    pgVec pos4(center.x + width, center.y - height);
+    ckVec pos1(center.x - width, center.y + height);
+    ckVec pos2(center.x - width, center.y - height);
+    ckVec pos3(center.x + width, center.y + height);
+    ckVec pos4(center.x + width, center.y - height);
 
-    pgCol col = is_active ? pgCol(255, 128, 64, 255) : pgCol(128, 128, 128, 96);
-    pgDbgMgr::drawPolygon(pos1, pos2, pos3, pos4, col, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    ckCol col = is_active ? ckCol(255, 128, 64, 255) : ckCol(128, 128, 128, 96);
+    ckDbgMgr::drawPolygon(pos1, pos2, pos3, pos4, col, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
     drawLine(pos1, pos2);
     drawLine(pos2, pos4);
@@ -130,10 +130,10 @@ static void drawRect(const pgVec& center, r32 width, r32 height, bool is_active)
 }
 
 
-static void drawTriangle(const pgVec& pos1, const pgVec& pos2, const pgVec& pos3, bool is_active)
+static void drawTriangle(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, bool is_active)
 {
-    pgCol col = is_active ? pgCol(255, 128, 64, 255) : pgCol(128, 128, 128, 96);
-    pgDbgMgr::drawPolygon(pos1, pos2, pos3, col, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    ckCol col = is_active ? ckCol(255, 128, 64, 255) : ckCol(128, 128, 128, 96);
+    ckDbgMgr::drawPolygon(pos1, pos2, pos3, col, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
     drawLine(pos1, pos2);
     drawLine(pos2, pos3);
@@ -146,14 +146,14 @@ static void drawMixer(bool is_pushed, u8 trk_no, u8 btn_no)
     /*
         draw frame
     */
-    drawRect(pgVec::ZERO, 600.0f, 320.0f, false);
-    drawLine(pgVec(-150.0f, 160.0f), pgVec(-150.0f, -160.0f));
-    drawLine(pgVec(0.0f, 160.0f), pgVec(0.0f, -160.0f));
-    drawLine(pgVec(150.0f, 160.0f), pgVec(150.0f, -160.0f));
+    drawRect(ckVec::ZERO, 600.0f, 320.0f, false);
+    drawLine(ckVec(-150.0f, 160.0f), ckVec(-150.0f, -160.0f));
+    drawLine(ckVec(0.0f, 160.0f), ckVec(0.0f, -160.0f));
+    drawLine(ckVec(150.0f, 160.0f), ckVec(150.0f, -160.0f));
 
     btn_no = is_pushed ? trk_no * 9 + btn_no + 1 : 0;
 
-    for (u32 i = 0; i < pgSndMgr::TRACK_NUM; i++)
+    for (u32 i = 0; i < ckSndMgr::TRACK_NUM; i++)
     {
         /*
             draw buttons
@@ -166,32 +166,32 @@ static void drawMixer(bool is_pushed, u8 trk_no, u8 btn_no)
 
             for (s32 k = 0; k < 2; k++)
             {
-                drawRect(pgVec(x - 32.0f + 64.0f * k, button_y), 40.0f, 20.0f, (btn_no == i * 9 + j * 2 + k + 1));
+                drawRect(ckVec(x - 32.0f + 64.0f * k, button_y), 40.0f, 20.0f, (btn_no == i * 9 + j * 2 + k + 1));
             }
         }
 
-        drawTriangle(pgVec(x - 32.0f, 35.0f), pgVec(x - 52.0f, 15.0f), pgVec(x - 12.0f, 15.0f), (btn_no == i * 9 + 7));
-        drawTriangle(pgVec(x + 12.0f, 35.0f), pgVec(x + 32.0f, 15.0f), pgVec(x + 52.0f, 35.0f), (btn_no == i * 9 + 8));
+        drawTriangle(ckVec(x - 32.0f, 35.0f), ckVec(x - 52.0f, 15.0f), ckVec(x - 12.0f, 15.0f), (btn_no == i * 9 + 7));
+        drawTriangle(ckVec(x + 12.0f, 35.0f), ckVec(x + 32.0f, 15.0f), ckVec(x + 52.0f, 35.0f), (btn_no == i * 9 + 8));
 
         /*
             draw fader
         */
-        r32 y = 110.0f * pgSndMgr::getTrackVolume(i) / 255.0f - 130.0f;
+        r32 y = 110.0f * ckSndMgr::getTrackVolume(i) / 255.0f - 130.0f;
 
-        drawRect(pgVec(x, y), 60.0f, 15.0f, (btn_no == i * 9 + 9));
+        drawRect(ckVec(x, y), 60.0f, 15.0f, (btn_no == i * 9 + 9));
 
         if (y > -20.0f - 7.5f)
         {
-            drawLine(pgVec(x, y - 7.5f), pgVec(x, -130.0f));
+            drawLine(ckVec(x, y - 7.5f), ckVec(x, -130.0f));
         }
         else if (y < -130.0f + 7.5f)
         {
-            drawLine(pgVec(x, -20.0f), pgVec(x, y + 7.5f));
+            drawLine(ckVec(x, -20.0f), ckVec(x, y + 7.5f));
         }
         else
         {
-            drawLine(pgVec(x, -20.0f), pgVec(x, y + 7.5f));
-            drawLine(pgVec(x, y - 7.5f), pgVec(x, -130.0f));
+            drawLine(ckVec(x, -20.0f), ckVec(x, y + 7.5f));
+            drawLine(ckVec(x, y - 7.5f), ckVec(x, -130.0f));
         }
     }
 }
@@ -199,38 +199,38 @@ static void drawMixer(bool is_pushed, u8 trk_no, u8 btn_no)
 
 void SoundMixer::onUpdate()
 {
-    if (pgKeyMgr::isOff(pgKeyMgr::KEY_LBUTTON))
+    if (ckKeyMgr::isOff(ckKeyMgr::KEY_LBUTTON))
     {
         m_is_button_down = false;
     }
-    else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_LBUTTON) && checkClick(&m_track_no, &m_button_no))
+    else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_LBUTTON) && checkClick(&m_track_no, &m_button_no))
     {
         m_is_button_down = true;
 
         if (m_button_no < 6)
         {
-            pgMsg<4> msg;
+            ckMsg<4> msg;
             msg.setParam(0, m_track_no);
             msg.setParam(1, m_button_no);
 
-            pgTaskMgr::sendMessage(pgID_("PLAY"), msg);
+            ckTaskMgr::sendMessage(ckID_("PLAY"), msg);
         }
         else if (m_button_no < 8)
         {
-            pgMsg<4> msg;
+            ckMsg<4> msg;
             msg.setParam(0, m_track_no);
             msg.setParam(1, static_cast<u8>((m_button_no == 6) ? 255 : 0));
             msg.setParam(2, 4.0f);
 
-            pgTaskMgr::sendMessage(pgID_("FADE"), msg);
+            ckTaskMgr::sendMessage(ckID_("FADE"), msg);
         }
     }
 
     if (m_is_button_down && m_button_no == 8)
     {
-        r32 trk_vol = pgMath::clamp(255.0f * (370.0f - static_cast<r32>(pgKeyMgr::getMouseY())) / 110.0f, 0.0f, 255.0f);
+        r32 trk_vol = ckMath::clamp(255.0f * (370.0f - static_cast<r32>(ckKeyMgr::getMouseY())) / 110.0f, 0.0f, 255.0f);
 
-        pgSndMgr::setTrackVolume(m_track_no, static_cast<u8>(trk_vol));
+        ckSndMgr::setTrackVolume(m_track_no, static_cast<u8>(trk_vol));
     }
 
     drawMixer(m_is_button_down, m_track_no, m_button_no);

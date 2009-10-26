@@ -29,34 +29,34 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Blood : public pgTask
+class Blood : public ckTask
 {
 public:
-    Blood(const pgVec& pos);
+    Blood(const ckVec& pos);
 
 private:
     virtual void onUpdate();
 
-    pgVec m_speed;
-    pgMdl m_blood_mdl;
+    ckVec m_speed;
+    ckMdl m_blood_mdl;
 };
 
 
-void newBlood(const pgVec& pos)
+void newBlood(const ckVec& pos)
 {
-    pgNewTask(Blood)(pos);
+    ckNewTask(Blood)(pos);
 }
 
 
-Blood::Blood(const pgVec& pos) : pgTask(ORDER_ZERO)
+Blood::Blood(const ckVec& pos) : ckTask(ORDER_ZERO)
 {
-    m_speed.set(pgMath::rand(-2.0f, 2.0f, 0.1f), pgMath::rand(0.0f, 2.0f, 0.1f), pgMath::rand(-1.0f, -2.0f, 0.1f));
+    m_speed.set(ckMath::rand(-2.0f, 2.0f, 0.1f), ckMath::rand(0.0f, 2.0f, 0.1f), ckMath::rand(-1.0f, -2.0f, 0.1f));
 
-    m_blood_mdl.init(pgID_("blood.pxm"), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_blood_mdl.setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_blood_mdl.init(ckID_("blood.pxm"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_blood_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
     m_blood_mdl.getRootDraw()->local().trans = pos;
 }
 
@@ -70,6 +70,6 @@ void Blood::onUpdate()
 
     if (m_blood_mdl.getRootDraw()->local().trans.y < 0.0f)
     {
-        pgDeleteTask(this);
+        ckDeleteTask(this);
     }
 }

@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Triangle : public pgTask
+class Triangle : public ckTask
 {
 public:
     Triangle();
@@ -40,26 +40,26 @@ public:
 private:
     virtual void onUpdate();
 
-    pgScr* m_scr2d;
-    pgPrim m_tri_prim1;
-    pgPrim m_tri_prim2;
+    ckScr* m_scr2d;
+    ckPrim m_tri_prim1;
+    ckPrim m_tri_prim2;
 };
 
 
 void newTriangle()
 {
-    pgNewTask(Triangle);
+    ckNewTask(Triangle);
 }
 
 
-Triangle::Triangle() : pgTask(ORDER_ZERO)
+Triangle::Triangle() : ckTask(ORDER_ZERO)
 {
-    m_scr2d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_scr2d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
     /*
         set up m_tri_prim1
     */
-    m_tri_prim1.init(pgPrim::MODE_TRIANGLES, 3, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_tri_prim1.init(ckPrim::MODE_TRIANGLES, 3, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
     m_tri_prim1.dataPos(0).set(0.0f, 100.0f, 0.0f);
     m_tri_prim1.dataPos(1).set(-110.0f, -100.0f, 0.0f);
@@ -74,9 +74,9 @@ Triangle::Triangle() : pgTask(ORDER_ZERO)
     /*
         set up m_tri_prim2
     */
-    m_tri_prim2.init(pgPrim::MODE_TRIANGLES, 6, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_tri_prim2.setTextureID(pgID_("coin_400x200.png"));
-    m_tri_prim2.setDrawFlag(pgDraw::FLAG_BACKFACE_CULLING, true);
+    m_tri_prim2.init(ckPrim::MODE_TRIANGLES, 6, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_tri_prim2.setTextureID(ckID_("coin_400x200.png"));
+    m_tri_prim2.setDrawFlag(ckDraw::FLAG_BACKFACE_CULLING, true);
 
     m_tri_prim2.dataPos(0).set(0.0f, 100.0f, 0.0f);
     m_tri_prim2.dataPos(1).set(-110.0f, -100.0f, 0.0f);
@@ -100,17 +100,17 @@ Triangle::Triangle() : pgTask(ORDER_ZERO)
 
 void Triangle::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    pgDbgMgr::drawBox(pgMat::UNIT, pgVec(400.0f, 400.0f, 400.0f), pgCol::ZERO, pgCol(128, 128, 128), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawBox(ckMat::UNIT, ckVec(400.0f, 400.0f, 400.0f), ckCol::ZERO, ckCol(128, 128, 128), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
     m_scr2d->view() = m_scr2d->view().rotateZ_r32(-0.1f);
 

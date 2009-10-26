@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newCollisionChecker();
 
 
@@ -51,15 +51,15 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample09 - Collision", 800, 600, 60, pgSysMgr::FLAG_VARIABLE_SIZE);
+    ckCreateCatcake("Sample09 - Collision", 800, 600, 60, ckSysMgr::FLAG_VARIABLE_SIZE);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newCollisionChecker();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

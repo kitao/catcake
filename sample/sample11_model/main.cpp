@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newGolem();
 void newJeep();
 
@@ -47,21 +47,21 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample11 - Model", 640, 480, 60);
+    ckCreateCatcake("Sample11 - Model", 640, 480, 60);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
-    pgResMgr::loadResource("../data/copyright_304x34.png", true);
-    pgResMgr::loadResource("../data/golem.png", true);
-    pgResMgr::loadResource("../data/jeep.png", true);
-    pgUtil::import3DS("../data/golem.3ds", pgID_("golem.png"), true, true, 1.5f);
-    pgUtil::import3DS("../data/jeep.3ds", pgID_("jeep.png"), true, true, 0.5f);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/copyright_304x34.png", true);
+    ckResMgr::loadResource("../data/golem.png", true);
+    ckResMgr::loadResource("../data/jeep.png", true);
+    ckUtil::import3DS("../data/golem.3ds", ckID_("golem.png"), true, true, 1.5f);
+    ckUtil::import3DS("../data/jeep.3ds", ckID_("jeep.png"), true, true, 0.5f);
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newGolem();
     newJeep();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

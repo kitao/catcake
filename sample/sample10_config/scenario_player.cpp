@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-class ScenarioPlayer : public pgTask
+class ScenarioPlayer : public ckTask
 {
 public:
     ScenarioPlayer();
@@ -40,47 +40,47 @@ public:
 private:
     virtual void onUpdate();
 
-    pgScr* m_scr;
+    ckScr* m_scr;
     r32 m_rot_y;
 
-    pgConf* m_conf;
-    pgEnt* m_ent;
+    ckConf* m_conf;
+    ckEnt* m_ent;
     u16 m_wait_cntr;
 
-    pgPrim m_bg_prim;
+    ckPrim m_bg_prim;
 };
 
 
 void newScenarioPlayer()
 {
-    pgNewTask(ScenarioPlayer);
+    ckNewTask(ScenarioPlayer);
 }
 
 
-ScenarioPlayer::ScenarioPlayer() : pgTask(ORDER_MINUS_1)
+ScenarioPlayer::ScenarioPlayer() : ckTask(ORDER_MINUS_1)
 {
-    m_scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_rot_y = 0.0f;
 
-    m_conf = pgConfMgr::getConfig(pgID_("scenario.pgc"));
+    m_conf = ckConfMgr::getConfig(ckID_("scenario.ckc"));
     m_ent = m_conf->getEntryFromFirstN("command");
     m_wait_cntr = 0;
 
     if (!m_conf->isValid())
     {
-        pgDbgMgr::trace("*** config file error in %d ***\n", m_conf->getErrorLineNo());
+        ckDbgMgr::trace("*** config file error in %d ***\n", m_conf->getErrorLineNo());
     }
 
-    m_bg_prim.init(pgPrim::MODE_TRIANGLE_FAN, 14, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_bg_prim.init(ckPrim::MODE_TRIANGLE_FAN, 14, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-    m_bg_prim.dataPos(0) = pgVec::ZERO;
+    m_bg_prim.dataPos(0) = ckVec::ZERO;
     m_bg_prim.dataCol(0).set(0, 96, 64);
 
     for (s32 i = 1; i < 14; i++)
     {
         s32 deg = i * 30;
 
-        m_bg_prim.dataPos(i).set(pgMath::cos_s32(deg) * 300.0f, 0.0f, pgMath::sin_s32(deg) * 300.0f);
+        m_bg_prim.dataPos(i).set(ckMath::cos_s32(deg) * 300.0f, 0.0f, ckMath::sin_s32(deg) * 300.0f);
         m_bg_prim.dataCol(i).set(0, 0, 0);
     }
 }
@@ -88,18 +88,18 @@ ScenarioPlayer::ScenarioPlayer() : pgTask(ORDER_MINUS_1)
 
 void ScenarioPlayer::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
     m_rot_y += 0.3f;
-    m_scr->view() = pgMat::UNIT.rotateY_r32(m_rot_y).rotateX_s32(-15).translate(0.0f, 70.0f, 700.0f);
+    m_scr->view() = ckMat::UNIT.rotateY_r32(m_rot_y).rotateX_s32(-15).translate(0.0f, 70.0f, 700.0f);
 
     if (m_wait_cntr > 0)
     {

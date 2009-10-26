@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class SoundMonitor : public pgTask
+class SoundMonitor : public ckTask
 {
 public:
     SoundMonitor();
@@ -40,95 +40,95 @@ public:
 
 private:
     virtual void onUpdate();
-    virtual void onMessage(pgID msg_id, pgMsg<4>& msg);
+    virtual void onMessage(ckID msg_id, ckMsg<4>& msg);
 };
 
 
 void newSoundMonitor()
 {
-    pgNewTask(SoundMonitor);
+    ckNewTask(SoundMonitor);
 }
 
 
-SoundMonitor::SoundMonitor() : pgTask(ORDER_ZERO)
+SoundMonitor::SoundMonitor() : ckTask(ORDER_ZERO)
 {
-    pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_11KHZ, 50);
+    ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_11KHZ, 50);
 }
 
 
 SoundMonitor::~SoundMonitor()
 {
-    pgSndMgr::closeSoundDevice();
+    ckSndMgr::closeSoundDevice();
 }
 
 
 void SoundMonitor::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_1))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_1))
     {
-        pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_11KHZ, 50);
+        ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_11KHZ, 50);
     }
-    else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_2))
+    else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_2))
     {
-        pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_22KHZ, 50);
+        ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_22KHZ, 50);
     }
-    else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_3))
+    else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_3))
     {
-        pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_MONO, pgSndMgr::SAMPLE_RATE_44KHZ, 50);
+        ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_MONO, ckSndMgr::SAMPLE_RATE_44KHZ, 50);
     }
-    else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_4))
+    else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_4))
     {
-        pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_STEREO, pgSndMgr::SAMPLE_RATE_11KHZ, 50);
+        ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_STEREO, ckSndMgr::SAMPLE_RATE_11KHZ, 50);
     }
-    else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_5))
+    else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_5))
     {
-        pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_STEREO, pgSndMgr::SAMPLE_RATE_22KHZ, 50);
+        ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_STEREO, ckSndMgr::SAMPLE_RATE_22KHZ, 50);
     }
-    else if (pgKeyMgr::isPressed(pgKeyMgr::KEY_6))
+    else if (ckKeyMgr::isPressed(ckKeyMgr::KEY_6))
     {
-        pgSndMgr::openSoundDevice(pgSndMgr::CHANNEL_NUM_STEREO, pgSndMgr::SAMPLE_RATE_44KHZ, 50);
-    }
-
-    if (!pgSndMgr::isSoundDeviceOpen())
-    {
-        pgDbgMgr::drawString(-138, 0, pgCol::FULL, 2, "Can't Open Sound Device");
+        ckSndMgr::openSoundDevice(ckSndMgr::CHANNEL_NUM_STEREO, ckSndMgr::SAMPLE_RATE_44KHZ, 50);
     }
 
-    pgDbgMgr::drawString(-280.0f, -166.0f, pgCol(255, 128, 128, 255), 1, //
+    if (!ckSndMgr::isSoundDeviceOpen())
+    {
+        ckDbgMgr::drawString(-138, 0, ckCol::FULL, 2, "Can't Open Sound Device");
+    }
+
+    ckDbgMgr::drawString(-280.0f, -166.0f, ckCol(255, 128, 128, 255), 1, //
         "When the sound device's sample rate is higher than sound data's sample rate, noise may occur.");
 
-    pgDbgMgr::drawString(-280.0f, -200.0f, pgCol::FULL, 1, "SOUND DEVICE CHANNEL NUM: %d", pgSndMgr::getSoundDeviceChannelNum());
-    pgDbgMgr::drawString(-280.0f, -210.0f, pgCol::FULL, 1, "SOUND DEVICE SAMPLE RATE: %dHz", pgSndMgr::getSoundDeviceSampleRate());
+    ckDbgMgr::drawString(-280.0f, -200.0f, ckCol::FULL, 1, "SOUND DEVICE CHANNEL NUM: %d", ckSndMgr::getSoundDeviceChannelNum());
+    ckDbgMgr::drawString(-280.0f, -210.0f, ckCol::FULL, 1, "SOUND DEVICE SAMPLE RATE: %dHz", ckSndMgr::getSoundDeviceSampleRate());
 
-    for (u32 i = 0; i < pgSndMgr::TRACK_NUM; i++)
+    for (u32 i = 0; i < ckSndMgr::TRACK_NUM; i++)
     {
-        if (pgSndMgr::isPlaying(i))
+        if (ckSndMgr::isPlaying(i))
         {
-            pgDbgMgr::drawString(-242.0f + 150.0f * i, -144.0f, pgCol(255, 255, 255, 96), 1, "%06d", pgSndMgr::getPlayingPosition(i));
+            ckDbgMgr::drawString(-242.0f + 150.0f * i, -144.0f, ckCol(255, 255, 255, 96), 1, "%06d", ckSndMgr::getPlayingPosition(i));
         }
     }
 }
 
 
-void SoundMonitor::onMessage(pgID msg_id, pgMsg<4>& msg)
+void SoundMonitor::onMessage(ckID msg_id, ckMsg<4>& msg)
 {
     const u32 SOUND_NUM = 6;
 
-    static const pgID s_snd_id[SOUND_NUM] =
+    static const ckID s_snd_id[SOUND_NUM] =
     {
-        pgID_("mono_11khz.wav"), pgID_("stereo_11khz.wav"), //
-        pgID_("mono_22khz.wav"), pgID_("stereo_22khz.wav"), //
-        pgID_("mono_44khz.wav"), pgID_("stereo_44khz.wav")
+        ckID_("mono_11khz.wav"), ckID_("stereo_11khz.wav"), //
+        ckID_("mono_22khz.wav"), ckID_("stereo_22khz.wav"), //
+        ckID_("mono_44khz.wav"), ckID_("stereo_44khz.wav")
     };
 
     static const bool s_is_play_loop[SOUND_NUM] =
@@ -136,17 +136,17 @@ void SoundMonitor::onMessage(pgID msg_id, pgMsg<4>& msg)
         false, true, true, false, false, false
     };
 
-    if (msg_id == pgID_("PLAY"))
+    if (msg_id == ckID_("PLAY"))
     {
         u8 snd_no = msg.getParam<u8>(1);
 
         if (snd_no < SOUND_NUM)
         {
-            pgSndMgr::play(msg.getParam<u8>(0), s_snd_id[snd_no], 128, s_is_play_loop[snd_no]);
+            ckSndMgr::play(msg.getParam<u8>(0), s_snd_id[snd_no], 128, s_is_play_loop[snd_no]);
         }
     }
-    else if (msg_id == pgID_("FADE"))
+    else if (msg_id == ckID_("FADE"))
     {
-        pgSndMgr::fadeTrackVolume(msg.getParam<u8>(0), msg.getParam<u8>(1), msg.getParam<r32>(2));
+        ckSndMgr::fadeTrackVolume(msg.getParam<u8>(0), msg.getParam<u8>(1), msg.getParam<r32>(2));
     }
 }

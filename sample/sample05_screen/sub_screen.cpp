@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class SubScreen : public pgTask
+class SubScreen : public ckTask
 {
 public:
     SubScreen();
@@ -41,44 +41,44 @@ public:
 private:
     virtual void onUpdate();
 
-    pgScr* m_sub_scr1;
-    pgScr* m_sub_scr2;
+    ckScr* m_sub_scr1;
+    ckScr* m_sub_scr2;
 };
 
 
 void newSubScreen()
 {
-    pgNewTask(SubScreen);
+    ckNewTask(SubScreen);
 }
 
 
-SubScreen::SubScreen() : pgTask(ORDER_ZERO)
+SubScreen::SubScreen() : ckTask(ORDER_ZERO)
 {
-    m_sub_scr1 = pgDrawMgr::newScreen(pgID::genID());
-    m_sub_scr1->setClearColor(pgCol(0, 128, 0, 0));
-    m_sub_scr1->setGuestScreenID(0, pgID_("blurred_screen"));
+    m_sub_scr1 = ckDrawMgr::newScreen(ckID::genID());
+    m_sub_scr1->setClearColor(ckCol(0, 128, 0, 0));
+    m_sub_scr1->setGuestScreenID(0, ckID_("blurred_screen"));
     m_sub_scr1->setAreaInFramebuffer(466, 16, 160, 120);
-    m_sub_scr1->view() = pgMat::lookAt(pgVec(300.0f, 0.0f, 0.0f), pgVec::ZERO, pgVec::Y_UNIT);
+    m_sub_scr1->view() = ckMat::lookAt(ckVec(300.0f, 0.0f, 0.0f), ckVec::ZERO, ckVec::Y_UNIT);
 
-    m_sub_scr2 = pgDrawMgr::newScreen(pgID::genID());
-    m_sub_scr2->setClearColor(pgCol(128, 0, 0, 128));
-    m_sub_scr2->setGuestScreenID(0, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_sub_scr2->setGuestScreenID(1, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_sub_scr2 = ckDrawMgr::newScreen(ckID::genID());
+    m_sub_scr2->setClearColor(ckCol(128, 0, 0, 128));
+    m_sub_scr2->setGuestScreenID(0, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_sub_scr2->setGuestScreenID(1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_sub_scr2->setAreaInFramebuffer(16, 344, 160, 120);
-    m_sub_scr2->view() = pgMat::lookAt(pgVec(0.0f, 1000.0f, 400.0f), pgVec::ZERO, pgVec::Y_UNIT);
+    m_sub_scr2->view() = ckMat::lookAt(ckVec(0.0f, 1000.0f, 400.0f), ckVec::ZERO, ckVec::Y_UNIT);
 }
 
 
 SubScreen::~SubScreen()
 {
-    pgDrawMgr::deleteScreen(m_sub_scr1->getID());
-    pgDrawMgr::deleteScreen(m_sub_scr2->getID());
+    ckDrawMgr::deleteScreen(m_sub_scr1->getID());
+    ckDrawMgr::deleteScreen(m_sub_scr2->getID());
 }
 
 
 void SubScreen::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_S))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_S))
     {
         m_sub_scr1->setActive(!m_sub_scr1->isActive());
         m_sub_scr2->setActive(!m_sub_scr2->isActive());

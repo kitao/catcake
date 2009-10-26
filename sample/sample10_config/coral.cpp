@@ -29,7 +29,7 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
 const r32 NODE_WIDTH = 8.0f;
@@ -38,17 +38,17 @@ const r32 GROW_SPEED = 0.08f;
 const r32 OFFSET_SPEED = 0.004f;
 
 
-class Coral : public pgTask
+class Coral : public ckTask
 {
 public:
-    Coral(const pgMat& world, u8 type, u8 branch_num, u16 survival_time);
-    Coral(Coral* parent, const pgMat& world, u8 type, u8 branch_num);
+    Coral(const ckMat& world, u8 type, u8 branch_num, u16 survival_time);
+    Coral(Coral* parent, const ckMat& world, u8 type, u8 branch_num);
 
 private:
-    void init(Coral* parent, const pgMat& world, u8 type, u8 branch_num, u16 survival_time);
+    void init(Coral* parent, const ckMat& world, u8 type, u8 branch_num, u16 survival_time);
     virtual void onUpdate();
 
-    pgScr* m_scr;
+    ckScr* m_scr;
     Coral* m_parent;
     u8 m_type;
     u8 m_branch_num;
@@ -59,31 +59,31 @@ private:
     r32 m_v_offset;
     r32 m_fall_speed;
 
-    pgPrim m_coral_prim;
+    ckPrim m_coral_prim;
 };
 
 
 void newCoral(r32 x, r32 z, u8 type, u8 branch_num, u16 survival_time)
 {
-    pgNewTask(Coral)(pgMat::UNIT.translate(x, 0.0f, z), type, branch_num, survival_time);
+    ckNewTask(Coral)(ckMat::UNIT.translate(x, 0.0f, z), type, branch_num, survival_time);
 }
 
 
-Coral::Coral(const pgMat& world, u8 type, u8 branch_num, u16 survival_time) : pgTask(ORDER_ZERO)
+Coral::Coral(const ckMat& world, u8 type, u8 branch_num, u16 survival_time) : ckTask(ORDER_ZERO)
 {
     init(NULL, world, type, branch_num, survival_time);
 }
 
 
-Coral::Coral(Coral* parent, const pgMat& world, u8 type, u8 branch_num) : pgTask(parent)
+Coral::Coral(Coral* parent, const ckMat& world, u8 type, u8 branch_num) : ckTask(parent)
 {
     init(parent, world, type, branch_num, 0);
 }
 
 
-void Coral::init(Coral* parent, const pgMat& world, u8 type, u8 branch_num, u16 survival_time)
+void Coral::init(Coral* parent, const ckMat& world, u8 type, u8 branch_num, u16 survival_time)
 {
-    m_scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_parent = parent;
     m_type = type;
     m_branch_num = branch_num;
@@ -94,8 +94,8 @@ void Coral::init(Coral* parent, const pgMat& world, u8 type, u8 branch_num, u16 
     m_v_offset = 0.0f;
     m_fall_speed = 0.0f;
 
-    m_coral_prim.init(pgPrim::MODE_TRIANGLE_STRIP, 4, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_coral_prim.setTextureID(pgID_("coral_64x128.png"));
+    m_coral_prim.init(ckPrim::MODE_TRIANGLE_STRIP, 4, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_coral_prim.setTextureID(ckID_("coral_64x128.png"));
     m_coral_prim.local() = world;
 
     r32 u1 = 0.25f * m_type;
@@ -118,7 +118,7 @@ void Coral::onUpdate()
     if (m_is_live && ((m_parent && !m_parent->m_is_live) || (!m_parent && m_survival_time == 0)))
     {
         m_is_live = false;
-        m_fall_speed = pgMath::rand(2.0f, 3.0f, 0.1f);
+        m_fall_speed = ckMath::rand(2.0f, 3.0f, 0.1f);
 
         m_coral_prim.setPreset_defaultBlendHalf();
     }
@@ -151,7 +151,7 @@ void Coral::onUpdate()
 
             if (!m_parent && m_coral_prim.dataCol(0).a < 2)
             {
-                pgDeleteTask(this);
+                ckDeleteTask(this);
                 return;
             }
         }
@@ -159,33 +159,33 @@ void Coral::onUpdate()
 
     if (m_is_live && m_grow_rate < 1.0f)
     {
-        m_grow_rate = pgMath::min(m_grow_rate + GROW_SPEED, 1.0f);
+        m_grow_rate = ckMath::min(m_grow_rate + GROW_SPEED, 1.0f);
 
         if (m_branch_num > 0 && m_grow_rate >= 1.0f)
         {
-            pgMat mat = pgMat::UNIT;
+            ckMat mat = ckMat::UNIT;
             mat.trans.set(0.0f, NODE_HEIGHT * m_grow_rate - 2.0f, 0.0f);
 
-            pgMat mat1 = mat.rotateY_s32(pgMath::rand(10, 170)).rotateZ_s32(pgMath::rand(10, 30)).rotateX_s32(pgMath::rand(10, 30)).toGlobalFrom(m_coral_prim.local());
-            pgMat mat2 = mat.rotateY_s32(pgMath::rand(10, -170)).rotateZ_s32(pgMath::rand(10, 30)).rotateX_s32(pgMath::rand(10, 30)).toGlobalFrom(m_coral_prim.local());
+            ckMat mat1 = mat.rotateY_s32(ckMath::rand(10, 170)).rotateZ_s32(ckMath::rand(10, 30)).rotateX_s32(ckMath::rand(10, 30)).toGlobalFrom(m_coral_prim.local());
+            ckMat mat2 = mat.rotateY_s32(ckMath::rand(10, -170)).rotateZ_s32(ckMath::rand(10, 30)).rotateX_s32(ckMath::rand(10, 30)).toGlobalFrom(m_coral_prim.local());
 
-            if (mat1.y_axis.dot(pgVec::Y_UNIT) > 0.0f)
+            if (mat1.y_axis.dot(ckVec::Y_UNIT) > 0.0f)
             {
-                pgNewTask(Coral)(this, mat1, m_type, m_branch_num - 1);
+                ckNewTask(Coral)(this, mat1, m_type, m_branch_num - 1);
             }
 
-            if (mat2.y_axis.dot(pgVec::Y_UNIT) > 0.0f)
+            if (mat2.y_axis.dot(ckVec::Y_UNIT) > 0.0f)
             {
-                pgNewTask(Coral)(this, mat2, m_type, m_branch_num - 1);
+                ckNewTask(Coral)(this, mat2, m_type, m_branch_num - 1);
             }
         }
     }
 
-    pgVec pos1 = m_coral_prim.local().trans;
-    pgVec pos2 = pos1 + m_coral_prim.local().y_axis;
+    ckVec pos1 = m_coral_prim.local().trans;
+    ckVec pos2 = pos1 + m_coral_prim.local().y_axis;
 
-    pgVec vec_x = m_scr->calcVisibleVector(pos1, pos2).toLocalOf_noTrans(m_coral_prim.local()) * (NODE_WIDTH / 2.0f);
-    pgVec vec_y(0.0f, NODE_HEIGHT * m_grow_rate, 0.0f);
+    ckVec vec_x = m_scr->calcVisibleVector(pos1, pos2).toLocalOf_noTrans(m_coral_prim.local()) * (NODE_WIDTH / 2.0f);
+    ckVec vec_y(0.0f, NODE_HEIGHT * m_grow_rate, 0.0f);
 
     m_coral_prim.dataPos(0) = -vec_x + vec_y;
     m_coral_prim.dataPos(1) = vec_x + vec_y;

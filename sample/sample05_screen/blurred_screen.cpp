@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class BlurredScreen : public pgTask
+class BlurredScreen : public ckTask
 {
 public:
     BlurredScreen();
@@ -41,41 +41,41 @@ public:
 private:
     virtual void onUpdate();
 
-    pgScr* m_blurred_scr;
+    ckScr* m_blurred_scr;
 
-    pgPrim m_tetra_prim;
-    pgPrim m_blur_prim;
+    ckPrim m_tetra_prim;
+    ckPrim m_blur_prim;
 
-    pgNode m_cat_node;
-    pgPrim m_mask_prim;
-    pgPrim m_scr_prim;
+    ckNode m_cat_node;
+    ckPrim m_mask_prim;
+    ckPrim m_scr_prim;
 };
 
 
 void newBlurredScreen()
 {
-    pgNewTask(BlurredScreen);
+    ckNewTask(BlurredScreen);
 }
 
 
-BlurredScreen::BlurredScreen() : pgTask(ORDER_ZERO)
+BlurredScreen::BlurredScreen() : ckTask(ORDER_ZERO)
 {
     /*
         set up m_blurred_scr
     */
-    m_blurred_scr = pgDrawMgr::newScreen(pgID_("blurred_screen"));
+    m_blurred_scr = ckDrawMgr::newScreen(ckID_("blurred_screen"));
     m_blurred_scr->moveFirst();
     m_blurred_scr->setAreaInFramebuffer(0, 0, 512, 300);
     m_blurred_scr->setViewSize(512.0f, 300.0f);
-    m_blurred_scr->setClearColor(pgCol(32, 32, 32));
-    m_blurred_scr->attachScreenTexture(pgTex::FORMAT_RGBA); // pgTex::FORMAT_RGB is also OK except on iPhone
+    m_blurred_scr->setClearColor(ckCol(32, 32, 32));
+    m_blurred_scr->attachScreenTexture(ckTex::FORMAT_RGBA); // ckTex::FORMAT_RGB is also OK except on iPhone
 
     /*
         set up m_tetra_prim
     */
-    m_tetra_prim.init(pgPrim::MODE_TRIANGLES, 12, m_blurred_scr->getID());
+    m_tetra_prim.init(ckPrim::MODE_TRIANGLES, 12, m_blurred_scr->getID());
 
-    pgVec v1(0.0f, 61.5f, 0.0f), v2(58.0f, -24.0f, 0.0f), v3(-29.0f, -24.0f, 50.0f), v4(-29.0f, -24.0f, -50.0f);
+    ckVec v1(0.0f, 61.5f, 0.0f), v2(58.0f, -24.0f, 0.0f), v3(-29.0f, -24.0f, 50.0f), v4(-29.0f, -24.0f, -50.0f);
 
     m_tetra_prim.dataPos(0) = v1;
     m_tetra_prim.dataPos(1) = v2;
@@ -90,55 +90,55 @@ BlurredScreen::BlurredScreen() : pgTask(ORDER_ZERO)
     m_tetra_prim.dataPos(10) = v4;
     m_tetra_prim.dataPos(11) = v3;
 
-    m_tetra_prim.dataCol(0) = m_tetra_prim.dataCol(1) = m_tetra_prim.dataCol(2) = pgCol(255, 64, 64);
-    m_tetra_prim.dataCol(3) = m_tetra_prim.dataCol(4) = m_tetra_prim.dataCol(5) = pgCol(64, 255, 64);
-    m_tetra_prim.dataCol(6) = m_tetra_prim.dataCol(7) = m_tetra_prim.dataCol(8) = pgCol(64, 64, 255);
-    m_tetra_prim.dataCol(9) = m_tetra_prim.dataCol(10) = m_tetra_prim.dataCol(11) = pgCol(255, 255, 64);
+    m_tetra_prim.dataCol(0) = m_tetra_prim.dataCol(1) = m_tetra_prim.dataCol(2) = ckCol(255, 64, 64);
+    m_tetra_prim.dataCol(3) = m_tetra_prim.dataCol(4) = m_tetra_prim.dataCol(5) = ckCol(64, 255, 64);
+    m_tetra_prim.dataCol(6) = m_tetra_prim.dataCol(7) = m_tetra_prim.dataCol(8) = ckCol(64, 64, 255);
+    m_tetra_prim.dataCol(9) = m_tetra_prim.dataCol(10) = m_tetra_prim.dataCol(11) = ckCol(255, 255, 64);
 
     m_tetra_prim.local().trans.set(-50.0f, -10.0f, 0.0f);
 
     /*
         set up m_blur_prim
     */
-    m_blur_prim.init(pgPrim::MODE_TRIANGLE_FAN, 4, m_blurred_scr->getID());
+    m_blur_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, m_blurred_scr->getID());
     m_blur_prim.setTextureID(m_blurred_scr->getScreenTextureID());
     m_blur_prim.setPreset_defaultBlendHalf();
     m_blur_prim.setSortOffset(10000.0f);
-    m_blur_prim.setDepthTest(pgDraw::DEPTH_TEST_ALWAYS);
-    m_blur_prim.setDataRect(0, pgVec::ZERO, 512.0f, 300.0f, pgCol(255, 255, 255, 232), 0.033f, 0.06f, 0.95f, 0.95f);
+    m_blur_prim.setDepthTest(ckDraw::DEPTH_TEST_ALWAYS);
+    m_blur_prim.setDataRect(0, ckVec::ZERO, 512.0f, 300.0f, ckCol(255, 255, 255, 232), 0.033f, 0.06f, 0.95f, 0.95f);
 
     /*
         set up m_cat_node, m_mask_prim and m_scr_prim
     */
-    m_cat_node.init(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_cat_node.init(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-    m_mask_prim.init(pgPrim::MODE_TRIANGLE_FAN, 4, &m_cat_node);
-    m_mask_prim.setTextureID(pgID_("mask_512x300.png"));
-    m_mask_prim.setBlendMode(pgDraw::BLEND_HALF);
-    m_mask_prim.setDrawFlag(pgDraw::FLAG_WRITE_RGB, false);
-    m_mask_prim.setDrawFlag(pgDraw::FLAG_WRITE_ALPHA, true);
-    m_mask_prim.setDataRect(0, pgVec(50.0f, 20.0f, 0.0f), 512.0f, 300.0f, pgCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
+    m_mask_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, &m_cat_node);
+    m_mask_prim.setTextureID(ckID_("mask_512x300.png"));
+    m_mask_prim.setBlendMode(ckDraw::BLEND_HALF);
+    m_mask_prim.setDrawFlag(ckDraw::FLAG_WRITE_RGB, false);
+    m_mask_prim.setDrawFlag(ckDraw::FLAG_WRITE_ALPHA, true);
+    m_mask_prim.setDataRect(0, ckVec(50.0f, 20.0f, 0.0f), 512.0f, 300.0f, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
 
-    m_scr_prim.init(pgPrim::MODE_TRIANGLE_FAN, 4, &m_cat_node);
+    m_scr_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, &m_cat_node);
     m_scr_prim.setTextureID(m_blurred_scr->getScreenTextureID());
-    m_scr_prim.setDepthTest(pgDraw::DEPTH_TEST_ALWAYS);
-    m_scr_prim.setBlendMode(pgDraw::BLEND_DEST_ALPHA);
-    m_scr_prim.setDrawFlag(pgDraw::FLAG_WRITE_ALPHA, true);
-    m_scr_prim.setDataRect(0, pgVec(50.0f, 20.0f, 0.0f), 512.0f, 300.0f, pgCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
+    m_scr_prim.setDepthTest(ckDraw::DEPTH_TEST_ALWAYS);
+    m_scr_prim.setBlendMode(ckDraw::BLEND_DEST_ALPHA);
+    m_scr_prim.setDrawFlag(ckDraw::FLAG_WRITE_ALPHA, true);
+    m_scr_prim.setDataRect(0, ckVec(50.0f, 20.0f, 0.0f), 512.0f, 300.0f, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
 }
 
 
 BlurredScreen::~BlurredScreen()
 {
-    pgDrawMgr::deleteScreen(pgID_("blurred_screen"));
+    ckDrawMgr::deleteScreen(ckID_("blurred_screen"));
 }
 
 
 void BlurredScreen::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
     m_blurred_scr->updateScreenTexture(false);
@@ -146,7 +146,7 @@ void BlurredScreen::onUpdate()
     m_tetra_prim.local() = m_tetra_prim.local().rotateX_r32(2.0f).rotateY_r32(1.5f);
     m_cat_node.local() = m_cat_node.local().rotateY_r32(0.5f);
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_B))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_B))
     {
         m_blur_prim.setVisible(!m_blur_prim.isVisible());
     }

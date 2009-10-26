@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-class Golem : public pgTask
+class Golem : public ckTask
 {
 public:
     Golem();
@@ -40,8 +40,8 @@ public:
 private:
     virtual void onUpdate();
 
-    pgMdl m_golem_mdl;
-    pgSprt m_copyright_sprt;
+    ckMdl m_golem_mdl;
+    ckSprt m_copyright_sprt;
 
     r32 m_cur_mouse_x;
     r32 m_cur_mouse_y;
@@ -55,18 +55,18 @@ private:
 
 void newGolem()
 {
-    pgNewTask(Golem);
+    ckNewTask(Golem);
 }
 
 
-Golem::Golem() : pgTask(ORDER_ZERO)
+Golem::Golem() : ckTask(ORDER_ZERO)
 {
-    m_golem_mdl.init(pgID_("golem.3ds"), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_golem_mdl.setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-    m_golem_mdl.getRootDraw()->local() = pgMat::UNIT.rotateX_s32(-90);
+    m_golem_mdl.init(ckID_("golem.3ds"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_golem_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_golem_mdl.getRootDraw()->local() = ckMat::UNIT.rotateX_s32(-90);
 
-    m_copyright_sprt.init(1, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    m_copyright_sprt.setTextureID(pgID_("copyright_304x34.png"));
+    m_copyright_sprt.init(1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_copyright_sprt.setTextureID(ckID_("copyright_304x34.png"));
     m_copyright_sprt.setPreset_defaultBlendHalf();
 
     m_copyright_sprt.dataPos(0).set(0.0f, -150.0f);
@@ -79,65 +79,65 @@ Golem::Golem() : pgTask(ORDER_ZERO)
     m_cur_mouse_x = m_last_mouse_x = 0.0f;
     m_cur_mouse_y = m_last_mouse_y = 0.0f;
 
-    pgLts* lts = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+    ckLts* lts = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
-    lts->setAmbientColor(pgCol(128, 128, 128));
+    lts->setAmbientColor(ckCol(128, 128, 128));
     lts->setParaLightActive(0, true);
-    lts->setParaLightDir(0, pgVec(1.0f, -1.0f, -1.0f));
-    lts->setParaLightColor(0, pgCol::FULL);
+    lts->setParaLightDir(0, ckVec(1.0f, -1.0f, -1.0f));
+    lts->setParaLightColor(0, ckCol::FULL);
 }
 
 
 void Golem::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_T))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_T))
     {
-        m_golem_mdl.setTextureID((m_golem_mdl.getTextureID() == pgID::ZERO) ? pgID_("golem.png") : pgID::ZERO);
+        m_golem_mdl.setTextureID((m_golem_mdl.getTextureID() == ckID::ZERO) ? ckID_("golem.png") : ckID::ZERO);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_L))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_L))
     {
-        m_golem_mdl.setLightSetID((m_golem_mdl.getLightSetID() == pgID::ZERO) ? pgDrawMgr::DEFAULT_LIGHT_SET_ID : pgID::ZERO);
+        m_golem_mdl.setLightSetID((m_golem_mdl.getLightSetID() == ckID::ZERO) ? ckDrawMgr::DEFAULT_LIGHT_SET_ID : ckID::ZERO);
     }
 
     m_last_mouse_x = m_cur_mouse_x;
     m_last_mouse_y = m_cur_mouse_y;
 
-    pgScr* scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckScr* scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_LBUTTON))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_LBUTTON))
     {
-        m_cur_mouse_x = m_last_mouse_x = scr->framebufferXToScreenX(pgKeyMgr::getMouseX());
-        m_cur_mouse_y = m_last_mouse_y = scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+        m_cur_mouse_x = m_last_mouse_x = scr->framebufferXToScreenX(ckKeyMgr::getMouseX());
+        m_cur_mouse_y = m_last_mouse_y = scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
     }
 
-    if (pgKeyMgr::isOn(pgKeyMgr::KEY_LBUTTON))
+    if (ckKeyMgr::isOn(ckKeyMgr::KEY_LBUTTON))
     {
-        m_cur_mouse_x = scr->framebufferXToScreenX(pgKeyMgr::getMouseX());
-        m_cur_mouse_y = scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+        m_cur_mouse_x = scr->framebufferXToScreenX(ckKeyMgr::getMouseX());
+        m_cur_mouse_y = scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
     }
 
     m_rot_y += 0.1f - (m_cur_mouse_x - m_last_mouse_x) * 0.5f;
     m_rot_x += (m_cur_mouse_y - m_last_mouse_y) * 0.3f;
-    m_rot_x = pgMath::clamp(m_rot_x, -80.0f, 80.0f);
+    m_rot_x = ckMath::clamp(m_rot_x, -80.0f, 80.0f);
 
-    scr->view() = pgMat::UNIT.rotateY_r32(m_rot_y).rotateX_r32(m_rot_x).translate(0.0f, 150.0f, 1000.0f + m_rot_x * m_rot_x * 0.1f);
+    scr->view() = ckMat::UNIT.rotateY_r32(m_rot_y).rotateX_r32(m_rot_x).translate(0.0f, 150.0f, 1000.0f + m_rot_x * m_rot_x * 0.1f);
 
     for (s32 i = -10; i <= 10; i++)
     {
         r32 offset = i * 50.0f;
 
-        pgDbgMgr::drawLine(pgVec(offset, 0.0f, 500.0f), pgVec(offset, 0.0f, -500.0f), pgCol(0, 255, 0, 128), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        pgDbgMgr::drawLine(pgVec(500.0f, 0.0f, offset), pgVec(-500.0f, 0.0f, offset), pgCol(0, 255, 0, 128), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawLine(ckVec(offset, 0.0f, 500.0f), ckVec(offset, 0.0f, -500.0f), ckCol(0, 255, 0, 128), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        ckDbgMgr::drawLine(ckVec(500.0f, 0.0f, offset), ckVec(-500.0f, 0.0f, offset), ckCol(0, 255, 0, 128), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     }
 }

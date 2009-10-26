@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newFontDraw();
 void newMassFont();
 
@@ -45,19 +45,19 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample04 - Font", 640, 480, 60);
+    ckCreateCatcake("Sample04 - Font", 640, 480, 60);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
-    pgResMgr::loadResource("../data/stonsans.ttf", true);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/stonsans.ttf", true);
 #ifdef WIN32
-    pgUtil::loadWindowsFont("msgothic.ttc");
+    ckUtil::loadWindowsFont("msgothic.ttc");
 #endif
 
-    pgMath::srand(static_cast<u32>(pgSysMgr::getUsecTime()));
+    ckMath::srand(static_cast<u32>(ckSysMgr::getUsecTime()));
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newFontDraw();
 
     for (s32 i = 0; i < 50; i++)
@@ -65,6 +65,6 @@ pgMain()
         newMassFont();
     }
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

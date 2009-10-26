@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class DebugDraw : public pgTask
+class DebugDraw : public ckTask
 {
 public:
     DebugDraw();
@@ -40,27 +40,27 @@ public:
 private:
     virtual void onUpdate();
 
-    pgMat m_box_world;
-    pgVec m_box_size;
+    ckMat m_box_world;
+    ckVec m_box_size;
 
-    pgMat m_sphere_world;
+    ckMat m_sphere_world;
     r32 m_sphere_radius;
 };
 
 
 void newDebugDraw()
 {
-    pgNewTask(DebugDraw);
+    ckNewTask(DebugDraw);
 }
 
 
-DebugDraw::DebugDraw() : pgTask(ORDER_ZERO)
+DebugDraw::DebugDraw() : ckTask(ORDER_ZERO)
 {
-    m_box_world = pgMat::UNIT;
+    m_box_world = ckMat::UNIT;
     m_box_world.trans.set(-130.0f, 100.0f, 0.0f);
     m_box_size.set(150.0f, 100.0f, 50.0f);
 
-    m_sphere_world = pgMat::UNIT;
+    m_sphere_world = ckMat::UNIT;
     m_sphere_world.trans.set(130.0f, 100.0f, 0.0);
     m_sphere_radius = 80.0f;
 }
@@ -68,43 +68,43 @@ DebugDraw::DebugDraw() : pgTask(ORDER_ZERO)
 
 void DebugDraw::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_V))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_V))
     {
-        pgDbgMgr::dumpVector(m_box_size, "m_box_size");
+        ckDbgMgr::dumpVector(m_box_size, "m_box_size");
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_M))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_M))
     {
-        pgDbgMgr::dumpMatrix(m_sphere_world, "m_sphere_world");
+        ckDbgMgr::dumpMatrix(m_sphere_world, "m_sphere_world");
     }
 
     m_box_world = m_box_world.rotateY_s32(2).rotateX_r32(1);
     m_sphere_world = m_sphere_world.rotateX_s32(2).rotateY_s32(1);
 
-    pgDbgMgr::drawBox(m_box_world, m_box_size, pgCol(0, 128, 255, 128), pgCol(255, 255, 255, 128), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    pgDbgMgr::drawSphere(m_sphere_world.trans, m_sphere_radius, pgCol(255, 0, 128, 128), pgCol(255, 255, 255, 128), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawBox(m_box_world, m_box_size, ckCol(0, 128, 255, 128), ckCol(255, 255, 255, 128), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawSphere(m_sphere_world.trans, m_sphere_radius, ckCol(255, 0, 128, 128), ckCol(255, 255, 255, 128), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-    pgDbgMgr::drawAxis(m_box_world, 100.0f, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    pgDbgMgr::drawAxis(m_sphere_world, 100.0f, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawAxis(m_box_world, 100.0f, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    ckDbgMgr::drawAxis(m_sphere_world, 100.0f, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
-    pgDbgMgr::drawLine(pgVec(-250.0f, -50.0f), pgVec(-150.0f, -150.0f), pgCol(255, 255, 0), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    pgDbgMgr::drawPolygon(pgVec(0.0f, -50.0f), pgVec(-50.0f, -150.0f), pgVec(50.0f, -150.0f), pgCol(255, 0, 255), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    pgDbgMgr::drawPolygon(pgVec(150.0f, -50.0f), pgVec(150.0f, -150.0f), pgVec(250.0f, -50.0f), pgVec(250.0f, -150.0f), pgCol(0, 192, 0), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    ckDbgMgr::drawLine(ckVec(-250.0f, -50.0f), ckVec(-150.0f, -150.0f), ckCol(255, 255, 0), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    ckDbgMgr::drawPolygon(ckVec(0.0f, -50.0f), ckVec(-50.0f, -150.0f), ckVec(50.0f, -150.0f), ckCol(255, 0, 255), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    ckDbgMgr::drawPolygon(ckVec(150.0f, -50.0f), ckVec(150.0f, -150.0f), ckVec(250.0f, -50.0f), ckVec(250.0f, -150.0f), ckCol(0, 192, 0), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
 
-    u32 frame_count = pgTaskMgr::getFrameCount();
+    u32 frame_count = ckTaskMgr::getFrameCount();
 
     if (frame_count % 10 == 0)
     {
-        pgDbgMgr::trace("%d\n", frame_count);
+        ckDbgMgr::trace("%d\n", frame_count);
     }
 }

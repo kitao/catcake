@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newCat();
 void newCoin();
 
@@ -46,20 +46,20 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample03 - Sprite", 640, 480, 60);
+    ckCreateCatcake("Sample03 - Sprite", 640, 480, 60);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
-    pgResMgr::loadResource("../data/stephanie_275x196.png", true);
-    pgResMgr::loadResource("../data/coin_400x200.png", true);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/stephanie_275x196.png", true);
+    ckResMgr::loadResource("../data/coin_400x200.png", true);
 
-    pgMath::srand(static_cast<u32>(pgSysMgr::getUsecTime()));
+    ckMath::srand(static_cast<u32>(ckSysMgr::getUsecTime()));
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newCat();
     newCoin();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

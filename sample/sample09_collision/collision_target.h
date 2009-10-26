@@ -55,33 +55,33 @@ public:
     struct Target1
     {
         Target1Type type;
-        pgCdt::Sph sph;
-        pgCdt::Box box;
-        pgCdt::Ray ray;
+        ckCdt::Sph sph;
+        ckCdt::Box box;
+        ckCdt::Ray ray;
     };
 
     struct Target2
     {
         Target2Type type;
-        pgCdt::Sph sph;
-        pgCdt::Box box;
-        pgCdt::Tri tri;
+        ckCdt::Sph sph;
+        ckCdt::Box box;
+        ckCdt::Tri tri;
     };
 
-    static bool checkTargetHit(const Target1& tgt1, const pgCdt::Ray& hit_ray);
-    static bool checkTargetHit(const Target2& tgt2, const pgCdt::Ray& hit_ray);
+    static bool checkTargetHit(const Target1& tgt1, const ckCdt::Ray& hit_ray);
+    static bool checkTargetHit(const Target2& tgt2, const ckCdt::Ray& hit_ray);
 
-    static void updateTarget(Target1* tgt1, const pgMat& world, const pgVec& size);
-    static void updateTarget(Target2* tgt2, const pgMat& world, const pgVec& size);
+    static void updateTarget(Target1* tgt1, const ckMat& world, const ckVec& size);
+    static void updateTarget(Target2* tgt2, const ckMat& world, const ckVec& size);
 
-    static void drawTarget(const Target1& tgt1, pgCol poly_col, pgCol line_col, pgCol aabb_col);
-    static void drawTarget(const Target2& tgt2, pgCol poly_col, pgCol line_col, pgCol aabb_col);
+    static void drawTarget(const Target1& tgt1, ckCol poly_col, ckCol line_col, ckCol aabb_col);
+    static void drawTarget(const Target2& tgt2, ckCol poly_col, ckCol line_col, ckCol aabb_col);
 
-    static bool collide(pgCdt::CdtInfo* cdt_info, const Target1& tgt1, const Target2& tgt2);
-    static bool intersect(pgVec* pos, const Target1& tgt1, const Target2& tgt2);
+    static bool collide(ckCdt::CdtInfo* cdt_info, const Target1& tgt1, const Target2& tgt2);
+    static bool intersect(ckVec* pos, const Target1& tgt1, const Target2& tgt2);
 
-    static void drawPos(const pgVec& pos, pgCol col);
-    static void drawAxis(pgCol col);
+    static void drawPos(const ckVec& pos, ckCol col);
+    static void drawAxis(ckCol col);
 };
 
 

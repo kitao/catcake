@@ -29,13 +29,13 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Ameba : public pgTask
+class Ameba : public ckTask
 {
 public:
-    Ameba(r32 x, r32 y, pgCol color);
+    Ameba(r32 x, r32 y, ckCol color);
 
 private:
     static const u16 CIRCLE_VERT_NUM = 36;
@@ -45,20 +45,20 @@ private:
     void setAmebaPos(s32 phase);
     virtual void onUpdate();
 
-    pgPrim m_ameba_prim;
+    ckPrim m_ameba_prim;
     s32 m_phase;
 };
 
 
-void newAmeba(r32 x, r32 y, pgCol color)
+void newAmeba(r32 x, r32 y, ckCol color)
 {
-    pgNewTask(Ameba)(x, y, color);
+    ckNewTask(Ameba)(x, y, color);
 }
 
 
-Ameba::Ameba(r32 x, r32 y, pgCol color) : pgTask(ORDER_ZERO)
+Ameba::Ameba(r32 x, r32 y, ckCol color) : ckTask(ORDER_ZERO)
 {
-    m_ameba_prim.init(pgPrim::MODE_TRIANGLE_FAN, AMEBA_VERT_NUM, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_ameba_prim.init(ckPrim::MODE_TRIANGLE_FAN, AMEBA_VERT_NUM, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_ameba_prim.setPreset_defaultBlendHalf();
 
     setAmebaPos(m_phase);
@@ -78,12 +78,12 @@ Ameba::Ameba(r32 x, r32 y, pgCol color) : pgTask(ORDER_ZERO)
 
 void Ameba::setAmebaPos(s32 phase)
 {
-    m_ameba_prim.dataPos(0) = pgVec::ZERO;
+    m_ameba_prim.dataPos(0) = ckVec::ZERO;
 
     for (s32 i = 1; i < AMEBA_VERT_NUM; i++)
     {
-        pgVec dir(pgMath::cos_s32((i - 1) * ONE_VERT_DEG), pgMath::sin_s32((i - 1) * ONE_VERT_DEG));
-        r32 rad = pgMath::sin_s32((i - 1) * 60) * pgMath::sin_s32(phase) * 8.0f + 64.0f;
+        ckVec dir(ckMath::cos_s32((i - 1) * ONE_VERT_DEG), ckMath::sin_s32((i - 1) * ONE_VERT_DEG));
+        r32 rad = ckMath::sin_s32((i - 1) * 60) * ckMath::sin_s32(phase) * 8.0f + 64.0f;
 
         m_ameba_prim.dataPos(i) = dir * rad;
     }
@@ -92,15 +92,15 @@ void Ameba::setAmebaPos(s32 phase)
 
 void Ameba::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_P))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_P))
     {
-        if (m_ameba_prim.getPrimMode() == pgPrim::MODE_TRIANGLE_FAN)
+        if (m_ameba_prim.getPrimMode() == ckPrim::MODE_TRIANGLE_FAN)
         {
-            m_ameba_prim.setPrimMode(pgPrim::MODE_LINE_STRIP);
+            m_ameba_prim.setPrimMode(ckPrim::MODE_LINE_STRIP);
         }
         else
         {
-            m_ameba_prim.setPrimMode(pgPrim::MODE_TRIANGLE_FAN);
+            m_ameba_prim.setPrimMode(ckPrim::MODE_TRIANGLE_FAN);
         }
     }
 

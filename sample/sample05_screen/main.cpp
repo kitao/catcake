@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn_main.h"
+#include "catcake_main.h"
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num);
+void newCatcakeLogo(const char** cmd, u8 cmd_num);
 void newBlurredScreen();
 void newCopyCat();
 void newSubScreen();
@@ -48,20 +48,20 @@ static const char* s_cmd[] =
 };
 
 
-pgMain()
+ckMain()
 {
-    pgCreatePogolyn("Sample05 - Screen", 640, 480, 60);
+    ckCreateCatcake("Sample05 - Screen", 640, 480, 60);
 
-    pgResMgr::loadResource("../data/pogolyn_logo_71x14.png", true);
-    pgResMgr::loadResource("../data/mask_512x300.png", true);
+    ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("../data/mask_512x300.png", true);
 
-    pgMath::srand(static_cast<u32>(pgSysMgr::getUsecTime()));
+    ckMath::srand(static_cast<u32>(ckSysMgr::getUsecTime()));
 
-    newPogolynLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
+    newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newBlurredScreen();
     newCopyCat();
     newSubScreen();
 
-    pgStartPogolyn();
-    pgDestroyPogolyn();
+    ckStartCatcake();
+    ckDestroyCatcake();
 }

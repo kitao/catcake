@@ -29,14 +29,14 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class PogolynLogo : public pgTask
+class CatcakeLogo : public ckTask
 {
 public:
-    PogolynLogo(const char** cmd, u8 cmd_num);
-    virtual ~PogolynLogo();
+    CatcakeLogo(const char** cmd, u8 cmd_num);
+    virtual ~CatcakeLogo();
 
 private:
     void setPos();
@@ -44,30 +44,30 @@ private:
 
     const char** m_cmd;
     u8 m_cmd_num;
-    pgScr* m_scr;
-    pgSprt m_logo_sprt;
+    ckScr* m_scr;
+    ckSprt m_logo_sprt;
 };
 
 
-void newPogolynLogo(const char** cmd, u8 cmd_num)
+void newCatcakeLogo(const char** cmd, u8 cmd_num)
 {
-    pgNewTask(PogolynLogo)(cmd, cmd_num);
+    ckNewTask(CatcakeLogo)(cmd, cmd_num);
 }
 
 
-PogolynLogo::PogolynLogo(const char** cmd, u8 cmd_num) : pgTask(ORDER_PLUS_7)
+CatcakeLogo::CatcakeLogo(const char** cmd, u8 cmd_num) : ckTask(ORDER_PLUS_7)
 {
     m_cmd = cmd;
     m_cmd_num = cmd_num;
 
-    m_scr = pgDrawMgr::newScreen(pgID::genID());
+    m_scr = ckDrawMgr::newScreen(ckID::genID());
     m_scr->setClearMode(false, true);
     m_scr->setPerspective(false);
     m_scr->moveLast();
 
     m_logo_sprt.init(1, m_scr->getID());
-    m_logo_sprt.setTextureID(pgID_("pogolyn_logo_71x14.png"));
-    m_logo_sprt.setDrawFlag(pgDraw::FLAG_BILINEAR, false);
+    m_logo_sprt.setTextureID(ckID_("catcake_logo_71x14.png"));
+    m_logo_sprt.setDrawFlag(ckDraw::FLAG_BILINEAR, false);
 
     m_logo_sprt.setDataSize(0, 71.0f * 3.0f, 14.0f * 3.0f);
 
@@ -75,37 +75,37 @@ PogolynLogo::PogolynLogo(const char** cmd, u8 cmd_num) : pgTask(ORDER_PLUS_7)
 }
 
 
-PogolynLogo::~PogolynLogo()
+CatcakeLogo::~CatcakeLogo()
 {
-    pgDrawMgr::deleteScreen(m_scr->getID());
+    ckDrawMgr::deleteScreen(m_scr->getID());
 }
 
 
-void PogolynLogo::setPos()
+void CatcakeLogo::setPos()
 {
-    r32 x = (pgSysMgr::getFramebufferWidth() - m_logo_sprt.dataW(0)) / 2.0f - 16.0f;
-    r32 y = (pgSysMgr::getFramebufferHeight() - m_logo_sprt.dataH(0)) / -2.0f + 16.0f;
+    r32 x = (ckSysMgr::getFramebufferWidth() - m_logo_sprt.dataW(0)) / 2.0f - 16.0f;
+    r32 y = (ckSysMgr::getFramebufferHeight() - m_logo_sprt.dataH(0)) / -2.0f + 16.0f;
 
     m_logo_sprt.dataPos(0).set(x, y);
 }
 
 
-void PogolynLogo::onUpdate()
+void CatcakeLogo::onUpdate()
 {
-    if (pgSysMgr::isFramebufferSizeChanged())
+    if (ckSysMgr::isFramebufferSizeChanged())
     {
-        m_scr->setAreaInFramebuffer(0, 0, pgSysMgr::getFramebufferWidth(), pgSysMgr::getFramebufferHeight());
-        m_scr->setViewSize(pgSysMgr::getFramebufferWidth(), pgSysMgr::getFramebufferHeight());
+        m_scr->setAreaInFramebuffer(0, 0, ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
+        m_scr->setViewSize(ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
 
         setPos();
     }
 
-    const r32 left = pgSysMgr::getFramebufferWidth() / -2.0f + 16.0f;
-    const r32 top = pgSysMgr::getFramebufferHeight() / 2.0f - 16.0f;
+    const r32 left = ckSysMgr::getFramebufferWidth() / -2.0f + 16.0f;
+    const r32 top = ckSysMgr::getFramebufferHeight() / 2.0f - 16.0f;
     const r32 interval = 12.0f;
 
     for (s32 i = 0; i < m_cmd_num; i++)
     {
-        pgDbgMgr::drawString(left, top - interval * i, pgCol::FULL, 1, m_cmd[i]);
+        ckDbgMgr::drawString(left, top - interval * i, ckCol::FULL, 1, m_cmd[i]);
     }
 }

@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class CopyCat : public pgTask
+class CopyCat : public ckTask
 {
 public:
     CopyCat();
@@ -43,32 +43,32 @@ private:
     virtual void onUpdate();
 
     bool m_is_copy_texture;
-    pgScr* m_scr2d;
-    pgSprt m_copy_sprt;
+    ckScr* m_scr2d;
+    ckSprt m_copy_sprt;
 };
 
 
 void newCopyCat()
 {
-    pgNewTask(CopyCat);
+    ckNewTask(CopyCat);
 }
 
 
-CopyCat::CopyCat() : pgTask(ORDER_ZERO)
+CopyCat::CopyCat() : ckTask(ORDER_ZERO)
 {
     m_is_copy_texture = true;
 
-    m_scr2d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_scr2d->attachScreenTexture(pgTex::FORMAT_RGBA);
+    m_scr2d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_scr2d->attachScreenTexture(ckTex::FORMAT_RGBA);
 
-    m_copy_sprt.init(COPY_CAT_NUM, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_copy_sprt.init(COPY_CAT_NUM, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_copy_sprt.setTextureID(m_scr2d->getScreenTextureID());
     m_copy_sprt.setPreset_defaultBlendHalf();
 
     for (u32 i = 0; i < COPY_CAT_NUM; i++)
     {
-        m_copy_sprt.dataPos(i).set(pgMath::rand(-320.0f, 320.0f, 10.0f), pgMath::rand(-240.0f, 240.0f, 10.0f), pgMath::rand(-300.0f, 300.0f, 10.0f));
-        m_copy_sprt.dataAng(i) = pgMath::rand(-90, 90);
+        m_copy_sprt.dataPos(i).set(ckMath::rand(-320.0f, 320.0f, 10.0f), ckMath::rand(-240.0f, 240.0f, 10.0f), ckMath::rand(-300.0f, 300.0f, 10.0f));
+        m_copy_sprt.dataAng(i) = ckMath::rand(-90, 90);
         m_copy_sprt.setDataSize(i, 120.0f, 90.0f);
     }
 }
@@ -76,14 +76,14 @@ CopyCat::CopyCat() : pgTask(ORDER_ZERO)
 
 void CopyCat::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
 
         m_is_copy_texture = true;
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_C))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_C))
     {
         m_is_copy_texture = !m_is_copy_texture;
     }

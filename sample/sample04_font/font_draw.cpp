@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class FontDraw : public pgTask
+class FontDraw : public ckTask
 {
 public:
     FontDraw();
@@ -41,32 +41,32 @@ private:
     virtual void onUpdate();
 
     u64 m_start_time;
-    pgScr* m_scr3d;
-    pgMat m_view1;
-    pgMat m_view2;
+    ckScr* m_scr3d;
+    ckMat m_view1;
+    ckMat m_view2;
     bool m_is_view2;
 
-    pgFont m_text_font1;
-    pgSprt m_text_sprt1;
+    ckFont m_text_font1;
+    ckSprt m_text_sprt1;
 
-    pgFont m_text_font2;
-    pgSprt m_text_sprt2;
+    ckFont m_text_font2;
+    ckSprt m_text_sprt2;
 
-    pgFont m_time_font;
-    pgSprt m_time_sprt;
+    ckFont m_time_font;
+    ckSprt m_time_sprt;
 };
 
 
 void newFontDraw()
 {
-    pgNewTask(FontDraw);
+    ckNewTask(FontDraw);
 }
 
 
-FontDraw::FontDraw() : pgTask(ORDER_ZERO)
+FontDraw::FontDraw() : ckTask(ORDER_ZERO)
 {
-    m_start_time = pgSysMgr::getUsecTime();
-    m_scr3d = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_start_time = ckSysMgr::getUsecTime();
+    m_scr3d = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_view1 = m_scr3d->view();
     m_view2 = m_view1.rotateY_s32(90).rotateX_s32(-30).translate(800.0f, 10.0f, 1500.0f);
     m_is_view2 = false;
@@ -74,15 +74,15 @@ FontDraw::FontDraw() : pgTask(ORDER_ZERO)
     /*
         set up m_text_font1 and m_text_sprt1
     */
-    const char* text1 = "Pogolyn Font-drawing Sample";
+    const char* text1 = "Catcake Font-drawing Sample";
 
-    pgDrawMgr::setFont(pgID_("stonsans.ttf"), 0);
-    pgDrawMgr::setFontSize(48);
+    ckDrawMgr::setFont(ckID_("stonsans.ttf"), 0);
+    ckDrawMgr::setFontSize(48);
 
-    m_text_font1.init(pgDrawMgr::calcFontDrawWidth(text1), pgDrawMgr::getFontSize());
+    m_text_font1.init(ckDrawMgr::calcFontDrawWidth(text1), ckDrawMgr::getFontSize());
     m_text_font1.drawString(0, 0, text1);
 
-    m_text_sprt1.init(2, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_text_sprt1.init(2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_text_sprt1.setTextureID(m_text_font1.getTextureID());
     m_text_sprt1.setPreset_defaultBlendHalf();
 
@@ -97,17 +97,17 @@ FontDraw::FontDraw() : pgTask(ORDER_ZERO)
         set up m_text_font2 and m_text_sprt2
     */
     wchar_t text2[64];
-    pgSysMgr::swprintf(text2, sizeof(text2) / sizeof(wchar_t), L"You can use %ls and %ls.", L"ASCII", L"UNICODE");
+    ckSysMgr::swprintf(text2, sizeof(text2) / sizeof(wchar_t), L"You can use %ls and %ls.", L"ASCII", L"UNICODE");
 
 #ifdef WIN32
-    pgDrawMgr::setFont(pgID_("msgothic.ttc"), 0);
+    ckDrawMgr::setFont(ckID_("msgothic.ttc"), 0);
 #endif
-    pgDrawMgr::setFontSize(36);
+    ckDrawMgr::setFontSize(36);
 
-    m_text_font2.init(pgDrawMgr::calcFontDrawWidth(text2), pgDrawMgr::getFontSize());
+    m_text_font2.init(ckDrawMgr::calcFontDrawWidth(text2), ckDrawMgr::getFontSize());
     m_text_font2.drawString(0, 0, text2);
 
-    m_text_sprt2.init(2, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_text_sprt2.init(2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_text_sprt2.setTextureID(m_text_font2.getTextureID());
     m_text_sprt2.setPreset_defaultBlendHalf();
 
@@ -124,7 +124,7 @@ FontDraw::FontDraw() : pgTask(ORDER_ZERO)
     */
     m_time_font.init(256, 100);
 
-    m_time_sprt.init(2, pgDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_time_sprt.init(2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_time_sprt.setTextureID(m_time_font.getTextureID());
     m_time_sprt.setPreset_defaultBlendHalf();
 
@@ -141,26 +141,26 @@ FontDraw::FontDraw() : pgTask(ORDER_ZERO)
 
 void FontDraw::onUpdate()
 {
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_F))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_F))
     {
-        pgSysMgr::toggleFullScreen(640, 480);
+        ckSysMgr::toggleFullScreen(640, 480);
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_Q))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_Q))
     {
-        pgEndPogolyn();
+        ckEndCatcake();
     }
 
-    r32 time = static_cast<r32>(pgSysMgr::getUsecTime() - m_start_time) / 1000000.0f;
+    r32 time = static_cast<r32>(ckSysMgr::getUsecTime() - m_start_time) / 1000000.0f;
     time -= (static_cast<u32>(time) / 100) * 100;
 
-    pgDrawMgr::setFont(pgID_("stonsans.ttf"), 0);
-    pgDrawMgr::setFontSize(100);
+    ckDrawMgr::setFont(ckID_("stonsans.ttf"), 0);
+    ckDrawMgr::setFontSize(100);
 
     m_time_font.clearImage();
     m_time_font.drawString(0, 0, "%2.2f", time);
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_V))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_V))
     {
         m_is_view2 = !m_is_view2;
     }

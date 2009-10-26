@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Fog : public pgTask
+class Fog : public ckTask
 {
 public:
     Fog();
@@ -41,35 +41,35 @@ private:
     static const u32 FOG_NUM = 128;
 
     virtual void onUpdate();
-    virtual void onMessage(pgID msg_id, pgMsg<4>& msg);
+    virtual void onMessage(ckID msg_id, ckMsg<4>& msg);
 
-    pgLts* m_cur_lts;
-    pgSprt m_fog_sprt[FOG_NUM];
+    ckLts* m_cur_lts;
+    ckSprt m_fog_sprt[FOG_NUM];
 };
 
 
 void newFog()
 {
-    pgNewTask(Fog);
+    ckNewTask(Fog);
 }
 
 
-Fog::Fog() : pgTask(ORDER_ZERO)
+Fog::Fog() : ckTask(ORDER_ZERO)
 {
-    m_cur_lts = pgDrawMgr::getLightSet(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_cur_lts = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
 
     for (u32 i = 0; i < FOG_NUM; i++)
     {
-        pgSprt* fog_sprt = &m_fog_sprt[i];
+        ckSprt* fog_sprt = &m_fog_sprt[i];
 
-        fog_sprt->init(1, pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        fog_sprt->setTextureID(pgID_("fog_128x128.png"));
+        fog_sprt->init(1, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        fog_sprt->setTextureID(ckID_("fog_128x128.png"));
 
         fog_sprt->setPreset_defaultBlendHalf();
 
-        fog_sprt->dataPos(0).set(pgMath::rand(-180.0f, 180.0f, 1.0f), pgMath::rand(0.0f, 2.0f, 0.1f), pgMath::rand(-180.0f, 180.0f, 1.0f));
+        fog_sprt->dataPos(0).set(ckMath::rand(-180.0f, 180.0f, 1.0f), ckMath::rand(0.0f, 2.0f, 0.1f), ckMath::rand(-180.0f, 180.0f, 1.0f));
         fog_sprt->setDataSize(0, 128.0f, 128.0f);
-        fog_sprt->dataAng(0) = pgMath::rand(-180, 180);
+        fog_sprt->dataAng(0) = ckMath::rand(-180, 180);
     }
 }
 
@@ -78,7 +78,7 @@ void Fog::onUpdate()
 {
     for (u32 i = 0; i < FOG_NUM; i++)
     {
-        pgSprt* fog_sprt = &m_fog_sprt[i];
+        ckSprt* fog_sprt = &m_fog_sprt[i];
 
         m_cur_lts->findNearLight(fog_sprt->dataPos(0));
 
@@ -94,9 +94,9 @@ void Fog::onUpdate()
         fog_sprt->dataAng(0)++;
     }
 
-    if (pgKeyMgr::isPressed(pgKeyMgr::KEY_B))
+    if (ckKeyMgr::isPressed(ckKeyMgr::KEY_B))
     {
-        if (m_fog_sprt->getBlendMode() == pgDraw::BLEND_HALF)
+        if (m_fog_sprt->getBlendMode() == ckDraw::BLEND_HALF)
         {
             for (u32 i = 0; i < FOG_NUM; i++)
             {
@@ -114,10 +114,10 @@ void Fog::onUpdate()
 }
 
 
-void Fog::onMessage(pgID msg_id, pgMsg<4>& msg)
+void Fog::onMessage(ckID msg_id, ckMsg<4>& msg)
 {
-    if (msg_id == pgID_("CHANGE LIGHT SET"))
+    if (msg_id == ckID_("CHANGE LIGHT SET"))
     {
-        m_cur_lts = pgDrawMgr::getLightSet(msg.getParam<pgID>(0));
+        m_cur_lts = ckDrawMgr::getLightSet(msg.getParam<ckID>(0));
     }
 }

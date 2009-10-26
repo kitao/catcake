@@ -29,10 +29,10 @@
 */
 
 
-#include "pogolyn.h"
+#include "catcake.h"
 
 
-class Zombie : public pgTask
+class Zombie : public ckTask
 {
 public:
     Zombie(u16 zombie_no, r32 x, r32 y, r32 z);
@@ -52,35 +52,35 @@ private:
     u16 m_state_cntr;
     r32 m_aim_z;
 
-    pgMdl m_zombie_mdl;
-    pgMot m_zombie_mot;
-    pgMdl m_icon_mdl;
+    ckMdl m_zombie_mdl;
+    ckMot m_zombie_mot;
+    ckMdl m_icon_mdl;
 };
 
 
 void newZombie(u16 zombie_no, r32 x, r32 y, r32 z)
 {
-    pgNewTask(Zombie)(zombie_no, x, y, z);
+    ckNewTask(Zombie)(zombie_no, x, y, z);
 }
 
 
-Zombie::Zombie(u16 zombie_no, r32 x, r32 y, r32 z) : pgTask(ORDER_ZERO)
+Zombie::Zombie(u16 zombie_no, r32 x, r32 y, r32 z) : ckTask(ORDER_ZERO)
 {
     m_zombie_no = zombie_no;
     m_state = STATE_WALK;
     m_state_cntr = 0;
     m_aim_z = z;
 
-    m_zombie_mdl.init(pgID_("zombie.pxm"), pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-    m_zombie_mdl.setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
-    m_zombie_mdl.getRootDraw()->local() = pgMat::UNIT;
+    m_zombie_mdl.init(ckID_("zombie.pxm"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_zombie_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_zombie_mdl.getRootDraw()->local() = ckMat::UNIT;
     m_zombie_mdl.getRootDraw()->local().trans.set(x, y, z);
 
-    m_zombie_mot.init(&m_zombie_mdl, pgID_("zombie.mot"));
-    m_zombie_mot.play(&m_zombie_mdl, 1, pgMot::PLAY_LOOP, 1.0f, 0);
+    m_zombie_mot.init(&m_zombie_mdl, ckID_("zombie.mot"));
+    m_zombie_mot.play(&m_zombie_mdl, 1, ckMot::PLAY_LOOP, 1.0f, 0);
 
-    m_icon_mdl.init(pgID_("pogolyn_icon.pxm"), pgDrawMgr::DEFAULT_2D_SCREEN_ID);
-    m_icon_mdl.setLightSetID(pgDrawMgr::DEFAULT_LIGHT_SET_ID);
+    m_icon_mdl.init(ckID_("catcake_icon.pxm"), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_icon_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
     m_icon_mdl.getRootDraw()->local().trans.set(-270.0f + m_zombie_no * 80.0f, -195.0f);
     m_icon_mdl.getRootDraw()->local() = m_icon_mdl.getRootDraw()->local().rotateY_s32(m_zombie_no * 15);
 }
@@ -88,33 +88,33 @@ Zombie::Zombie(u16 zombie_no, r32 x, r32 y, r32 z) : pgTask(ORDER_ZERO)
 
 void Zombie::onUpdate()
 {
-    if (m_state == STATE_WALK && pgKeyMgr::isPressed(pgKeyMgr::KEY_LBUTTON))
+    if (m_state == STATE_WALK && ckKeyMgr::isPressed(ckKeyMgr::KEY_LBUTTON))
     {
-        pgScr* scr = pgDrawMgr::getScreen(pgDrawMgr::DEFAULT_3D_SCREEN_ID);
-        r32 mouse_x = scr->framebufferXToScreenX(pgKeyMgr::getMouseX());
-        r32 mouse_y = scr->framebufferYToScreenY(pgKeyMgr::getMouseY());
+        ckScr* scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+        r32 mouse_x = scr->framebufferXToScreenX(ckKeyMgr::getMouseX());
+        r32 mouse_y = scr->framebufferYToScreenY(ckKeyMgr::getMouseY());
 
-        pgVec hit_to(mouse_x, mouse_y, -scr->getFocusDist());
+        ckVec hit_to(mouse_x, mouse_y, -scr->getFocusDist());
         hit_to *= 10.0f;
         hit_to = hit_to.toGlobalFrom(scr->view());
 
-        pgCdt::Ray hit_ray;
+        ckCdt::Ray hit_ray;
         hit_ray.setPos(scr->view().trans, hit_to);
 
-        pgCdt::Box box;
+        ckCdt::Box box;
         box.setSize(64.0f, 128.0f, 64.0f);
         box.setWorld(m_zombie_mdl.getRootDraw()->local());
 
-        pgVec hit_pos;
+        ckVec hit_pos;
 
-        if (pgCdt::intersect(&hit_pos, hit_ray, box))
+        if (ckCdt::intersect(&hit_pos, hit_ray, box))
         {
-            m_zombie_mot.play(&m_zombie_mdl, 2, pgMot::PLAY_KEEP, 1.0f, 5);
+            m_zombie_mot.play(&m_zombie_mdl, 2, ckMot::PLAY_KEEP, 1.0f, 5);
 
             m_state = STATE_FALL_DOWN;
             m_state_cntr = 100;
 
-            extern void newBlood(const pgVec& pos);
+            extern void newBlood(const ckVec& pos);
 
             for (s32 i = 0; i < 5; i++)
             {
@@ -134,12 +134,12 @@ void Zombie::onUpdate()
             case STATE_FALL_DOWN:
                 m_state = STATE_GET_UP;
                 m_state_cntr = 100;
-                m_zombie_mot.play(&m_zombie_mdl, 0, pgMot::PLAY_LOOP, 0.1f, 10);
+                m_zombie_mot.play(&m_zombie_mdl, 0, ckMot::PLAY_LOOP, 0.1f, 10);
                 break;
 
             case STATE_GET_UP:
                 m_state = STATE_WALK;
-                m_zombie_mot.play(&m_zombie_mdl, 1, pgMot::PLAY_LOOP, 1.0f, 30);
+                m_zombie_mot.play(&m_zombie_mdl, 1, ckMot::PLAY_LOOP, 1.0f, 30);
                 break;
 
             default:
@@ -157,13 +157,13 @@ void Zombie::onUpdate()
             m_zombie_mdl.getRootDraw()->local().trans.z -= 0.3f;
         }
 
-        m_icon_mdl.getRootDraw()->local().trans.y = pgMath::interp(m_icon_mdl.getRootDraw()->local().trans.y, -195.0f, 0.15f);
+        m_icon_mdl.getRootDraw()->local().trans.y = ckMath::interp(m_icon_mdl.getRootDraw()->local().trans.y, -195.0f, 0.15f);
     }
     else
     {
         m_zombie_mdl.getRootDraw()->local().trans.z += 0.3f;
 
-        m_icon_mdl.getRootDraw()->local().trans.y = pgMath::interp(m_icon_mdl.getRootDraw()->local().trans.y, -300.0f, 0.15f);
+        m_icon_mdl.getRootDraw()->local().trans.y = ckMath::interp(m_icon_mdl.getRootDraw()->local().trans.y, -300.0f, 0.15f);
     }
 
     m_zombie_mot.update(&m_zombie_mdl);

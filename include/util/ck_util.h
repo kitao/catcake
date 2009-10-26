@@ -55,8 +55,7 @@ public:
 
     static void loadShader(ckID shd_id, const char* vert_file, const char* frag_file, u8 uni_num, u8 att_num, u8 tex_num);
 
-    static void loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale);
-    static void loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* png_file, r32 scale);
+    static void loadPixelArtModelAs(ckID res_id, const char* ckl_file, const char* png_file, r32 scale);
 
     static void import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
     static void import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);

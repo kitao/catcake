@@ -3,8 +3,8 @@
 section = 1
 test_s32 = 123
 test_r32 = 4.56
-test_string = "789"
-test_tuple = (-111, -2.22, "333")
+    test_string = "789" # space
+	test_tuple = (-111, -2.22, "333") # tab
 
 ################
 

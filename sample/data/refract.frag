@@ -29,10 +29,10 @@
 */
 
 
-uniform float pg_uni_00;
+uniform float ck_uni_00;
 
-uniform sampler2D pg_tex_00;
-uniform sampler2D pg_tex_01;
+uniform sampler2D ck_tex_00;
+uniform sampler2D ck_tex_01;
 
 varying vec4 vary_color;
 varying vec2 vary_texcoord1;
@@ -41,8 +41,8 @@ varying vec2 vary_texcoord2;
 
 void main(void)
 {
-	vec4 color = texture2D(pg_tex_01, vary_texcoord2);
+	vec4 color = texture2D(ck_tex_01, vary_texcoord2);
 
-	gl_FragColor.rgb = texture2D(pg_tex_00, vary_texcoord1.st + (color.rg - 0.5) * pg_uni_00).rgb;
+	gl_FragColor.rgb = texture2D(ck_tex_00, vary_texcoord1.st + (color.rg - 0.5) * ck_uni_00).rgb;
 	gl_FragColor.a = color.a;
 }

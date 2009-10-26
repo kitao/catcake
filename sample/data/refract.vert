@@ -29,13 +29,13 @@
 */
 
 
-uniform mat4 pg_local_to_screen;
+uniform mat4 ck_local_to_screen;
 
-attribute vec4 pg_vertex;
-attribute vec4 pg_color;
-attribute vec2 pg_texcoord;
+attribute vec4 ck_vertex;
+attribute vec4 ck_color;
+attribute vec2 ck_texcoord;
 
-attribute float pg_att_00, pg_att_01; // texcoords of texture2
+attribute float ck_att_00, ck_att_01; // texcoords of texture2
 
 varying vec4 vary_color;
 varying vec2 vary_texcoord1;
@@ -44,16 +44,16 @@ varying vec2 vary_texcoord2;
 
 void main(void)
 {
-	gl_Position = pg_local_to_screen * pg_vertex;
+	gl_Position = ck_local_to_screen * ck_vertex;
 	
-	vary_color = pg_color;
+	vary_color = ck_color;
 	
 	vary_texcoord1.s = gl_Position.x / 2.0 + 0.5;
 	vary_texcoord1.t = gl_Position.y / -2.0 + 0.5;
 	
-	vary_texcoord2.s = pg_att_00;
-	vary_texcoord2.t = pg_att_01;
+	vary_texcoord2.s = ck_att_00;
+	vary_texcoord2.t = ck_att_01;
 	
-	// Because pg_texcoord isn't used in this shader,
-	// you can also use it instead of pg_att_00 and pg_att_01.
+	// Because ck_texcoord isn't used in this shader,
+	// you can also use it instead of ck_att_00 and ck_att_01.
 }

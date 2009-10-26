@@ -151,9 +151,9 @@ ckMain()
     ckCreateCatcake("Sample12 - Motion", 640, 480, 60);
 
     ckResMgr::loadResource("../data/catcake_logo_71x14.png", true);
-    ckUtil::loadPixelArtModel("../data/catcake_icon.pxm", "../data/catcake_icon.png", 4.0f);
-    ckUtil::loadPixelArtModel("../data/zombie.pxm", "../data/zombie.png", 8.0f);
-    ckUtil::loadPixelArtModel("../data/blood.pxm", "../data/blood.png", 4.0f);
+    ckUtil::loadPixelArtModelAs(ckID_("catcake_icon.mdl"), "../data/catcake_icon_model.ckl", "../data/catcake_icon_model.png", 4.0f);
+    ckUtil::loadPixelArtModelAs(ckID_("zombie.mdl"), "../data/zombie_model.ckl", "../data/zombie_model.png", 8.0f);
+    ckUtil::loadPixelArtModelAs(ckID_("blood.mdl"), "../data/blood_model.ckl", "../data/blood_model.png", 4.0f);
 
     initMotData();
 

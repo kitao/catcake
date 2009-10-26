@@ -55,7 +55,7 @@ Blood::Blood(const ckVec& pos) : ckTask(ORDER_ZERO)
 {
     m_speed.set(ckMath::rand(-2.0f, 2.0f, 0.1f), ckMath::rand(0.0f, 2.0f, 0.1f), ckMath::rand(-1.0f, -2.0f, 0.1f));
 
-    m_blood_mdl.init(ckID_("blood.pxm"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_blood_mdl.init(ckID_("blood.mdl"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_blood_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
     m_blood_mdl.getRootDraw()->local().trans = pos;
 }

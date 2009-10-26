@@ -264,16 +264,15 @@ void ckUtilTest()
     }
 
     /*
-        static void loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale)
-        static void loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* png_file, r32 scale)
+        static void loadPixelArtModelAs(ckID res_id, const char* ckl_file, const char* png_file, r32 scale)
     */
     {
         ckRes res;
         ckMdlData mdl_data;
 
-        ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 10.0f);
+        ckUtil::loadPixelArtModelAs(ckID_("valid_model.mdl"), TEST_DATA_DIR "valid_model.ckl", TEST_DATA_DIR "valid_model.png", 10.0f);
 
-        res = ckResMgr::getResource(ckID_("valid.pxm"));
+        res = ckResMgr::getResource(ckID_("valid_model.mdl"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
 
         ckAssert(mdl_data.getNodeNum() == 2);
@@ -292,23 +291,13 @@ void ckUtilTest()
         ckAssert(mdl_data.getVertCol(0) == ckCol(0, 0, 0));
         ckAssert(isEqual(mdl_data.getVertU(0), 0.0f) && isEqual(mdl_data.getVertV(0), 0.0f));
 
-        ckResMgr::removeResource(ckID_("valid.pxm"));
+        ckResMgr::removeResource(ckID_("valid_model.mdl"));
 
-        ckUtil::loadPixelArtModelAs(ckID_("test"), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f);
-
-        res = ckResMgr::getResource(ckID_("test"));
-        mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
-
-        ckResMgr::removeResource(ckID_("test"));
-
-        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 0.0f), ckUtil::ExceptionInvalidArgument);
-        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "invalid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image1.png", 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::loadPixelArtModel(TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image2.png", 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 0.0f), ckUtil::ExceptionInvalidArgument);
-        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "invalid.pxm", TEST_DATA_DIR "valid_pxm_image.png", 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image1.png", 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid.pxm", TEST_DATA_DIR "invalid_pxm_image2.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::ZERO, TEST_DATA_DIR "valid_model.ckl", TEST_DATA_DIR "valid_model.png", 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid_model.ckl", TEST_DATA_DIR "valid_model.png", 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "invalid_model.ckl", TEST_DATA_DIR "valid_model.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid_model.ckl", TEST_DATA_DIR "invalid_model1.png", 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::loadPixelArtModelAs(ckID::genID(), TEST_DATA_DIR "valid_model.ckl", TEST_DATA_DIR "invalid_model2.png", 1.0f), ckUtil::ExceptionInvalidData);
     }
 
     /*

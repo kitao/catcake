@@ -394,13 +394,7 @@ static void calcNodeLocalRecursively(ckMdlData* mdl_data, u16 node_index)
 }
 
 
-void ckUtil::loadPixelArtModel(const char* pxm_file, const char* png_file, r32 scale)
-{
-    return loadPixelArtModelAs(ckID::genID(ckUtil::getBasename(pxm_file)), pxm_file, png_file, scale);
-}
-
-
-void ckUtil::loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* png_file, r32 scale)
+void ckUtil::loadPixelArtModelAs(ckID res_id, const char* ckl_file, const char* png_file, r32 scale)
 {
     if (scale <= 0.0f)
     {
@@ -412,7 +406,7 @@ void ckUtil::loadPixelArtModelAs(ckID res_id, const char* pxm_file, const char* 
     */
     ckID conf_res_id = ckID::genID();
 
-    ckResMgr::loadResourceAs(conf_res_id, pxm_file, false);
+    ckResMgr::loadResourceAs(conf_res_id, ckl_file, false);
 
     ckRes conf_res = ckResMgr::getResource(conf_res_id);
     ckConf* conf = ckConfMgr::newConfig(ckID::genID(), conf_res.getData<void>(), conf_res.getDataSize());

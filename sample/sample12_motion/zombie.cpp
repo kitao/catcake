@@ -71,7 +71,7 @@ Zombie::Zombie(u16 zombie_no, r32 x, r32 y, r32 z) : ckTask(ORDER_ZERO)
     m_state_cntr = 0;
     m_aim_z = z;
 
-    m_zombie_mdl.init(ckID_("zombie.pxm"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_zombie_mdl.init(ckID_("zombie.mdl"), ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_zombie_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
     m_zombie_mdl.getRootDraw()->local() = ckMat::UNIT;
     m_zombie_mdl.getRootDraw()->local().trans.set(x, y, z);
@@ -79,7 +79,7 @@ Zombie::Zombie(u16 zombie_no, r32 x, r32 y, r32 z) : ckTask(ORDER_ZERO)
     m_zombie_mot.init(&m_zombie_mdl, ckID_("zombie.mot"));
     m_zombie_mot.play(&m_zombie_mdl, 1, ckMot::PLAY_LOOP, 1.0f, 0);
 
-    m_icon_mdl.init(ckID_("catcake_icon.pxm"), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_icon_mdl.init(ckID_("catcake_icon.mdl"), ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_icon_mdl.setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
     m_icon_mdl.getRootDraw()->local().trans.set(-270.0f + m_zombie_no * 80.0f, -195.0f);
     m_icon_mdl.getRootDraw()->local() = m_icon_mdl.getRootDraw()->local().rotateY_s32(m_zombie_no * 15);

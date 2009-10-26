@@ -1,9 +1,17 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "catcake", "catcake\catcake.vcproj", "{C6435F9F-D5B5-4F7A-8EF7-7825587F6108}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcproj", "{3F484C03-02C3-4539-961A-46BC8E03B991}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 	ProjectSection(ProjectDependencies) = postProject
 		{C6435F9F-D5B5-4F7A-8EF7-7825587F6108} = {C6435F9F-D5B5-4F7A-8EF7-7825587F6108}
 	EndProjectSection

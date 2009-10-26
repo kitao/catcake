@@ -54,9 +54,9 @@ void ckEntTest()
     {
         ckConfMgr::createAfterRes();
 
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckl", true);
 
-        ckConf* conf = ckConfMgr::getConfig(ckID_("test_config1.ckc"));
+        ckConf* conf = ckConfMgr::getConfig(ckID_("test_config1.ckl"));
 
         ckEnt* ent1 = conf->getEntryFromFirstN("test_s32");
         ckAssert(ent1->getName() == "test_s32");
@@ -100,7 +100,7 @@ void ckEntTest()
         ckAssert(!ent7->getPrevN() && ent7->getNextN() == ent1 && ent1->getPrevN() == ent7);
         ckAssert(ent6->getNextN() == ent8 && ent8->getPrevN() == ent6 && !ent8->getNextN());
 
-        ckResMgr::removeResource(ckID_("test_config1.ckc"));
+        ckResMgr::removeResource(ckID_("test_config1.ckl"));
 
         ckConfMgr::destroyBeforeRes();
     }

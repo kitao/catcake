@@ -46,7 +46,7 @@ static const char* s_cmd[] =
 ckMain()
 {
     // special method to load a config file before initializing Catcake
-    ckConf* conf = ckConf::newPriorConfigBeforeInitialization("../data/setting.ckc");
+    ckConf* conf = ckConf::newPriorConfigBeforeInitialization("../data/setting.ckl");
 
     ckEnt* ent1 = conf->getEntryFromFirstN("title");
     ckEnt* ent2 = conf->getEntryFromFirstN("framebuffer_size");
@@ -61,7 +61,7 @@ ckMain()
     }
 
     // normal way to load config file
-    ckResMgr::loadResource("../data/scenario.ckc", true);
+    ckResMgr::loadResource("../data/scenario.ckl", true);
 
     newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newScenarioPlayer();

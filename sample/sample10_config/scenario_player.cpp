@@ -62,7 +62,7 @@ ScenarioPlayer::ScenarioPlayer() : ckTask(ORDER_MINUS_1)
     m_scr = ckDrawMgr::getScreen(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_rot_y = 0.0f;
 
-    m_conf = ckConfMgr::getConfig(ckID_("scenario.ckc"));
+    m_conf = ckConfMgr::getConfig(ckID_("scenario.ckl"));
     m_ent = m_conf->getEntryFromFirstN("command");
     m_wait_cntr = 0;
 

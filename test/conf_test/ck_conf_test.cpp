@@ -68,35 +68,35 @@ void ckConfTest1()
     {
         ckConfMgr::createAfterRes();
 
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckc", true);
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config2.ckc", true);
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config3.ckc", true);
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config4.ckc", true);
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config5.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckl", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config2.ckl", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config3.ckl", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config4.ckl", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config5.ckl", true);
 
-        ckConf* conf1 = ckConfMgr::getConfig(ckID_("test_config1.ckc"));
+        ckConf* conf1 = ckConfMgr::getConfig(ckID_("test_config1.ckl"));
         ckAssert(conf1->isValid());
 
-        ckConf* conf2 = ckConfMgr::getConfig(ckID_("test_config2.ckc"));
+        ckConf* conf2 = ckConfMgr::getConfig(ckID_("test_config2.ckl"));
         ckAssert(conf2->isValid());
 
         ckAssertThrow(conf1->getErrorLineNo(), ckConf::ExceptionInvalidCall);
         ckAssertThrow(conf2->getErrorLineNo(), ckConf::ExceptionInvalidCall);
 
-        ckConf* conf3 = ckConfMgr::getConfig(ckID_("test_config3.ckc"));
+        ckConf* conf3 = ckConfMgr::getConfig(ckID_("test_config3.ckl"));
         ckAssert(!conf3->isValid() && conf3->getErrorLineNo() == 3);
 
-        ckConf* conf4 = ckConfMgr::getConfig(ckID_("test_config4.ckc"));
+        ckConf* conf4 = ckConfMgr::getConfig(ckID_("test_config4.ckl"));
         ckAssert(!conf4->isValid() && conf4->getErrorLineNo() == 4);
 
-        ckConf* conf5 = ckConfMgr::getConfig(ckID_("test_config5.ckc"));
+        ckConf* conf5 = ckConfMgr::getConfig(ckID_("test_config5.ckl"));
         ckAssert(!conf5->isValid() && conf5->getErrorLineNo() == 5);
 
-        ckResMgr::removeResource(ckID_("test_config1.ckc"));
-        ckResMgr::removeResource(ckID_("test_config2.ckc"));
-        ckResMgr::removeResource(ckID_("test_config3.ckc"));
-        ckResMgr::removeResource(ckID_("test_config4.ckc"));
-        ckResMgr::removeResource(ckID_("test_config5.ckc"));
+        ckResMgr::removeResource(ckID_("test_config1.ckl"));
+        ckResMgr::removeResource(ckID_("test_config2.ckl"));
+        ckResMgr::removeResource(ckID_("test_config3.ckl"));
+        ckResMgr::removeResource(ckID_("test_config4.ckl"));
+        ckResMgr::removeResource(ckID_("test_config5.ckl"));
 
         ckConfMgr::destroyBeforeRes();
     }
@@ -113,9 +113,9 @@ void ckConfTest1()
     {
         ckConfMgr::createAfterRes();
 
-        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckc", true);
+        ckResMgr::loadResource(TEST_DATA_DIR "test_config1.ckl", true);
 
-        ckConf* conf = ckConfMgr::getConfig(ckID_("test_config1.ckc"));
+        ckConf* conf = ckConfMgr::getConfig(ckID_("test_config1.ckl"));
 
         ckAssert(conf->getEntryNum("section") == 3 && conf->getEntryNum("A") == 2 && conf->getEntryNum("test") == 0);
 
@@ -155,7 +155,7 @@ void ckConfTest1()
         ckAssertThrow(ckConf::newPriorConfigBeforeInitialization(NULL), ckConf::ExceptionInvalidCall);
         ckAssertThrow(ckConf::deletePriorConfig(conf), ckConf::ExceptionInvalidCall);
 
-        ckResMgr::removeResource(ckID_("test_config1.ckc"));
+        ckResMgr::removeResource(ckID_("test_config1.ckl"));
 
         ckConfMgr::destroyBeforeRes();
     }
@@ -169,7 +169,7 @@ void ckConfTest2()
         static void deletePriorConfig(ckConf* conf)
     */
     {
-        ckConf* conf = ckConf::newPriorConfigBeforeInitialization(TEST_DATA_DIR "test_config1.ckc");
+        ckConf* conf = ckConf::newPriorConfigBeforeInitialization(TEST_DATA_DIR "test_config1.ckl");
 
         ckAssert(conf->isValid() && conf->getEntryNum("section") == 3);
 

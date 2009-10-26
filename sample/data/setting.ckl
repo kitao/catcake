@@ -33,4 +33,4 @@ title = "Sample10 - Config"
 framebuffer_size = (640, 480)
 frame_rate = 60
 
-resources = ("../data/pogolyn_logo_71x14.png", "../data/coral_64x128.png")
+resources = ("../data/catcake_logo_71x14.png", "../data/coral_64x128.png")

@@ -133,7 +133,7 @@ ckConfMgr::ckConfMgr()
 {
     m_conf_map.init(CONFIG_HASH_SIZE);
 
-    ckResMgr::addType("CKC", configInitializer, configFinalizer);
+    ckResMgr::addType("CKL", configInitializer, configFinalizer);
 }
 
 
@@ -144,7 +144,7 @@ ckConfMgr::~ckConfMgr()
         deleteConfig(conf->m_id);
     }
 
-    ckResMgr::removeType("CKC");
+    ckResMgr::removeType("CKL");
 }
 
 

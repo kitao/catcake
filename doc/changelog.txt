@@ -1,6 +1,8 @@
-Changes in 0.9.0 (released on ??? ??, 2009)
+Changes in 0.8.1 (released on November ??, 2009)
 ----------------------------------------------------------------
 
+- Renamed the name of the module to Catcake
+- Renamed the prefix from 'pg' to 'ck'
 - Renamed getLastDesc to getLastDescendant
 - Removed PyPogolyn
 -

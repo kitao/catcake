@@ -60,8 +60,8 @@ void ckLitTest()
     }
 
     /*
-        bool isActive() const
-        void setActive(bool is_active)
+        bool isEnabled() const
+        void setEnabled(bool is_enabled)
         const ckVec& getPos() const
         void setPos(const ckVec& pos)
         r32 getInnerRadius() const
@@ -76,13 +76,13 @@ void ckLitTest()
         ckLts* lts0 = ckDrawMgr::getLightSet(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
         ckLit* lit = lts0->newPointLight(ckID::genID());
 
-        ckAssert(lit->isActive());
+        ckAssert(lit->isEnabled());
         ckAssert(isEqual(lit->getPos(), ckVec::ZERO));
         ckAssert(isEqual(lit->getInnerRadius(), 0.0f) && isEqual(lit->getOuterRadius(), 0.0f));
         ckAssert(lit->getColor() == ckCol(255, 255, 0));
 
-        lit->setActive(false);
-        ckAssert(!lit->isActive());
+        lit->setEnabled(false);
+        ckAssert(!lit->isEnabled());
 
         lit->setPos(ckVec(-10.0f, -20.0f, -30.0f));
         ckAssert(isEqual(lit->getPos(), ckVec(-10.0f, -20.0f, -30.0f)));

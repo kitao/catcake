@@ -54,7 +54,7 @@ void ckDbgMgrTest()
             dbg_mode_scr->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
         ckAssert(dbg_mode_scr->getViewWidth() == ckSysMgr::getFramebufferWidth() && //
             dbg_mode_scr->getViewHeight() == ckSysMgr::getFramebufferHeight());
-        ckAssert(dbg_mode_scr->isActive());
+        ckAssert(dbg_mode_scr->isEnabled());
         ckAssert(!dbg_mode_scr->isClearColor() && dbg_mode_scr->isClearDepth());
         ckAssert(dbg_mode_scr->getClearColor() == ckCol(255, 0, 0, 0));
         ckAssert(!dbg_mode_scr->isPerspective());

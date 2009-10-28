@@ -54,7 +54,7 @@ void ckDrawMgrTest()
             scr0d->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
         ckAssert(isEqual(scr0d->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
             isEqual(scr0d->getViewHeight(), ckSysMgr::getFramebufferHeight()));
-        ckAssert(!scr0d->isActive());
+        ckAssert(!scr0d->isEnabled());
         ckAssert(scr0d->isClearColor() && scr0d->isClearDepth());
         ckAssert(scr0d->getClearColor() == ckCol(255, 0, 0, 0));
         ckAssert(scr0d->isPerspective());
@@ -74,7 +74,7 @@ void ckDrawMgrTest()
             scr3d->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
         ckAssert(isEqual(scr3d->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
             isEqual(scr3d->getViewHeight(), ckSysMgr::getFramebufferHeight()));
-        ckAssert(scr3d->isActive());
+        ckAssert(scr3d->isEnabled());
         ckAssert(scr3d->isClearColor() && scr3d->isClearDepth());
         ckAssert(scr3d->getClearColor() == ckCol::ZERO);
         ckAssert(scr3d->isPerspective());
@@ -94,7 +94,7 @@ void ckDrawMgrTest()
             scr2d->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
         ckAssert(isEqual(scr2d->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
             isEqual(scr2d->getViewHeight(), ckSysMgr::getFramebufferHeight()));
-        ckAssert(scr2d->isActive());
+        ckAssert(scr2d->isEnabled());
         ckAssert(!scr2d->isClearColor() && scr2d->isClearDepth());
         ckAssert(scr2d->getClearColor() == ckCol(255, 0, 0, 0));
         ckAssert(!scr2d->isPerspective());
@@ -121,7 +121,7 @@ void ckDrawMgrTest()
 
         ckAssert(lts->getID() == ckDrawMgr::DEFAULT_LIGHT_SET_ID);
         ckAssert(lts->getAmbientColor() == ckCol::ZERO);
-        ckAssert(!lts->isParaLightActive(0) && !lts->isParaLightActive(1) && !lts->isParaLightActive(2));
+        ckAssert(!lts->isParaLightEnabled(0) && !lts->isParaLightEnabled(1) && !lts->isParaLightEnabled(2));
         ckAssert(lts->getPointLightNum() == 0);
 
         ckDrawMgr::destroyBeforeRes();

@@ -87,8 +87,8 @@ void ckLtsTest()
     /*
         ckCol getAmbientColor() const
         void setAmbientColor(ckCol col)
-        bool isParaLightActive(u8 index) const
-        void setParaLightActive(u8 index, bool is_active)
+        bool isParaLightEnabled(u8 index) const
+        void setParaLightEnabled(u8 index, bool is_enabled)
         const ckVec& getParaLightDir(u8 index) const
         void setParaLightDir(u8 index, const ckVec& dir)
         ckCol getParaLightColor(u8 index) const
@@ -103,7 +103,7 @@ void ckLtsTest()
 
         for (u32 i = 0; i < ckLts::MAX_PARA_LIGHT_NUM; i++)
         {
-            ckAssert(!lts->isParaLightActive(i));
+            ckAssert(!lts->isParaLightEnabled(i));
             ckAssert(isEqual(lts->getParaLightDir(i), ckVec::X_UNIT));
             ckAssert(lts->getParaLightColor(i) == ckCol::ZERO);
         }
@@ -113,11 +113,11 @@ void ckLtsTest()
 
         for (u32 i = 0; i < ckLts::MAX_PARA_LIGHT_NUM; i++)
         {
-            lts->setParaLightActive(i, true);
-            ckAssert(lts->isParaLightActive(i));
+            lts->setParaLightEnabled(i, true);
+            ckAssert(lts->isParaLightEnabled(i));
 
-            lts->setParaLightActive(i, false);
-            ckAssert(!lts->isParaLightActive(i));
+            lts->setParaLightEnabled(i, false);
+            ckAssert(!lts->isParaLightEnabled(i));
 
             lts->setParaLightDir(i, ckVec(-1.0f + i, 2.0f + i, -3.0f + i));
             ckAssert(isEqual(lts->getParaLightDir(i), ckVec(-1.0f + i, 2.0f + i, -3.0f + i).normalize()));
@@ -129,8 +129,8 @@ void ckLtsTest()
             ckAssert(lts->getParaLightColor(i) == ckCol(12 + i, 34 + i, 56 + i));
         }
 
-        ckAssertThrow(lts->isParaLightActive(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
-        ckAssertThrow(lts->setParaLightActive(ckLts::MAX_PARA_LIGHT_NUM, false), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->isParaLightEnabled(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
+        ckAssertThrow(lts->setParaLightEnabled(ckLts::MAX_PARA_LIGHT_NUM, false), ckLts::ExceptionInvalidArgument);
         ckAssertThrow(lts->getParaLightDir(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
         ckAssertThrow(lts->setParaLightDir(ckLts::MAX_PARA_LIGHT_NUM, ckVec::X_UNIT), ckLts::ExceptionInvalidArgument);
         ckAssertThrow(lts->getParaLightColor(ckLts::MAX_PARA_LIGHT_NUM), ckLts::ExceptionInvalidArgument);
@@ -229,9 +229,9 @@ void ckLtsTest()
         lts->setParaLightColor(1, ckCol(33, 33, 33));
         lts->setParaLightColor(2, ckCol(22, 22, 22));
 
-        lts->setParaLightActive(0, false);
-        lts->setParaLightActive(1, false);
-        lts->setParaLightActive(2, true);
+        lts->setParaLightEnabled(0, false);
+        lts->setParaLightEnabled(1, false);
+        lts->setParaLightEnabled(2, true);
 
         lts->findNearLight(ckVec(100.0f, 100.0f, 100.0f));
         ckAssert(lts->getNearLightNum() == 1);
@@ -241,9 +241,9 @@ void ckLtsTest()
         ckAssertThrow(lts->getNearLightDir(1), ckLts::ExceptionInvalidArgument);
         ckAssertThrow(lts->getNearLightColor(1), ckLts::ExceptionInvalidArgument);
 
-        lts->setParaLightActive(0, false);
-        lts->setParaLightActive(1, true);
-        lts->setParaLightActive(2, true);
+        lts->setParaLightEnabled(0, false);
+        lts->setParaLightEnabled(1, true);
+        lts->setParaLightEnabled(2, true);
 
         lts->findNearLight(ckVec(100.0f, 100.0f, 100.0f));
         ckAssert(lts->getNearLightNum() == 2);
@@ -255,9 +255,9 @@ void ckLtsTest()
         ckAssertThrow(lts->getNearLightDir(2), ckLts::ExceptionInvalidArgument);
         ckAssertThrow(lts->getNearLightColor(2), ckLts::ExceptionInvalidArgument);
 
-        lts->setParaLightActive(0, true);
-        lts->setParaLightActive(1, true);
-        lts->setParaLightActive(2, true);
+        lts->setParaLightEnabled(0, true);
+        lts->setParaLightEnabled(1, true);
+        lts->setParaLightEnabled(2, true);
 
         lts->findNearLight(ckVec(100.0f, 100.0f, 100.0f));
         ckAssert(lts->getNearLightNum() == 3);
@@ -301,9 +301,9 @@ void ckLtsTest()
         ckAssert(lts->getNearLightColor(1) == ckCol(30, 30, 30));
         ckAssert(lts->getNearLightColor(2) == ckCol(22, 22, 22));
 
-        lts->setParaLightActive(0, true);
-        lts->setParaLightActive(1, false);
-        lts->setParaLightActive(2, true);
+        lts->setParaLightEnabled(0, true);
+        lts->setParaLightEnabled(1, false);
+        lts->setParaLightEnabled(2, true);
 
         lts->findNearLight(ckVec(1000.0f, 1150.0f, 1000.0f));
         ckAssert(lts->getNearLightNum() == 3);
@@ -314,7 +314,7 @@ void ckLtsTest()
         ckAssert(lts->getNearLightColor(1) == ckCol(15, 15, 15));
         ckAssert(lts->getNearLightColor(2) == ckCol(11, 11, 11));
 
-        lit1->setActive(false);
+        lit1->setEnabled(false);
 
         lts->findNearLight(ckVec(1000.0f, 1150.0f, 1000.0f));
         ckAssert(lts->getNearLightNum() == 2);
@@ -323,11 +323,11 @@ void ckLtsTest()
         ckAssert(lts->getNearLightColor(0) == ckCol(22, 22, 22));
         ckAssert(lts->getNearLightColor(1) == ckCol(11, 11, 11));
 
-        lts->setParaLightActive(0, false);
-        lts->setParaLightActive(1, false);
-        lts->setParaLightActive(2, false);
+        lts->setParaLightEnabled(0, false);
+        lts->setParaLightEnabled(1, false);
+        lts->setParaLightEnabled(2, false);
 
-        lit1->setActive(true);
+        lit1->setEnabled(true);
 
         lts->findNearLight(ckVec(1000.0f, 1150.0f, 1000.0f));
         ckAssert(lts->getNearLightNum() == 1);

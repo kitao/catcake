@@ -143,8 +143,8 @@ void ckTaskTest()
         ckTask* getLastChildN() const
         const char* getName() const
         u64 getExecuteUsecTime() const
-        bool isActive() const
-        void setActive(bool is_active)
+        bool isEnabled() const
+        void setEnabled(bool is_enabled)
     */
     {
         s_ctor_flag = 0x00;
@@ -173,7 +173,7 @@ void ckTaskTest()
         ckAssert(!task1->hasChild() && !task1->getFirstChildN() && !task1->getLastChildN());
         ckAssert(isEqual(task1->getName(), __FILE__));
         ckAssert(task1->getExecuteUsecTime() == 0);
-        ckAssert(task1->isActive());
+        ckAssert(task1->isEnabled());
 
         ckAssert(task2->hasOrder() && task2->getOrder() == ckTask::ORDER_MINUS_3);
         ckAssert(!task2->hasParent() && !task2->getParentN());
@@ -183,7 +183,7 @@ void ckTaskTest()
         ckAssert(task2->hasChild() && task2->getFirstChildN() == task3 && task2->getLastChildN() == task6);
         ckAssert(isEqual(task2->getName(), __FILE__));
         ckAssert(task2->getExecuteUsecTime() == 0);
-        ckAssert(task2->isActive());
+        ckAssert(task2->isEnabled());
 
         ckAssert(!task3->hasOrder());
         ckAssertThrow(task3->getOrder(), ckTask::ExceptionInvalidCall);
@@ -194,7 +194,7 @@ void ckTaskTest()
         ckAssert(task3->hasChild() && task3->getFirstChildN() == task4 && task3->getLastChildN() == task5);
         ckAssert(isEqual(task3->getName(), __FILE__));
         ckAssert(task3->getExecuteUsecTime() == 0);
-        ckAssert(task3->isActive());
+        ckAssert(task3->isEnabled());
 
         ckAssert(!task4->hasOrder());
         ckAssertThrow(task4->getOrder(), ckTask::ExceptionInvalidCall);
@@ -205,7 +205,7 @@ void ckTaskTest()
         ckAssert(!task4->hasChild() && !task4->getFirstChildN() && !task4->getLastChildN());
         ckAssert(isEqual(task4->getName(), __FILE__));
         ckAssert(task4->getExecuteUsecTime() == 0);
-        ckAssert(task4->isActive());
+        ckAssert(task4->isEnabled());
 
         ckAssert(!task7->hasOrder());
         ckAssertThrow(task7->getOrder(), ckTask::ExceptionInvalidCall);
@@ -216,7 +216,7 @@ void ckTaskTest()
         ckAssert(!task7->hasChild() && !task7->getFirstChildN() && !task7->getLastChildN());
         ckAssert(isEqual(task7->getName(), __FILE__));
         ckAssert(task7->getExecuteUsecTime() == 0);
-        ckAssert(task7->isActive());
+        ckAssert(task7->isEnabled());
 
         ckTaskMgr::updateForSystem();
         ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xff && s_message_flag == 0x00);
@@ -230,8 +230,8 @@ void ckTaskTest()
         ckAssert(task7->getExecuteUsecTime() > 0);
         ckAssert(task8->getExecuteUsecTime() > 0);
 
-        task3->setActive(false);
-        ckAssert(!task3->isActive());
+        task3->setEnabled(false);
+        ckAssert(!task3->isEnabled());
 
         s_update_flag = 0;
 
@@ -247,7 +247,7 @@ void ckTaskTest()
         ckTaskMgr::sendMessage(ckID_("TEST"), msg);
         ckAssert(s_ctor_flag == 0xff && s_dtor_flag == 0x00 && s_update_flag == 0xe3 && s_message_flag == 0xff);
 
-        task3->setActive(true);
+        task3->setEnabled(true);
         dynamic_cast<TaskTestClass*>(task3)->setUpdateType(1);
         dynamic_cast<TaskTestClass*>(task6)->setUpdateType(2);
 

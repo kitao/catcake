@@ -61,7 +61,7 @@ void ckNodeTest()
         BlendMode getBlendMode() const
         void setBlendMode(BlendMode blend_mode)
         bool isDrawFlag(DrawFlag draw_flag) const
-        void setDrawFlag(DrawFlag draw_flag, bool is_on)
+        void setDrawFlag(DrawFlag draw_flag, bool is_enabled)
         void clearDrawFlag()
         void copyDrawFlag(const ckDraw* src)
         const ckVec& getClipBoundMin() const

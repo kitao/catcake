@@ -48,8 +48,8 @@ public:
 
     ckID getID() const;
 
-    bool isActive() const;
-    void setActive(bool is_active);
+    bool isEnabled() const;
+    void setEnabled(bool is_enabled);
 
     const ckVec& getPos() const;
     void setPos(const ckVec& pos);
@@ -69,7 +69,7 @@ private:
 
     ckList<ckLit>::Item m_item;
     ckID m_id;
-    ckType<u8, bool> m_is_active;
+    ckType<u8, bool> m_is_enabled;
     ckVec m_pos;
     r32 m_inner_rad;
     r32 m_outer_rad;

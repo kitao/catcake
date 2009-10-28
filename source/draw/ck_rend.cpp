@@ -193,7 +193,7 @@ ckCol ckRend::renderGetPrimFinalColor(const ckPrim* prim)
 
 bool ckRend::renderIsTextureUVAdjustNeeded(ckTex* tex)
 {
-    return tex->m_flag.isOn(ckTex::FLAG_UV_ADJUST);
+    return tex->m_flag.isEnabled(ckTex::FLAG_UV_ADJUST);
 }
 
 
@@ -268,7 +268,7 @@ void ckRend::renderSetTexture(const ckPrim* prim)
 
     if (tex)
     {
-        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, prim->m_draw_flag.isOn(ckDraw::FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, prim->m_draw_flag.isEnabled(ckDraw::FLAG_BILINEAR));
     }
     else
     {

@@ -58,7 +58,7 @@ public:
         methods called by iPhone
     */
     static void updateApplication();
-    static void setMouseState(int button, bool is_on);
+    static void setMouseState(int button, bool is_enabled);
 };
 
 

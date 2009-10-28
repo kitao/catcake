@@ -137,7 +137,7 @@ u64 ckTask::getExecuteUsecTime() const
 
 bool ckTask::isActive() const
 {
-    return m_flag.isOn(FLAG_ACTIVE);
+    return m_flag.isEnabled(FLAG_ACTIVE);
 }
 
 
@@ -163,7 +163,7 @@ ckTask::ckTask(TaskOrder order)
     }
 
     m_tree.init(this);
-    m_flag.setOn(FLAG_ACTIVE);
+    m_flag.setEnabled(FLAG_ACTIVE);
 
     m_name = ins->m_next_task_name;
     m_execute_time = 0;
@@ -189,7 +189,7 @@ ckTask::ckTask(ckTask* parent)
     }
 
     m_tree.init(this);
-    m_flag.setOn(FLAG_ACTIVE);
+    m_flag.setEnabled(FLAG_ACTIVE);
 
     m_name = ins->m_next_task_name;
     m_execute_time = 0;
@@ -219,7 +219,7 @@ ckTask::~ckTask()
 ckTask::ckTask()
 {
     m_tree.init(this);
-    m_flag.setOn(FLAG_ACTIVE);
+    m_flag.setEnabled(FLAG_ACTIVE);
 
     m_name = "";
     m_execute_time = 0;

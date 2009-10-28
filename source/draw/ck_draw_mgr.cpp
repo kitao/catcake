@@ -695,7 +695,7 @@ void ckDrawMgr::deleteAllVramObjForSystem()
             tex->m_tex_obj = 0;
         }
 
-        tex->m_flag.setOn(ckTex::FLAG_UPLOAD);
+        tex->m_flag.setEnabled(ckTex::FLAG_UPLOAD);
     }
 
     for (const ckID* shd_id = ins->m_shd_map.getFirstKeyN(); shd_id; shd_id = ins->m_shd_map.getNextKeyN(*shd_id))
@@ -708,7 +708,7 @@ void ckDrawMgr::deleteAllVramObjForSystem()
             shd->m_shd_obj = 0;
         }
 
-        shd->m_flag.setOn(ckShd::FLAG_UPLOAD);
+        shd->m_flag.setEnabled(ckShd::FLAG_UPLOAD);
     }
 }
 
@@ -870,7 +870,7 @@ void ckDrawMgr::renderScreen(ckScr* scr, ckDraw** sort_list, const ckMat& view)
         {
             if (draw->m_type != ckDraw::TYPE_NODE)
             {
-                if (draw->m_draw_flag.isOn(ckDraw::FLAG_BOUND_CLIP) && //
+                if (draw->m_draw_flag.isEnabled(ckDraw::FLAG_BOUND_CLIP) && //
                     scr->canBoundClip_noCalcProjection(draw->m_world, draw->m_bound_max, draw->m_bound_min))
                 {
                     continue;

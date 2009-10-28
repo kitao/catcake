@@ -180,7 +180,7 @@ bool ckMdlData::hasNormal() const
         ckThrow(ExceptionNotInitialized);
     }
 
-    return m_mdl_data_header->flag.isOn(FLAG_HAS_NORMAL);
+    return m_mdl_data_header->flag.isEnabled(FLAG_HAS_NORMAL);
 }
 
 
@@ -443,7 +443,7 @@ const ckVec* ckMdlData::getNodeNormalData(u16 node_index) const
         ckThrow(ExceptionNotInitialized);
     }
 
-    if (m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
+    if (m_mdl_data_header->flag.isDisabled(FLAG_HAS_NORMAL))
     {
         ckThrow(ExceptionInvalidCall);
     }
@@ -636,7 +636,7 @@ const ckVec& ckMdlData::getVertN(u16 vert_index) const
         ckThrow(ExceptionNotInitialized);
     }
 
-    if (m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
+    if (m_mdl_data_header->flag.isDisabled(FLAG_HAS_NORMAL))
     {
         ckThrow(ExceptionInvalidCall);
     }
@@ -657,7 +657,7 @@ void ckMdlData::setVertN(u16 vert_index, const ckVec& n)
         ckThrow(ExceptionNotInitialized);
     }
 
-    if (m_mode == MODE_READ || m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
+    if (m_mode == MODE_READ || m_mdl_data_header->flag.isDisabled(FLAG_HAS_NORMAL))
     {
         ckThrow(ExceptionInvalidCall);
     }
@@ -678,7 +678,7 @@ void ckMdlData::calcNormalAsTriangles(bool is_smoothing)
         ckThrow(ExceptionNotInitialized);
     }
 
-    if (m_mode == MODE_READ || m_mdl_data_header->flag.isOff(FLAG_HAS_NORMAL))
+    if (m_mode == MODE_READ || m_mdl_data_header->flag.isDisabled(FLAG_HAS_NORMAL))
     {
         ckThrow(ExceptionInvalidCall);
     }

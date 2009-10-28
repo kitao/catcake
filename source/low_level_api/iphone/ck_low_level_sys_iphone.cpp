@@ -146,15 +146,15 @@ void ckIPhoneBridge::updateApplication()
 }
 
 
-void ckIPhoneBridge::setMouseState(int button, bool is_on)
+void ckIPhoneBridge::setMouseState(int button, bool is_enabled)
 {
     if (button == 0)
     {
-        (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, is_on);
+        (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, is_enabled);
     }
     else
     {
-        (*s_key_event_handler)(ckKeyMgr::KEY_EXT_00, is_on);
+        (*s_key_event_handler)(ckKeyMgr::KEY_EXT_00, is_enabled);
     }
 }
 

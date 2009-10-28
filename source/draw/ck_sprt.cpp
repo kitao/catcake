@@ -91,7 +91,7 @@ void ckSprt::init(SprtData* sprt_data, u16 max_data_num, ckDraw* parent)
 
 bool ckSprt::isShareData() const
 {
-    if (m_private_flag.isOff(FLAG_INITIALIZED))
+    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -102,7 +102,7 @@ bool ckSprt::isShareData() const
 
 u16 ckSprt::getCurDataNum() const
 {
-    if (m_private_flag.isOff(FLAG_INITIALIZED))
+    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -113,7 +113,7 @@ u16 ckSprt::getCurDataNum() const
 
 void ckSprt::setCurDataNum(u16 cur_data_num)
 {
-    if (m_private_flag.isOff(FLAG_INITIALIZED))
+    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -129,7 +129,7 @@ void ckSprt::setCurDataNum(u16 cur_data_num)
 
 u16 ckSprt::getMaxDataNum() const
 {
-    if (m_private_flag.isOff(FLAG_INITIALIZED))
+    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -140,7 +140,7 @@ u16 ckSprt::getMaxDataNum() const
 
 void ckSprt::reallocData(u16 max_data_num)
 {
-    if (m_private_flag.isOff(FLAG_INITIALIZED))
+    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -185,7 +185,7 @@ void ckSprt::reallocData(u16 max_data_num)
 
 void ckSprt::copyData(u16 dest_index, const ckSprt* src_sprt, u16 src_index)
 {
-    if (m_private_flag.isOff(FLAG_INITIALIZED))
+    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -330,7 +330,7 @@ void ckSprt::setDataUV(u16 index, r32 u1, r32 v1, r32 u2, r32 v2)
 
 void ckSprt::init2(bool is_share_data, SprtData* sprt_data, u16 max_data_num, ckID scr_id, ckDraw* parent)
 {
-    m_private_flag.setOn(FLAG_INITIALIZED);
+    m_private_flag.setEnabled(FLAG_INITIALIZED);
 
     if (is_share_data)
     {
@@ -495,9 +495,9 @@ void ckSprt::render_soft(const ckMat& view)
     */
     if (tex)
     {
-        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isEnabled(FLAG_BILINEAR));
 
-        if (tex->m_flag.isOn(ckTex::FLAG_UV_ADJUST))
+        if (tex->m_flag.isEnabled(ckTex::FLAG_UV_ADJUST))
         {
             r32* uv_ptr = uv_buf;
 
@@ -662,7 +662,7 @@ void ckSprt::render_shader(const ckMat& view)
 
     if (tex)
     {
-        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isEnabled(FLAG_BILINEAR));
 
         ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[4], tex->m_u_param_a);
         ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[5], tex->m_u_param_b);

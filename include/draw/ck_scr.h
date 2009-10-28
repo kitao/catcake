@@ -70,8 +70,8 @@ public:
     r32 getViewHeight() const;
     void setViewSize(r32 width, r32 height);
 
-    bool isEnabled() const;
-    void setEnabled(bool is_enabled);
+    bool isActive() const;
+    void setActive(bool is_active);
 
     bool isClearColor() const;
     bool isClearDepth() const;
@@ -119,7 +119,7 @@ public:
 private:
     enum ScrFlag
     {
-        FLAG_ENABLED, //
+        FLAG_ACTIVE, //
         FLAG_CLEAR_COLOR, //
         FLAG_CLEAR_DEPTH, //
         FLAG_PERSPECTIVE, //

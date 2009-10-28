@@ -37,7 +37,7 @@
 
 ckDraw::~ckDraw()
 {
-    if (ckDrawMgr::isCreated() && m_private_flag.isEnabled(FLAG_INITIALIZED) && m_scr_id != ckDrawMgr::INVISIBLE_SCREEN_ID)
+    if (ckDrawMgr::isCreated() && m_private_flag.isOn(FLAG_INITIALIZED) && m_scr_id != ckDrawMgr::INVISIBLE_SCREEN_ID)
     {
         while (hasChild())
         {
@@ -49,7 +49,7 @@ ckDraw::~ckDraw()
 
 bool ckDraw::hasScreen() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -60,7 +60,7 @@ bool ckDraw::hasScreen() const
 
 ckID ckDraw::getScreenID() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -76,7 +76,7 @@ ckID ckDraw::getScreenID() const
 
 void ckDraw::setScreenID(ckID scr_id)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -92,7 +92,7 @@ void ckDraw::setScreenID(ckID scr_id)
 
 bool ckDraw::hasParent() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -103,7 +103,7 @@ bool ckDraw::hasParent() const
 
 ckDraw* ckDraw::getParentN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -114,7 +114,7 @@ ckDraw* ckDraw::getParentN() const
 
 void ckDraw::setParent(ckDraw* parent)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -130,7 +130,7 @@ void ckDraw::setParent(ckDraw* parent)
 
 ckDraw* ckDraw::getPrevAllN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -143,7 +143,7 @@ ckDraw* ckDraw::getPrevAllN() const
 
 ckDraw* ckDraw::getNextAllN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -156,7 +156,7 @@ ckDraw* ckDraw::getNextAllN() const
 
 ckDraw* ckDraw::getPrevSiblingN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -169,7 +169,7 @@ ckDraw* ckDraw::getPrevSiblingN() const
 
 ckDraw* ckDraw::getNextSiblingN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -182,7 +182,7 @@ ckDraw* ckDraw::getNextSiblingN() const
 
 ckDraw* ckDraw::getLastDescendant() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -193,7 +193,7 @@ ckDraw* ckDraw::getLastDescendant() const
 
 bool ckDraw::hasChild() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -204,7 +204,7 @@ bool ckDraw::hasChild() const
 
 ckDraw* ckDraw::getFirstChildN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -217,7 +217,7 @@ ckDraw* ckDraw::getFirstChildN() const
 
 ckDraw* ckDraw::getLastChildN() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -230,7 +230,7 @@ ckDraw* ckDraw::getLastChildN() const
 
 void ckDraw::moveFirst()
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -241,7 +241,7 @@ void ckDraw::moveFirst()
 
 void ckDraw::moveLast()
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -252,7 +252,7 @@ void ckDraw::moveLast()
 
 void ckDraw::moveBefore(ckDraw* draw)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -268,7 +268,7 @@ void ckDraw::moveBefore(ckDraw* draw)
 
 void ckDraw::moveAfter(ckDraw* draw)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -284,7 +284,7 @@ void ckDraw::moveAfter(ckDraw* draw)
 
 ckDraw::DrawType ckDraw::getType() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -295,18 +295,18 @@ ckDraw::DrawType ckDraw::getType() const
 
 bool ckDraw::isVisible() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
 
-    return m_private_flag.isEnabled(FLAG_VISIBLE);
+    return m_private_flag.isOn(FLAG_VISIBLE);
 }
 
 
 void ckDraw::setVisible(bool is_visible)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -317,7 +317,7 @@ void ckDraw::setVisible(bool is_visible)
 
 ckCol ckDraw::getColor() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -328,7 +328,7 @@ ckCol ckDraw::getColor() const
 
 void ckDraw::setColor(ckCol col)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -339,7 +339,7 @@ void ckDraw::setColor(ckCol col)
 
 ckDraw::DepthTest ckDraw::getDepthTest() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -350,7 +350,7 @@ ckDraw::DepthTest ckDraw::getDepthTest() const
 
 void ckDraw::setDepthTest(DepthTest depth_test)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -361,7 +361,7 @@ void ckDraw::setDepthTest(DepthTest depth_test)
 
 ckDraw::BlendMode ckDraw::getBlendMode() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -372,7 +372,7 @@ ckDraw::BlendMode ckDraw::getBlendMode() const
 
 void ckDraw::setBlendMode(BlendMode blend_mode)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -383,29 +383,29 @@ void ckDraw::setBlendMode(BlendMode blend_mode)
 
 bool ckDraw::isDrawFlag(DrawFlag draw_flag) const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
 
-    return m_draw_flag.isEnabled(draw_flag);
+    return m_draw_flag.isOn(draw_flag);
 }
 
 
-void ckDraw::setDrawFlag(DrawFlag draw_flag, bool is_enabled)
+void ckDraw::setDrawFlag(DrawFlag draw_flag, bool is_on)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
 
-    m_draw_flag.set(draw_flag, is_enabled);
+    m_draw_flag.set(draw_flag, is_on);
 }
 
 
 void ckDraw::clearDrawFlag()
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -416,7 +416,7 @@ void ckDraw::clearDrawFlag()
 
 void ckDraw::copyDrawFlag(const ckDraw* src)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -426,7 +426,7 @@ void ckDraw::copyDrawFlag(const ckDraw* src)
         ckThrow(ExceptionInvalidArgument);
     }
 
-    if (src->m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (src->m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -441,9 +441,9 @@ void ckDraw::setPreset_defaultBlendOff()
     setBlendMode(BLEND_OFF);
 
     m_draw_flag.clear();
-    m_draw_flag.setEnabled(FLAG_WRITE_RGB);
-    m_draw_flag.setEnabled(FLAG_WRITE_DEPTH);
-    m_draw_flag.setEnabled(FLAG_BILINEAR);
+    m_draw_flag.setOn(FLAG_WRITE_RGB);
+    m_draw_flag.setOn(FLAG_WRITE_DEPTH);
+    m_draw_flag.setOn(FLAG_BILINEAR);
 }
 
 
@@ -453,9 +453,9 @@ void ckDraw::setPreset_defaultBlendHalf()
     setBlendMode(BLEND_HALF);
 
     m_draw_flag.clear();
-    m_draw_flag.setEnabled(FLAG_SORT);
-    m_draw_flag.setEnabled(FLAG_WRITE_RGB);
-    m_draw_flag.setEnabled(FLAG_BILINEAR);
+    m_draw_flag.setOn(FLAG_SORT);
+    m_draw_flag.setOn(FLAG_WRITE_RGB);
+    m_draw_flag.setOn(FLAG_BILINEAR);
 }
 
 
@@ -465,15 +465,15 @@ void ckDraw::setPreset_defaultBlendAdd()
     setBlendMode(BLEND_ADD);
 
     m_draw_flag.clear();
-    m_draw_flag.setEnabled(FLAG_SORT);
-    m_draw_flag.setEnabled(FLAG_WRITE_RGB);
-    m_draw_flag.setEnabled(FLAG_BILINEAR);
+    m_draw_flag.setOn(FLAG_SORT);
+    m_draw_flag.setOn(FLAG_WRITE_RGB);
+    m_draw_flag.setOn(FLAG_BILINEAR);
 }
 
 
 const ckVec& ckDraw::getClipBoundMin() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -484,7 +484,7 @@ const ckVec& ckDraw::getClipBoundMin() const
 
 const ckVec& ckDraw::getClipBoundMax() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -495,7 +495,7 @@ const ckVec& ckDraw::getClipBoundMax() const
 
 void ckDraw::setClipBound(const ckVec& bound_min, const ckVec& bound_max)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -512,7 +512,7 @@ void ckDraw::setClipBound(const ckVec& bound_min, const ckVec& bound_max)
 
 const ckVec& ckDraw::getSortCenter() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -523,7 +523,7 @@ const ckVec& ckDraw::getSortCenter() const
 
 void ckDraw::setSortCenter(const ckVec& sort_center)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -534,7 +534,7 @@ void ckDraw::setSortCenter(const ckVec& sort_center)
 
 r32 ckDraw::getSortOffset() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -545,7 +545,7 @@ r32 ckDraw::getSortOffset() const
 
 void ckDraw::setSortOffset(r32 sort_offset)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -556,7 +556,7 @@ void ckDraw::setSortOffset(r32 sort_offset)
 
 ckID ckDraw::getTextureID() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -567,7 +567,7 @@ ckID ckDraw::getTextureID() const
 
 void ckDraw::setTextureID(ckID tex_id)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -578,7 +578,7 @@ void ckDraw::setTextureID(ckID tex_id)
 
 ckMat& ckDraw::local()
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -589,7 +589,7 @@ ckMat& ckDraw::local()
 
 ckMat ckDraw::calcWorld() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -607,7 +607,7 @@ ckMat ckDraw::calcWorld() const
 
 ckCol ckDraw::calcFinalColor() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -640,11 +640,11 @@ ckDraw::ckDraw()
 
     m_tree.init(this);
 
-    m_private_flag.setEnabled(FLAG_VISIBLE);
+    m_private_flag.setOn(FLAG_VISIBLE);
 
-    m_private_flag.setEnabled(FLAG_INITIALIZED); // to call SetPreset_DefaultBlendOff
+    m_private_flag.setOn(FLAG_INITIALIZED); // to call SetPreset_DefaultBlendOff
     setPreset_defaultBlendOff();
-    m_private_flag.setDisabled(FLAG_INITIALIZED); // restore initialized-flag
+    m_private_flag.setOff(FLAG_INITIALIZED); // restore initialized-flag
 }
 
 
@@ -672,8 +672,8 @@ void ckDraw::setupDrawState()
 {
     ckLowLevelAPI::setDepthTest(static_cast<ckLowLevelAPI::DepthTest>(m_depth_test.getType()));
     ckLowLevelAPI::setBlendMode(static_cast<ckLowLevelAPI::BlendMode>(m_blend_mode.getType()));
-    ckLowLevelAPI::setWriteMode(m_draw_flag.isEnabled(FLAG_WRITE_RGB), m_draw_flag.isEnabled(FLAG_WRITE_ALPHA), m_draw_flag.isEnabled(FLAG_WRITE_DEPTH));
-    ckLowLevelAPI::setBackfaceCulling(m_draw_flag.isEnabled(FLAG_BACKFACE_CULLING));
+    ckLowLevelAPI::setWriteMode(m_draw_flag.isOn(FLAG_WRITE_RGB), m_draw_flag.isOn(FLAG_WRITE_ALPHA), m_draw_flag.isOn(FLAG_WRITE_DEPTH));
+    ckLowLevelAPI::setBackfaceCulling(m_draw_flag.isOn(FLAG_BACKFACE_CULLING));
 
     r32 world[16];
     m_world.toR32x16(world);

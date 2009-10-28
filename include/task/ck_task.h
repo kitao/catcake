@@ -75,8 +75,8 @@ public:
     const char* getName() const;
     u64 getExecuteUsecTime() const;
 
-    bool isEnabled() const;
-    void setEnabled(bool is_enabled);
+    bool isActive() const;
+    void setActive(bool is_active);
 
     virtual void onUpdate();
     virtual void onMessage(ckID msg_id, ckMsg<4>& msg);
@@ -89,7 +89,7 @@ protected:
 private:
     enum TaskFlag
     {
-        FLAG_ENABLED
+        FLAG_ACTIVE
     };
 
     ckTask();

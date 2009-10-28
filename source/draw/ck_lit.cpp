@@ -56,15 +56,15 @@ ckID ckLit::getID() const
 }
 
 
-bool ckLit::isEnabled() const
+bool ckLit::isActive() const
 {
-    return m_is_enabled.getType();
+    return m_is_active.getType();
 }
 
 
-void ckLit::setEnabled(bool is_enabled)
+void ckLit::setActive(bool is_active)
 {
-    m_is_enabled = is_enabled;
+    m_is_active = is_active;
 }
 
 
@@ -130,7 +130,7 @@ ckLit::ckLit(ckID lts_id)
 
     m_item.init(this);
 
-    setEnabled(true);
+    setActive(true);
     setPos(ckVec::ZERO);
     setRadius(0.0f, 0.0f);
     setColor(ckCol(255, 255, 0));

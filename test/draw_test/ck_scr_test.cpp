@@ -144,8 +144,8 @@ void ckScrTest()
         r32 getViewWidth() const
         r32 getViewHeight() const
         void setViewSize(r32 width, r32 height)
-        bool isEnabled() const
-        void setEnabled(bool is_enabled)
+        bool isActive() const
+        void setActive(bool is_active)
         bool isClearColor() const
         bool isClearDepth() const
         void setClearMode(bool is_clear_color, bool is_clear_depth)
@@ -170,7 +170,7 @@ void ckScrTest()
             scr->getHeightInFramebuffer() == ckSysMgr::getFramebufferHeight());
         ckAssert(isEqual(scr->getViewWidth(), ckSysMgr::getFramebufferWidth()) && //
             isEqual(scr->getViewHeight(), ckSysMgr::getFramebufferHeight()));
-        ckAssert(scr->isEnabled());
+        ckAssert(scr->isActive());
         ckAssert(scr->isClearColor() && scr->isClearDepth());
         ckAssert(scr->getClearColor() == ckCol(255, 0, 0, 0));
         ckAssert(scr->isPerspective());
@@ -186,8 +186,8 @@ void ckScrTest()
         scr->setViewSize(123.0f, 456.0f);
         ckAssert(isEqual(scr->getViewWidth(), 123.0f) && isEqual(scr->getViewHeight(), 456.0f));
 
-        scr->setEnabled(false);
-        ckAssert(!scr->isEnabled());
+        scr->setActive(false);
+        ckAssert(!scr->isActive());
 
         scr->setClearMode(false, true);
         ckAssert(!scr->isClearColor() && scr->isClearDepth());

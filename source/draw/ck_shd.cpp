@@ -81,7 +81,7 @@ u8 ckShd::getTextureNum() const
 
 bool ckShd::isValid() const
 {
-    return m_flag.isDisabled(FLAG_COMPILE_ERROR);
+    return m_flag.isOff(FLAG_COMPILE_ERROR);
 }
 
 
@@ -132,7 +132,7 @@ ckShd::ckShd(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_n
         }
     }
 
-    m_flag.setEnabled(FLAG_UPLOAD);
+    m_flag.setOn(FLAG_UPLOAD);
     getShdObj(); // upload the shader code to the vram
 
     ckDrawMgr::instance()->m_shd_map.add(shd_id, this);
@@ -175,13 +175,13 @@ CK_DEFINE_OPERATOR_EQUAL(ckShd)
 
 u32 ckShd::getShdObj()
 {
-    if (m_flag.isEnabled(FLAG_UPLOAD))
+    if (m_flag.isOn(FLAG_UPLOAD))
     {
         m_shd_obj = ckLowLevelAPI::registerShader(m_vert_code, m_frag_code);
 
         if (m_shd_obj == 0)
         {
-            m_flag.setEnabled(ckShd::FLAG_COMPILE_ERROR);
+            m_flag.setOn(ckShd::FLAG_COMPILE_ERROR);
         }
         else
         {
@@ -211,7 +211,7 @@ u32 ckShd::getShdObj()
             }
         }
 
-        m_flag.setDisabled(FLAG_UPLOAD);
+        m_flag.setOff(FLAG_UPLOAD);
     }
 
     return m_shd_obj;

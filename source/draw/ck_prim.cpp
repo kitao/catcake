@@ -95,7 +95,7 @@ void ckPrim::init(PrimMode prim_mode, PrimData* prim_data, u16 max_data_num, ckD
 
 bool ckPrim::isShareData() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -106,7 +106,7 @@ bool ckPrim::isShareData() const
 
 ckPrim::PrimMode ckPrim::getPrimMode() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -117,7 +117,7 @@ ckPrim::PrimMode ckPrim::getPrimMode() const
 
 void ckPrim::setPrimMode(PrimMode prim_mode)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -128,7 +128,7 @@ void ckPrim::setPrimMode(PrimMode prim_mode)
 
 u16 ckPrim::getCurDataNum() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -139,7 +139,7 @@ u16 ckPrim::getCurDataNum() const
 
 void ckPrim::setCurDataNum(u16 cur_data_num)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -155,7 +155,7 @@ void ckPrim::setCurDataNum(u16 cur_data_num)
 
 u16 ckPrim::getMaxDataNum() const
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -166,7 +166,7 @@ u16 ckPrim::getMaxDataNum() const
 
 void ckPrim::reallocData(u16 max_data_num)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -216,7 +216,7 @@ void ckPrim::reallocData(u16 max_data_num)
 
 void ckPrim::copyData(u16 dest_index, const ckPrim* src_prim, u16 src_index)
 {
-    if (m_private_flag.isDisabled(FLAG_INITIALIZED))
+    if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
         ckThrow(ExceptionNotInitialized);
     }
@@ -328,7 +328,7 @@ void ckPrim::setDataRect(u16 index, const ckVec& center, r32 width, r32 height, 
 
 void ckPrim::render(const ckMat& view)
 {
-    if (m_rend && m_rend->isEnabled())
+    if (m_rend && m_rend->isActive())
     {
         m_rend->render(view);
     }
@@ -350,7 +350,7 @@ void ckPrim::init2(PrimMode prim_mode, bool is_share_data, PrimData* prim_data, 
         m_rend->uninit();
     }
 
-    m_private_flag.setEnabled(FLAG_INITIALIZED);
+    m_private_flag.setOn(FLAG_INITIALIZED);
 
     setPrimMode(prim_mode);
 
@@ -414,7 +414,7 @@ void ckPrim::render_soft(const ckMat& view)
     */
     ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
     u32 col_size = (m_final_col != ckCol::FULL) ? sizeof(ckCol) * m_cur_data_num : 0;
-    u32 uv_size = (tex && tex->m_flag.isEnabled(ckTex::FLAG_UV_ADJUST)) ? sizeof(r32) * 2 * m_cur_data_num : 0;
+    u32 uv_size = (tex && tex->m_flag.isOn(ckTex::FLAG_UV_ADJUST)) ? sizeof(r32) * 2 * m_cur_data_num : 0;
     u32 buf_size = col_size + uv_size;
 
     u8* buf = (buf_size > 0) ? reinterpret_cast<u8*>(ckMemMgr::allocTempBufferForSystem(buf_size)) : 0;
@@ -446,7 +446,7 @@ void ckPrim::render_soft(const ckMat& view)
     */
     if (tex)
     {
-        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isEnabled(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
 
         if (uv_size > 0)
         {
@@ -526,7 +526,7 @@ void ckPrim::render_shader(const ckMat& view)
 
     if (tex)
     {
-        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isEnabled(FLAG_BILINEAR));
+        ckLowLevelAPI::setTexture(tex->getTexObj(), 0, 0, m_draw_flag.isOn(FLAG_BILINEAR));
 
         ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[4], tex->m_u_param_a);
         ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[5], tex->m_u_param_b);

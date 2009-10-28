@@ -56,8 +56,8 @@ public:
     static ckTask* getFirstTaskN(ckTask::TaskOrder order);
     static ckTask* getLastTaskN(ckTask::TaskOrder order);
 
-    static bool isOrderEnabled(ckTask::TaskOrder order);
-    static void setOrderEnabled(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_enabled);
+    static bool isOrderActive(ckTask::TaskOrder order);
+    static void setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active);
     static void deleteOrder(ckTask::TaskOrder from, ckTask::TaskOrder to);
 
     static void sendMessage(ckID msg_id, ckMsg<4>& msg);

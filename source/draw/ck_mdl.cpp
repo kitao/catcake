@@ -126,7 +126,7 @@ void ckMdl::setLightSetID(ckID lts_id)
             {
                 if (m_rend_ptr[i])
                 {
-                    m_rend_ptr[i]->setEnabled(false);
+                    m_rend_ptr[i]->setActive(false);
                     m_rend_ptr[i]->setLightSetID(ckDrawMgr::DEFAULT_LIGHT_SET_ID);
                 }
             }
@@ -137,7 +137,7 @@ void ckMdl::setLightSetID(ckID lts_id)
             {
                 if (m_rend_ptr[i])
                 {
-                    m_rend_ptr[i]->setEnabled(true);
+                    m_rend_ptr[i]->setActive(true);
                     m_rend_ptr[i]->setLightSetID(lts_id);
                 }
             }
@@ -259,7 +259,7 @@ void ckMdl::init2(ckID mdl_data_id, ckID scr_id, ckDraw* parent)
                 ckRend_Light::RendData* rend_data = const_cast<ckRend_Light::RendData*>(reinterpret_cast<const ckRend_Light::RendData*>(m_mdl_data.getNodeNormalData(i)));
 
                 m_rend_ptr[i]->init(prim, rend_data, ckDrawMgr::DEFAULT_LIGHT_SET_ID);
-                m_rend_ptr[i]->setEnabled(false);
+                m_rend_ptr[i]->setActive(false);
             }
         }
         else

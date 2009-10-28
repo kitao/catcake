@@ -156,8 +156,8 @@ void ckRendTest()
 {
     /*
         virtual ~ckRend()
-        bool isEnabled() const
-        void setEnabled(bool is_enabled)
+        bool isActive() const
+        void setActive(bool is_active)
 
         ckRend()
     */
@@ -175,8 +175,8 @@ void ckRendTest()
 
             ckAssertThrow(rend1.init(&prim, 0.0f), ckPrim::ExceptionNotInitialized);
 
-            ckAssertThrow(rend1.isEnabled(), ckRend::ExceptionNotInitialized);
-            ckAssertThrow(rend1.setEnabled(false), ckRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.isActive(), ckRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.setActive(false), ckRend::ExceptionNotInitialized);
 
             prim.init(ckPrim::MODE_TRIANGLE_STRIP, 3, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
 
@@ -186,7 +186,7 @@ void ckRendTest()
             rend1.init(&prim, 10.0f);
             rend1.init(&prim, 20.0f);
 
-            ckAssert(rend1.isEnabled());
+            ckAssert(rend1.isActive());
 
             rend1.dataVec(2);
 
@@ -195,8 +195,8 @@ void ckRendTest()
 
             ckAssertThrow(rend1.dataVec(3), ckRend::ExceptionInvalidArgument);
 
-            rend1.setEnabled(false);
-            ckAssert(!rend1.isEnabled());
+            rend1.setActive(false);
+            ckAssert(!rend1.isActive());
 
             ckDrawMgr::renderForSystem();
             ckAssert(s_render_count1 == 1 && s_render_count2 == 0);
@@ -206,12 +206,12 @@ void ckRendTest()
             ckDrawMgr::renderForSystem();
             ckAssert(s_render_count1 == 1 && s_render_count2 == 0);
 
-            ckAssertThrow(rend1.isEnabled(), ckRend::ExceptionNotInitialized);
-            ckAssertThrow(rend1.setEnabled(false), ckRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.isActive(), ckRend::ExceptionNotInitialized);
+            ckAssertThrow(rend1.setActive(false), ckRend::ExceptionNotInitialized);
 
             rend1.init(&prim, 30.0f);
 
-            ckAssert(rend1.isEnabled());
+            ckAssert(rend1.isActive());
 
             rend1.dataVec(4);
 

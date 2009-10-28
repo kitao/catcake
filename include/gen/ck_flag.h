@@ -80,7 +80,7 @@ public:
         @param[in] flag A flag which is a value of the enum constants.
         @return Whether the specified flag is on.
     */
-    bool isEnabled(T flag) const
+    bool isOn(T flag) const
     {
         return (m_flag & (1 << flag)) ? true : false;
     }
@@ -90,7 +90,7 @@ public:
         @param[in] flag A flag which is a value of the enum constants.
         @return Whether the specified flag is off.
     */
-    bool isDisabled(T flag) const
+    bool isOff(T flag) const
     {
         return (m_flag & (1 << flag)) ? false : true;
     }
@@ -99,7 +99,7 @@ public:
         Sets the specified flag on.
         @param[in] flag A flag which is a value of the enum constants.
     */
-    void setEnabled(T flag)
+    void setOn(T flag)
     {
         m_flag |= (1 << flag);
     }
@@ -108,7 +108,7 @@ public:
         Sets the specified flag off.
         @param[in] flag A flag which is a value of the enum constants.
     */
-    void setDisabled(T flag)
+    void setOff(T flag)
     {
         m_flag &= ~(1 << flag);
     }
@@ -116,17 +116,17 @@ public:
     /*!
         Sets the specified flag to the specified value.
         @param[in] flag A flag which is a value of the enum constants.
-        @param[in] is_enabled If true, the flag is set on. Otherwise, the flag is set off.
+        @param[in] is_on If true, the flag is set on. Otherwise, the flag is set off.
     */
-    void set(T flag, bool is_enabled)
+    void set(T flag, bool is_on)
     {
-        if (is_enabled)
+        if (is_on)
         {
-            setEnabled(flag);
+            setOn(flag);
         }
         else
         {
-            setDisabled(flag);
+            setOff(flag);
         }
     }
 

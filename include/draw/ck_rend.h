@@ -44,8 +44,8 @@ public:
 
     virtual ~ckRend();
 
-    bool isEnabled() const;
-    void setEnabled(bool is_enabled);
+    bool isActive() const;
+    void setActive(bool is_active);
 
 protected:
     ckRend();
@@ -138,7 +138,7 @@ private:
     virtual void initData(void* data, u16 data_num) = 0;
     virtual void render(const ckMat& view) = 0;
 
-    ckType<u8, bool> m_is_enabled;
+    ckType<u8, bool> m_is_active;
     u32 m_rend_body_size;
     u32 m_rend_data_size;
     ckPrim* m_prim;

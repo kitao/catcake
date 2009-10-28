@@ -245,23 +245,23 @@ void ckTaskMgrTest()
     }
 
     /*
-        static bool isOrderEnabled(ckTask::TaskOrder order)
-        static void setOrderEnabled(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_enabled)
+        static bool isOrderActive(ckTask::TaskOrder order)
+        static void setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active)
         static void deleteOrder(ckTask::TaskOrder from, ckTask::TaskOrder to)
     */
     {
         s_dtor_flag = 0x00;
         s_update_flag = 0x00;
 
-        ckAssertThrow(ckTaskMgr::isOrderEnabled(ckTask::ORDER_MINUS_2), ckTaskMgr::ExceptionNotInitialized);
-        ckAssertThrow(ckTaskMgr::setOrderEnabled(ckTask::ORDER_MINUS_1, ckTask::ORDER_PLUS_1, true), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::isOrderActive(ckTask::ORDER_MINUS_2), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::setOrderActive(ckTask::ORDER_MINUS_1, ckTask::ORDER_PLUS_1, true), ckTaskMgr::ExceptionNotInitialized);
         ckAssertThrow(ckTaskMgr::deleteOrder(ckTask::ORDER_MINUS_5, ckTask::ORDER_PLUS_5), ckTaskMgr::ExceptionNotInitialized);
 
         ckTaskMgr::createAfterSys(60);
 
         for (s32 i = ckTask::ORDER_MINUS_8_FOR_SYSTEM; i <= ckTask::ORDER_PLUS_8_FOR_SYSTEM; i++)
         {
-            ckAssert(ckTaskMgr::isOrderEnabled(static_cast<ckTask::TaskOrder>(i)));
+            ckAssert(ckTaskMgr::isOrderActive(static_cast<ckTask::TaskOrder>(i)));
         }
 
         ckNewTask(TaskMgrTestClass)(ckTask::ORDER_MINUS_6, 0);
@@ -275,17 +275,17 @@ void ckTaskMgrTest()
         ckTaskMgr::updateForSystem();
         ckAssert(s_update_flag == 0x7f);
 
-        ckTaskMgr::setOrderEnabled(ckTask::ORDER_MINUS_7, ckTask::ORDER_PLUS_3, false);
+        ckTaskMgr::setOrderActive(ckTask::ORDER_MINUS_7, ckTask::ORDER_PLUS_3, false);
 
         for (s32 i = ckTask::ORDER_MINUS_8_FOR_SYSTEM; i <= ckTask::ORDER_PLUS_8_FOR_SYSTEM; i++)
         {
             if (i >= ckTask::ORDER_MINUS_7 && i <= ckTask::ORDER_PLUS_3)
             {
-                ckAssert(!ckTaskMgr::isOrderEnabled(static_cast<ckTask::TaskOrder>(i)));
+                ckAssert(!ckTaskMgr::isOrderActive(static_cast<ckTask::TaskOrder>(i)));
             }
             else
             {
-                ckAssert(ckTaskMgr::isOrderEnabled(static_cast<ckTask::TaskOrder>(i)));
+                ckAssert(ckTaskMgr::isOrderActive(static_cast<ckTask::TaskOrder>(i)));
             }
         }
 
@@ -302,14 +302,14 @@ void ckTaskMgrTest()
         ckTaskMgr::updateForSystem();
         ckAssert(s_update_flag == 0x00);
 
-        ckTaskMgr::setOrderEnabled(ckTask::ORDER_MINUS_7, ckTask::ORDER_PLUS_7, true);
+        ckTaskMgr::setOrderActive(ckTask::ORDER_MINUS_7, ckTask::ORDER_PLUS_7, true);
 
         s_update_flag = 0;
 
         ckTaskMgr::updateForSystem();
         ckAssert(s_update_flag == 0x01);
 
-        ckAssertThrow(ckTaskMgr::setOrderEnabled(ckTask::ORDER_PLUS_1, ckTask::ORDER_ZERO, false), ckTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckTaskMgr::setOrderActive(ckTask::ORDER_PLUS_1, ckTask::ORDER_ZERO, false), ckTaskMgr::ExceptionInvalidArgument);
         ckAssertThrow(ckTaskMgr::deleteOrder(ckTask::ORDER_PLUS_7, ckTask::ORDER_PLUS_6), ckTaskMgr::ExceptionInvalidArgument);
 
         ckTaskMgr::destroyFirst();

@@ -103,7 +103,7 @@ void* ckTex::editImage()
         ckThrow(ExceptionInvalidCall);
     }
 
-    m_flag.setEnabled(ckTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
 
     return const_cast<void*>(m_image);
 }
@@ -178,7 +178,7 @@ void ckTex::resizeImage(u16 width, u16 height)
 
     if (width != valid_width || height != valid_height)
     {
-        m_flag.setEnabled(FLAG_UV_ADJUST);
+        m_flag.setOn(FLAG_UV_ADJUST);
 
         m_u_param_a = static_cast<r32>(width) / valid_width;
         m_u_param_b = 0.0f;
@@ -188,7 +188,7 @@ void ckTex::resizeImage(u16 width, u16 height)
     }
     else
     {
-        m_flag.setDisabled(FLAG_UV_ADJUST);
+        m_flag.setOff(FLAG_UV_ADJUST);
 
         m_u_param_a = 1.0f;
         m_u_param_b = 0.0f;
@@ -205,7 +205,7 @@ void ckTex::resizeImage(u16 width, u16 height)
     m_image_size = ckDrawMgr::getTexturePixelSize(m_format.getType()) * m_width * m_height;
     m_image = ckMalloc(m_image_size);
 
-    m_flag.setEnabled(ckTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
 }
 
 
@@ -263,7 +263,7 @@ ckTex::ckTex(ckID tex_id, u16 width, u16 height, TexFormat format, TexMode mode,
 
     if (width != valid_width || height != valid_height)
     {
-        m_flag.setEnabled(FLAG_UV_ADJUST);
+        m_flag.setOn(FLAG_UV_ADJUST);
 
         m_u_param_a = static_cast<r32>(width) / valid_width;
         m_u_param_b = 0.0f;
@@ -296,7 +296,7 @@ ckTex::ckTex(ckID tex_id, u16 width, u16 height, TexFormat format, TexMode mode,
         m_image = NULL;
         m_image_size = 0;
 
-        m_flag.setEnabled(FLAG_UV_ADJUST);
+        m_flag.setOn(FLAG_UV_ADJUST);
 
         m_v_param_a = -m_v_param_a;
         m_v_param_b = 1.0f;
@@ -306,7 +306,7 @@ ckTex::ckTex(ckID tex_id, u16 width, u16 height, TexFormat format, TexMode mode,
         ckThrow(ExceptionInvalidArgument);
     }
 
-    m_flag.setEnabled(ckTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
 
     ckDrawMgr::instance()->m_tex_map.add(tex_id, this);
 }
@@ -333,7 +333,7 @@ CK_DEFINE_OPERATOR_EQUAL(ckTex)
 
 u32 ckTex::getTexObj()
 {
-    if (m_flag.isEnabled(FLAG_UPLOAD))
+    if (m_flag.isOn(FLAG_UPLOAD))
     {
         if (m_mode == MODE_VOLATILE)
         {
@@ -350,7 +350,7 @@ u32 ckTex::getTexObj()
             {
                 expandAndRegisterTexture_png();
             }
-            else if (m_flag.isEnabled(FLAG_UV_ADJUST))
+            else if (m_flag.isOn(FLAG_UV_ADJUST))
             {
                 expandAndRegisterTexture_ptx();
             }
@@ -361,7 +361,7 @@ u32 ckTex::getTexObj()
             }
         }
 
-        m_flag.setDisabled(FLAG_UPLOAD);
+        m_flag.setOff(FLAG_UPLOAD);
     }
 
     return m_tex_obj;

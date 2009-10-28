@@ -53,8 +53,8 @@ public:
     ckCol getAmbientColor() const;
     void setAmbientColor(ckCol col);
 
-    bool isParaLightEnabled(u8 index) const;
-    void setParaLightEnabled(u8 index, bool is_enabled);
+    bool isParaLightActive(u8 index) const;
+    void setParaLightActive(u8 index, bool is_active);
 
     const ckVec& getParaLightDir(u8 index) const;
     void setParaLightDir(u8 index, const ckVec& dir);
@@ -78,7 +78,7 @@ public:
 private:
     struct ParaLight
     {
-        ckType<u8, bool> is_enabled;
+        ckType<u8, bool> is_active;
         ckVec dir;
         ckCol col;
         u16 col_int;

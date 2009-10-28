@@ -188,27 +188,27 @@ void ckScr::setViewSize(r32 width, r32 height)
 }
 
 
-bool ckScr::isEnabled() const
+bool ckScr::isActive() const
 {
-    return m_flag.isEnabled(FLAG_ENABLED);
+    return m_flag.isOn(FLAG_ACTIVE);
 }
 
 
-void ckScr::setEnabled(bool is_enabled)
+void ckScr::setActive(bool is_active)
 {
-    m_flag.set(FLAG_ENABLED, is_enabled);
+    m_flag.set(FLAG_ACTIVE, is_active);
 }
 
 
 bool ckScr::isClearColor() const
 {
-    return m_flag.isEnabled(FLAG_CLEAR_COLOR);
+    return m_flag.isOn(FLAG_CLEAR_COLOR);
 }
 
 
 bool ckScr::isClearDepth() const
 {
-    return m_flag.isEnabled(FLAG_CLEAR_DEPTH);
+    return m_flag.isOn(FLAG_CLEAR_DEPTH);
 }
 
 
@@ -233,7 +233,7 @@ void ckScr::setClearColor(ckCol col)
 
 bool ckScr::isPerspective() const
 {
-    return m_flag.isEnabled(FLAG_PERSPECTIVE);
+    return m_flag.isOn(FLAG_PERSPECTIVE);
 }
 
 
@@ -326,7 +326,7 @@ void ckScr::attachScreenTexture(ckTex::TexFormat format)
 
     m_scr_tex = ckNew(ckTex)(ckID::genID(), m_width_in_framebuffer, m_height_in_framebuffer, format, ckTex::MODE_FRAMEBUFFER, NULL, 0);
 
-    m_flag.setEnabled(FLAG_COPY_SCREEN);
+    m_flag.setOn(FLAG_COPY_SCREEN);
 }
 
 
@@ -337,7 +337,7 @@ void ckScr::detachScreenTexture()
         ckDelete(m_scr_tex, ckTex);
         m_scr_tex = NULL;
 
-        m_flag.setDisabled(FLAG_COPY_SCREEN);
+        m_flag.setOff(FLAG_COPY_SCREEN);
     }
 }
 
@@ -354,7 +354,7 @@ void ckScr::updateScreenTexture(bool is_frame_skip_reset)
         ckTaskMgr::resetFrameSkip();
     }
 
-    m_flag.setEnabled(FLAG_COPY_SCREEN);
+    m_flag.setOn(FLAG_COPY_SCREEN);
 }
 
 
@@ -478,7 +478,7 @@ ckScr::ckScr(ckID scr_id)
 {
     m_id = scr_id;
     m_view = ckMat::UNIT.translate(0.0f, 0.0f, static_cast<r32>(DEFAULT_FOCUS_DIST));
-    m_root_draw.m_private_flag.setEnabled(ckDraw::FLAG_INITIALIZED);
+    m_root_draw.m_private_flag.setOn(ckDraw::FLAG_INITIALIZED);
     m_root_draw.m_scr_id = m_id;
     m_scr_tex = NULL;
 
@@ -489,7 +489,7 @@ ckScr::ckScr(ckID scr_id)
         m_guest_id[i] = ckID::ZERO;
     }
 
-    setEnabled(true);
+    setActive(true);
     setAreaInFramebuffer(0, 0, ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
     setViewSize(ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
     setClearMode(true, true);
@@ -650,7 +650,7 @@ bool ckScr::canBoundClip_noCalcProjection(const ckMat& world, const ckVec& bound
 
 void ckScr::copyScreenTexture()
 {
-    if (hasScreenTexture() && m_flag.isEnabled(ckScr::FLAG_COPY_SCREEN))
+    if (hasScreenTexture() && m_flag.isOn(ckScr::FLAG_COPY_SCREEN))
     {
         if (m_scr_tex->m_tex_obj == 0)
         {
@@ -665,6 +665,6 @@ void ckScr::copyScreenTexture()
             static_cast<ckLowLevelAPI::TextureFormat>(m_scr_tex->m_format.getType()), //
             m_left_in_framebuffer, m_top_in_framebuffer);
 
-        m_flag.setDisabled(ckScr::FLAG_COPY_SCREEN);
+        m_flag.setOff(ckScr::FLAG_COPY_SCREEN);
     }
 }

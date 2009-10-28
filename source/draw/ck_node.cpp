@@ -45,7 +45,7 @@ ckNode::~ckNode() {}
 
 void ckNode::init(ckID scr_id)
 {
-    m_private_flag.setEnabled(FLAG_INITIALIZED);
+    m_private_flag.setOn(FLAG_INITIALIZED);
 
     setScreenID(scr_id);
 }
@@ -53,7 +53,7 @@ void ckNode::init(ckID scr_id)
 
 void ckNode::init(ckDraw* parent)
 {
-    m_private_flag.setEnabled(FLAG_INITIALIZED);
+    m_private_flag.setOn(FLAG_INITIALIZED);
 
     setParent(parent);
 }

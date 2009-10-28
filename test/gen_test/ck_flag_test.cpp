@@ -54,7 +54,7 @@ void ckFlagTest()
 
         ckFlag<u8, TestFlag> flag2;
 
-        flag2.setEnabled(FLAG_TEST8);
+        flag2.setOn(FLAG_TEST8);
         ckAssert(flag2.getValue() != flag1.getValue());
 
         ckFlag<u8, TestFlag> flag3 = flag2;
@@ -68,22 +68,22 @@ void ckFlagTest()
     }
 
     /*
-        bool isEnabled(T flag) const
-        bool isDisabled(T flag) const
-        void setEnabled(T flag)
-        void setDisabled(T flag)
-        void set(T flag, bool is_enabled)
+        bool isOn(T flag) const
+        bool isOff(T flag) const
+        void setOn(T flag)
+        void setOff(T flag)
+        void set(T flag, bool is_on)
         void clear()
     */
     {
         ckFlag<u16, TestFlag> flag;
 
-        flag.setEnabled(FLAG_TEST1);
-        flag.setEnabled(FLAG_TEST5);
+        flag.setOn(FLAG_TEST1);
+        flag.setOn(FLAG_TEST5);
         ckAssert(flag.getValue() == 0x011);
 
-        flag.setDisabled(FLAG_TEST2);
-        flag.setDisabled(FLAG_TEST5);
+        flag.setOff(FLAG_TEST2);
+        flag.setOff(FLAG_TEST5);
         ckAssert(flag.getValue() == 0x001);
 
         flag.set(FLAG_TEST2, true);
@@ -94,11 +94,11 @@ void ckFlagTest()
         flag.set(FLAG_TEST3, false);
         ckAssert(flag.getValue() == 0x102);
 
-        ckAssert(flag.isEnabled(FLAG_TEST2));
-        ckAssert(!flag.isEnabled(FLAG_TEST1));
+        ckAssert(flag.isOn(FLAG_TEST2));
+        ckAssert(!flag.isOn(FLAG_TEST1));
 
-        ckAssert(flag.isDisabled(FLAG_TEST3));
-        ckAssert(!flag.isDisabled(FLAG_TEST9));
+        ckAssert(flag.isOff(FLAG_TEST3));
+        ckAssert(!flag.isOff(FLAG_TEST9));
 
         flag.clear();
         ckAssert(flag.getValue() == 0);

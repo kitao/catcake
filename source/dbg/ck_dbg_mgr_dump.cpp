@@ -270,7 +270,7 @@ void ckDbgMgr::dumpScreen()
     {
         trace("|%08X|%4d,%4d|%4dx%4d|%c%c%c%c|\n", scr->getID().getValue(), //
             scr->getLeftInFramebuffer(), scr->getTopInFramebuffer(), scr->getWidthInFramebuffer(), scr->getHeightInFramebuffer(), //
-            scr->isEnabled() ? 'A' : '_', scr->isClearColor() ? 'C' : '_', scr->isClearDepth() ? 'D' : '_', scr->isPerspective() ? 'P' : '_');
+            scr->isEnabled() ? 'E' : '_', scr->isClearColor() ? 'C' : '_', scr->isClearDepth() ? 'D' : '_', scr->isPerspective() ? 'P' : '_');
     }
 
     trace("+--------+---------+---------+----+\n");

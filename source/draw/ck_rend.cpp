@@ -41,25 +41,25 @@ ckRend::~ckRend()
 }
 
 
-bool ckRend::isActive() const
+bool ckRend::isEnabled() const
 {
     if (!m_prim)
     {
         ckThrow(ExceptionNotInitialized);
     }
 
-    return m_is_active.getType();
+    return m_is_enabled.getType();
 }
 
 
-void ckRend::setActive(bool is_active)
+void ckRend::setEnabled(bool is_enabled)
 {
     if (!m_prim)
     {
         ckThrow(ExceptionNotInitialized);
     }
 
-    m_is_active = is_active;
+    m_is_enabled = is_enabled;
 }
 
 
@@ -450,7 +450,7 @@ void ckRend::init2(ckPrim* prim, u32 body_size, u32 data_size, bool is_share_dat
         ckThrow(ExceptionInvalidArgument);
     }
 
-    m_is_active = true;
+    m_is_enabled = true;
     m_rend_body_size = body_size;
     m_rend_data_size = data_size;
     m_prim = prim;

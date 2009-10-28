@@ -188,15 +188,15 @@ void ckScr::setViewSize(r32 width, r32 height)
 }
 
 
-bool ckScr::isActive() const
+bool ckScr::isEnabled() const
 {
-    return m_flag.isEnabled(FLAG_ACTIVE);
+    return m_flag.isEnabled(FLAG_ENABLED);
 }
 
 
-void ckScr::setActive(bool is_active)
+void ckScr::setEnabled(bool is_enabled)
 {
-    m_flag.set(FLAG_ACTIVE, is_active);
+    m_flag.set(FLAG_ENABLED, is_enabled);
 }
 
 
@@ -489,7 +489,7 @@ ckScr::ckScr(ckID scr_id)
         m_guest_id[i] = ckID::ZERO;
     }
 
-    setActive(true);
+    setEnabled(true);
     setAreaInFramebuffer(0, 0, ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
     setViewSize(ckSysMgr::getFramebufferWidth(), ckSysMgr::getFramebufferHeight());
     setClearMode(true, true);

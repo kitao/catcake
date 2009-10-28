@@ -70,25 +70,25 @@ void ckLts::setAmbientColor(ckCol col)
 }
 
 
-bool ckLts::isParaLightActive(u8 index) const
+bool ckLts::isParaLightEnabled(u8 index) const
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
         ckThrow(ExceptionInvalidArgument);
     }
 
-    return m_para_lit[index].is_active.getType();
+    return m_para_lit[index].is_enabled.getType();
 }
 
 
-void ckLts::setParaLightActive(u8 index, bool is_active)
+void ckLts::setParaLightEnabled(u8 index, bool is_enabled)
 {
     if (index >= MAX_PARA_LIGHT_NUM)
     {
         ckThrow(ExceptionInvalidArgument);
     }
 
-    m_para_lit[index].is_active = is_active;
+    m_para_lit[index].is_enabled = is_enabled;
 }
 
 
@@ -228,7 +228,7 @@ void ckLts::findNearLight(const ckVec& pos)
     {
         ParaLight* para_lit = &m_para_lit[i];
 
-        if (para_lit->is_active.getValue())
+        if (para_lit->is_enabled.getValue())
         {
             addLightToNearLight(para_lit->dir, para_lit->col, para_lit->col_int);
         }
@@ -238,7 +238,7 @@ void ckLts::findNearLight(const ckVec& pos)
     {
         ckLit* lit = item->getSelf();
 
-        if (!lit->m_is_active.getValue() || //
+        if (!lit->m_is_enabled.getValue() || //
             pos.x < lit->m_min_bound.x || pos.y < lit->m_min_bound.y || pos.z < lit->m_min_bound.z || //
             pos.x > lit->m_max_bound.x || pos.y > lit->m_max_bound.y || pos.z > lit->m_max_bound.z)
         {
@@ -301,7 +301,7 @@ ckLts::ckLts(ckID lts_id)
 
     for (u32 i = 0; i < MAX_PARA_LIGHT_NUM; i++)
     {
-        setParaLightActive(i, false);
+        setParaLightEnabled(i, false);
         setParaLightDir(i, ckVec::X_UNIT);
         setParaLightColor(i, ckCol::ZERO);
     }

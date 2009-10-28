@@ -328,7 +328,7 @@ void ckPrim::setDataRect(u16 index, const ckVec& center, r32 width, r32 height, 
 
 void ckPrim::render(const ckMat& view)
 {
-    if (m_rend && m_rend->isActive())
+    if (m_rend && m_rend->isEnabled())
     {
         m_rend->render(view);
     }

@@ -135,15 +135,15 @@ u64 ckTask::getExecuteUsecTime() const
 }
 
 
-bool ckTask::isActive() const
+bool ckTask::isEnabled() const
 {
-    return m_flag.isEnabled(FLAG_ACTIVE);
+    return m_flag.isEnabled(FLAG_ENABLED);
 }
 
 
-void ckTask::setActive(bool is_active)
+void ckTask::setEnabled(bool is_enabled)
 {
-    m_flag.set(FLAG_ACTIVE, is_active);
+    m_flag.set(FLAG_ENABLED, is_enabled);
 }
 
 
@@ -163,7 +163,7 @@ ckTask::ckTask(TaskOrder order)
     }
 
     m_tree.init(this);
-    m_flag.setEnabled(FLAG_ACTIVE);
+    m_flag.setEnabled(FLAG_ENABLED);
 
     m_name = ins->m_next_task_name;
     m_execute_time = 0;
@@ -189,7 +189,7 @@ ckTask::ckTask(ckTask* parent)
     }
 
     m_tree.init(this);
-    m_flag.setEnabled(FLAG_ACTIVE);
+    m_flag.setEnabled(FLAG_ENABLED);
 
     m_name = ins->m_next_task_name;
     m_execute_time = 0;
@@ -219,7 +219,7 @@ ckTask::~ckTask()
 ckTask::ckTask()
 {
     m_tree.init(this);
-    m_flag.setEnabled(FLAG_ACTIVE);
+    m_flag.setEnabled(FLAG_ENABLED);
 
     m_name = "";
     m_execute_time = 0;

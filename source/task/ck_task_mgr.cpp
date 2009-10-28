@@ -104,13 +104,13 @@ ckTask* ckTaskMgr::getLastTaskN(ckTask::TaskOrder order)
 }
 
 
-bool ckTaskMgr::isOrderActive(ckTask::TaskOrder order)
+bool ckTaskMgr::isOrderEnabled(ckTask::TaskOrder order)
 {
-    return instance()->m_root_task[order].isActive();
+    return instance()->m_root_task[order].isEnabled();
 }
 
 
-void ckTaskMgr::setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active)
+void ckTaskMgr::setOrderEnabled(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_enabled)
 {
     ckTaskMgr* ins = instance();
 
@@ -121,7 +121,7 @@ void ckTaskMgr::setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, boo
 
     for (s32 i = from; i <= to; i++)
     {
-        ins->m_root_task[i].setActive(is_active);
+        ins->m_root_task[i].setEnabled(is_enabled);
     }
 }
 
@@ -179,11 +179,11 @@ void ckTaskMgr::updateForSystem()
 
     for (u32 i = 0; i < ORDER_NUM; i++)
     {
-        if (ins->m_root_task[i].isActive())
+        if (ins->m_root_task[i].isEnabled())
         {
             for (ckTask* task = ins->getFirstTaskN(static_cast<ckTask::TaskOrder>(i)); task; task = ins->m_next_task)
             {
-                if (task->isActive())
+                if (task->isEnabled())
                 {
                     ins->m_cur_task = task;
                     ins->m_next_task = task->getNextAllN();

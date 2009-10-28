@@ -165,7 +165,7 @@ void ckDrawMgr::createAfterRes()
     newScreen(DEFAULT_2D_SCREEN_ID);
 
     ckScr* scr0d = getScreen(INVISIBLE_SCREEN_ID);
-    scr0d->setActive(false);
+    scr0d->setEnabled(false);
 
     ckScr* scr3d = getScreen(DEFAULT_3D_SCREEN_ID);
     scr3d->setClearColor(ckCol::ZERO);
@@ -728,7 +728,7 @@ void ckDrawMgr::renderForSystem()
     {
         ckScr* scr = *ins->m_scr_map.get(*id);
 
-        if (!scr->isActive())
+        if (!scr->isEnabled())
         {
             continue;
         }

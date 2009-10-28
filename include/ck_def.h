@@ -109,7 +109,7 @@ using namespace ckBasicType;
     @ingroup ckDef
     The version number of Catcake.
 */
-const u32 CATCAKE_VERSION = 80; // 0.8.0
+const u32 CATCAKE_VERSION = 85; // 0.8.5
 
 
 /*!

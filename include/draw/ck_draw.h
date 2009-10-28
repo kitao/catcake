@@ -281,9 +281,9 @@ public:
     /*!
         Sets the specified draw flag to the specified value.
         @param[in] draw_flag A draw flag.
-        @param[in] is_on If true, the flag is set on. Otherwise, the flag is set off.
+        @param[in] is_enabled If true, the flag is set on. Otherwise, the flag is set off.
     */
-    void setDrawFlag(DrawFlag draw_flag, bool is_on);
+    void setDrawFlag(DrawFlag draw_flag, bool is_enabled);
 
     /*!
         Sets the all draw flags to off.
@@ -303,9 +303,9 @@ public:
         setBlendMode(BLEND_OFF);
 
         m_draw_flag.clear();
-        m_draw_flag.setOn(FLAG_WRITE_RGB);
-        m_draw_flag.setOn(FLAG_WRITE_DEPTH);
-        m_draw_flag.setOn(FLAG_BILINEAR);
+        m_draw_flag.setEnabled(FLAG_WRITE_RGB);
+        m_draw_flag.setEnabled(FLAG_WRITE_DEPTH);
+        m_draw_flag.setEnabled(FLAG_BILINEAR);
     */
     void setPreset_defaultBlendOff();
 
@@ -316,9 +316,9 @@ public:
         setBlendMode(BLEND_HALF);
 
         m_draw_flag.clear();
-        m_draw_flag.setOn(FLAG_SORT);
-        m_draw_flag.setOn(FLAG_WRITE_RGB);
-        m_draw_flag.setOn(FLAG_BILINEAR);
+        m_draw_flag.setEnabled(FLAG_SORT);
+        m_draw_flag.setEnabled(FLAG_WRITE_RGB);
+        m_draw_flag.setEnabled(FLAG_BILINEAR);
     */
     void setPreset_defaultBlendHalf();
 
@@ -329,9 +329,9 @@ public:
         setBlendMode(BLEND_ADD);
 
         m_draw_flag.clear();
-        m_draw_flag.setOn(FLAG_SORT);
-        m_draw_flag.setOn(FLAG_WRITE_RGB);
-        m_draw_flag.setOn(FLAG_BILINEAR);
+        m_draw_flag.setEnabled(FLAG_SORT);
+        m_draw_flag.setEnabled(FLAG_WRITE_RGB);
+        m_draw_flag.setEnabled(FLAG_BILINEAR);
     */
     void setPreset_defaultBlendAdd();
 

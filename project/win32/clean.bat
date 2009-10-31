@@ -38,8 +38,7 @@ del /s /q /ah *.suo
 del /s /q /ah Thumbs.db
 
 cd doc\
-rmdir /s /q .\reference\english\html
-rmdir /s /q .\reference\japanese\html
+rmdir /s /q .\reference\html
 cd ..
 
 cd project\win32\catcake

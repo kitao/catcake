@@ -97,128 +97,168 @@ public:
     static u16 getMaxTextureLength();
 
     /*!
-        TODO
+        Returns the valid length of the specified texture length.
+        @return The valid length of the specified texture length.
     */
     static u16 getValidTextureLength(u16 length);
 
     /*!
-        TODO
+        Returns the byte size of the specified pixel format.
+        @return The byte size of the specified pixel format.
     */
     static u16 getTexturePixelSize(ckTex::TexFormat format);
 
     /*!
-        TODO
+        Returns whether pgDrawMgr singleton is created.
+        @return Whether pgDrawMgr singleton is created.
     */
     static bool isCreated();
 
     /*!
-        TODO
+        Creates pgDrawMgr singleton.
     */
     static void createAfterRes();
 
     /*!
-        TODO
+        Destroys pgDrawMgr singleton.
     */
     static void destroyBeforeRes();
 
     /*!
-        TODO
+        Returns whether rendering process is enabled.
+        @return Whether rendering process is enabled.
     */
     static bool isRender();
 
     /*!
-        TODO
+        Determines whether the rendering process is enabled.
+        @param[in] is_render Whether the rendering process is enabled.
     */
     static void setRender(bool is_render);
 
-
     /*!
-        TODO
+        Returns whether the specified screen exists.
+        @param[in] scr_id A screen ID.
+        @return Whether the specified screen exists.
     */
     static bool hasScreen(ckID scr_id);
 
     /*!
-        TODO
+        Returns the specified screen. If the specified screen doesn't exist, returns NULL.
+        The new screen is linked to the last of the screen list.
+        @param[in] scr_id A screen ID.
+        @return A screen.
     */
     static ckScr* getScreen(ckID scr_id);
 
     /*!
-        TODO
+        Creates new screen which has the specified ID.
+        @param[in] scr_id A screen ID.
+        @return The instance of new screen.
     */
     static ckScr* newScreen(ckID scr_id);
 
     /*!
-        TODO
+        Deletes the specified screen.
+        @param[in] scr_id A screen ID.
     */
     static void deleteScreen(ckID scr_id);
 
     /*!
-        TODO
+        Returns the first screen. If the first screen doesn't exist, returns NULL.
+        @return The first screen.
     */
     static ckScr* getFirstScreenN();
 
     /*!
-        TODO
+        Returns the last screen. If the last screen doesn't exist, return NULL.
+        @return The last screen.
     */
     static ckScr* getLastScreenN();
 
 
     /*!
-        TODO
+        Returns whether the specified texture exists.
+        @param[in] tex_id A texture ID.
+        @return Whether the specified texture exists.
     */
     static bool hasTexture(ckID tex_id);
 
     /*!
-        TODO
+        Returns the specified texture. If the specified texture doesn't exist, returns NULL.
+        @param[in] tex_id A texture ID.
+        @return The specified texture.
     */
     static ckTex* getTexture(ckID tex_id);
 
     /*!
-        TODO
+        Creates new texture which has the specified ID.
+        @param[in] tex_id A texture ID.
+        @param[in] width The width of a texture.
+        @param[in] height The height of a texture.
+        @param[in] format The format of a texture.
+        @return The instance of new texture.
     */
     static ckTex* newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format);
 
     /*!
-        TODO
+        Creates new texture from the specified raw-image.
+        @param[in] tex_id A texture ID.
+        @param[in] width The width of a texture.
+        @param[in] height The height of a texture.
+        @param[in] format The format of a texture.
+        @param[in] image The pointer of the raw-image.
+        @param[in] image_size The size of the raw-image.
+        @return The instance of new texture.
     */
     static ckTex* newTexture(ckID tex_id, u16 width, u16 height, ckTex::TexFormat format, const void* image, u32 image_size);
 
     /*!
-        TODO
+        Deletes the specified texture.
+        @param[in] scr_id A texture ID.
     */
     static void deleteTexture(ckID tex_id);
 
     /*!
-        TODO
+        Returns the first texture. If the first texture doesn't exist, returns NULL.
+        @return The first texture.
     */
     static ckTex* getFirstTextureN();
 
     /*!
-        TODO
+        Returns the last texture. If the last texture doesn't exist, return NULL.
+        @return The last texture.
     */
     static ckTex* getLastTextureN();
 
     /*!
-        TODO
+        Returns the number of the indices of the specified font.
+        @param[in] font_id A font ID.
+        @return The number of the indices of the specified font.
     */
     static u16 getFontIndexNum(ckID font_id);
 
     /*!
-        TODO
+        Returns the ID of the current font.
+        @return The ID of the current font.
     */
     static ckID getFontID();
 
     /*!
-        TODO
+        Returns the current font-index.
+        @return The current font-index.
     */
     static u16 getFontIndex();
 
     /*!
-        TODO
+        Sets the current font and font-index.
+        @param[in] font_id A font ID.
+        @param[in] font_index A font-index.
     */
     static void setFont(ckID font_id, u16 font_index);
 
     /*!
+        
         TODO
     */
     static u16 getFontSize();
@@ -304,7 +344,7 @@ public:
     static void deleteAllVramObjForSystem();
 
     /*!
-        TODO
+        Updates the framebuffer. This methos is only for system.
     */
     static void renderForSystem();
 

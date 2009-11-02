@@ -70,10 +70,10 @@ public:
     */
     enum BlendMode
     {
-        BLEND_OFF, //!< TODO
-        BLEND_HALF, //!< TODO
-        BLEND_ADD, //!< TODO
-        BLEND_DEST_ALPHA //!< TODO
+        BLEND_OFF, //!< (Rs, Gs, Bs, As)
+        BLEND_HALF, //!< (Rs, Gs, Bs, As) * As + (Rd, Gd, Bd, Ad) * (1 - As)
+        BLEND_ADD, //!< (Rs, Gs, Bs, As) + (Rd, Gd, Bd, Ad)
+        BLEND_DEST_ALPHA //!< (Rs, Gs, Bs, As) * Ad + (Rd, Gd, Bd, Ad) * (1 - Ad)
     };
 
     /*!
@@ -81,13 +81,13 @@ public:
     */
     enum DrawFlag
     {
-        FLAG_BOUND_CLIP, //!< TODO
-        FLAG_SORT, //!< TODO
-        FLAG_WRITE_RGB, //!< TODO
-        FLAG_WRITE_ALPHA, //!< TODO
-        FLAG_WRITE_DEPTH, //!< TODO
-        FLAG_BACKFACE_CULLING, //!< TODO
-        FLAG_BILINEAR //!< TODO
+        FLAG_BOUND_CLIP, //!< Enables bound-clipping.
+        FLAG_SORT, //!< Sorts the drawing object by the distance from the viewpoint.
+        FLAG_WRITE_RGB, //!< Writes RGB components to the framebuffer.
+        FLAG_WRITE_ALPHA, //!< Writes an alpha components to the framebuffer.
+        FLAG_WRITE_DEPTH, //!< Writes a depth value to the depth-buffer.
+        FLAG_BACKFACE_CULLING, //!< Enables backface-culling.
+        FLAG_BILINEAR //!< Enables bilinear filter.
     };
 
     /*!

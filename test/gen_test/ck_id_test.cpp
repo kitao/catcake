@@ -42,13 +42,6 @@ void ckIDTest()
     }
 
     /*
-        static const u8 MAX_STRING_LENGTH
-    */
-    {
-        ckAssert(ckID::MAX_STRING_LENGTH == 32);
-    }
-
-    /*
         ckID()
         u32 operator%(u32 n) const
         u32 getValue() const

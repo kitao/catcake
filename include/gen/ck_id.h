@@ -40,7 +40,6 @@ public:
     ckDefineException(ExceptionOutOfID);
 
     static const ckID ZERO; //!< The initial id.
-    static const u8 MAX_STRING_LENGTH = 32; //!< The maximum length of a string used for generating ckID.
 
     /*!
         Constructs and initializes a ckID to ckID::ZERO.
@@ -105,6 +104,7 @@ public:
 private:
     static const u32 BIT_NUM = 32;
     static const u32 MAX_ID = (static_cast<u64>(1) << (BIT_NUM - 1)) - 1;
+    static const u32 MAX_STRING_LENGTH = 32;
 
     u32 m_id;
 
@@ -118,7 +118,7 @@ private:
     @param[in] str The seed of a unique value.
     @return A ckID.
 */
-#define ckID_(str) ckID::genIDForSystem(CK_ID_00(str, (sizeof("" str) < (ckID::MAX_STRING_LENGTH + 1) ? sizeof(str) : (ckID::MAX_STRING_LENGTH + 1))))
+#define ckID_(str) ckID::genIDForSystem(CK_ID_00(str, (sizeof("" str) < 33 ? sizeof(str) : 33)))
 
 
 #define CK_ID_00(str, len) ((len <= 1) ? 0 : (CK_ID_01(str, len - 1) | 0x80000000))

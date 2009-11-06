@@ -5,7 +5,8 @@ Changes in 0.8.1 (released on November 1, 2009)
 - Renamed the prefix from 'pg' to 'ck'
 - Renamed getLastDesc to getLastDescendant
 - Removed PyPogolyn
-- Fixed ckID_ macro
+- Added ckID::MAX_STRING_LENGTH
+- Modified ckID::genID and ckID_ macro
 
 
 Changes in 0.8.0 (released on August 15, 2009)

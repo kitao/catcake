@@ -29,15 +29,15 @@
 #
 
 
-POGOLYN_DIR = ../../..
+BASE_DIR = ../../..
 
 CXX         = g++
 CXXFLAGS    = -O2 -Wall -mno-cygwin -s
 LDFLAGS     = -mno-cygwin -mwindows
 DEFINES     = -DNDEBUG
-INCLUDES    = -I$(POGOLYN_DIR)/include -I$(POGOLYN_DIR)/test
-LIBS        = -L$(POGOLYN_DIR)/lib -lpogolyn -lfreetype -lpng -lz -lopengl32 -lwinmm -lshlwapi -lgdi32
-SRCS        = $(shell find $(POGOLYN_DIR)/test -name "*.cpp")
+INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/test
+LIBS        = -L$(BASE_DIR)/lib -lcatcake -lfreetype -lpng -lz -lopengl32 -lwinmm -lshlwapi -lgdi32
+SRCS        = $(shell find $(BASE_DIR)/test -name "*.cpp")
 OBJS        = $(addsuffix .o, $(basename $(SRCS)))
 TARGET      = bin/test.exe
 

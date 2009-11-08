@@ -54,6 +54,7 @@ ckMain()
     ckEnt* ent4 = conf->getEntryFromFirstN("resources");
 
     ckCreateCatcake(ent1->getValue_string(0), ent2->getValue_s32(0), ent2->getValue_s32(1), ent3->getValue_s32(0));
+    ckKeyMgr::setMouseVisible(false);
 
     for (s32 i = 0; i < ent4->getValueNum(); i++)
     {

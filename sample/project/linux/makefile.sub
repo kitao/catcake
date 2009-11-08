@@ -29,17 +29,17 @@
 #
 
 
-POGOLYN_DIR = ../..
+BASE_DIR = ../..
 
 CXX         = g++
 CXXFLAGS    = -O2 -Wall -s
 LDFLAGS     =
 DEFINES     = -DNDEBUG
-INCLUDES    = -I$(POGOLYN_DIR)/include
-LIBS        = -L$(POGOLYN_DIR)/lib -L/usr/X11R6/lib -lpogolyn -lasound -lfreetype -lpng -lz -lGL -lXxf86vm -lpthread
+INCLUDES    = -I$(BASE_DIR)/include
+LIBS        = -L$(BASE_DIR)/lib -L/usr/X11R6/lib -lcatcake -lasound -lfreetype -lpng -lz -lGL -lXxf86vm -lpthread
 SRCS        = $(shell find . -name "*.cpp")
 OBJS        = $(addsuffix .o, $(basename $(SRCS)))
-TARGET      = $(POGOLYN_DIR)/sample/bin/$(notdir $(CURDIR))
+TARGET      = $(BASE_DIR)/sample/bin/$(notdir $(CURDIR))
 
 
 .PHONY: all clean

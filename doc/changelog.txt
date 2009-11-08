@@ -1,4 +1,4 @@
-Changes in 0.8.1 (released on November 7, 2009)
+Changes in 0.8.5 (released on November 8, 2009)
 ----------------------------------------------------------------
 
 - Renamed the name of the module to Catcake
@@ -6,6 +6,7 @@ Changes in 0.8.1 (released on November 7, 2009)
 - Renamed getLastDesc to getLastDescendant
 - Removed PyPogolyn
 - Modified ckID::genID and ckID_ macro
+- Suspended support for iPhone
 
 
 Changes in 0.8.0 (released on August 15, 2009)

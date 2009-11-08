@@ -29,26 +29,26 @@
 #
 
 
-POGOLYN_DIR = ../../..
+BASE_DIR = ../../..
 
 
 .PHONY: all clean
 
 all: clean
-	for i in $(POGOLYN_DIR)/sample/sample*; do [ -d $$i ] && cp makefile.sub $$i/makefile; done
-	mv $(POGOLYN_DIR)/sample/sample01_debug/pogolyn_logo.cpp $(POGOLYN_DIR)/sample
-	for i in $(POGOLYN_DIR)/sample/sample*; do [ -d $$i ] && cp $(POGOLYN_DIR)/sample/pogolyn_logo.cpp $$i/.; done
-	rm $(POGOLYN_DIR)/sample/pogolyn_logo.cpp
-	for i in $(POGOLYN_DIR)/sample/sample*; do [ -d $$i ] && make -C $$i; done
-	chmod -R 777 $(POGOLYN_DIR)/sample/bin/*.app
-	chmod -R 777 $(POGOLYN_DIR)/sample/data
-	cp -rf $(POGOLYN_DIR)/sample/bin/*.app /Applications
-	cp -rf $(POGOLYN_DIR)/sample/data /Applications
+	for i in $(BASE_DIR)/sample/sample*; do [ -d $$i ] && cp makefile.sub $$i/makefile; done
+	mv $(BASE_DIR)/sample/sample01_debug/catcake_logo.cpp $(BASE_DIR)/sample
+	for i in $(BASE_DIR)/sample/sample*; do [ -d $$i ] && cp $(BASE_DIR)/sample/catcake_logo.cpp $$i/.; done
+	rm $(BASE_DIR)/sample/catcake_logo.cpp
+	for i in $(BASE_DIR)/sample/sample*; do [ -d $$i ] && make -C $$i; done
+	chmod -R 777 $(BASE_DIR)/sample/bin/*.app
+	chmod -R 777 $(BASE_DIR)/sample/data
+	cp -rf $(BASE_DIR)/sample/bin/*.app /Applications
+	cp -rf $(BASE_DIR)/sample/data /Applications
 
 clean:
-	rm -rf $(POGOLYN_DIR)/sample/bin/*
-	rm -f $(POGOLYN_DIR)/sample/sample*/*.o
-	rm -f $(POGOLYN_DIR)/sample/sample*/makefile
-	mv $(POGOLYN_DIR)/sample/sample01_debug/pogolyn_logo.cpp $(POGOLYN_DIR)/sample
-	rm -f $(POGOLYN_DIR)/sample/sample*/pogolyn_logo.cpp
-	mv $(POGOLYN_DIR)/sample/pogolyn_logo.cpp $(POGOLYN_DIR)/sample/sample01_debug
+	rm -rf $(BASE_DIR)/sample/bin/*
+	rm -f $(BASE_DIR)/sample/sample*/*.o
+	rm -f $(BASE_DIR)/sample/sample*/makefile
+	mv $(BASE_DIR)/sample/sample01_debug/catcake_logo.cpp $(BASE_DIR)/sample
+	rm -f $(BASE_DIR)/sample/sample*/catcake_logo.cpp
+	mv $(BASE_DIR)/sample/catcake_logo.cpp $(BASE_DIR)/sample/sample01_debug

@@ -33,9 +33,8 @@
 cd `dirname $0`
 
 rm -f ../../lib/*
-rm -rf ../../doc/reference/english/html
-rm -rf ../../doc/reference/japanese/html
+rm -rf ../../doc/reference/html
 
-make -C pogolyn clean
+make -C catcake clean
 make -C test clean
 make -C ../../sample/project/macosx clean

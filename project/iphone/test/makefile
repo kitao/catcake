@@ -29,16 +29,16 @@
 #
 
 
-POGOLYN_DIR = ../../..
+BASE_DIR = ../../..
 
 CXX         = arm-apple-darwin9-g++
 CXXFLAGS    = -O2 -Wall -s
 LDFLAGS     = -lobjc
-DEFINES     = -DNDEBUG -DPG_NO_THROW_EXCEPTION
-INCLUDES    = -I$(POGOLYN_DIR)/include -I$(POGOLYN_DIR)/test
+DEFINES     = -DNDEBUG -DCK_NO_THROW_EXCEPTION
+INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/test
 FRAMEWORKS  = -F/System/Library/Frameworks -F/System/Library/PrivateFrameworks -framework UIKit -framework Foundation -framework CoreFoundation -framework GraphicsServices -framework OpenGLES -framework CoreGraphics -framework QuartzCore
-LIBS        = -L$(POGOLYN_DIR)/lib -L/usr/lib -lpogolyn -lfreetype -lpng -lz -bind_at_load
-SRCS        = $(shell find $(POGOLYN_DIR)/test -name "*.cpp")
+LIBS        = -L$(BASE_DIR)/lib -L/usr/lib -lcatcake -lfreetype -lpng -lz -bind_at_load
+SRCS        = $(shell find $(BASE_DIR)/test -name "*.cpp")
 OBJS        = $(addsuffix .o, $(basename $(SRCS)))
 TARGET      = bin/test
 

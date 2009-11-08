@@ -29,19 +29,19 @@
 #
 
 
-POGOLYN_DIR = ../..
-PACKAPP_DIR = $(POGOLYN_DIR)/sample/project/iphone
+BASE_DIR = ../..
+PACKAPP_DIR = $(BASE_DIR)/sample/project/iphone
 
 CXX         = arm-apple-darwin9-g++
 CXXFLAGS    = -O2 -Wall -s
 LDFLAGS     = -lobjc
-DEFINES     = -DNDEBUG -DPG_NO_THROW_EXCEPTION
-INCLUDES    = -I$(POGOLYN_DIR)/include
+DEFINES     = -DNDEBUG -DCK_NO_THROW_EXCEPTION
+INCLUDES    = -I$(BASE_DIR)/include
 FRAMEWORKS  = -F/System/Library/Frameworks -F/System/Library/PrivateFrameworks -framework UIKit -framework Foundation -framework CoreFoundation -framework GraphicsServices -framework OpenGLES -framework CoreGraphics -framework QuartzCore
-LIBS        = -L$(POGOLYN_DIR)/lib -L/usr/lib -lpogolyn -lfreetype -lpng -lz -bind_at_load
+LIBS        = -L$(BASE_DIR)/lib -L/usr/lib -lcatcake -lfreetype -lpng -lz -bind_at_load
 SRCS        = $(shell find . -name "*.cpp")
 OBJS        = $(addsuffix .o, $(basename $(SRCS)))
-TARGET      = $(POGOLYN_DIR)/sample/bin/$(notdir $(CURDIR))
+TARGET      = $(BASE_DIR)/sample/bin/$(notdir $(CURDIR))
 
 
 .PHONY: all clean

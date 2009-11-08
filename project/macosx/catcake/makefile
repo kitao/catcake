@@ -29,17 +29,17 @@
 #
 
 
-POGOLYN_DIR = ../../..
+BASE_DIR = ../../..
 
 CXX         = g++
 CXXFLAGS    = -O2 -Wall -s
-DEFINES     = -DNDEBUG -DPG_MACOSX
-INCLUDES    = -I$(POGOLYN_DIR)/include -I$(POGOLYN_DIR)/source -I/usr/X11R6/include -I/usr/X11R6/include/freetype2
+DEFINES     = -DNDEBUG -DCK_MACOSX
+INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/source -I/usr/X11R6/include -I/usr/X11R6/include/freetype2
 AR          = ar
 ARFLAGS     = rs
-SRCS        = $(shell find $(POGOLYN_DIR)/source -name "*.cpp")
+SRCS        = $(shell find $(BASE_DIR)/source -name "*.cpp")
 OBJS        = $(addsuffix .o, $(basename $(SRCS)))
-TARGET      = $(POGOLYN_DIR)/lib/libpogolyn.a
+TARGET      = $(BASE_DIR)/lib/libcatcake.a
 
 
 .PHONY: all clean

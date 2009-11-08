@@ -29,32 +29,32 @@
 #
 
 
-POGOLYN_DIR = ../../..
+BASE_DIR = ../../..
 
 CXX         = arm-apple-darwin9-g++
 CXXFLAGS    = -O2 -Wall -s
 OBJCFLAGS   = -O2 -Wall -s
-DEFINES     = -DNDEBUG -DPG_IPHONE -DPG_NO_THROW_EXCEPTION
-INCLUDES    = -I$(POGOLYN_DIR)/include -I$(POGOLYN_DIR)/source -I$(POGOLYN_DIR)/project/win32/include/zlib -I$(POGOLYN_DIR)/project/win32/include/libpng -I$(POGOLYN_DIR)/project/win32/include/freetype -I/var/include/gcc/darwin/4.0 -I/var/include/c++/4.0.0
+DEFINES     = -DNDEBUG -DCK_IPHONE -DCK_NO_THROW_EXCEPTION
+INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/source -I$(BASE_DIR)/project/win32/include/zlib -I$(BASE_DIR)/project/win32/include/libpng -I$(BASE_DIR)/project/win32/include/freetype -I/var/include/gcc/darwin/4.0 -I/var/include/c++/4.0.0
 AR          = ar
 ARFLAGS     = rs
-SRCS        = $(shell find $(POGOLYN_DIR)/source -name "*.cpp")  $(shell find $(POGOLYN_DIR)/source -name "*.mm")
+SRCS        = $(shell find $(BASE_DIR)/source -name "*.cpp")  $(shell find $(BASE_DIR)/source -name "*.mm")
 OBJS        = $(addsuffix .o, $(basename $(SRCS)))
-TARGET      = $(POGOLYN_DIR)/lib/libpogolyn.a
+TARGET      = $(BASE_DIR)/lib/libcatcake.a
 
 
 .PHONY: all clean
 
 all: $(TARGET)
-	cp $(POGOLYN_DIR)/project/iphone/lib/libz.a $(POGOLYN_DIR)/lib
-	cp $(POGOLYN_DIR)/project/iphone/lib/libpng.a $(POGOLYN_DIR)/lib
-	cp $(POGOLYN_DIR)/project/iphone/lib/libfreetype.a $(POGOLYN_DIR)/lib
+	cp $(BASE_DIR)/project/iphone/lib/libz.a $(BASE_DIR)/lib
+	cp $(BASE_DIR)/project/iphone/lib/libpng.a $(BASE_DIR)/lib
+	cp $(BASE_DIR)/project/iphone/lib/libfreetype.a $(BASE_DIR)/lib
 
 clean:
 	rm -f $(TARGET) $(OBJS)
-	rm -f $(POGOLYN_DIR)/lib/libz.a
-	rm -f $(POGOLYN_DIR)/lib/libpng.a
-	rm -f $(POGOLYN_DIR)/lib/libfreetype.a
+	rm -f $(BASE_DIR)/lib/libz.a
+	rm -f $(BASE_DIR)/lib/libpng.a
+	rm -f $(BASE_DIR)/lib/libfreetype.a
 
 $(TARGET): $(OBJS)
 	$(AR) $(ARFLAGS) $(TARGET) $(OBJS)

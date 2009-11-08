@@ -188,7 +188,7 @@ void ckPrim::reallocData(u16 max_data_num)
 
     if (m_prim_data)
     {
-        PrimData* new_prim_data;
+        PrimData* new_prim_data = 0;
         ckNewArray(new_prim_data, PrimData, max_data_num);
 
         u32 copy_num = ckMath::min(max_data_num, m_max_data_num);

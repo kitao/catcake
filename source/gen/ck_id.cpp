@@ -99,7 +99,7 @@ ckID ckID::genID(const char* str)
     {
         id.m_id = 0;
 
-        for (s32 i = 0; i < MAX_STRING_LENGTH && *str != '\0'; i++, str++)
+        for (u32 i = 0; i < MAX_STRING_LENGTH && *str != '\0'; i++, str++)
         {
             id.m_id = id.m_id * 37 + *str;
         }

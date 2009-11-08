@@ -234,7 +234,7 @@ ckConf* ckConf::newPriorConfigBeforeInitialization(const char* filename)
         ckThrow(ExceptionInvalidArgument);
     }
 
-    void* fh;
+    void* fh = 0;
 
     ckTry
     {

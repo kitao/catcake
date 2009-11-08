@@ -157,7 +157,7 @@ void ckSprt::reallocData(u16 max_data_num)
 
     if (m_sprt_data)
     {
-        SprtData* new_sprt_data;
+        SprtData* new_sprt_data = 0;
         ckNewArray(new_sprt_data, SprtData, max_data_num);
 
         u32 copy_num = ckMath::min(max_data_num, m_max_data_num);

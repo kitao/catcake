@@ -1,4 +1,4 @@
-Changes in 0.8.5 (released on November 8, 2009)
+Changes in 0.8.5 (released on November 9, 2009)
 ----------------------------------------------------------------
 
 - Renamed the name of the module to Catcake

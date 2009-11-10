@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlibd.lib libpngd.lib freetype238MT_D.lib"
+				AdditionalDependencies="zlibd.lib libpngd.lib freetyped.lib"
 				OutputFile="$(OutDir)\catcaked.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib"
@@ -141,7 +141,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib.lib libpng.lib freetype238MT.lib"
+				AdditionalDependencies="zlib.lib libpng.lib freetype.lib"
 				OutputFile="$(OutDir)\catcake.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib"

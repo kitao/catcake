@@ -232,7 +232,7 @@ void ckResMgr::loadResourceAs(ckID id, const char* filename, bool is_type_detect
         ckThrow(ExceptionInvalidArgument);
     }
 
-    void* fh = 0;
+    void* fh;
 
     ckTry
     {

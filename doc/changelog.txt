@@ -9,6 +9,8 @@ Changes in 0.8.5 (released on November 9, 2009)
 - Suspended support for iPhone
 - Modified the sample #10 to hide the mouse cursor
 - Stopped support for MinGW
+- Upgraded libpng to version 1.2.40
+- Upgraded FreeType to version 2.3.11
 
 
 Changes in 0.8.0 (released on August 15, 2009)

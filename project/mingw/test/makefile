@@ -46,6 +46,9 @@ TARGET      = bin/test.exe
 
 all: $(TARGET)
 
+run: $(TARGET)
+	./$(TARGET)
+
 clean:
 	rm -f $(TARGET) $(OBJS)
 

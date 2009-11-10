@@ -48,9 +48,6 @@ FRAMEWORK   = -framework OpenGL -framework GLUT
 
 all: $(TARGET)
 
-run: $(TARGET)
-	./$(TARGET)
-
 clean:
 	rm -f $(TARGET) $(OBJS)
 

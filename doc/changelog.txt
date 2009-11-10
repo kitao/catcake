@@ -8,6 +8,7 @@ Changes in 0.8.5 (released on November 9, 2009)
 - Modified ckID::genID and ckID_ macro
 - Suspended support for iPhone
 - Modified the sample #10 to hide the mouse cursor
+- Stopped support for MinGW
 
 
 Changes in 0.8.0 (released on August 15, 2009)

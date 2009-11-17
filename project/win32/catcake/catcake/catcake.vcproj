@@ -547,10 +547,6 @@
 					RelativePath="..\..\..\..\source\low_level_api\ck_low_level_util_libpng.cpp"
 					>
 				</File>
-				<File
-					RelativePath="..\..\..\..\source\low_level_api\ck_low_level_util_zlib.cpp"
-					>
-				</File>
 				<Filter
 					Name="win32"
 					>

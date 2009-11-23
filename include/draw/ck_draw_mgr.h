@@ -258,88 +258,117 @@ public:
     static void setFont(ckID font_id, u16 font_index);
 
     /*!
-        
-        TODO
+        Returns the current font size.
+        @return The current font size.
     */
     static u16 getFontSize();
 
     /*!
-        TODO
+        Sets the current font size.
+        Font size represents the max height of the fonts in pixel.
+        @param[in] font_size The size of font.
     */
     static u16 setFontSize(u16 font_size);
 
     /*!
-        TODO
+        Returns the width of the specified string when rendered.
+        @param[in] str A string.
+        @param[in] ... Arguments.
     */
     static u16 calcFontDrawWidth(const char* str, ...);
 
     /*!
-        TODO
+        Returns the width of the specified string when rendered.
+        @param[in] str A string.
+        @param[in] ... Arguments.
     */
     static u16 calcFontDrawWidth(const wchar_t* str, ...);
 
     /*!
-        TODO
+        Returns whether the specified shader exists.
+        @param[in] shd_id A shader ID.
+        @return Whether the specified shader exists.
     */
     static bool hasShader(ckID shd_id);
 
     /*!
-        TODO
+        Returns the shader.
+        @param[in] shd_id A shader ID.
+        @return A shader.
     */
     static ckShd* getShader(ckID shd_id);
 
     /*!
-        TODO
+        Creates a new shader.
+        @param[in] A shader ID.
+        @param[in] vertex shader code.
+        @param[in] fragment shader code.
+        @param[in] The number of an uniform variables.
+        @param[in] The number of an attribute variables.
+        @param[in] The number of textures.
+        @return A shader.
     */
     static ckShd* newShader(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num);
 
     /*!
-        TODO
+        Deletes the specified shader.
+        @param[in] A shader ID.
     */
     static void deleteShader(ckID shd_id);
 
     /*!
-        TODO
+        Returns the first shader. If the first texture doesn't exist, returns NULL.
+        @return The first shader.
     */
     static ckShd* getFirstShaderN();
 
     /*!
-        TODO
+        Returns the last shader. If the last texture doesn't exist, returns NULL.
+        @return The last shader.
     */
     static ckShd* getLastShaderN();
 
     /*!
-        TODO
+        Returns whether the specified light-set exits.
+        @param[in] A light-set ID.
+        @return Whether the specified light-set exits.
     */
     static bool hasLightSet(ckID lts_id);
 
     /*!
-        TODO
+        Returns the specified light-set.
+        @param[in] A light-set ID.
+        @return The specified light-set.
     */
     static ckLts* getLightSet(ckID lts_id);
 
     /*!
-        TODO
+        Creates a new light-set.
+        @param[in] A light-set ID.
+        @return A light-set.
     */
     static ckLts* newLightSet(ckID lts_id);
 
     /*!
-        TODO
+        Deletes the specified light-set.
+        @param[in] A light-set ID.
     */
     static void deleteLightSet(ckID lts_id);
 
     /*!
-        TODO
+        Returns the first light-set. If the first light-set doesn't exist, returns NULL.
+        @return The first light-set.
     */
     static ckLts* getFirstLightSetN();
 
     /*!
-        TODO
+        Returns the last light-set. If the last light-set doesn't exist, returns NULL.
+        @return The last light-set.
     */
     static ckLts* getLastLightSetN();
 
     /*!
-        TODO
+        Deletes the all texture objects. This method is only for system.
     */
     static void deleteAllVramObjForSystem();
 

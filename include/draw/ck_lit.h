@@ -34,7 +34,7 @@ class ckLts;
 
 /*!
     @ingroup ckDraw
-    TODO
+    A point light.
 */
 class CK_API ckLit
 {

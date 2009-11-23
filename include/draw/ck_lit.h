@@ -43,22 +43,77 @@ class CK_API ckLit
 public:
     ckDefineException(ExceptionInvalidArgument);
 
+    /*!
+        Returns the previous point light. If the previous point light doesn't exist, returns NULL.
+        @return The previous point light.
+    */
     ckLit* getPrevN() const;
+
+    /*!
+        Returns the next point light. If the next point light doesn't exist, returns NULL.
+        @return The next point light.
+    */
     ckLit* getNextN() const;
 
+    /*!
+        Returns the ID of this point light.
+        @return The ID of this point light.
+    */
     ckID getID() const;
 
+    /*!
+        Returns whether this point light is active.
+        @return Whether this point light is active.
+    */
     bool isActive() const;
+
+    /*!
+        Determines whether this point light is active.
+        @param[in] is_active Whether this point light is active.
+    */
     void setActive(bool is_active);
 
+    /*!
+        Returns the position of this point light.
+        @return The position of this point light.
+    */
     const ckVec& getPos() const;
+
+    /*!
+        Sets the position of this point light.
+        @param[in] pos A position.
+    */
     void setPos(const ckVec& pos);
 
+    /*!
+        Returns the inner radius of this point light.
+        @return The inner radius of this point light.
+    */
     r32 getInnerRadius() const;
+
+    /*!
+        Returns the outer radius of this point light.
+        @return The outer radius of this point light.
+    */
     r32 getOuterRadius() const;
+
+    /*!
+        Sets the radii of this point light.
+        @param[in] inner_rad The inner radius.
+        @param[in] outer_rad The outer radius.
+    */
     void setRadius(r32 inner_rad, r32 outer_rad);
 
+    /*!
+        Returns the color of this point light.
+        @return The color of this point light.
+    */
     ckCol getColor() const;
+
+    /*!
+        Sets the color of this point light.
+        @param[in] col A color.
+    */
     void setColor(ckCol col);
 
 private:

@@ -34,7 +34,7 @@ class ckRend_Light;
 
 /*!
     @ingroup ckDraw
-    TODO
+    A model.
 */
 class CK_API ckMdl
 {
@@ -42,21 +42,71 @@ public:
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotInitialized);
 
+    /*!
+        Constructs a model.
+    */
     ckMdl();
+
+    /*!
+        Destructs this model.
+    */
     ~ckMdl();
 
+    /*!
+        Initializes this model.
+        @param[in] mdl_data_id The ID of a model data.
+        @param[in] scr_id The ID of a screen.
+    */
     void init(ckID mdl_data_id, ckID scr_id);
+
+    /*!
+        Initializes this model.
+        @param[in] mdl_data_id The ID of a model data.
+        @param[in] parent The ID of a drawing object.
+    */
     void init(ckID mdl_data_id, ckDraw* parent);
 
+    /*!
+        Returns the model data.
+        @return The model data.
+    */
     const ckMdlData* getModelData() const;
 
+    /*!
+        Returns the texture ID.
+        @return The texture ID.
+    */
     ckID getTextureID() const;
+
+    /*!
+        Sets the texture ID.
+        @param[in] tex_id A texture ID.
+    */
     void setTextureID(ckID tex_id);
 
+    /*!
+        Returns the ID of the light set.
+        @return The ID of the light set.
+    */
     ckID getLightSetID() const;
+
+    /*!
+        Sets the ID of the light set.
+        @param[in] lts_id The ID of the light set.
+    */
     void setLightSetID(ckID lts_id);
 
+    /*!
+        Returns the root drawing object.
+        @return The root drawing object.
+    */
     ckDraw* getRootDraw();
+
+    /*!
+        Returns the drawing object of the specified node.
+        @param[in] node_index The index of a node.
+        @return The drawing object of the specified node.
+    */
     ckDraw* getNodeDraw(u16 node_index);
 
 private:

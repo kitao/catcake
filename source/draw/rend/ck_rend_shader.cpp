@@ -146,7 +146,7 @@ void ckRend_Shader::setUniformVec(u8 uni_index, const ckVec& vec)
 }
 
 
-void ckRend_Shader::setUniformCol3x255(u8 uni_index, ckCol col)
+void ckRend_Shader::setUniformCol3(u8 uni_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
@@ -163,7 +163,7 @@ void ckRend_Shader::setUniformCol3x255(u8 uni_index, ckCol col)
 }
 
 
-void ckRend_Shader::setUniformCol4x255(u8 uni_index, ckCol col)
+void ckRend_Shader::setUniformCol4(u8 uni_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
 
@@ -213,7 +213,7 @@ void ckRend_Shader::setAttribVec(u16 data_index, u8 att_index, const ckVec& vec)
 }
 
 
-void ckRend_Shader::setAttribCol3x255(u16 data_index, u8 att_index, ckCol col)
+void ckRend_Shader::setAttribCol3(u16 data_index, u8 att_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
     u8 att_num = rend_body->shd->getAttribNum();
@@ -231,7 +231,7 @@ void ckRend_Shader::setAttribCol3x255(u16 data_index, u8 att_index, ckCol col)
 }
 
 
-void ckRend_Shader::setAttribCol4x255(u16 data_index, u8 att_index, ckCol col)
+void ckRend_Shader::setAttribCol4(u16 data_index, u8 att_index, ckCol col)
 {
     RendBody* rend_body = getRendBody<RendBody>();
     u8 att_num = rend_body->shd->getAttribNum();

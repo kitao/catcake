@@ -31,30 +31,114 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A shader renderer.
 */
 class CK_API ckRend_Shader : public ckRend
 {
 public:
+    /*!
+        Initializes this renderer.
+        @param[in] prim A target primitive.
+        @param[in] shd_id A shader ID.
+    */
     void init(ckPrim* prim, ckID shd_id);
+
+    /*!
+        Initializes this renderer.
+        @param[in] prim A target primitive.
+        @param[in] rend_data Shared renderer data.
+        @param[in] shd_id A shader ID.
+    */
     void init(ckPrim* prim, r32* rend_data, ckID shd_id);
 
+    /*!
+        Returns the shader ID.
+        @return The shader ID.
+    */
     ckID getShaderID();
 
+    /*!
+        Returns the second texture ID.
+        @return The second texture ID.
+    */
     ckID get2ndTextureID();
+
+    /*!
+        Sets the second texture ID.
+        @param[in] tex_id A texture ID.
+    */
     void set2ndTextureID(ckID tex_id);
+
+    /*!
+        Returns the third texture ID.
+        @return The third texture ID.
+    */
     ckID get3rdTextureID();
+
+    /*!
+        Sets the third texture ID.
+        @param[in] tex_id A texture ID.
+    */
     void set3rdTextureID(ckID tex_id);
 
+    /*!
+        Returns the reference to the specified uniform.
+        @param[in] uni_index The index of an uniform.
+        @return The reference to the specified uniform.
+    */
     r32& uniform(u8 uni_index);
-    void setUniformVec(u8 uni_index, const ckVec& vec);
-    void setUniformCol3x255(u8 uni_index, ckCol col);
-    void setUniformCol4x255(u8 uni_index, ckCol col);
 
+    /*!
+        Sets the specified uniforms as a vector.
+        @param[in] uni_index the first index of uniforms.
+        @param[in] vec A vector.
+    */
+    void setUniformVec(u8 uni_index, const ckVec& vec);
+
+    /*!
+        Sets the specified uniforms as a 3-element color.
+        @param[in] uni_index the first index of uniforms.
+        @param[in] col A color.
+    */
+    void setUniformCol3(u8 uni_index, ckCol col);
+
+    /*!
+        Sets the specified uniforms as a 4-element color.
+        @param[in] uni_index The first index of uniforms.
+        @param[in] col A color.
+    */
+    void setUniformCol4(u8 uni_index, ckCol col);
+
+    /*!
+        Returns the reference to the specified attribute.
+        @param[in] data_index The index of renderer data.
+        @param[in] att_index The index of an attribute.
+        @return The reference to the specified attribute.
+    */
     r32& attrib(u16 data_index, u8 att_index);
+
+    /*!
+        Sets the specified attributes as a vector.
+        @param[in] att_index the first index of attributes.
+        @param[in] vec A vector.
+    */
     void setAttribVec(u16 data_index, u8 att_index, const ckVec& vec);
-    void setAttribCol3x255(u16 data_index, u8 att_index, ckCol col);
-    void setAttribCol4x255(u16 data_index, u8 att_index, ckCol col);
+
+    /*!
+        Sets the specified attributes as a 3-element color.
+        @param[in] data_index The index of renderer data.
+        @param[in] att_index The first index of attributes.
+        @param[in] col A color.
+    */
+    void setAttribCol3(u16 data_index, u8 att_index, ckCol col);
+
+    /*!
+        Sets the specified attributes as a 4-element color.
+        @param[in] data_index The index of renderer data.
+        @param[in] att_index The first index of attributes.
+        @param[in] col A color.
+    */
+    void setAttribCol4(u16 data_index, u8 att_index, ckCol col);
 
 private:
     struct RendBody

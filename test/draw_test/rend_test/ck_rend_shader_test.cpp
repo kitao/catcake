@@ -44,12 +44,12 @@ void ckRend_ShaderTest()
         void set3rdTextureID(ckID tex_id)
         r32& uniform(u8 uni_index)
         void setUniformVec(u8 uni_index, const ckVec& vec)
-        void setUniformCol3x255(u8 uni_index, ckCol col)
-        void setUniformCol4x255(u8 uni_index, ckCol col)
+        void setUniformCol3(u8 uni_index, ckCol col)
+        void setUniformCol4(u8 uni_index, ckCol col)
         r32& attrib(u16 data_index, u8 att_index)
         void setAttribVec(u16 data_index, u8 att_index, const ckVec& vec)
-        void setAttribCol3x255(u16 data_index, u8 att_index, ckCol col)
-        void setAttribCol4x255(u16 data_index, u8 att_index, ckCol col)
+        void setAttribCol3(u16 data_index, u8 att_index, ckCol col)
+        void setAttribCol4(u16 data_index, u8 att_index, ckCol col)
     */
     {
         static const char s_vert_code[] = "void main() { gl_Position = 0.0; }";
@@ -70,12 +70,12 @@ void ckRend_ShaderTest()
         ckAssertThrow(rend_shd.set3rdTextureID(ckID::ZERO), ckRend::ExceptionNotInitialized);
         ckAssertThrow(rend_shd.uniform(0), ckRend::ExceptionNotInitialized);
         ckAssertThrow(rend_shd.setUniformVec(0, ckVec::ZERO), ckRend::ExceptionNotInitialized);
-        ckAssertThrow(rend_shd.setUniformCol3x255(0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
-        ckAssertThrow(rend_shd.setUniformCol4x255(0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setUniformCol3(0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setUniformCol4(0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
         ckAssertThrow(rend_shd.attrib(0, 0), ckRend::ExceptionNotInitialized);
         ckAssertThrow(rend_shd.setAttribVec(0, 0, ckVec::ZERO), ckRend::ExceptionNotInitialized);
-        ckAssertThrow(rend_shd.setAttribCol3x255(0, 0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
-        ckAssertThrow(rend_shd.setAttribCol4x255(0, 0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setAttribCol3(0, 0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
+        ckAssertThrow(rend_shd.setAttribCol4(0, 0, ckCol::ZERO), ckRend::ExceptionNotInitialized);
 
         ckPrim prim;
 
@@ -88,16 +88,16 @@ void ckRend_ShaderTest()
 
         ckAssertThrow(rend_shd.uniform(0), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.setUniformVec(0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setUniformCol3x255(0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setUniformCol4x255(0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol3(0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol4(0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.attrib(2, 0), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.attrib(0, 0), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.setAttribVec(2, 0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.setAttribVec(0, 0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol3x255(2, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol3x255(2, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol4x255(0, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol4x255(0, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3(2, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3(2, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4(0, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4(0, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
 
         ckDrawMgr::renderForSystem();
 
@@ -123,10 +123,10 @@ void ckRend_ShaderTest()
         rend_shd.setUniformVec(1, ckVec(10.0f, 20.0f, 30.0f));
         ckAssert(isEqual(rend_shd.uniform(1), 10.0f) && isEqual(rend_shd.uniform(2), 20.0f) && isEqual(rend_shd.uniform(3), 30.0f));
 
-        rend_shd.setUniformCol3x255(1, ckCol(11, 22, 33));
+        rend_shd.setUniformCol3(1, ckCol(11, 22, 33));
         ckAssert(isEqual(rend_shd.uniform(1), 11.0f) && isEqual(rend_shd.uniform(2), 22.0f) && isEqual(rend_shd.uniform(3), 33.0f));
 
-        rend_shd.setUniformCol4x255(0, ckCol(1, 2, 3, 4));
+        rend_shd.setUniformCol4(0, ckCol(1, 2, 3, 4));
         ckAssert(isEqual(rend_shd.uniform(0), 1.0f) && isEqual(rend_shd.uniform(1), 2.0f) && //
             isEqual(rend_shd.uniform(2), 3.0f) && isEqual(rend_shd.uniform(3), 4.0f));
 
@@ -141,26 +141,26 @@ void ckRend_ShaderTest()
             rend_shd.setAttribVec(i, 2, ckVec(10.0f + i, 11.0f + i, 12.0f + i));
             ckAssert(isEqual(rend_shd.attrib(i, 2), 10.0f + i) && isEqual(rend_shd.attrib(i, 3), 11.0f + i) && isEqual(rend_shd.attrib(i, 4), 12.0f + i));
 
-            rend_shd.setAttribCol3x255(i, 2, ckCol(i + 2, i + 3, i + 4));
+            rend_shd.setAttribCol3(i, 2, ckCol(i + 2, i + 3, i + 4));
             ckAssert(isEqual(rend_shd.attrib(i, 2), 2.0f + i) && isEqual(rend_shd.attrib(i, 3), 3.0f + i) && isEqual(rend_shd.attrib(i, 4), 4.0f + i));
 
-            rend_shd.setAttribCol4x255(i, 1, ckCol(i + 5, i + 6, i + 7, i + 8));
+            rend_shd.setAttribCol4(i, 1, ckCol(i + 5, i + 6, i + 7, i + 8));
             ckAssert(isEqual(rend_shd.attrib(i, 1), 5.0f + i) && isEqual(rend_shd.attrib(i, 2), 6.0f + i) && //
                 isEqual(rend_shd.attrib(i, 3), 7.0f + i) && isEqual(rend_shd.attrib(i, 4), 8.0f + i));
         }
 
         ckAssertThrow(rend_shd.uniform(4), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.setUniformVec(2, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setUniformCol3x255(2, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setUniformCol4x255(1, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol3(2, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setUniformCol4(1, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.attrib(3, 0), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.attrib(0, 5), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.setAttribVec(3, 0, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
         ckAssertThrow(rend_shd.setAttribVec(0, 3, ckVec::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol3x255(3, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol3x255(0, 3, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol4x255(3, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
-        ckAssertThrow(rend_shd.setAttribCol4x255(0, 2, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3(3, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol3(0, 3, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4(3, 0, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
+        ckAssertThrow(rend_shd.setAttribCol4(0, 2, ckCol::ZERO), ckRend::ExceptionInvalidArgument);
 
         ckDrawMgr::renderForSystem();
 

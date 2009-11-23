@@ -303,8 +303,8 @@ public:
         @param[in] A shader ID.
         @param[in] vertex shader code.
         @param[in] fragment shader code.
-        @param[in] The number of an uniform variables.
-        @param[in] The number of an attribute variables.
+        @param[in] The number of an uniforms.
+        @param[in] The number of an attributes.
         @param[in] The number of textures.
         @return A shader.
     */

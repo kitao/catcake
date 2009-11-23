@@ -31,24 +31,57 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A lighting renderer.
 */
 class CK_API ckRend_Light : public ckRend
 {
 public:
+    /*!
+        A renderer data
+    */
     struct RendData
     {
         ckVec normal;
     };
 
+    /*!
+        Initializes this renderer.
+        @param[in] prim A target primitive.
+        @param[in] A light-set ID.
+    */
     void init(ckPrim* prim, ckID lts_id);
+
+    /*!
+        Initializes this renderer.
+        @param[in] prim A target primitive.
+        @param[in] rend_data Shared renderer data.
+        @param[in] A light-set ID.
+    */
     void init(ckPrim* prim, RendData* rend_data, ckID lts_id);
 
+    /*!
+        Returns the light-set ID.
+        @return The light-set ID.
+    */
     ckID getLightSetID();
+
+    /*!
+        Sets the light-set ID.
+        @param[in] A light-set ID.
+    */
     void setLightSetID(ckID lts_id);
 
+    /*!
+        Returns the reference to the specified renderer data.
+        @param[in] The index of a renderer data.
+        @return The reference to the specified renderer data.
+    */
     ckVec& dataN(u16 index);
 
+    /*!
+        Calculates the normals as triangles.
+        @param[in] is_smoothing If true, the normals are smoothed.
+    */
     void calcNormalAsTriangles(bool is_smoothing);
 
 private:

@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A motion.
 */
 class CK_API ckMot
 {
@@ -44,32 +44,84 @@ public:
 
     enum PlayMode
     {
-        PLAY_NORMAL, //
-        PLAY_LOOP, //
-        PLAY_KEEP
+        PLAY_NORMAL, //!< Play once.
+        PLAY_LOOP, //!< Play repeatedly.
+        PLAY_KEEP //!< Play and keep the last frame.
     };
 
+    /*!
+        Constructs a motion.
+    */
     ckMot();
+
+    /*!
+        Destructs this motion.
+    */
     ~ckMot();
 
+    /*!
+        Initializes this motion.
+        @param[in] mdl A target model.
+        @param[in] mot_data_id The ID of motion data.
+    */
     void init(ckMdl* mdl, ckID mot_data_id);
 
+    /*!
+        Returns the index of the current motion.
+        @return The index of the current motion.
+    */
     u16 getMotionIndex() const;
+
+    /*!
+        Returns the play mode.
+        @return The play mode.
+    */
     PlayMode getPlayMode() const;
+
+    /*!
+        Returns the play speed.
+        @return The play speed.
+    */
     r32 getPlaySpeed() const;
+
+    /*!
+        Returns the number of the frames for interporation.
+        @return The number of the frames for interporation.
+    */
     u16 getInterpFrame() const;
 
+    /*!
+        Returns whether playing motion.
+        @return Whether playing motion.
+    */
     bool isPlaying() const;
+
+    /*!
+        Plays the specified motion.
+        @param[in] mdl A target model.
+        @param[in] mot_index The index of a motion.
+        @param[in] play_mode A play mode.
+        @param[in] play_speed A play speed.
+        @param[in] interp_frame The number of the frames for interporation.
+    */
     void play(ckMdl* mdl, u16 mot_index, PlayMode play_mode, r32 play_speed, u16 interp_frame);
+
+    /*!
+        Stops playing motion.
+    */
     void stop();
 
+    /*!
+        Returns the frame number of next updating time.
+    */
     r32 getNextUpdateFrame() const;
+
+    /*!
+        Updates this motion.
+    */
     void update(ckMdl* mdl);
 
 private:
-    /*!
-        TODO
-    */
     struct InterpInfo
     {
         ckQuat quat;

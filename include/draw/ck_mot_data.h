@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A motion data.
 */
 class CK_API ckMotData
 {
@@ -41,6 +41,9 @@ public:
     ckDefineException(ExceptionInvalidData);
     ckDefineException(ExceptionNotInitialized);
 
+    /*!
+        The version number of the motion data format.
+    */
     static const u32 MOTION_DATA_VERSION = 70; // 0.7.0
 
     enum MotionDataMode

@@ -51,8 +51,8 @@ public:
     */
     enum ModelDataMode
     {
-        MODE_READ, //< Read-only mode.
-        MODE_WRITE //< Read and write mode.
+        MODE_READ, //!< Read-only mode.
+        MODE_WRITE //!< Read and write mode.
     };
 
     /*!

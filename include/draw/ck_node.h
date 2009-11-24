@@ -31,16 +31,32 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A node.
 */
 class CK_API ckNode : public ckDraw
 {
 public:
     ckDefineException(ExceptionInvalidArgument);
 
+    /*!
+        Constructs a node.
+    */
     ckNode();
+
+    /*!
+        Destructs this node.
+    */
     virtual ~ckNode();
 
+    /*!
+        Initializes this node.
+        @param[in] scr_id A screen ID.
+    */
     void init(ckID scr_id);
+
+    /*!
+        Initializes this node.
+        @param[in] parent A parent drawing element.
+    */
     void init(ckDraw* parent);
 };

@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A screen.
 */
 class CK_API ckScr
 {

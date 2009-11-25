@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A renderer.
 */
 class CK_API ckRend
 {
@@ -42,9 +42,21 @@ public:
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionNotInitialized);
 
+    /*!
+        Destructs this renderer.
+    */
     virtual ~ckRend();
 
+    /*!
+        Returns whether this renderer is active.
+        @return Whether this renderer is active.
+    */
     bool isActive() const;
+
+    /*!
+        Determines whether this renderer is active.
+        @param[in] is_active Whether this renderer is active.
+    */
     void setActive(bool is_active);
 
 protected:

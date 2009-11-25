@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A shader.
 */
 class CK_API ckShd
 {
@@ -41,13 +41,46 @@ class CK_API ckShd
     friend class ckDrawMgr;
 
 public:
+    /*!
+        Returns the previous shader. If the previous shader doesn't exist, returns NULL.
+        @return The previous shader.
+    */
     ckShd* getPrevN() const;
+    
+    /*!
+        Returns the next shader. If the next shader doesn't exist, returns NULL.
+        @return The next shader.
+    */
     ckShd* getNextN() const;
 
+    /*!
+        Returns the shader ID.
+        @return The shader ID.
+    */
     ckID getID() const;
+
+    /*!
+        Returns the number of the uniforms.
+        @return The number of the uniforms.
+    */
     u8 getUniformNum() const;
+
+    /*!
+        Returns the number of the attributes.
+        @return The number of the attributes.
+    */
     u8 getAttribNum() const;
+
+    /*!
+        Returns the number of the textures.
+        @return The number of the textures.
+    */
     u8 getTextureNum() const;
+
+    /*!
+        Returns whether the shader code is valid.
+        @return Whether the shader code is valid.
+    */
     bool isValid() const;
 
 private:

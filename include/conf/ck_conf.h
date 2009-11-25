@@ -34,7 +34,7 @@ class ckConfMgr;
 
 /*!
     @ingroup ckConf
-    TODO
+    A Configuration.
 */
 class CK_API ckConf
 {
@@ -46,7 +46,16 @@ public:
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
 
+    /*!
+        Returns the previous configuration. If the previous configuration doesn't exist, returns NULL.
+        @return The previous configuration.
+    */
     ckConf* getPrevN() const;
+
+    /*!
+        Returns the next configuration. If the next configuration doesn't exist, returns NULL.
+        @return The next configuration.
+    */
     ckConf* getNextN() const;
 
     ckID getID() const;

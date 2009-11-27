@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    The drawing manager.
 */
 class CK_API ckDrawMgr
 {
@@ -109,18 +109,18 @@ public:
     static u16 getTexturePixelSize(ckTex::TexFormat format);
 
     /*!
-        Returns whether pgDrawMgr singleton is created.
-        @return Whether pgDrawMgr singleton is created.
+        Returns whether ckDrawMgr singleton is created.
+        @return Whether ckDrawMgr singleton is created.
     */
     static bool isCreated();
 
     /*!
-        Creates pgDrawMgr singleton.
+        Creates ckDrawMgr singleton.
     */
     static void createAfterRes();
 
     /*!
-        Destroys pgDrawMgr singleton.
+        Destroys ckDrawMgr singleton.
     */
     static void destroyBeforeRes();
 

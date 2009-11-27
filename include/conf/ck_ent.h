@@ -34,30 +34,78 @@ class ckConf;
 
 /*!
     @ingroup ckConf
-    TODO
+    Configuration
 */
 class CK_API ckEnt
 {
     friend class ckConf;
 
 public:
+    /*!
+        The maximum length of the name.
+    */
     static const u32 MAX_NAME_LENGTH = 20;
 
+    /*!
+        The value types.
+    */
     enum ValueType
     {
-        TYPE_S32, //
-        TYPE_R32, //
-        TYPE_STRING
+        TYPE_S32, //!< 32-bit integer number.
+        TYPE_R32, //!< 32-bit floating point number.
+        TYPE_STRING //!< String.
     };
 
+    /*!
+        Returns the previous entry. If the previous entry doesn't exit, returns NULL.
+        @return The previous entry.
+    */
     ckEnt* getPrevN() const;
+
+    /*!
+        Returns the next entry. If the next entry doesn't exit, returns NULL.
+        @return The next entry.
+    */
     ckEnt* getNextN() const;
 
+    /*!
+        Returns the name of this entry.
+        @return The name of this entry.
+    */
     const ckStr<char, MAX_NAME_LENGTH>& getName() const;
+
+    /*!
+        Returns the number of the values.
+        @return The number of the values.
+    */
     u16 getValueNum() const;
+
+    /*!
+        Returns the type of the specified value.
+        @param[in] index The index of a value.
+        @return The type of the specified value.
+    */
     ValueType getValueType(u16 index) const;
+
+    /*!
+        Returns the specified value as 32-bit integer number.
+        @param[in] index The index of a value.
+        @return The specified value.
+    */
     s32 getValue_s32(u16 index) const;
+
+    /*!
+        Returns the specified value as 32-bit floating point number.
+        @param[in] index The index of a value.
+        @return The specified value.
+    */
     r32 getValue_r32(u16 index) const;
+
+    /*!
+        Returns the specified value as string.
+        @param[in] index The index of a value.
+        @return The specified value.
+    */
     const char* getValue_string(u16 index) const;
 
 private:

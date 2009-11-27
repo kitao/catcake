@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckConf
-    TODO
+    The configuration Manager.
 */
 class CK_API ckConfMgr
 {
@@ -43,16 +43,61 @@ public:
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionSameIDExists);
 
+    /*!
+        Returns whether ckConfMgr singleton is created.
+        @return Whether ckConfMgr singleton is created.
+    */
     static bool isCreated();
+
+    /*!
+        Creates the ckConfMgr singleton.
+    */
     static void createAfterRes();
+
+    /*!
+        Destroys the ckConfMgr singleton.
+    */
     static void destroyBeforeRes();
 
+    /*!
+        Returns whether the specified configuration exists.
+        @param[in] id The ID of a configuration.
+        @return Whether the specified configuration exists.
+    */
     static bool hasConfig(ckID id);
+
+    /*!
+        Returns the specified configuration.
+        @param[in] id The ID of a configuration.
+        @return The specified configuration.
+    */
     static ckConf* getConfig(ckID id);
+
+    /*!
+        Creates a configuration.
+        @param[in] id The ID of a configuration.
+        @param[in] data The data of configuration.
+        @param[in] data_size The size of data.
+        @return A configuration.
+    */
     static ckConf* newConfig(ckID id, const void* data, u32 data_size);
+
+    /*!
+        Deletes the specified configuration.
+        @param[in] id The ID of a configuration.
+    */
     static void deleteConfig(ckID id);
 
+    /*!
+        Returns the first configuration. If the first configuration doesn't exist, return NULL.
+        @return The first configuration.
+    */
     static ckConf* getFirstConfigN();
+
+    /*!
+        Returns the last configuration. If the last configuration doesn't exist, return NULL.
+        @return The last configuration.
+    */
     static ckConf* getLastConfigN();
 
 private:

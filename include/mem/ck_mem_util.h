@@ -31,13 +31,17 @@
 
 /*!
     @ingroup ckMem
-    TODO
+    The operator new.
+    @param[in] The type of a class.
+    @return An instance of a class.
 */
 #define ckNew(type) new(ckMemMgr::mallocForSystem(sizeof(type), 0, __FILE__), NULL) type
 
 /*!
     @ingroup ckMem
-    TODO
+    The operator delete.
+    @param[in] ptr An instance to be deleted.
+    @param[in] type The type of a class.
 */
 #define ckDelete(ptr, type) \
     do \
@@ -61,7 +65,10 @@
 
 /*!
     @ingroup ckMem
-    TODO
+    The operator new for an array.
+    @param[out] var The created instance.
+    @param[in] type The type of a class.
+    @param[in] array_size The size of an array.
 */
 #define ckNewArray(var, type, array_size) \
     do \
@@ -77,7 +84,9 @@
 
 /*!
     @ingroup ckMem
-    TODO
+    The operator delete for an array.
+    @param[in] ptr The instance to be deleted.
+    @param[in] type The type of a class.
 */
 #define ckDeleteArray(ptr, type) \
     do \
@@ -106,22 +115,39 @@
 
 /*!
     @ingroup ckMem
-    TODO
+    Allocates a memory.
+    @param[in] size The size of memory.
+    @return The memory.
 */
 #define ckMalloc(size) ckMemMgr::mallocForSystem(size, 0, __FILE__)
 
 /*!
     @ingroup ckMem
-    TODO
+    Resizes a memory.
+    @param[in] ptr The memory to be resized.
+    @param[in] size The new size of the memory.
+    @return The memory.
 */
 #define ckRealloc(ptr, size) ckMemMgr::reallocForSystem(ptr, size, 0, __FILE__)
 
 /*!
     @ingroup ckMem
-    TODO
+    Releases a memory.
+    @param[in] ptr The memory to be released.
 */
 #define ckFree(ptr) ckMemMgr::freeForSystem(ptr)
 
-
+/*!
+    @ingroup ckMem
+    The dummy operator new for system.
+    @param[in] size_t The size of an instance.
+    @param[in] ptr The pointer to be allocated.
+    @return The memory.
+*/
 CK_API void* operator new(size_t, void* ptr, ckException*);
+
+/*!
+    @ingroup ckMem
+    The dummy operator delete for system.
+*/
 CK_API void operator delete(void*, void*, ckException*);

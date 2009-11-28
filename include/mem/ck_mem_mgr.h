@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckMem
-    TODO
+    The memory manager.
 */
 class CK_API ckMemMgr
 {
@@ -42,27 +42,126 @@ public:
     ckDefineException(ExceptionInvalidVersionOfHeader);
     ckDefineException(ExceptionNotInitialized);
 
+    /*!
+        Fills the memory by the specified value.
+        @param[out] buf A memory.
+        @param[in] value A value.
+        @param[in] size The size of a memory.
+    */
     static void memset(void* buf, u8 value, u32 size);
+
+    /*!
+        Copies the memory.
+        @param[out] dest A destination memory.
+        @param[in] src A source memory.
+        @param[in] size The size of the memory.
+    */
     static void memcpy(void* dest, const void* src, u32 size);
 
+    /*!
+        Returns whether the memory manager singleton is created.
+        @return Whether the memory manager singleton is created.
+    */
     static bool isCreated();
+
+    /*!
+        Creates the memory manager singleton.
+        @param[in] catcake_version The version of Catcake.
+    */
     static void createFirst(u32 catcake_version = CATCAKE_VERSION);
+
+    /*!
+        Destroys the memory manager singleton.
+    */
     static void destroyLast();
 
+    /*!
+        Returns the size of the used memory.
+        @return The size of the used memory.
+    */
     static u32 getCurUsedMemorySize();
+
+    /*!
+        Returns the maximum size of the used memory.
+        @return The maximum size of the used memory.
+    */
     static u32 getMaxUsedMemorySize();
 
+    /*!
+        Returns the first memory block. If the first memory block doesn't exist, return NULL.
+        @return The first memory block.
+    */
     static const void* getFirstMemoryBlockN();
+
+    /*!
+        Returns the next memory block of the specified memory. If the first memory block doesn't exist, return NULL.
+        @param[in] ptr The pointer to the memory.
+        @return The next memory block of the specified memory.
+    */
     static const void* getNextMemoryBlockN(const void* ptr);
+
+    /*!
+        Returns the name of the specified memory.
+        @param[in] ptr The pointer to the memory.
+        @return The name of the specified memory.
+    */
     static const char* getMemoryBlockName(const void* ptr);
+
+    /*!
+        Returns the size of the specified memory block.
+        @param[in] ptr The pointer to a memory block.
+        @return The size of the specified memory block.
+    */
     static u32 getMemoryBlockSize(const void* ptr);
+
+    /*!
+        Returns the size of the specified memory block array.
+        @param[in] ptr The pointer to a memory block array.
+        @return The size of the specified memory block array.
+    */
     static u32 getMemoryBlockArraySize(const void* ptr);
+
+    /*!
+        Returns the size of the memory block header.
+        @return The size of the memory block header.
+    */
     static u32 getMemoryBlockHeaderSize();
 
+    /*!
+        Allocates a memory. This method is only for system.
+        @param[in] size The size of memory.
+        @param[in] array_size The size of an array.
+        @param[in] name The name of memory.
+        @return An allocated memory.
+    */
     static void* mallocForSystem(u32 size, u32 array_size, const char* name);
+
+    /*!
+        Resizes the specified memory. This method is only for system.
+        @param[in/out] ptr The pointer to a memory.
+        @param[in] size The size of a memory.
+        @param[in] array_size The size of an array.
+        @param[in] name The name of a memory.
+    */
     static void* reallocForSystem(void* ptr, u32 size, u32 array_size, const char* name);
+
+    /*!
+        Releases the specified memory. This method is only for system.
+        @param[in] ptr The pointer to a memory.
+    */
     static void freeForSystem(void* ptr);
+
+    /*!
+        Allocates the temporary buffer. This method is only for system.
+        @param[in] size The size of the temporary buffer.
+        @return The temporary buffer.
+    */
     static void* allocTempBufferForSystem(u32 size);
+
+    /*!
+        Returns the size of the temporary buffer. This method is only for system.
+        @reeturn The size of the temporary buffer.
+    */
     static u32 getTempBufferSizeForSystem();
 
 private:

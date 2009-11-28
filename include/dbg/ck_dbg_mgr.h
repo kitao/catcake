@@ -34,7 +34,7 @@ class ckDbgDaemon;
 
 /*!
     @ingroup ckDbg
-    TODO
+    Debugging manager.
 */
 class CK_API ckDbgMgr
 {
@@ -47,43 +47,177 @@ public:
     static const ckID DEBUG_MODE_SCREEN_ID;
     static const ckID DEBUG_FONT_TEXTURE_ID;
 
+    /*!
+        Debugging modes.
+    */
     enum DebugMode
     {
-        MODE_OFF, //
-        MODE_MONITOR, //
-        MODE_CONSOLE
+        MODE_OFF, //!< Debugging mode off.
+        MODE_MONITOR, //!< Monitor mode.
+        MODE_CONSOLE //!< Console mode.
     };
 
+    /*!
+        Returns whether the debugging manager singleton is created.
+        @return Whether the debugging manager singleton is created.
+    */
     static bool isCreated();
+
+    /*!
+        Creates the debugging manager singleton.
+    */
     static void createLast();
+
+    /*!
+        Destroys the debugging manager singleton.
+    */
     static void destroySecond();
 
+    /*!
+        Returns the debugging mode.
+        @return The debugging mode.
+    */
     static DebugMode getDebugMode();
+
+    /*!
+        Sets the debugging mode.
+        @param[in] dbg_mode A debugging mode.
+    */
     static void setDebugMode(DebugMode dbg_mode);
 
+    /*!
+        Scrolls up the viewing area of the debugging console.
+    */
     static void pageUpConsole();
+
+    /*!
+        Scrolls down the viewing area of the debugging console.
+    */
     static void pageDownConsole();
 
+    /*!
+        Draws a line.
+        @param[in] pos1 A vertex of a line.
+        @param[in] pos2 A vertex of a line.
+        @param[in] col The color of a line.
+        @param[in] scr_id The ID of a target screen.
+    */
     static void drawLine(const ckVec& pos1, const ckVec& pos2, ckCol col, ckID scr_id);
+
+    /*!
+        Draws a polygon.
+        @param[in] pos1 A vertex of a polygon.
+        @param[in] pos2 A vertex of a polygon.
+        @param[in] pos3 A vertex of a polygon.
+        @param[in] col The color of a polygon.
+        @param[in] scr_id The ID of a target screen.
+    */
     static void drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, ckCol col, ckID scr_id);
+
+    /*!
+        Draws a polygon.
+        @param[in] pos1 A vertex of a polygon.
+        @param[in] pos2 A vertex of a polygon.
+        @param[in] pos3 A vertex of a polygon.
+        @param[in] pos4 A vertex of a polygon.
+        @param[in] col The color of a polygon.
+        @param[in] scr_id The ID of a target screen.
+    */
     static void drawPolygon(const ckVec& pos1, const ckVec& pos2, const ckVec& pos3, const ckVec& pos4, ckCol col, ckID scr_id);
 
+    /*!
+        Draws a box.
+        @param[in] center The center of a box.
+        @param[in] size The size of a box.
+        @param[in] poly_col The color of the faces.
+        @param[in] line_col The color of the sides.
+        @param[in] scr_id The ID of a target screen.
+    */
     static void drawBox(const ckMat& center, const ckVec& size, ckCol poly_col, ckCol line_col, ckID scr_id);
+
+    /*!
+        Draws a sphere.
+        @param[in] center The center of a sphere.
+        @param[in] radius The radius of a sphere.
+        @param[in] poly_col The color of the face.
+        @param[in] line_col The color of the side.
+        @param[in] scr_id The ID of a target screen.
+    */
     static void drawSphere(const ckVec& center, r32 radius, ckCol poly_col, ckCol line_col, ckID scr_id);
+
+    /*!
+        Draws an axis.
+        @param[in] world The world of an axis.
+        @param[in] size The size of an axis.
+        @param[in] scr_id The ID of a target screen.
+    */
     static void drawAxis(const ckMat& world, r32 size, ckID scr_id);
 
+    /*!
+        Draws a string on the debugging console.
+        @param[in] left The left position of a string.
+        @param[in] top The top position of a string.
+        @param[in] col The color of a string.
+        @param[in] scale The scale factor of a string.
+        @param[in] str A string.
+        @param[in] ... An argument.
+    */
     static void drawString(r32 left, r32 top, ckCol col, u8 scale, const char* str, ...);
+
+    /*!
+        Prints a trace log on the debugging console.
+        @param[in] str A string.
+        @param[in] ... An argument.
+    */
     static void trace(const char* str, ...);
 
+    /*!
+        Prints the specified vector.
+        @param[in] vec A vector.
+        @param[in] name The name of vector.
+    */
     static void dumpVector(const ckVec& vec, const char* name = NULL);
+
+    /*!
+        Prints the specified matrix.
+        @param[in] mat A matrix.
+        @param[in] name The name of matrix.
+    */
     static void dumpMatrix(const ckMat& mat, const char* name = NULL);
 
+    /*!
+        Prints all the memory blocks.
+    */
     static void dumpMemory();
+
+    /*!
+        Prints all the tasks.
+    */
     static void dumpTask();
+
+    /*!
+        Prints all the resources.
+    */
     static void dumpResource();
+
+    /*!
+        Prints all the configuration scripts.
+    */
     static void dumpConfig();
+
+    /*!
+        Prints all the screens.
+    */
     static void dumpScreen();
+
+    /*!
+        Prints all the textures.
+    */
     static void dumpTexture();
+
+    /*!
+        Prints all the shaders.
+    */
     static void dumpShader();
 
 private:

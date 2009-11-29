@@ -84,8 +84,8 @@ public:
     */
     enum KeyState
     {
-        STATE_DOWN, //
-        STATE_UP
+        STATE_DOWN, //!< A key is on.
+        STATE_UP //!< A key is off.
     };
 
     /*!

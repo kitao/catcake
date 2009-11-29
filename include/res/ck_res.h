@@ -34,29 +34,60 @@ class ckResMgr;
 
 /*!
     @ingroup ckRes
-    TODO
+    Resouce.
 */
 class CK_API ckRes
 {
     friend class ckResMgr;
 
 public:
+    /*!
+        Constructs a resource.
+    */
     ckRes();
+
+    /*!
+        Returns the ID of this resource.
+        @return The ID of this resource.
+    */
     ckID getID() const;
+
+    /*!
+        Returns the extension of this resource.
+        @return The extension of this resource.
+    */
     ckStr<char, 3> getExtension() const;
 
+    /*!
+        Returns the data of this resource.
+        @tparam T The data type.
+        @return The data of this resource.
+    */
     template<class T> const T* getData() const
     {
         return reinterpret_cast<const T*>(m_data);
     }
 
+    /*!
+        Returns the size of the data
+        @return The size of the data
+    */
     u32 getDataSize() const;
 
+    /*!
+        Returns the extra information of this resource.
+        @tparam T Tha type of the extra information.
+        @return The extra information of this resource.
+    */
     template<class T> T* getExInfo() const
     {
         return reinterpret_cast<T*>(m_exinfo);
     }
 
+    /*!
+        Returns whether releases the data automatically.
+        @return Whether releases the data automatically.
+    */
     bool isAutoFree() const;
 
 private:

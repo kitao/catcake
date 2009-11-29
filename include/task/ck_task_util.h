@@ -31,12 +31,14 @@
 
 /*!
     @ingroup ckTask
-    TODO
+    Creats a task.
+    @param[in] type The class type of a task.
 */
 #define ckNewTask(type) new(ckMemMgr::mallocForSystem(sizeof(type) + ckTaskMgr::setNextTaskNameForSystem(__FILE__), 0, __FILE__), NULL) type
 
 /*!
     @ingroup ckTask
-    TODO
+    Destructs the specified task.
+    @param[in] task The instance of a task.
 */
-#define ckDeleteTask(task) ckTaskMgr::deleteTaskForSystem(task, true)
+#define ckDeleteTask(task) ckTaskMgr::deleteTaskForSystem(task)

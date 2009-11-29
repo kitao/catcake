@@ -239,7 +239,7 @@ u32 ckTaskMgr::setNextTaskNameForSystem(const char* name)
 }
 
 
-void ckTaskMgr::deleteTaskForSystem(ckTask* task, bool is_direct_delete)
+void ckTaskMgr::deleteTaskForSystem(ckTask* task)
 {
     ckTaskMgr* ins = ckTaskMgr::instance();
 
@@ -248,16 +248,13 @@ void ckTaskMgr::deleteTaskForSystem(ckTask* task, bool is_direct_delete)
         ckThrow(ExceptionInvalidArgument);
     }
 
-    if (is_direct_delete)
+    if (ins->m_is_in_destructor)
     {
-        if (ins->m_is_in_destructor)
-        {
-            ins->m_is_in_destructor = false;
-            ckThrow(ExceptionDeleteTaskInDestructor);
-        }
-
-        ins->m_is_in_destructor = true;
+        ins->m_is_in_destructor = false;
+        ckThrow(ExceptionDeleteTaskInDestructor);
     }
+
+    ins->m_is_in_destructor = true;
 
     ckTask* end_task = task->getPrevAllN();
     ckTask* prev_task;

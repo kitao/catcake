@@ -317,11 +317,11 @@ void ckTaskMgrTest()
 
     /*
         static u32 setNextTaskNameForSystem(const char* name)
-        static void deleteTaskForSystem(ckTask* task, bool is_direct_delete)
+        static void deleteTaskForSystem(ckTask* task)
     */
     {
         ckAssertThrow(ckTaskMgr::setNextTaskNameForSystem("TEST"), ckTaskMgr::ExceptionNotInitialized);
-        ckAssertThrow(ckTaskMgr::deleteTaskForSystem(NULL, false), ckTaskMgr::ExceptionNotInitialized);
+        ckAssertThrow(ckTaskMgr::deleteTaskForSystem(NULL), ckTaskMgr::ExceptionNotInitialized);
 
         ckTaskMgr::createAfterSys(60);
 
@@ -333,17 +333,13 @@ void ckTaskMgrTest()
         ckAssert(ckTaskMgr::getFirstTaskN(ckTask::ORDER_ZERO) == task);
         ckAssert(ckTaskMgr::getLastTaskN(ckTask::ORDER_ZERO) == task);
 
-        ckTaskMgr::deleteTaskForSystem(task, true);
-
-        task = ckNewTask(TaskMgrTestClass)(ckTask::ORDER_ZERO, 0);
-
-        ckTaskMgr::deleteTaskForSystem(task, false);
+        ckTaskMgr::deleteTaskForSystem(task);
 
         ckAssert(!ckTaskMgr::getFirstTaskN(ckTask::ORDER_ZERO));
         ckAssert(!ckTaskMgr::getLastTaskN(ckTask::ORDER_ZERO));
 
         ckAssertThrow(ckTaskMgr::setNextTaskNameForSystem(NULL), ckTaskMgr::ExceptionInvalidArgument);
-        ckAssertThrow(ckTaskMgr::deleteTaskForSystem(NULL, false), ckTaskMgr::ExceptionInvalidArgument);
+        ckAssertThrow(ckTaskMgr::deleteTaskForSystem(NULL), ckTaskMgr::ExceptionInvalidArgument);
 
         ckTaskMgr::destroyFirst();
     }

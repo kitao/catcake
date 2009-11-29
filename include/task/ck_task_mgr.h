@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckTask
-    TODO
+    Task manager.
 */
 class CK_API ckTaskMgr
 {
@@ -43,31 +43,124 @@ public:
     ckDefineException(ExceptionNewTaskInDestructor);
     ckDefineException(ExceptionNotInitialized);
 
+    /*!
+        Returns whether the task manager singleton is created.
+    */
     static bool isCreated();
+
+    /*!
+        Creates the task manager singleton.
+        @param[in] aim_fps An aim fps.
+    */
     static void createAfterSys(u16 aim_fps);
+
+    /*!
+        Destroys the task manager singleton.
+    */
     static void destroyFirst();
 
+    /*!
+        Returns the aim fps.
+        @return The aim fps.
+    */
     static u16 getAimFPS();
+
+    /*!
+        Returns the current fps.
+        @return The current fps.
+    */
     static r32 getCurFPS();
+
+    /*!
+        Returns the execute time in usec.
+        @return The execute time.
+    */
     static u64 getExecuteUsecTime();
+
+    /*!
+        Returns the rendering time in usec.
+        @return The rendering time in usec.
+    */
     static u64 getRenderUsecTime();
+
+    /*!
+        Returns the number of elapsed frames.
+    */
     static u32 getFrameCount();
 
+    /*!
+        Returns the first task of the specified order. If the first task doesn't exist, returns NULL.
+        @return The first task of the specified order.
+    */
     static ckTask* getFirstTaskN(ckTask::TaskOrder order);
+
+    /*!
+        Returns the last task of the specified order. If the last task doesn't exist, returns NULL.
+        @return The last task of the specified order.
+    */
     static ckTask* getLastTaskN(ckTask::TaskOrder order);
 
+    /*!
+        Returns the specified order is active.
+        @param[in] order The task order.
+        @return The specified order is active.
+    */
     static bool isOrderActive(ckTask::TaskOrder order);
+
+    /*!
+        Determines the specified orders is active.
+        @param[in] from The first task order.
+        @param[in] to The last task order.
+        @param[in] is_active Whether the task orders is active.
+    */
     static void setOrderActive(ckTask::TaskOrder from, ckTask::TaskOrder to, bool is_active);
+
+    /*!
+        Deletes all the tasks of the specified order.
+        @param[in] from The first task order.
+        @param[in] to The last task order.
+    */
     static void deleteOrder(ckTask::TaskOrder from, ckTask::TaskOrder to);
 
+    /*!
+        Sends a message to the specified task.
+        @param[in] msg_id The ID of a message. If uxID::ZERO is specified, sends to all the tasks.
+        @param[in] message A message.
+    */
     static void sendMessage(ckID msg_id, ckMsg<4>& msg);
 
+    /*!
+        Suspends the frame-skipping of the current frame.
+    */
     static void resetFrameSkip();
 
+    /*!
+        Updates the frame. This method is only for system.
+    */
     static void updateForSystem();
+
+    /*!
+        Measures the rendering time. This method is only for system.
+        @param[in] render_func A rendering function.
+    */
     static void measureRenderTimeForSystem(void (*render_func)());
+
+    /*!
+        Sets the name of the next task.
+        @param[in] name The name of the next task.
+    */
     static u32 setNextTaskNameForSystem(const char* name);
-    static void deleteTaskForSystem(ckTask* task, bool is_direct_delete);
+
+    /*!
+        Deletes the specified task. This method is only for system.
+        @param[in] task A task.
+    */
+    static void deleteTaskForSystem(ckTask* task);
+
+    /*!
+        Returns whether frame-skipping is on.
+        @return Whether frame-skipping is on.
+    */
     static bool isFrameSkipResetForSystem();
 
 private:

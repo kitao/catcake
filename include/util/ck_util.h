@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckUtil
-    TODO
+    Utility functions.
 */
 class CK_API ckUtil
 {
@@ -39,8 +39,22 @@ public:
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidData);
 
+    /*!
+        Returns the length of the specified string.
+        @param[in] str A string.
+        @return The length of the specified string.
+    */
     static u32 strlen(const char* str);
+
+    /*!
+        Returns the length of the specified wchar string.
+        @param[in] str A wchar string.
+        @return The length of the specified wchar string.
+    */
     static u32 wcslen(const wchar_t* str);
+
+    /*!
+    */
     static void charToWchar(wchar_t* buf, u32 buf_size, const char* str);
 
     static const char* getBasename(const char* filename);
@@ -58,5 +72,6 @@ public:
     static void loadPixelArtModelAs(ckID res_id, const char* ckl_file, const char* png_file, r32 scale);
 
     static void import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
+
     static void import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
 };

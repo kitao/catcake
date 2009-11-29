@@ -34,7 +34,7 @@ class ckTaskMgr;
 
 /*!
     @ingroup ckTask
-    TODO
+    Task.
 */
 class CK_API ckTask
 {
@@ -45,7 +45,7 @@ public:
     ckDefineException(ExceptionInvalidCall);
 
     /*!
-        TODO
+        The types of the task orders.
     */
     enum TaskOrder
     {
@@ -56,29 +56,115 @@ public:
         ORDER_PLUS_5, ORDER_PLUS_6, ORDER_PLUS_7, ORDER_PLUS_8_FOR_SYSTEM
     };
 
+    /*!
+        Returns whether this task has the order.
+        @return Whether this task has the order.
+    */
     bool hasOrder() const;
+
+    /*!
+        Retuens the order of this task.
+        @return The order of this task.
+    */
     TaskOrder getOrder() const;
 
+    /*!
+        Returns whether this task has the order.
+        @return Whether this task has the order.
+    */
     bool hasParent() const;
+
+    /*!
+        Returns the parent of this task. If the parent doesn't exist, returns NULL.
+        @return The parent of this task.
+    */
     ckTask* getParentN() const;
 
+    /*!
+        Returns the previous task. If the previous task doesn't exist, returns NULL.
+        @return The previous task.
+    */
     ckTask* getPrevAllN() const;
+
+    /*!
+        Returns the next task. If the next task doesn't exist, returns NULL.
+        @return The next task.
+    */
     ckTask* getNextAllN() const;
+
+    /*!
+        Returns the previous sibling of this task.
+        If this task has no previous sibling, returns NULL.
+        @return The previous sibling of this task.
+    */
     ckTask* getPrevSiblingN() const;
+
+    /*!
+        Returns the next sibling of this task.
+        If this task has no previous sibling, returns NULL.
+        @return The previous sibling of this task.
+    */
     ckTask* getNextSiblingN() const;
+
+    /*!
+        Returns the last descendant of this task.
+        If this task has no descendant, returns this task.
+        @return The last descendant of this task.
+    */
     ckTask* getLastDescendant() const;
 
+    /*!
+        Returns whether this task has a child.
+        @return Whether this task has a child.
+    */
     bool hasChild() const;
+
+    /*!
+        Returns the first child of this task. If the first child doesn't exist, returns NULL.
+        @return The first child of this task.
+    */
     ckTask* getFirstChildN() const;
+
+    /*!
+        Returns the last child of this task. If the last child doesn't exist, returns NULL.
+        @return The last child of this task.
+    */
     ckTask* getLastChildN() const;
 
+    /*!
+        Returns the name of this task.
+        @return The name of this task.
+    */
     const char* getName() const;
+
+    /*!
+        Returns the process time of this task in usec.
+        @return The process time of this task.
+    */
     u64 getExecuteUsecTime() const;
 
+    /*!
+        Returns whether this task is active.
+        @return Whether this task is active.
+    */
     bool isActive() const;
+
+    /*!
+        Determines whether this task is active.
+        @param[in] is_active whetehr this task is active.
+    */
     void setActive(bool is_active);
 
+    /*!
+        Updates the frame of this task.
+    */
     virtual void onUpdate();
+
+    /*!
+        Receives a message.
+        @param[in] msg_id The ID of a message.
+        @param[in] msg A message.
+    */
     virtual void onMessage(ckID msg_id, ckMsg<4>& msg);
 
 protected:

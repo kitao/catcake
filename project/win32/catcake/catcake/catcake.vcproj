@@ -229,10 +229,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\include\ck_phys_all.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\include\ck_res_all.h"
 				>
 			</File>

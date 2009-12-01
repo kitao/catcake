@@ -38,7 +38,7 @@ class ckDrawMgr;
 
 /*!
     @ingroup ckDraw
-    A texture.
+    A texture, an image container for drawing elements.
 */
 class CK_API ckTex
 {

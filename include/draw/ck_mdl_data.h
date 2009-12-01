@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A model data.
+    A 3D Model data, which is used by 3D models.
 */
 class CK_API ckMdlData
 {

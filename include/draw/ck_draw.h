@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    The base class of the drawable-object classes.
+    A drawing element, the base class of the drawing elements.
 */
 class CK_API ckDraw
 {

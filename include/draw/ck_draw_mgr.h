@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    The drawing manager.
+    The draw manager singleton.
 */
 class CK_API ckDrawMgr
 {

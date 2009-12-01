@@ -32,7 +32,7 @@
 /*!
     @ingroup ckGen
     A tree container which can have a parent and children.
-    @tparam T The type which is stored in the ckTree.
+    @tparam T The type which is stored in the tree.
 */
 template<class T> class ckTree
 {

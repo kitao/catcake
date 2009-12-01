@@ -31,8 +31,8 @@
 
 /*!
     @ingroup ckGen
-    A Sequence of elements stored in a linked list.
-    @tparam T The type which is stored in the ckList.
+    A sequence of elements stored in a linked list.
+    @tparam T The type which is stored in the list.
 */
 template<class T> class ckList
 {

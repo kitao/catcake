@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckMem
-    The memory manager.
+    The memory manager singleton.
 */
 class CK_API ckMemMgr
 {

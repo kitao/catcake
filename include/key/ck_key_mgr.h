@@ -34,7 +34,7 @@ class ckKeyDaemon;
 
 /*!
     @ingroup ckKey
-    Key manager.
+    The key manager singleton.
 */
 class CK_API ckKeyMgr
 {

@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A shader.
+    A programmable shader for drawing element primitives.
 */
 class CK_API ckShd
 {

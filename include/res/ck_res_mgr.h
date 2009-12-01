@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckRes
-    Resource manager.
+    The resource manager singleton.
 */
 class CK_API ckResMgr
 {

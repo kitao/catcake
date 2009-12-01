@@ -34,7 +34,7 @@ class ckTaskMgr;
 
 /*!
     @ingroup ckTask
-    Task.
+    A task, which realizes non-preemptive multi task.
 */
 class CK_API ckTask
 {

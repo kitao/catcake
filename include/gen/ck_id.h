@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckGen
-    A unique value to identify objects.
+    An unique value to identify objects.
 */
 class CK_API ckID
 {

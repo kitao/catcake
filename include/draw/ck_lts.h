@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A light set.
+    A light set, which manages point lights, parallel lights, and ambient lights.
 */
 class CK_API ckLts
 {

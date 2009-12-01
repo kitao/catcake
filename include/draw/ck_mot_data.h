@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A motion data.
+    A motion data, which is used by motions.
 */
 class CK_API ckMotData
 {

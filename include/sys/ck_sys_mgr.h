@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckSys
-    System manager.
+    The system manager singleton.
 */
 class CK_API ckSysMgr
 {

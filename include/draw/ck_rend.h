@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A renderer.
+    An user custom renderer for drawing element primitives.
 */
 class CK_API ckRend
 {

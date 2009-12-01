@@ -34,7 +34,7 @@ class ckSndDaemon;
 
 /*!
     @ingroup ckSnd
-    Sound manager.
+    The sound manager singleton.
 */
 class CK_API ckSndMgr
 {

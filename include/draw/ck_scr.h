@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A screen.
+    A screen, which has a rectangle area and an order for drawing.
 */
 class CK_API ckScr
 {

@@ -120,7 +120,7 @@ class ckException
 {
 public:
     /*!
-        Constructs and initializes a ckException.
+        Constructs an exception.
         @param[in] exception The name of an exception.
         @param[in] file The file name in where an exception occurred.
         @param[in] line The line number at where an exception occurred.
@@ -133,8 +133,8 @@ public:
     }
 
     /*!
-        Returns the name of the exception.
-        @return The name of the exception.
+        Returns the name of this exception.
+        @return The name of this exception.
     */
     const char* getException() const
     {
@@ -142,8 +142,8 @@ public:
     }
 
     /*!
-        Returns the file name in where the exception occurred.
-        @return The file name in where the exception occurred.
+        Returns the file name in where this exception occurred.
+        @return The file name in where this exception occurred.
     */
     const char* getFile() const
     {
@@ -151,8 +151,8 @@ public:
     }
 
     /*!
-        Returns the line number at where the exception occurred.
-        @return the line number at where the exception occurred.
+        Returns the line number at where this exception occurred.
+        @return the line number at where this exception occurred.
     */
     u32 getLine() const
     {
@@ -179,7 +179,7 @@ CK_API void ckSubstituteThrow(const char* exception, const char* file, u32 line)
 
 /*!
     @ingroup ckDef
-    Defines an exception class of Catcake.
+    Defines an exception class.
     @param[in] e The name of an exception class.
 */
 #define ckDefineException(e) \
@@ -208,7 +208,7 @@ CK_API void ckSubstituteThrow(const char* exception, const char* file, u32 line)
 /*!
     @ingroup ckDef
     Catches the specified exception.
-    @param[in] ... The name of an exception class.
+    @param[in] ... An exception class and its argument.
 */
 #define ckCatch(...) catch (__VA_ARGS__)
 

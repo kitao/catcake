@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A lighting renderer.
+    A custom renderer for lighting.
 */
 class CK_API ckRend_Light : public ckRend
 {

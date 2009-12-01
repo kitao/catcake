@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A shader renderer.
+    A custom renderer for using programmable shaders.
 */
 class CK_API ckRend_Shader : public ckRend
 {

@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A primitive.
+    A drawing element primitive, which has several drawing ways.
 */
 class CK_API ckPrim : public ckDraw
 {

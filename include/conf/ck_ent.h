@@ -34,7 +34,7 @@ class ckConf;
 
 /*!
     @ingroup ckConf
-    Configuration
+    An entry of a configuration script.
 */
 class CK_API ckEnt
 {

@@ -34,7 +34,7 @@ class ckRend_Light;
 
 /*!
     @ingroup ckDraw
-    A model.
+    A 3D model, which consists of drawing element nodes.
 */
 class CK_API ckMdl
 {

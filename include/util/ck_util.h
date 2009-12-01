@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckUtil
-    Utility functions.
+    The utility class, which provides various utility functions.
 */
 class CK_API ckUtil
 {

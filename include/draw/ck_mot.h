@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A motion.
+    A motion for 3D model, which consists of motion nodes.
 */
 class CK_API ckMot
 {

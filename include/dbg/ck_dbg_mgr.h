@@ -34,7 +34,7 @@ class ckDbgDaemon;
 
 /*!
     @ingroup ckDbg
-    Debugging manager.
+    The debug manager singleton.
 */
 class CK_API ckDbgMgr
 {

@@ -51,7 +51,7 @@
 
 /*!
     @ingroup ckSys
-    The entry function of Catcake.
+    The entry function of the application.
 */
 #ifdef WIN32
 #define ckMain() \

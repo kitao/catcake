@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckTask
-    Task manager.
+    The task manager singleton.
 */
 class CK_API ckTaskMgr
 {

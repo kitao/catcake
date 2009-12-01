@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckGen
-    A sorted associative containers that contain unique key/value pairs.
+    A sorted associative container that contains unique key/value pairs.
     @tparam K The key type which is used to find the associated value.
     @tparam D The value type which is associated with the key type.
 */

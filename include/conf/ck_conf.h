@@ -34,7 +34,7 @@ class ckConfMgr;
 
 /*!
     @ingroup ckConf
-    A Configuration.
+    A configuration script.
 */
 class CK_API ckConf
 {

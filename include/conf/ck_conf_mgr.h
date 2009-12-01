@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckConf
-    The configuration Manager.
+    The configuration manager singleton.
 */
 class CK_API ckConfMgr
 {

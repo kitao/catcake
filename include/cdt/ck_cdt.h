@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckCdt
-    Collision detection functions.
+    A collision detection class, which provides collision detection functions.
 */
 class CK_API ckCdt
 {
@@ -71,7 +71,7 @@ public:
     };
 
     /*!
-        Sphere collision.
+        A sphere collision.
     */
     class CK_API Sph
     {
@@ -124,7 +124,7 @@ public:
     };
 
     /*!
-        Box collision.
+        A box collision.
     */
     class CK_API Box
     {
@@ -197,7 +197,7 @@ public:
     };
 
     /*!
-        Triangle collision.
+        A triangle collision.
     */
     class CK_API Tri
     {
@@ -251,7 +251,7 @@ public:
     };
 
     /*!
-        Ray collision.
+        A ray collision.
     */
     class CK_API Ray
     {
@@ -297,7 +297,7 @@ public:
     };
 
     /*!
-        Result of collision detection.
+        A result of collision detection.
     */
     struct CdtInfo
     {

@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A node.
+    A drawing element node, which has no physical appearance.
 */
 class CK_API ckNode : public ckDraw
 {

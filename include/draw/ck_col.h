@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A 32-bit color which is represented by red, green, blue and alpha components.
+    A color, which is represented by red, green, blue and alpha components.
 */
 struct CK_API ckCol
 {

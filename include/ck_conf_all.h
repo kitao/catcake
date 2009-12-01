@@ -36,8 +36,8 @@
 #include "ck_gen_all.h"
 
 /*!
-    @defgroup ckConf ckConf -- Configuration file parser module
-    Provides the functionality to handle config files.
+    @defgroup ckConf ckConf -- Configuration script parser module
+    Provides the functionality to handle config scripts.
 */
 #include "conf/ck_ent.h"
 #include "conf/ck_conf.h"

@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    A font texture.
+    A font texture, the texture specialized for drawing font.
 */
 class CK_API ckFont
 {

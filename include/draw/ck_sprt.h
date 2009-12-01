@@ -31,7 +31,7 @@
 
 /*!
     @ingroup ckDraw
-    TODO
+    A sprite, a rectangle which always faces the camera.
 */
 class CK_API ckSprt : public ckDraw
 {

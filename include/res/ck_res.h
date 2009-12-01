@@ -34,7 +34,7 @@ class ckResMgr;
 
 /*!
     @ingroup ckRes
-    Resouce.
+    A resource, which contains data.
 */
 class CK_API ckRes
 {

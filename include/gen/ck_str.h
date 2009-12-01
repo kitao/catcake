@@ -32,8 +32,8 @@
 /*!
     @ingroup ckGen
     A string with fixed length.
-    @tparam T The type of the elements of ckStr. Typically, either char or wchar_t is used.
-    @tparam N The length of ckStr. This value must be more than zero.
+    @tparam T The type of the elements of a string. Typically, either char or wchar_t is used.
+    @tparam N The length of a string. This value must be more than zero.
 */
 template<class T, u8 N> class ckStr
 {

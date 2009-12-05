@@ -47,13 +47,13 @@ public:
     static const u32 MAX_NAME_LENGTH = 20;
 
     /*!
-        The value types.
+        The value types of an entry.
     */
     enum ValueType
     {
-        TYPE_S32, //!< 32-bit integer number.
+        TYPE_S32, //!< 32-bit singed number.
         TYPE_R32, //!< 32-bit floating point number.
-        TYPE_STRING //!< String.
+        TYPE_STRING //!< 8-bit string.
     };
 
     /*!

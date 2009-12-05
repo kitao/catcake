@@ -48,11 +48,11 @@ public:
     static const ckID DEBUG_FONT_TEXTURE_ID;
 
     /*!
-        Debugging modes.
+        The debug modes.
     */
     enum DebugMode
     {
-        MODE_OFF, //!< Debugging mode off.
+        MODE_OFF, //!< Debug output is invisible.
         MODE_MONITOR, //!< Monitor mode.
         MODE_CONSOLE //!< Console mode.
     };

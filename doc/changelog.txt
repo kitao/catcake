@@ -1,4 +1,4 @@
-Changes in 0.x.x (released on November xx, xxxx)
+Changes in 0.9.0 (released on November xx, xxxx)
 ----------------------------------------------------------------
 
 - Renamed ckRend_Shader::setUniformCol3x255 to setUniformCol3

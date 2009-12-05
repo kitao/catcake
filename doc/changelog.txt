@@ -7,6 +7,7 @@ Changes in 0.x.x (released on November xx, xxxx)
 - Renamed ckRend_Shader::setAttribCol4x255 to setAttribCol4
 - Modified ckTaskMgr::deleteTaskForSystem
 - Completed the API reference.
+- Added support for Android
 
 Changes in 0.8.5 (released on November 11, 2009)
 ----------------------------------------------------------------

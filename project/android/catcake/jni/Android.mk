@@ -78,7 +78,7 @@ LOCAL_SRC_FILES := \
 	catcake/source/util/ck_util_import_3ds.cpp \
 	catcake/source/util/ck_util_load_pixel_art_model.cpp
 
-LOCAL_CXXFLAGS := -I../../../include
+LOCAL_CXXFLAGS := -Icatcake/include
 
 LOCAL_LDLIBS := -lGLESv1_CM -ldl -llog
 

@@ -39,6 +39,8 @@
 #include <GLUT/glut.h>
 #elif defined(CK_IPHONE)
 #include <OpenGLES/ES1/gl.h>
+#elif defined(CK_ANDROID)
+#include <GLES/gl.h>
 #else
 #error
 #endif
@@ -48,7 +50,7 @@
 #include "ck_math_all.h" // for ckMat::MulR32x16
 
 
-#if !defined(CK_GLES1) && defined(CK_IPHONE)
+#if !defined(CK_GLES1) && (defined(CK_IPHONE) || defined(CK_ANDROID))
 #define CK_GLES1
 #endif
 

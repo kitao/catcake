@@ -79,7 +79,7 @@ LOCAL_SRC_FILES := \
 	../../../source/util/ck_util_load_pixel_art_model.cpp
 
 LOCAL_CXXFLAGS := \
-	-DNDEBUG -DCK_LINUX \
+	-DNDEBUG -DCK_ANDROID \
 	-DCK_NO_THROW_EXCEPTION \
 	-I$(LOCAL_PATH)/../../../include \
 	-I$(LOCAL_PATH)/../../../source \

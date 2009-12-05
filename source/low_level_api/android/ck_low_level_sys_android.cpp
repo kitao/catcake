@@ -30,7 +30,7 @@
 
 
 #ifdef CK_ANDROID
-
+#if 0
 
 #include <sys/time.h>
 #include <unistd.h>
@@ -745,5 +745,5 @@ void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
     // TODO: Error
 }
 
-
+#endif
 #endif // CK_ANDROID

@@ -116,6 +116,6 @@ LOCAL_CXXFLAGS := \
 	-DCK_ANDROID \
 	-DCK_NO_THROW_EXCEPTION \
 
-LOCAL_LDLIBS := -L$(LOCAL_PATH)/../lib -lfreetype -lpng -lz -lGLESv1_CM -ldl -llog
+LOCAL_LDLIBS := -L$(LOCAL_PATH)/../lib -lfreetype -lpng -lz -lGLESv1_CM
 
 include $(BUILD_STATIC_LIBRARY)

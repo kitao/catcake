@@ -52,7 +52,7 @@ LOCAL_SRC_FILES := \
 	libpng-1.2.40/pngwtran.c \
 	libpng-1.2.40/pngwutil.c
 
-LOCAL_C_INCLUDES := jni/libpng-1.2.40 ../zlib/jni/zlib-1.2.3
+LOCAL_C_INCLUDES := apps/libpng/jni/libpng-1.2.40 apps/zlib/jni/zlib-1.2.3
 
 LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG
 

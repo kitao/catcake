@@ -36,42 +36,42 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := freetype
 
 LOCAL_SRC_FILES := \
-	../src/autofit/autofit.c \
-	../src/base/ftbase.c \
-	../src/base/ftbbox.c \
-	../src/base/ftbitmap.c \
-	../src/base/ftdebug.c \
-	../src/base/ftfstype.c \
-	../src/base/ftgasp.c \
-	../src/base/ftglyph.c \
-	../src/base/ftinit.c \
-	../src/base/ftmm.c \
-	../src/base/ftpfr.c \
-	../src/base/ftstroke.c \
-	../src/base/ftsynth.c \
-	../src/base/ftsystem.c \
-	../src/base/fttype1.c \
-	../src/base/ftwinfnt.c \
-	../src/bdf/bdf.c \
-	../src/cache/ftcache.c \
-	../src/cff/cff.c \
-	../src/cid/type1cid.c \
-	../src/gzip/ftgzip.c \
-	../src/lzw/ftlzw.c \
-	../src/pcf/pcf.c \
-	../src/pfr/pfr.c \
-	../src/psaux/psaux.c \
-	../src/pshinter/pshinter.c \
-	../src/psnames/psmodule.c \
-	../src/raster/raster.c \
-	../src/sfnt/sfnt.c \
-	../src/smooth/smooth.c \
-	../src/truetype/truetype.c \
-	../src/type1/type1.c \
-	../src/type42/type42.c \
-	../src/winfonts/winfnt.c
+	freetype-2.3.11/src/autofit/autofit.c \
+	freetype-2.3.11/src/base/ftbase.c \
+	freetype-2.3.11/src/base/ftbbox.c \
+	freetype-2.3.11/src/base/ftbitmap.c \
+	freetype-2.3.11/src/base/ftdebug.c \
+	freetype-2.3.11/src/base/ftfstype.c \
+	freetype-2.3.11/src/base/ftgasp.c \
+	freetype-2.3.11/src/base/ftglyph.c \
+	freetype-2.3.11/src/base/ftinit.c \
+	freetype-2.3.11/src/base/ftmm.c \
+	freetype-2.3.11/src/base/ftpfr.c \
+	freetype-2.3.11/src/base/ftstroke.c \
+	freetype-2.3.11/src/base/ftsynth.c \
+	freetype-2.3.11/src/base/ftsystem.c \
+	freetype-2.3.11/src/base/fttype1.c \
+	freetype-2.3.11/src/base/ftwinfnt.c \
+	freetype-2.3.11/src/bdf/bdf.c \
+	freetype-2.3.11/src/cache/ftcache.c \
+	freetype-2.3.11/src/cff/cff.c \
+	freetype-2.3.11/src/cid/type1cid.c \
+	freetype-2.3.11/src/gzip/ftgzip.c \
+	freetype-2.3.11/src/lzw/ftlzw.c \
+	freetype-2.3.11/src/pcf/pcf.c \
+	freetype-2.3.11/src/pfr/pfr.c \
+	freetype-2.3.11/src/psaux/psaux.c \
+	freetype-2.3.11/src/pshinter/pshinter.c \
+	freetype-2.3.11/src/psnames/psmodule.c \
+	freetype-2.3.11/src/raster/raster.c \
+	freetype-2.3.11/src/sfnt/sfnt.c \
+	freetype-2.3.11/src/smooth/smooth.c \
+	freetype-2.3.11/src/truetype/truetype.c \
+	freetype-2.3.11/src/type1/type1.c \
+	freetype-2.3.11/src/type42/type42.c \
+	freetype-2.3.11/src/winfonts/winfnt.c
 
-LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY -I$(LOCAL_PATH)/../include
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY -I$(LOCAL_PATH)/freetype-2.3.11/include
 
 LOCAL_LDLIBS :=
 

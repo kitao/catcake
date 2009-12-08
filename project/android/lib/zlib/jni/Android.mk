@@ -36,20 +36,20 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := zlib
 
 LOCAL_SRC_FILES := \
-	../adler32.c \
-	../compress.c \
-	../crc32.c \
-	../deflate.c \
-	../gzio.c \
-	../infback.c \
-	../inffast.c \
-	../inflate.c \
-	../inftrees.c \
-	../trees.c \
-	../uncompr.c \
-	../zutil.c
+	zlib-1.2.3/adler32.c \
+	zlib-1.2.3/compress.c \
+	zlib-1.2.3/crc32.c \
+	zlib-1.2.3/deflate.c \
+	zlib-1.2.3/gzio.c \
+	zlib-1.2.3/infback.c \
+	zlib-1.2.3/inffast.c \
+	zlib-1.2.3/inflate.c \
+	zlib-1.2.3/inftrees.c \
+	zlib-1.2.3/trees.c \
+	zlib-1.2.3/uncompr.c \
+	zlib-1.2.3/zutil.c
 
-LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/..
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/zlib-1.2.3
 
 LOCAL_LDLIBS :=
 

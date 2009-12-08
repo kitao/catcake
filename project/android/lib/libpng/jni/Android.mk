@@ -33,26 +33,26 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := png
+LOCAL_MODULE := libpng
 
 LOCAL_SRC_FILES := \
-	../png.c
-	../pngerror.c
-	../pngget.c
-	../pngmem.c
-	../pngpread.c
-	../pngread.c
-	../pngrio.c
-	../pngrtran.c
-	../pngrutil.c
-	../pngset.c
-	../pngtrans.c
-	../pngwio.c
-	../pngwrite.c
-	../pngwtran.c
+	../png.c \
+	../pngerror.c \
+	../pngget.c \
+	../pngmem.c \
+	../pngpread.c \
+	../pngread.c \
+	../pngrio.c \
+	../pngrtran.c \
+	../pngrutil.c \
+	../pngset.c \
+	../pngtrans.c \
+	../pngwio.c \
+	../pngwrite.c \
+	../pngwtran.c \
 	../pngwutil.c
 
-LOCAL_CXXFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/.. -I$(LOCAL_PATH)/../../zlib
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/.. -I$(LOCAL_PATH)/../../z
 
 LOCAL_LDLIBS :=
 

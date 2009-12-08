@@ -71,7 +71,7 @@ LOCAL_SRC_FILES := \
 	../src/type42/type42.c \
 	../src/winfonts/winfnt.c
 
-LOCAL_CXXFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY -I$(LOCAL_PATH)/../include
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY -I$(LOCAL_PATH)/../include
 
 LOCAL_LDLIBS :=
 

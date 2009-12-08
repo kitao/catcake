@@ -71,7 +71,9 @@ LOCAL_SRC_FILES := \
 	freetype-2.3.11/src/type42/type42.c \
 	freetype-2.3.11/src/winfonts/winfnt.c
 
-LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY -I$(LOCAL_PATH)/freetype-2.3.11/include
+LOCAL_C_INCLUDES := jni/freetype-2.3.11/include
+
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY
 
 LOCAL_LDLIBS :=
 

@@ -49,7 +49,9 @@ LOCAL_SRC_FILES := \
 	zlib-1.2.3/uncompr.c \
 	zlib-1.2.3/zutil.c
 
-LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/zlib-1.2.3
+LOCAL_C_INCLUDES := jni/zlib-1.2.3
+
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG
 
 LOCAL_LDLIBS :=
 

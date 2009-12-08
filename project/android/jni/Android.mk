@@ -104,15 +104,18 @@ LOCAL_SRC_FILES := \
 	../../../source/util/ck_util_import_3ds.cpp \
 	../../../source/util/ck_util_load_pixel_art_model.cpp
 
-LOCAL_CXXFLAGS := \
-	-DNDEBUG -DCK_ANDROID \
-	-DCK_NO_THROW_EXCEPTION \
-	-I$(LOCAL_PATH)/../../../include \
-	-I$(LOCAL_PATH)/../../../source \
-	-I$(LOCAL_PATH)/../../../project/include/zlib \
-	-I$(LOCAL_PATH)/../../../project/include/libpng \
-	-I$(LOCAL_PATH)/../../../project/include/freetype
+LOCAL_C_FLAGS := \
+	apps/catcake/include \
+	apps/catcake/source \
+	apps/catcake/project/include/zlib \
+	apps/catcake/project/include/libpng \
+	apps/catcake/project/include/freetype
 
-LOCAL_LDLIBS := -lGLESv1_CM -ldl -llog
+LOCAL_CXXFLAGS := \
+	-DNDEBUG \
+	-DCK_ANDROID \
+	-DCK_NO_THROW_EXCEPTION \
+
+LOCAL_LDLIBS := -L$(LOCAL_PATH)/../lib -lfreetype -lpng -lz -lGLESv1_CM -ldl -llog
 
 include $(BUILD_STATIC_LIBRARY)

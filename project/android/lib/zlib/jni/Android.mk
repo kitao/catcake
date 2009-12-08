@@ -33,7 +33,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := z
+LOCAL_MODULE := zlib
 
 LOCAL_SRC_FILES := \
 	../adler32.c \
@@ -49,7 +49,7 @@ LOCAL_SRC_FILES := \
 	../uncompr.c \
 	../zutil.c
 
-LOCAL_CXXFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/..
+LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -I$(LOCAL_PATH)/..
 
 LOCAL_LDLIBS :=
 

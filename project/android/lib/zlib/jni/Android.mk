@@ -36,20 +36,20 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := zlib
 
 LOCAL_SRC_FILES := \
-	zlib-1.2.3/adler32.c \
-	zlib-1.2.3/compress.c \
-	zlib-1.2.3/crc32.c \
-	zlib-1.2.3/deflate.c \
-	zlib-1.2.3/gzio.c \
-	zlib-1.2.3/infback.c \
-	zlib-1.2.3/inffast.c \
-	zlib-1.2.3/inflate.c \
-	zlib-1.2.3/inftrees.c \
-	zlib-1.2.3/trees.c \
-	zlib-1.2.3/uncompr.c \
-	zlib-1.2.3/zutil.c
+	../zlib-1.2.3/adler32.c \
+	../zlib-1.2.3/compress.c \
+	../zlib-1.2.3/crc32.c \
+	../zlib-1.2.3/deflate.c \
+	../zlib-1.2.3/gzio.c \
+	../zlib-1.2.3/infback.c \
+	../zlib-1.2.3/inffast.c \
+	../zlib-1.2.3/inflate.c \
+	../zlib-1.2.3/inftrees.c \
+	../zlib-1.2.3/trees.c \
+	../zlib-1.2.3/uncompr.c \
+	../zlib-1.2.3/zutil.c
 
-LOCAL_C_INCLUDES := apps/zlib/jni/zlib-1.2.3
+LOCAL_C_INCLUDES := apps/zlib/zlib-1.2.3
 
 LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG
 

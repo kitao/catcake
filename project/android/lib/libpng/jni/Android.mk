@@ -36,23 +36,23 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libpng
 
 LOCAL_SRC_FILES := \
-	libpng-1.2.40/png.c \
-	libpng-1.2.40/pngerror.c \
-	libpng-1.2.40/pngget.c \
-	libpng-1.2.40/pngmem.c \
-	libpng-1.2.40/pngpread.c \
-	libpng-1.2.40/pngread.c \
-	libpng-1.2.40/pngrio.c \
-	libpng-1.2.40/pngrtran.c \
-	libpng-1.2.40/pngrutil.c \
-	libpng-1.2.40/pngset.c \
-	libpng-1.2.40/pngtrans.c \
-	libpng-1.2.40/pngwio.c \
-	libpng-1.2.40/pngwrite.c \
-	libpng-1.2.40/pngwtran.c \
-	libpng-1.2.40/pngwutil.c
+	../libpng-1.2.40/png.c \
+	../libpng-1.2.40/pngerror.c \
+	../libpng-1.2.40/pngget.c \
+	../libpng-1.2.40/pngmem.c \
+	../libpng-1.2.40/pngpread.c \
+	../libpng-1.2.40/pngread.c \
+	../libpng-1.2.40/pngrio.c \
+	../libpng-1.2.40/pngrtran.c \
+	../libpng-1.2.40/pngrutil.c \
+	../libpng-1.2.40/pngset.c \
+	../libpng-1.2.40/pngtrans.c \
+	../libpng-1.2.40/pngwio.c \
+	../libpng-1.2.40/pngwrite.c \
+	../libpng-1.2.40/pngwtran.c \
+	../libpng-1.2.40/pngwutil.c
 
-LOCAL_C_INCLUDES := apps/libpng/jni/libpng-1.2.40 apps/zlib/jni/zlib-1.2.3
+LOCAL_C_INCLUDES := apps/libpng/libpng-1.2.40 apps/zlib/zlib-1.2.3
 
 LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG
 

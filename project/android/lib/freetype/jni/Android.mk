@@ -75,6 +75,4 @@ LOCAL_C_INCLUDES := apps/freetype/jni/freetype-2.3.11/include
 
 LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG -DFT2_BUILD_LIBRARY
 
-LOCAL_LDLIBS :=
-
 include $(BUILD_STATIC_LIBRARY)

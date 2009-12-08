@@ -53,6 +53,4 @@ LOCAL_C_INCLUDES := apps/zlib/jni/zlib-1.2.3
 
 LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG
 
-LOCAL_LDLIBS :=
-
 include $(BUILD_STATIC_LIBRARY)

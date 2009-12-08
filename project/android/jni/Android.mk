@@ -104,7 +104,7 @@ LOCAL_SRC_FILES := \
 	../../../source/util/ck_util_import_3ds.cpp \
 	../../../source/util/ck_util_load_pixel_art_model.cpp
 
-LOCAL_C_FLAGS := \
+LOCAL_C_INCLUDES := \
 	apps/catcake/include \
 	apps/catcake/source \
 	apps/catcake/project/include/zlib \

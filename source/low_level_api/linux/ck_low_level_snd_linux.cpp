@@ -603,4 +603,3 @@ void ckLowLevelAPI::unlockSoundMixMutex()
 
 
 #endif // CK_LINUX
-

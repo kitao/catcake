@@ -70,6 +70,7 @@ LOCAL_SRC_FILES := \
 	../../../source/draw/rend/ck_rend_shader.cpp \
 	../../../source/gen/ck_id.cpp \
 	../../../source/key/ck_key_mgr.cpp \
+	../../../source/low_level_api/android/ck_low_level_snd_android.cpp \
 	../../../source/low_level_api/android/ck_low_level_sys_android.cpp \
 	../../../source/low_level_api/ck_low_level_draw_opengl.cpp \
 	../../../source/low_level_api/ck_low_level_io_gen.cpp \

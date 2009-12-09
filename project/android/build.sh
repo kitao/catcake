@@ -36,3 +36,6 @@ cp Application.mk ../..
 cp lib/*.a ../../lib
 
 make -C ../../../.. APP=catcake clean all
+
+cp ../../../../out/apps/catcake/libcatcake.a ../../lib
+rm ../../Application.mk

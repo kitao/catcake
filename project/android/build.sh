@@ -35,4 +35,4 @@ cd `dirname $0`
 cp Application.mk ../..
 cp lib/*.a ../../lib
 
-make -C ../.. APP=catcake clean all
+make -C ../../../.. APP=catcake clean all

@@ -29,7 +29,7 @@
 */
 
 
-package com.kitaoworks.sample01_debug;
+package com.kitaoworks.catcake.sample01_debug;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -37,9 +37,7 @@
 #include <stdlib.h>
 #include <libgen.h>
 #include <pthread.h>
-//#include <X11/Xlib.h>
-//#include <X11/extensions/xf86vmode.h>
-//#include <GL/glx.h>
+#include <jni.h>
 
 #include "ck_low_level_api.h"
 
@@ -58,119 +56,14 @@ static u16 s_sys_flag;
 static bool s_is_framebuffer_size_changed;
 static bool s_is_fullscreen;
 static bool s_is_mouse_visible;
-
-//static Display* s_dpy;
-//static Window s_win;
-//static GLXContext s_ctx;
-//static int s_scr;
-//static XF86VidModeModeInfo s_video_mode_info;
-//static bool s_is_double_buffered;
+static bool (*s_update_func)();
 
 
-/*static void callKeyEventHandler(KeyCode keycode, bool is_down)
-{
-    KeySym keysym = XKeycodeToKeysym(s_dpy, keycode, 0);
-    ckKeyMgr::KeyType key_type = ckKeyMgr::KEY_NONE;
-
-    if (keysym >= XK_0 && keysym <= XK_9)
-    {
-        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_0 + keysym - XK_0);
-    }
-    else if (keysym >= XK_A && keysym <= XK_Z)
-    {
-        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_A + keysym - XK_A);
-    }
-    else if (keysym >= XK_a && keysym <= XK_z)
-    {
-        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_A + keysym - XK_a);
-    }
-    else if (keysym >= XK_F1 && keysym <= XK_F12)
-    {
-        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_F1 + keysym - XK_F1);
-    }
-    else if (keysym >= XK_KP_0 && keysym <= XK_KP_9)
-    {
-        key_type = static_cast<ckKeyMgr::KeyType>(ckKeyMgr::KEY_NUMPAD0 + keysym - XK_KP_0);
-    }
-    else if (keysym >= XK_Home && keysym <= XK_End)
-    {
-        static const ckKeyMgr::KeyType s_keycode_table[] =
-        {
-            ckKeyMgr::KEY_HOME, ckKeyMgr::KEY_LEFT, ckKeyMgr::KEY_UP, ckKeyMgr::KEY_RIGHT, //
-            ckKeyMgr::KEY_DOWN, ckKeyMgr::KEY_PAGEUP, ckKeyMgr::KEY_PAGEDOWN, ckKeyMgr::KEY_END
-        };
-
-        key_type = s_keycode_table[keysym - XK_Home];
-    }
-    else if (keysym >= XK_KP_Multiply && keysym <= XK_KP_Divide)
-    {
-        static const ckKeyMgr::KeyType s_keycode_table[] =
-        {
-            ckKeyMgr::KEY_MULTIPLY, ckKeyMgr::KEY_ADD, ckKeyMgr::KEY_NONE, //
-            ckKeyMgr::KEY_SUBTRACT, ckKeyMgr::KEY_DECIMAL, ckKeyMgr::KEY_DIVIDE
-        };
-
-        key_type = s_keycode_table[keysym - XK_KP_Multiply];
-    }
-    else if (keysym == XK_BackSpace)
-    {
-        key_type = ckKeyMgr::KEY_BACKSPACE;
-    }
-    else if (keysym == XK_Tab)
-    {
-        key_type = ckKeyMgr::KEY_TAB;
-    }
-    else if (keysym == XK_Return)
-    {
-        key_type = ckKeyMgr::KEY_ENTER;
-    }
-    else if (keysym == XK_Escape)
-    {
-        key_type = ckKeyMgr::KEY_ESCAPE;
-    }
-    else if (keysym == XK_space)
-    {
-        key_type = ckKeyMgr::KEY_SPACE;
-    }
-    else if (keysym == XK_Insert)
-    {
-        key_type = ckKeyMgr::KEY_INSERT;
-    }
-    else if (keysym == XK_Delete)
-    {
-        key_type = ckKeyMgr::KEY_DELETE;
-    }
-    else if (keysym == XK_KP_Enter)
-    {
-        key_type = ckKeyMgr::KEY_SEPARATOR;
-    }
-    else if (keysym == XK_Shift_L || keysym == XK_Shift_R)
-    {
-        key_type = ckKeyMgr::KEY_SHIFT;
-    }
-    else if (keysym == XK_Control_L || keysym == XK_Control_R)
-    {
-        key_type = ckKeyMgr::KEY_CTRL;
-    }
-    else if (keysym == XK_Alt_L || keysym == XK_Alt_R)
-    {
-        key_type = ckKeyMgr::KEY_ALT;
-    }
-
-    (*s_key_event_handler)(key_type, is_down);
-}*/
-
-
-static void destroyFramebuffer()
-{
-    // TODO
-}
+static void destroyFramebuffer() {}
 
 
 static bool createFramebuffer(u16 new_width, u16 new_height)
 {
-    // TODO
-    //
     return true;
 }
 
@@ -184,6 +77,8 @@ bool ckLowLevelAPI::createApplication(const char* title, u16 width, u16 height, 
     s_is_framebuffer_size_changed = false;
     s_is_fullscreen = (sys_flag & ckSysMgr::FLAG_FULLSCREEN_START) ? true : false;
     s_is_mouse_visible = true;
+
+    s_update_func = NULL; // added for Android
 
     if (!createFramebuffer(width, height))
     {
@@ -204,85 +99,7 @@ void ckLowLevelAPI::destroyApplication()
 
 void ckLowLevelAPI::startApplication(bool (*update_func)(void))
 {
-    while (true)
-    {
-#if 0
-        while (XPending(s_dpy) > 0)
-        {
-            XEvent event;
-            XNextEvent(s_dpy, &event);
-
-            switch (event.type)
-            {
-            case KeyPress:
-                callKeyEventHandler(event.xkey.keycode, true);
-                break;
-
-            case KeyRelease:
-                callKeyEventHandler(event.xkey.keycode, false);
-                break;
-
-            case ButtonPress:
-                if (event.xbutton.button == Button1)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, true);
-                }
-                else if (event.xbutton.button == Button2)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_MBUTTON, true);
-                }
-                else if (event.xbutton.button == Button3)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_RBUTTON, true);
-                }
-                else if (event.xbutton.button == Button4)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_WHEELUP, true);
-                }
-                else if (event.xbutton.button == Button5)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_WHEELDOWN, true);
-                }
-                break;
-
-            case ButtonRelease:
-                if (event.xbutton.button == Button1)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, false);
-                }
-                else if (event.xbutton.button == Button2)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_MBUTTON, false);
-                }
-                else if (event.xbutton.button == Button3)
-                {
-                    (*s_key_event_handler)(ckKeyMgr::KEY_RBUTTON, false);
-                }
-                break;
-
-            case ClientMessage:
-                if (*XGetAtomName(s_dpy, event.xclient.message_type) == *"WM_PROTOCOLS")
-                {
-                    return;
-                }
-                break;
-
-            default:
-                break; // TODO
-            }
-        }
-
-        Window root, child;
-        int root_x, root_y;
-        int win_x, win_y;
-        unsigned int mask;
-
-        XQueryPointer(s_dpy, s_win, &root, &child, &root_x, &root_y, &win_x, &win_y, &mask);
-        (*s_mouse_event_handler)(static_cast<s16>(win_x), static_cast<s16>(win_y));
-
-        (*update_func)();
-#endif
-    }
+    s_update_func = update_func;
 }
 
 
@@ -301,12 +118,6 @@ u16 ckLowLevelAPI::getFramebufferHeight()
 void ckLowLevelAPI::updateFramebufferSize()
 {
     /*
-    Window root;
-    int win_x, win_y;
-    unsigned int win_width, win_height;
-    unsigned int boarder_width;
-    unsigned int depth;
-
     XGetGeometry(s_dpy, s_win, &root, &win_x, &win_y, &win_width, &win_height, &boarder_width, &depth);
 
     if (win_width != s_framebuffer_width || win_height != s_framebuffer_height)
@@ -564,6 +375,53 @@ void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
 {
     // TODO: Error
+}
+
+
+extern void ckMain_();
+
+extern "C"
+{
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeInitialize(JNIEnv* env, jobject clazz)
+    {
+        ckMain_();
+    }
+
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeUpdate(JNIEnv* env, jobject clazz)
+    {
+        if (s_update_func)
+        {
+            s_update_func();
+        }
+    }
+
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeFinalize(JNIEnv* env, jobject clazz)
+    {
+        ckLowLevelAPI::exit(0);
+    }
+
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeOnTouch(JNIEnv* env, jobject clazz, jint action, jint x, jint y)
+    {
+        switch (action)
+        {
+        case 0: // ACTION_DOWN
+            (*s_mouse_event_handler)(static_cast<s16>(x), static_cast<s16>(y));
+            (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, true);
+            break;
+
+        case 1: // ACTION_UP:
+            (*s_mouse_event_handler)(static_cast<s16>(x), static_cast<s16>(y));
+            (*s_key_event_handler)(ckKeyMgr::KEY_LBUTTON, false);
+            break;
+
+        case 2: // ACTION_MOVE:
+            (*s_mouse_event_handler)(static_cast<s16>(x), static_cast<s16>(y));
+            break;
+
+        default:
+            break;
+        }
+    }
 }
 
 

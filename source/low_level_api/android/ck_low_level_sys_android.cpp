@@ -140,10 +140,7 @@ bool ckLowLevelAPI::isFramebufferSizeChanged()
 }
 
 
-void ckLowLevelAPI::swapFramebuffer()
-{
-    // TODO
-}
+void ckLowLevelAPI::swapFramebuffer() {}
 
 
 bool ckLowLevelAPI::isFullScreen()
@@ -372,22 +369,28 @@ void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 }
 
 
-void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
-{
-    // TODO: Error
-}
+void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size) {}
 
 
 extern void ckMain_();
 
 extern "C"
 {
-    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeInitialize(JNIEnv* env, jobject clazz)
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeInitialize(JNIEnv*, jobject)
     {
+        static char program_name[512];
+        static char** argv =
+        {
+            program_name
+        };
+
+        ckSysMgr::sprintf(path, sizeof(path), "%s/%s", getenv("ANDROID_ROOT"), "dummy");
+        ckLowLevelAPI::setInitialDirectory(1, argv)
+
         ckMain_();
     }
 
-    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeUpdate(JNIEnv* env, jobject clazz)
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeUpdate(JNIEnv*, jobject)
     {
         if (s_update_func)
         {
@@ -395,12 +398,12 @@ extern "C"
         }
     }
 
-    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeFinalize(JNIEnv* env, jobject clazz)
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeFinalize(JNIEnv*, jobject)
     {
         ckLowLevelAPI::exit(0);
     }
 
-    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeOnTouch(JNIEnv* env, jobject clazz, jint action, jint x, jint y)
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeOnTouch(JNIEnv*, jobject, jint action, jint x, jint y)
     {
         switch (action)
         {

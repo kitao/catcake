@@ -632,10 +632,7 @@ void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 }
 
 
-void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
-{
-    // TODO: Error
-}
+void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size) {}
 
 
 #endif // CK_MACOSX

@@ -374,18 +374,19 @@ void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size) {}
 
 extern void ckMain_();
 
+
 extern "C"
 {
     JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeInitialize(JNIEnv*, jobject)
     {
         static char program_name[512];
-        static char** argv =
+        static char* argv[] =
         {
             program_name
         };
 
-        ckSysMgr::sprintf(path, sizeof(path), "%s/%s", getenv("ANDROID_ROOT"), "dummy");
-        ckLowLevelAPI::setInitialDirectory(1, argv)
+        ckSysMgr::sprintf(program_name, sizeof(program_name), "%s/%s", getenv("ANDROID_ROOT"), "dummy");
+        ckLowLevelAPI::setInitialDirectory(1, argv);
 
         ckMain_();
     }

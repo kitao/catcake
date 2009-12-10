@@ -31,13 +31,10 @@
 
 package com.kitaoworks.catcake;
 
-import java.io.IOException;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 
@@ -55,7 +52,7 @@ public class Catcake
         activity.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
         activity.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
 
-        m_view = new CatcakeView(this);
+        m_view = new CatcakeView(activity);
         m_renderer = new CatcakeRenderer();
 
         m_view.setRenderer(m_renderer);
@@ -75,7 +72,7 @@ public class Catcake
 
     public void onDestroy()
     {
-        nativeFinish();
+        nativeFinalize();
     }
 
     private static native void nativeInitialize();
@@ -87,6 +84,11 @@ public class Catcake
 
     private class CatcakeView extends GLSurfaceView
     {
+        public CatcakeView(Context context)
+        {
+            super(context);
+        }
+
         @Override public void setRenderer(Renderer renderer)
         {
             super.setRenderer(renderer);
@@ -104,20 +106,20 @@ public class Catcake
     {
         boolean m_is_first = true;
 
-        @Override public void onSurfaceCreated(GL10 gl, EGLConfig config) {}
+        public void onSurfaceCreated(GL10 gl, EGLConfig config) {}
 
-        @Override public void onSurfaceChanged(GL10 gl, int width, int height) {}
+        public void onSurfaceChanged(GL10 gl, int width, int height) {}
 
-        @Override public void onDrawFrame(GL10 gl)
+        public void onDrawFrame(GL10 gl)
         {
             if (m_is_first)
             {
                 m_is_first = false;
 
-                nativeInit();
+                nativeInitialize();
             }
 
-            nativeUpdateFrame();
+            nativeUpdate();
         }
     }
 }

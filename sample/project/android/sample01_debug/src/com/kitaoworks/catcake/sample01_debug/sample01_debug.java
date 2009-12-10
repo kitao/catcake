@@ -38,7 +38,7 @@ import com.kitaoworks.catcake;
 
 public class Sample01_Debug extends Activity
 {
-    private Catcake m_catcake = new Catcake;
+    private Catcake m_catcake = new Catcake();
 
     @Override public void onCreate(Bundle savedInstanceState)
     {

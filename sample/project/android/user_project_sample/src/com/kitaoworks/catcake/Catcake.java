@@ -42,7 +42,7 @@ import android.content.Context;
 import android.view.MotionEvent;
 
 
-public class CatcakeApplication
+public class Catcake
 {
     private CatcakeView m_view;
     private CatcakeRenderer m_renderer;

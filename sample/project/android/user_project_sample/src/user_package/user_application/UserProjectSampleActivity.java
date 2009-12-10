@@ -29,14 +29,14 @@
 */
 
 
-package com.kitaoworks.catcake.sample01_debug;
+package user_project.user_application;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.kitaoworks.catcake;
+import com.kitaoworks.catcake.Catcake;
 
 
-public class Sample01_Debug extends Activity
+public class UserProjectSampleActivity extends Activity
 {
     private Catcake m_catcake = new Catcake();
 

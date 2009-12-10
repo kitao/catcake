@@ -33,13 +33,12 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := sample01_debug
+LOCAL_MODULE := user_project_sample
 
 LOCAL_SRC_FILES := \
-	../catcake_logo.cpp \
-	../debug_draw.cpp \
-	../debug_mode.cpp \
-	../main.cpp
+	dummy1.cpp \
+	dummy2.cpp \
+	dummy3.cpp
 
 LOCAL_C_INCLUDES := apps/catcake/include
 

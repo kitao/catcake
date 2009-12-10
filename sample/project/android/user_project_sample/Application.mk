@@ -30,5 +30,5 @@
 
 
 APP_PROJECT_PATH := $(call my-dir)
-APP_MODULES      := sample01_debug
+APP_MODULES      := user_project_sample
 APP_PLATFORM     := android-4

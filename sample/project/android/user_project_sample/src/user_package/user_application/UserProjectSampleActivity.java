@@ -29,7 +29,7 @@
 */
 
 
-package user_project.user_application;
+package user_package.user_application;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -38,7 +38,7 @@ import com.kitaoworks.catcake.Catcake;
 
 public class UserProjectSampleActivity extends Activity
 {
-    private Catcake m_catcake = new Catcake();
+    private Catcake m_catcake = new Catcake("user_project_sample");
 
     @Override public void onCreate(Bundle savedInstanceState)
     {

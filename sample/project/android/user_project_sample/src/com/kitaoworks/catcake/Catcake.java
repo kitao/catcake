@@ -47,6 +47,11 @@ public class Catcake
     private CatcakeView m_view;
     private CatcakeRenderer m_renderer;
 
+    public Catcake(String lib_name)
+    {
+        System.loadLibrary(lib_name);
+    }
+
     public void onCreate(Activity activity)
     {
         activity.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);

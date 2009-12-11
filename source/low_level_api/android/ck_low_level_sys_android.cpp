@@ -395,7 +395,7 @@ extern "C"
     {
         if (s_update_func)
         {
-            s_update_func();
+            while (!(*s_update_func)());
         }
     }
 

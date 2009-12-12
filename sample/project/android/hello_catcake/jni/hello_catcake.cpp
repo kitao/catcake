@@ -39,6 +39,10 @@ public:
 
 private:
     virtual void onUpdate();
+
+    ckFont m_text_font;
+    ckSprt m_text_sprt;
+    ckPrim m_logo_prim;
 };
 
 
@@ -50,11 +54,29 @@ void newHelloCatcake()
 
 HelloCatcake::HelloCatcake() : ckTask(ORDER_ZERO)
 {
-    // TODO
+    const char* text = "Hello, Catcake!";
+
+    ckDrawMgr::setFont(ckID_("stonsans.ttf"), 0);
+    ckDrawMgr::setFontSize(40);
+
+    m_text_font.init(ckDrawMgr::calcFontDrawWidth(text), ckDrawMgr::getFontSize());
+    m_text_font.drawString(0, 0, text);
+
+    m_text_sprt.init(1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_text_sprt.setTextureID(m_text_font.getTextureID());
+    m_text_sprt.setPreset_defaultBlendHalf();
+    m_text_sprt.setDataSize(0, m_text_font.getWidth(), m_text_font.getHeight());
+    m_text_sprt.local().trans.set(0.0f, 90.0f, 0.0f);
+
+    m_logo_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
+    m_logo_prim.setTextureID(ckID_("catcake_logo_71x14.png"));
+    m_logo_prim.setDrawFlag(ckDraw::FLAG_BILINEAR, false);
+    m_logo_prim.setDataRect(0, ckVec::ZERO, 71.0f * 4.0f, 14.0f * 4.0f, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
+    m_logo_prim.local().trans.set(0.0f, -70.0f, 0.0f);
 }
 
 
 void HelloCatcake::onUpdate()
 {
-    // TODO
+    m_logo_prim.local() = m_logo_prim.local().rotateY_s32(3).rotateX_s32(1);
 }

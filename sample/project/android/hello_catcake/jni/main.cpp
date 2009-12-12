@@ -45,8 +45,8 @@ ckMain()
 
         And they must be specified by the absolute paths in ckResMgr::loadResource.
     */
-    ckResMgr::loadResource("/data/data/catcake_application.hello_catcake/catcake_logo_71x14.png", true);
-    ckResMgr::loadResource("/data/data/catcake_application.hello_catcake/stonsans.ttf", true);
+    ckResMgr::loadResource("/data/data/catcake_application.hello_catcake/data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("/data/data/catcake_application.hello_catcake/data/stonsans.ttf", true);
 
     newHelloCatcake();
 

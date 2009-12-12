@@ -41,7 +41,7 @@
 
 #include "ck_low_level_api.h"
 
-#include "ck_sys_all.h" // for ckSysMgr::SysFlag and ckSysMgr::sprintf
+#include "ck_sys_all.h" // for ckSysMgr::SysFlag
 #include "ck_key_all.h" // for ckKeyMgr::KeyType
 
 
@@ -379,15 +379,6 @@ extern "C"
 {
     JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeInitialize(JNIEnv*, jobject)
     {
-        static char program_name[512];
-        static char* argv[] =
-        {
-            program_name
-        };
-
-        ckSysMgr::sprintf(program_name, sizeof(program_name), "%s/%s", getenv("ANDROID_ROOT"), "dummy");
-        ckLowLevelAPI::setInitialDirectory(1, argv);
-
         ckMain_();
     }
 

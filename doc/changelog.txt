@@ -1,4 +1,4 @@
-Changes in 0.9.0 (released on November xx, xxxx)
+Changes in 0.9.0 (released on Xxxxx xx, xxxx)
 ----------------------------------------------------------------
 
 - Renamed ckRend_Shader::setUniformCol3x255 to setUniformCol3
@@ -7,7 +7,9 @@ Changes in 0.9.0 (released on November xx, xxxx)
 - Renamed ckRend_Shader::setAttribCol4x255 to setAttribCol4
 - Modified ckTaskMgr::deleteTaskForSystem
 - Completed the API reference.
-- Added support for Android
+- Added support for Android (contributed by Daisuke Nakata)
+- Modified ckDrawMgr::calcFontDrawWidth and ckFont::drawString for Android
+
 
 Changes in 0.8.5 (released on November 11, 2009)
 ----------------------------------------------------------------

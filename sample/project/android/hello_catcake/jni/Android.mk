@@ -35,7 +35,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := hello_catcake
 
-LOCAL_SRC_FILES := dummy.cpp
+LOCAL_SRC_FILES := main.cpp hello_catcake.cpp
 
 LOCAL_C_INCLUDES := apps/catcake/include
 

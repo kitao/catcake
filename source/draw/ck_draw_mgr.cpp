@@ -472,11 +472,16 @@ u16 ckDrawMgr::setFontSize(u16 font_size)
 
 u16 ckDrawMgr::calcFontDrawWidth(const char* str, ...)
 {
-    instance();
+    ckDrawMgr* ins = instance();
 
     if (!str)
     {
         ckThrow(ExceptionInvalidArgument);
+    }
+
+    if (!ins->m_font_info)
+    {
+        ckThrow(ExceptionInvalidCall);
     }
 
     char buf1[256];
@@ -485,7 +490,14 @@ u16 ckDrawMgr::calcFontDrawWidth(const char* str, ...)
     wchar_t buf2[256];
     ckUtil::charToWchar(buf2, 256, buf1);
 
-    return calcFontDrawWidth(buf2);
+    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(NULL, 0, 0, ins->m_font_info, ins->m_font_index, ins->m_font_size, 0, 0, buf2);
+
+    if (draw_width < 0)
+    {
+        ckThrow(ExceptionCalcFontDrawWidthFailed);
+    }
+
+    return draw_width;
 }
 
 

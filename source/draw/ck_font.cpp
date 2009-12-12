@@ -171,13 +171,28 @@ u16 ckFont::drawString(s16 x, s16 y, const char* str, ...)
         ckThrow(ExceptionInvalidArgument);
     }
 
+    ckDrawMgr* ins = ckDrawMgr::instance();
+
+    if (!ins->m_font_info)
+    {
+        ckThrow(ExceptionInvalidCall);
+    }
+
     char buf1[256];
     CK_VSPRINTF(buf1, 256, str);
 
     wchar_t buf2[256];
     ckUtil::charToWchar(buf2, 256, buf1);
 
-    return drawString(x, y, buf2);
+    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(m_tex->editImage(), m_tex->getWidth(), m_tex->getHeight(), //
+        ins->m_font_info, ins->m_font_index, ins->m_font_size, x, y, buf2);
+
+    if (draw_width < 0)
+    {
+        ckThrow(ExceptionDrawStringFailed);
+    }
+
+    return draw_width;
 }
 
 

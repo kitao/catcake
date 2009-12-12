@@ -73,11 +73,7 @@ void ckLowLevelAPI::vsprintf(char* buf, u32 buf_size, const char* format, void* 
 
 void ckLowLevelAPI::vswprintf(wchar_t* buf, u32 buf_size, const wchar_t* format, void* arg)
 {
-#ifdef CK_MINGW
-    ::vswprintf(buf, format, *reinterpret_cast<va_list*>(arg));
-#else
     ::vswprintf(buf, buf_size, format, *reinterpret_cast<va_list*>(arg));
-#endif
 }
 
 

@@ -43,11 +43,9 @@
 #include "ck_key_all.h" // for ckKeyMgr::KeyType
 
 
-#ifndef CK_MINGW
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "opengl32.lib")
-#endif
 
 
 static ckLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
@@ -676,12 +674,7 @@ void ckLowLevelAPI::setInitialDirectory(s32 argc, char** argv)
 void ckLowLevelAPI::getWindowsFontDirectory(char* buf, u32 buf_size)
 {
     GetWindowsDirectory(buf, buf_size);
-
-#ifdef CK_MINGW
-    strcat(buf, "\\Fonts\\");
-#else
     strcat_s(buf, buf_size, "\\Fonts\\");
-#endif
 }
 
 

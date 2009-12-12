@@ -42,7 +42,7 @@
 
 #include "ck_low_level_api.h"
 
-#include "ck_sys_all.h" // for ckSysMgr::SysFlag and ckSysMgr::sprintf
+#include "ck_sys_all.h" // for ckSysMgr::SysFlag
 #include "ck_task_all.h" // for ckTaskMgr::getAimFPS and ckTaskMgr::resetFrameSkip
 #include "ck_key_all.h" // for ckKeyMgr::KeyType
 

@@ -67,7 +67,7 @@ Golem::Golem() : ckTask(ORDER_ZERO)
 
     m_copyright_sprt.init(1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_copyright_sprt.setTextureID(ckID_("copyright_304x34.png"));
-    m_copyright_sprt.setPreset_defaultBlendHalf();
+	m_copyright_sprt.setBlendMode(ckDraw::BLEND_HALF, true);
 
     m_copyright_sprt.dataPos(0).set(0.0f, -150.0f);
     m_copyright_sprt.dataCol(0).set(128, 255, 128, 160);

@@ -59,7 +59,7 @@ void ckNodeTest()
         DepthTest getDepthTest() const
         void setDepthTest(DepthTest depth_test)
         BlendMode getBlendMode() const
-        void setBlendMode(BlendMode blend_mode)
+	    void setBlendMode(BlendMode blend_mode, bool is_auto_setting)
         bool isDrawFlag(DrawFlag draw_flag) const
         void setDrawFlag(DrawFlag draw_flag, bool is_on)
         void clearDrawFlag()
@@ -95,7 +95,7 @@ void ckNodeTest()
         ckAssertThrow(node1.getDepthTest(), ckDraw::ExceptionNotInitialized);
         ckAssertThrow(node1.setDepthTest(ckDraw::DEPTH_TEST_ALWAYS), ckDraw::ExceptionNotInitialized);
         ckAssertThrow(node1.getBlendMode(), ckDraw::ExceptionNotInitialized);
-        ckAssertThrow(node1.setBlendMode(ckDraw::BLEND_OFF), ckDraw::ExceptionNotInitialized);
+        ckAssertThrow(node1.setBlendMode(ckDraw::BLEND_OFF, true), ckDraw::ExceptionNotInitialized);
         ckAssertThrow(node1.isDrawFlag(ckDraw::FLAG_BACKFACE_CULLING), ckDraw::ExceptionNotInitialized);
         ckAssertThrow(node1.setDrawFlag(ckDraw::FLAG_SORT, true), ckDraw::ExceptionNotInitialized);
         ckAssertThrow(node1.clearDrawFlag(), ckDraw::ExceptionNotInitialized);
@@ -139,8 +139,30 @@ void ckNodeTest()
         node1.setDepthTest(ckDraw::DEPTH_TEST_LESS);
         ckAssert(node1.getDepthTest() == ckDraw::DEPTH_TEST_LESS);
 
-        node1.setBlendMode(ckDraw::BLEND_ADD);
+        node1.setBlendMode(ckDraw::BLEND_ADD, false);
+        ckAssert(node1.getDepthTest() == ckDraw::DEPTH_TEST_LESS);
         ckAssert(node1.getBlendMode() == ckDraw::BLEND_ADD);
+        assertDrawFlag(node1, false, false, true, false, true, false, true);
+
+		node1.setBlendMode(ckDraw::BLEND_OFF, true);
+        ckAssert(node1.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
+        ckAssert(node1.getBlendMode() == ckDraw::BLEND_OFF);
+        assertDrawFlag(node1, false, false, true, false, true, false, true);
+
+		node1.setBlendMode(ckDraw::BLEND_HALF, true);
+        ckAssert(node1.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
+        ckAssert(node1.getBlendMode() == ckDraw::BLEND_HALF);
+        assertDrawFlag(node1, false, true, true, false, false, false, true);
+
+		node1.setBlendMode(ckDraw::BLEND_ADD, true);
+        ckAssert(node1.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
+        ckAssert(node1.getBlendMode() == ckDraw::BLEND_ADD);
+        assertDrawFlag(node1, false, true, true, false, false, false, true);
+
+		node1.setBlendMode(ckDraw::BLEND_DEST_ALPHA, true);
+        ckAssert(node1.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
+        ckAssert(node1.getBlendMode() == ckDraw::BLEND_DEST_ALPHA);
+        assertDrawFlag(node1, false, false, true, false, true, false, true);
 
         node1.setDrawFlag(ckDraw::FLAG_WRITE_ALPHA, true);
         node1.setDrawFlag(ckDraw::FLAG_WRITE_RGB, false);
@@ -433,40 +455,6 @@ void ckNodeTest()
 
         ckAssert(node2.hasScreen() && node2.getScreenID() == ckDrawMgr::INVISIBLE_SCREEN_ID);
         ckAssert(node3.hasScreen() && node3.getScreenID() == ckDrawMgr::INVISIBLE_SCREEN_ID);
-
-        ckDrawMgr::destroyBeforeRes();
-    }
-
-    /*
-        void setPreset_defaultBlendOff()
-        void setPreset_defaultBlendHalf()
-        void setPreset_defaultBlendAdd()
-    */
-    {
-        ckDrawMgr::createAfterRes();
-
-        ckNode node;
-
-        ckAssertThrow(node.setPreset_defaultBlendOff(), ckDraw::ExceptionNotInitialized);
-        ckAssertThrow(node.setPreset_defaultBlendHalf(), ckDraw::ExceptionNotInitialized);
-        ckAssertThrow(node.setPreset_defaultBlendAdd(), ckDraw::ExceptionNotInitialized);
-
-        node.init(ckDrawMgr::DEFAULT_3D_SCREEN_ID);
-
-        node.setPreset_defaultBlendOff();
-        ckAssert(node.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
-        ckAssert(node.getBlendMode() == ckDraw::BLEND_OFF);
-        assertDrawFlag(node, false, false, true, false, true, false, true);
-
-        node.setPreset_defaultBlendHalf();
-        ckAssert(node.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
-        ckAssert(node.getBlendMode() == ckDraw::BLEND_HALF);
-        assertDrawFlag(node, false, true, true, false, false, false, true);
-
-        node.setPreset_defaultBlendAdd();
-        ckAssert(node.getDepthTest() == ckDraw::DEPTH_TEST_GEQUAL);
-        ckAssert(node.getBlendMode() == ckDraw::BLEND_ADD);
-        assertDrawFlag(node, false, true, true, false, false, false, true);
 
         ckDrawMgr::destroyBeforeRes();
     }

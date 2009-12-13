@@ -59,7 +59,7 @@ void newAmeba(r32 x, r32 y, ckCol color)
 Ameba::Ameba(r32 x, r32 y, ckCol color) : ckTask(ORDER_ZERO)
 {
     m_ameba_prim.init(ckPrim::MODE_TRIANGLE_FAN, AMEBA_VERT_NUM, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
-    m_ameba_prim.setPreset_defaultBlendHalf();
+    m_ameba_prim.setBlendMode(ckDraw::BLEND_HALF, true);
 
     setAmebaPos(m_phase);
 

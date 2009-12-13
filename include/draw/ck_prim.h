@@ -194,7 +194,7 @@ public:
     void setDataUV(u16 index, r32 u, r32 v);
 
     /*!
-        Sets the primitive data as a rectange.
+        Sets the primitive data as a rectange. The prim mode must be MODE_TRIANGLE_FAN.
         @param[in] index The first index of a primitive data.
         @param[in] center The center of a rectangle.
         @param[in] width The width of a rectangle.

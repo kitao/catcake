@@ -84,7 +84,7 @@ FontDraw::FontDraw() : ckTask(ORDER_ZERO)
 
     m_text_sprt1.init(2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_text_sprt1.setTextureID(m_text_font1.getTextureID());
-    m_text_sprt1.setPreset_defaultBlendHalf();
+    m_text_sprt1.setBlendMode(ckDraw::BLEND_HALF, true);
 
     m_text_sprt1.dataPos(0).set(1.0f, 99.0f, 0.0f);
     m_text_sprt1.setDataSize(0, m_text_font1.getWidth(), m_text_font1.getHeight());
@@ -109,7 +109,7 @@ FontDraw::FontDraw() : ckTask(ORDER_ZERO)
 
     m_text_sprt2.init(2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_text_sprt2.setTextureID(m_text_font2.getTextureID());
-    m_text_sprt2.setPreset_defaultBlendHalf();
+    m_text_sprt2.setBlendMode(ckDraw::BLEND_HALF, true);
 
     m_text_sprt2.dataPos(0).set(1.0f, 29.0f, 0.0f);
     m_text_sprt2.dataCol(0).set(192, 192, 255);
@@ -126,7 +126,7 @@ FontDraw::FontDraw() : ckTask(ORDER_ZERO)
 
     m_time_sprt.init(2, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_time_sprt.setTextureID(m_time_font.getTextureID());
-    m_time_sprt.setPreset_defaultBlendHalf();
+    m_time_sprt.setBlendMode(ckDraw::BLEND_HALF, true);
 
     m_time_sprt.setDataSize(0, 256, 100);
 

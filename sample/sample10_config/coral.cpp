@@ -120,7 +120,7 @@ void Coral::onUpdate()
         m_is_live = false;
         m_fall_speed = ckMath::rand(2.0f, 3.0f, 0.1f);
 
-        m_coral_prim.setPreset_defaultBlendHalf();
+        m_coral_prim.setBlendMode(ckDraw::BLEND_HALF, true);
     }
 
     if (m_is_live)

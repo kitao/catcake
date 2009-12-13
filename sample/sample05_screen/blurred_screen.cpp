@@ -102,7 +102,7 @@ BlurredScreen::BlurredScreen() : ckTask(ORDER_ZERO)
     */
     m_blur_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, m_blurred_scr->getID());
     m_blur_prim.setTextureID(m_blurred_scr->getScreenTextureID());
-    m_blur_prim.setPreset_defaultBlendHalf();
+    m_blur_prim.setBlendMode(ckDraw::BLEND_HALF, true);
     m_blur_prim.setSortOffset(10000.0f);
     m_blur_prim.setDepthTest(ckDraw::DEPTH_TEST_ALWAYS);
     m_blur_prim.setDataRect(0, ckVec::ZERO, 512.0f, 300.0f, ckCol(255, 255, 255, 232), 0.033f, 0.06f, 0.95f, 0.95f);
@@ -114,7 +114,7 @@ BlurredScreen::BlurredScreen() : ckTask(ORDER_ZERO)
 
     m_mask_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, &m_cat_node);
     m_mask_prim.setTextureID(ckID_("mask_512x300.png"));
-    m_mask_prim.setBlendMode(ckDraw::BLEND_HALF);
+    m_mask_prim.setBlendMode(ckDraw::BLEND_HALF, false);
     m_mask_prim.setDrawFlag(ckDraw::FLAG_WRITE_RGB, false);
     m_mask_prim.setDrawFlag(ckDraw::FLAG_WRITE_ALPHA, true);
     m_mask_prim.setDataRect(0, ckVec(50.0f, 20.0f, 0.0f), 512.0f, 300.0f, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
@@ -122,7 +122,7 @@ BlurredScreen::BlurredScreen() : ckTask(ORDER_ZERO)
     m_scr_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, &m_cat_node);
     m_scr_prim.setTextureID(m_blurred_scr->getScreenTextureID());
     m_scr_prim.setDepthTest(ckDraw::DEPTH_TEST_ALWAYS);
-    m_scr_prim.setBlendMode(ckDraw::BLEND_DEST_ALPHA);
+    m_scr_prim.setBlendMode(ckDraw::BLEND_DEST_ALPHA, false);
     m_scr_prim.setDrawFlag(ckDraw::FLAG_WRITE_ALPHA, true);
     m_scr_prim.setDataRect(0, ckVec(50.0f, 20.0f, 0.0f), 512.0f, 300.0f, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
 }

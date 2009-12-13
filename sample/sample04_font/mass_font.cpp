@@ -95,7 +95,7 @@ void MassFont::initMassFont()
 
     m_mass_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
     m_mass_prim.setTextureID(m_mass_font.getTextureID());
-    m_mass_prim.setPreset_defaultBlendAdd();
+    m_mass_prim.setBlendMode(ckDraw::BLEND_ADD, true);
 
     r32 mass_prim_width = static_cast<r32>(base_font_width * GRID_SIZE);
     r32 mass_prim_height = static_cast<r32>(base_font_height * GRID_SIZE);

@@ -370,7 +370,7 @@ ckDraw::BlendMode ckDraw::getBlendMode() const
 }
 
 
-void ckDraw::setBlendMode(BlendMode blend_mode)
+void ckDraw::setBlendMode(BlendMode blend_mode, bool is_auto_setting)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
@@ -378,6 +378,36 @@ void ckDraw::setBlendMode(BlendMode blend_mode)
     }
 
     m_blend_mode = blend_mode;
+
+	if (is_auto_setting)
+	{
+		setDepthTest(DEPTH_TEST_GEQUAL);
+		m_draw_flag.clear();
+		m_draw_flag.setOn(FLAG_WRITE_RGB);
+		m_draw_flag.setOn(FLAG_BILINEAR);
+
+		switch (m_blend_mode.getType())
+		{
+		case BLEND_OFF:
+			m_draw_flag.setOn(FLAG_WRITE_DEPTH);
+			break;
+
+		case BLEND_HALF:
+			m_draw_flag.setOn(FLAG_SORT);
+			break;
+
+		case BLEND_ADD:
+			m_draw_flag.setOn(FLAG_SORT);
+			break;
+
+		case BLEND_DEST_ALPHA:
+			m_draw_flag.setOn(FLAG_WRITE_DEPTH);
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 
@@ -432,42 +462,6 @@ void ckDraw::copyDrawFlag(const ckDraw* src)
     }
 
     m_draw_flag = src->m_draw_flag;
-}
-
-
-void ckDraw::setPreset_defaultBlendOff()
-{
-    setDepthTest(DEPTH_TEST_GEQUAL);
-    setBlendMode(BLEND_OFF);
-
-    m_draw_flag.clear();
-    m_draw_flag.setOn(FLAG_WRITE_RGB);
-    m_draw_flag.setOn(FLAG_WRITE_DEPTH);
-    m_draw_flag.setOn(FLAG_BILINEAR);
-}
-
-
-void ckDraw::setPreset_defaultBlendHalf()
-{
-    setDepthTest(DEPTH_TEST_GEQUAL);
-    setBlendMode(BLEND_HALF);
-
-    m_draw_flag.clear();
-    m_draw_flag.setOn(FLAG_SORT);
-    m_draw_flag.setOn(FLAG_WRITE_RGB);
-    m_draw_flag.setOn(FLAG_BILINEAR);
-}
-
-
-void ckDraw::setPreset_defaultBlendAdd()
-{
-    setDepthTest(DEPTH_TEST_GEQUAL);
-    setBlendMode(BLEND_ADD);
-
-    m_draw_flag.clear();
-    m_draw_flag.setOn(FLAG_SORT);
-    m_draw_flag.setOn(FLAG_WRITE_RGB);
-    m_draw_flag.setOn(FLAG_BILINEAR);
 }
 
 
@@ -643,7 +637,7 @@ ckDraw::ckDraw()
     m_private_flag.setOn(FLAG_VISIBLE);
 
     m_private_flag.setOn(FLAG_INITIALIZED); // to call SetPreset_DefaultBlendOff
-    setPreset_defaultBlendOff();
+    setBlendMode(BLEND_OFF, true);
     m_private_flag.setOff(FLAG_INITIALIZED); // restore initialized-flag
 }
 

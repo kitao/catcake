@@ -114,7 +114,7 @@ EmbossFont::EmbossFont() : ckTask(ORDER_ZERO)
 
     m_font_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_font_prim.setTextureID(m_font.getTextureID());
-    m_font_prim.setPreset_defaultBlendHalf();
+    m_font_prim.setBlendMode(ckDraw::BLEND_HALF, true);
     m_font_prim.setDataRect(0, ckVec::ZERO, 512.0f, 64.0f, ckCol::FULL, 0.0f, 0.0f, 1.0f, 1.0f);
     m_font_prim.local().trans.set((512.0f - draw_width) / 2.0f, -7.0f, 10.0f);
 

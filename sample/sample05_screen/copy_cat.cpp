@@ -63,7 +63,7 @@ CopyCat::CopyCat() : ckTask(ORDER_ZERO)
 
     m_copy_sprt.init(COPY_CAT_NUM, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_copy_sprt.setTextureID(m_scr2d->getScreenTextureID());
-    m_copy_sprt.setPreset_defaultBlendHalf();
+    m_copy_sprt.setBlendMode(ckDraw::BLEND_HALF, true);
 
     for (u32 i = 0; i < COPY_CAT_NUM; i++)
     {

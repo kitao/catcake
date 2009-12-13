@@ -235,14 +235,7 @@ void ckMdl::init2(ckID mdl_data_id, ckID scr_id, ckDraw* parent)
             ckPrim::PrimData* prim_data = const_cast<ckPrim::PrimData*>(m_mdl_data.getNodePrimData(i));
 
             prim->init(m_mdl_data.getNodePrimMode(i), prim_data, vert_num, (parent_index == i) ? &m_root_node : m_draw_ptr[parent_index]);
-
-            prim->setBlendMode(m_mdl_data.getNodeBlendMode(i));
-
-            if (prim->getBlendMode() != ckDraw::BLEND_OFF)
-            {
-                prim->setDrawFlag(ckDraw::FLAG_SORT, true);
-            }
-
+            prim->setBlendMode(m_mdl_data.getNodeBlendMode(i), true);
             prim->setDrawFlag(ckDraw::FLAG_BACKFACE_CULLING, true);
 
             ckVec bound_min = m_mdl_data.getNodeClipBoundMinForReader(i);

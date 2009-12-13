@@ -61,7 +61,7 @@ Waterdrop::Waterdrop(r32 x, r32 y) : ckTask(ORDER_ZERO)
 
     m_water_prim.init(ckPrim::MODE_TRIANGLE_FAN, 4, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_water_prim.setTextureID(ckID_("bg_512x512.png"));
-    m_water_prim.setPreset_defaultBlendHalf();
+    m_water_prim.setBlendMode(ckDraw::BLEND_HALF, true);
 
     m_water_rend.init(&m_water_prim, ckID_("refract.shd"));
     m_water_rend.set2ndTextureID(ckID_("waterdrop_64x64.png"));

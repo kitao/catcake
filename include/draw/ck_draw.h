@@ -268,8 +268,9 @@ public:
     /*!
         Sets the type of blend mode.
         @param[in] blend_mode The type of blend mode.
+		@param[in] is_auto_setting If true, sets other draw flags and the type of depth test automatically.
     */
-    void setBlendMode(BlendMode blend_mode);
+    void setBlendMode(BlendMode blend_mode, bool is_auto_setting);
 
     /*!
         Returns whether the specified draw flag is on.
@@ -295,45 +296,6 @@ public:
         @param[in] src A source ckDraw.
     */
     void copyDrawFlag(const ckDraw* src);
-
-    /*!
-        Sets the type of depth test, the type of blend mode, and the draw flags to the standard blend off mode.
-        This method equals to following code:
-        setDepthTest(DEPTH_TEST_GEQUAL);
-        setBlendMode(BLEND_OFF);
-
-        m_draw_flag.clear();
-        m_draw_flag.setOn(FLAG_WRITE_RGB);
-        m_draw_flag.setOn(FLAG_WRITE_DEPTH);
-        m_draw_flag.setOn(FLAG_BILINEAR);
-    */
-    void setPreset_defaultBlendOff();
-
-    /*!
-        Sets the type of depth test, the type of blend mode, and the draw flags to the standard blend half mode.
-        This method equals to following code:
-        setDepthTest(DEPTH_TEST_GEQUAL);
-        setBlendMode(BLEND_HALF);
-
-        m_draw_flag.clear();
-        m_draw_flag.setOn(FLAG_SORT);
-        m_draw_flag.setOn(FLAG_WRITE_RGB);
-        m_draw_flag.setOn(FLAG_BILINEAR);
-    */
-    void setPreset_defaultBlendHalf();
-
-    /*!
-        Sets the type of depth test, the type of blend mode, and the draw flags to the standard blend add mode.
-        This method equals to following code:
-        setDepthTest(DEPTH_TEST_GEQUAL);
-        setBlendMode(BLEND_ADD);
-
-        m_draw_flag.clear();
-        m_draw_flag.setOn(FLAG_SORT);
-        m_draw_flag.setOn(FLAG_WRITE_RGB);
-        m_draw_flag.setOn(FLAG_BILINEAR);
-    */
-    void setPreset_defaultBlendAdd();
 
     /*!
         Returns the minimum clip bound of this ckDraw.

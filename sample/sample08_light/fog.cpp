@@ -65,7 +65,7 @@ Fog::Fog() : ckTask(ORDER_ZERO)
         fog_sprt->init(1, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
         fog_sprt->setTextureID(ckID_("fog_128x128.png"));
 
-        fog_sprt->setPreset_defaultBlendHalf();
+        fog_sprt->setBlendMode(ckDraw::BLEND_HALF, true);
 
         fog_sprt->dataPos(0).set(ckMath::rand(-180.0f, 180.0f, 1.0f), ckMath::rand(0.0f, 2.0f, 0.1f), ckMath::rand(-180.0f, 180.0f, 1.0f));
         fog_sprt->setDataSize(0, 128.0f, 128.0f);
@@ -100,14 +100,14 @@ void Fog::onUpdate()
         {
             for (u32 i = 0; i < FOG_NUM; i++)
             {
-                m_fog_sprt[i].setPreset_defaultBlendAdd();
+                m_fog_sprt[i].setBlendMode(ckDraw::BLEND_ADD, true);
             }
         }
         else
         {
             for (u32 i = 0; i < FOG_NUM; i++)
             {
-                m_fog_sprt[i].setPreset_defaultBlendHalf();
+                m_fog_sprt[i].setBlendMode(ckDraw::BLEND_HALF, true);
             }
         }
     }

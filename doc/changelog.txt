@@ -9,6 +9,10 @@ Changes in 0.9.0 (released on Xxxxx xx, xxxx)
 - Completed the API reference.
 - Added support for Android (contributed by Daisuke Nakata)
 - Modified ckDrawMgr::calcFontDrawWidth and ckFont::drawString for Android
+- Changed ckDraw::setBlendMode
+- Removed ckDraw::setPreset_defaultBlendOff
+- Removed ckDraw::setPreset_defaultBlendHalf
+- Removed ckDraw::setPreset_defaultBlendAdd
 
 
 Changes in 0.8.5 (released on November 11, 2009)

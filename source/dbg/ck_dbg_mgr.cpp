@@ -241,7 +241,7 @@ ckDbgMgr::ckDbgMgr()
     m_font_sprt.init(INITIAL_FONT_SPRT_NUM, DEBUG_MODE_SCREEN_ID);
     m_font_sprt.setTextureID(DEBUG_FONT_TEXTURE_ID);
     m_font_sprt.setCurDataNum(0);
-    m_font_sprt.setPreset_defaultBlendHalf();
+	m_font_sprt.setBlendMode(ckDraw::BLEND_HALF, true);
     m_font_sprt.setDrawFlag(ckDraw::FLAG_BILINEAR, false);
 
     m_dbg_daemon = ckNewTask(ckDbgDaemon);
@@ -286,7 +286,7 @@ void ckDbgMgr::reallocDrawPrim()
         ckPrim* prim = &new_draw_prim[i];
 
         prim->init(ckPrim::MODE_LINES, 4, ckDrawMgr::INVISIBLE_SCREEN_ID);
-        prim->setPreset_defaultBlendHalf();
+		prim->setBlendMode(ckDraw::BLEND_HALF, true);
     }
 
     if (m_draw_prim)

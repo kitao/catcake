@@ -63,7 +63,7 @@ Cat::Cat() : ckTask(ORDER_ZERO)
 
         sprt->init(1, &m_cat_root);
         sprt->setTextureID(ckID_("stephanie_275x196.png"));
-        sprt->setPreset_defaultBlendHalf();
+        sprt->setBlendMode(ckDraw::BLEND_HALF, true);
 
         sprt->setDataSize(0, 275.0f * 0.5f, 196.0f * 0.5f);
         sprt->dataAng(0) = ckMath::rand(-30, 30);

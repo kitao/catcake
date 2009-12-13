@@ -54,7 +54,7 @@ Coin::Coin() : ckTask(ORDER_ZERO)
 {
     m_coin_sprt.init(6, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
     m_coin_sprt.setTextureID(ckID_("coin_400x200.png"));
-    m_coin_sprt.setPreset_defaultBlendHalf();
+    m_coin_sprt.setBlendMode(ckDraw::BLEND_HALF, true);
 
     m_coin_sprt.dataPos(0).set(-200.0f, 150.0f);
     m_coin_sprt.dataPos(1).set(-200.0f, 0.0f);

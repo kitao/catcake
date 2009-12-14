@@ -59,7 +59,7 @@ void ckNodeTest()
         DepthTest getDepthTest() const
         void setDepthTest(DepthTest depth_test)
         BlendMode getBlendMode() const
-	    void setBlendMode(BlendMode blend_mode, bool is_auto_setting)
+	    void setBlendMode(BlendMode blend_mode, bool is_preset_setting)
         bool isDrawFlag(DrawFlag draw_flag) const
         void setDrawFlag(DrawFlag draw_flag, bool is_on)
         void clearDrawFlag()

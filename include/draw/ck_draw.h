@@ -268,9 +268,9 @@ public:
     /*!
         Sets the type of blend mode.
         @param[in] blend_mode The type of blend mode.
-		@param[in] is_auto_setting If true, sets other draw flags and the type of depth test automatically.
+		@param[in] is_preset_setting If true, sets other draw flags and the type of depth test automatically.
     */
-    void setBlendMode(BlendMode blend_mode, bool is_auto_setting);
+    void setBlendMode(BlendMode blend_mode, bool is_preset_setting);
 
     /*!
         Returns whether the specified draw flag is on.

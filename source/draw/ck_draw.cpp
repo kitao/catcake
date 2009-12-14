@@ -370,7 +370,7 @@ ckDraw::BlendMode ckDraw::getBlendMode() const
 }
 
 
-void ckDraw::setBlendMode(BlendMode blend_mode, bool is_auto_setting)
+void ckDraw::setBlendMode(BlendMode blend_mode, bool is_preset_setting)
 {
     if (m_private_flag.isOff(FLAG_INITIALIZED))
     {
@@ -379,7 +379,7 @@ void ckDraw::setBlendMode(BlendMode blend_mode, bool is_auto_setting)
 
     m_blend_mode = blend_mode;
 
-	if (is_auto_setting)
+	if (is_preset_setting)
 	{
 		setDepthTest(DEPTH_TEST_GEQUAL);
 		m_draw_flag.clear();

@@ -30,8 +30,10 @@
 
 
 BASE_DIR = ../../..
+DEV_DIR     = /Developer/Platforms/iPhoneOS.platform/Developer
+SDK_DIR     = $(DEV_DIR)/SDKs/iPhoneOS3.1.2.sdk
 
-CXX         = arm-apple-darwin9-g++
+CXX         = $(DEV_DIR)/usr/bin/arm-apple-darwin9-g++-4.0.1
 CXXFLAGS    = -O2 -Wall -s
 LDFLAGS     = -lobjc
 DEFINES     = -DNDEBUG -DCK_NO_THROW_EXCEPTION

@@ -29,9 +29,12 @@
 #
 
 
-CC          = arm-apple-darwin9-gcc
+DEV_DIR     = /Developer/Platforms/iPhoneOS.platform/Developer
+SDK_DIR     = $(DEV_DIR)/SDKs/iPhoneOS3.1.2.sdk
+
+CC          = $(DEV_DIR)/usr/bin/arm-apple-darwin9-gcc-4.0.1
 CCFLAGS     = -O2 -Wall -s
-DEFINES     = -DNDEBUG 
+DEFINES     = -DNDEBUG
 INCLUDES    = -I../zlib -I/var/include/gcc/darwin/4.0
 AR          = ar
 ARFLAGS     = rs

@@ -29,13 +29,15 @@
 #
 
 
-BASE_DIR = ../../..
+BASE_DIR    = ../../..
+DEV_DIR     = /Developer/Platforms/iPhoneOS.platform/Developer
+SDK_DIR     = $(DEV_DIR)/SDKs/iPhoneOS3.1.2.sdk
 
-CXX         = arm-apple-darwin9-g++
+CXX         = $(DEV_DIR)/usr/bin/arm-apple-darwin9-g++-4.0.1
 CXXFLAGS    = -O2 -Wall -s
 OBJCFLAGS   = -O2 -Wall -s
 DEFINES     = -DNDEBUG -DCK_IPHONE -DCK_NO_THROW_EXCEPTION
-INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/source -I$(BASE_DIR)/project/include/zlib -I$(BASE_DIR)/project/include/libpng -I$(BASE_DIR)/project/include/freetype -I/var/include/gcc/darwin/4.0 -I/var/include/c++/4.0.0
+INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/source -I$(BASE_DIR)/project/include/zlib -I$(BASE_DIR)/project/include/libpng -I$(BASE_DIR)/project/include/freetype -I$(SDK_DIR)/usr/lib/gcc/arm-apple-darwin9/4.0.1/include -I$(SDK_DIR)/usr/include -F$(SDK_DIR)/System/Library/Frameworks
 AR          = ar
 ARFLAGS     = rs
 SRCS        = $(shell find $(BASE_DIR)/source -name "*.cpp")  $(shell find $(BASE_DIR)/source -name "*.mm")

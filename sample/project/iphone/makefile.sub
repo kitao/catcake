@@ -29,8 +29,10 @@
 #
 
 
-BASE_DIR = ../..
+BASE_DIR    = ../..
 PACKAPP_DIR = $(BASE_DIR)/sample/project/iphone
+DEV_DIR     = /Developer/Platforms/iPhoneOS.platform/Developer
+SDK_DIR     = $(DEV_DIR)/SDKs/iPhoneOS3.1.2.sdk
 
 CXX         = arm-apple-darwin9-g++
 CXXFLAGS    = -O2 -Wall -s

@@ -38,6 +38,7 @@ class CK_API ckID
 public:
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionOutOfID);
+    ckDefineException(ExceptionTooLongString);
 
     static const ckID ZERO; //!< The initial id.
 
@@ -101,10 +102,14 @@ public:
     */
     static void setCurIDForSystem(u32 value);
 
+    /*!
+        Throws an exception to notify too-long-string is specified.
+    */
+    static s32 ThrowTooLongStringExceptionForSystem();
+
 private:
     static const u32 BIT_NUM = 32;
     static const u32 MAX_ID = (static_cast<u64>(1) << (BIT_NUM - 1)) - 1;
-    static const u32 MAX_STRING_LENGTH = 32;
 
     u32 m_id;
 
@@ -118,7 +123,7 @@ private:
     @param[in] str The seed of a unique value.
     @return A ckID.
 */
-#define ckID_(str) ckID::genIDForSystem(CK_ID_00(str, (sizeof("" str) < 33 ? sizeof(str) : 33)))
+#define ckID_(str) ckID::genIDForSystem(CK_ID_00(str, sizeof("" str)))
 
 
 #define CK_ID_00(str, len) ((len <= 1) ? 0 : (CK_ID_01(str, len - 1) | 0x80000000))
@@ -153,4 +158,4 @@ private:
 #define CK_ID_29(str, len) ((len <= 1) ? str[0] : CK_ID_30(str, len - 1) * 37 + str[len - 1])
 #define CK_ID_30(str, len) ((len <= 1) ? str[0] : CK_ID_31(str, len - 1) * 37 + str[len - 1])
 #define CK_ID_31(str, len) ((len <= 1) ? str[0] : CK_ID_32(str, len - 1) * 37 + str[len - 1])
-#define CK_ID_32(str, len) ((len <= 1) ? str[0] : 0)
+#define CK_ID_32(str, len) ((len <= 1) ? str[0] : ckID::ThrowTooLongStringExceptionForSystem())

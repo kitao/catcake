@@ -13,6 +13,7 @@ Changes in 0.9.0 (released on Xxxxx xx, xxxx)
 - Removed ckDraw::setPreset_defaultBlendOff
 - Removed ckDraw::setPreset_defaultBlendHalf
 - Removed ckDraw::setPreset_defaultBlendAdd
+- Modified ckID::genID and ckID_ macro
 
 
 Changes in 0.8.5 (released on November 11, 2009)

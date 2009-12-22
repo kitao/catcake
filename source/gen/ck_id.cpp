@@ -99,7 +99,7 @@ ckID ckID::genID(const char* str)
     {
         id.m_id = 0;
 
-        for (u32 i = 0; i < MAX_STRING_LENGTH && *str != '\0'; i++, str++)
+        for ( ; *str != '\0'; str++)
         {
             id.m_id = id.m_id * 37 + *str;
         }
@@ -129,4 +129,12 @@ void ckID::setCurIDForSystem(u32 value)
     }
 
     m_cur_id = value;
+}
+
+
+s32 ckID::ThrowTooLongStringExceptionForSystem()
+{
+    ckThrow(ExceptionTooLongString);
+
+    return 0;
 }

@@ -112,9 +112,7 @@ LOCAL_C_INCLUDES := \
 	apps/catcake/project/include/libpng \
 	apps/catcake/project/include/freetype
 
-LOCAL_CXXFLAGS := \
-	-DNDEBUG \
-	-DCK_ANDROID
+LOCAL_CXXFLAGS := -DNDEBUG -DCK_ANDROID
 
 LOCAL_LDLIBS := -L$(LOCAL_PATH)/../lib -lfreetype -lpng -lz -lGLESv1_CM
 

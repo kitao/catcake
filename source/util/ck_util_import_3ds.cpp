@@ -93,9 +93,27 @@ static void setNodeInfo(ckMdlData* mdl_data, u16 node_index, const ckMat& local,
         {
             u16 array_index = ckReadLittleEndian(face_array + (i + i / 3) * sizeof(u16), u16) * 2;
             r32 u = ckReadLittleEndian(uv_array + sizeof(r32) * (array_index + 0), r32);
-            r32 v = ckReadLittleEndian(uv_array + sizeof(r32) * (array_index + 1), r32);
+            r32 v = -ckReadLittleEndian(uv_array + sizeof(r32) * (array_index + 1), r32);
 
-            mdl_data->setVertUV(vert_index + i, u, -v);
+			if (u > 1.0f)
+			{
+				u -= static_cast<s32>(u);
+			}
+			else if (u < 0.0f)
+			{
+				u += static_cast<s32>(u) + 1.0f;
+			}
+
+			if (v > 1.0f)
+			{
+				v -= static_cast<s32>(v);
+			}
+			else if (v < 0.0f)
+			{
+				v += static_cast<s32>(v) + 1.0f;
+			}
+
+			mdl_data->setVertUV(vert_index + i, u, v);
         }
     }
 }

@@ -39,7 +39,9 @@
 */
 
 
-// #define CK_NO_THROW_EXCEPTION
+#if defined(CK_IPHONE) || defined(CK_ANDROID)
+#define CK_NO_THROW_EXCEPTION
+#endif
 
 
 #ifndef CK_API

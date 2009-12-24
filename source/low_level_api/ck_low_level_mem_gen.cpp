@@ -32,11 +32,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "ck_low_level_api.h"
+
 #ifndef CK_NO_THROW_EXCEPTION
 #include <new>
 #endif
-
-#include "ck_low_level_api.h"
 
 
 void* ckLowLevelAPI::malloc(u32 size)

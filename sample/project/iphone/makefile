@@ -40,10 +40,6 @@ all: clean
 	for i in $(BASE_DIR)/sample/sample*; do [ -d $$i ] && cp $(BASE_DIR)/sample/catcake_logo.cpp $$i/.; done
 	rm $(BASE_DIR)/sample/catcake_logo.cpp
 	for i in $(BASE_DIR)/sample/sample*; do [ -d $$i ] && make -C $$i; done
-	chmod -R 777 $(BASE_DIR)/sample/bin/*.app
-	chmod -R 777 $(BASE_DIR)/sample/data
-	cp -rf $(BASE_DIR)/sample/bin/*.app /Applications
-	cp -rf $(BASE_DIR)/sample/data /Applications
 
 clean:
 	rm -rf $(BASE_DIR)/sample/bin/*

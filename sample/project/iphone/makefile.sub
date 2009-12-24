@@ -56,7 +56,6 @@ clean:
 
 $(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJS) $(FRAMEWORKS) $(LIBS)
-	ldid -S $(TARGET)
 	sh $(PACKAPP_DIR)/packapp.sh $(TARGET)
 
 

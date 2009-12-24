@@ -54,7 +54,6 @@ clean:
 
 $(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJS) $(FRAMEWORKS) $(LIBS)
-	ldid -S $(TARGET)
 
 
 .SUFFIXES: .o .cpp

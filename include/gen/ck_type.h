@@ -152,11 +152,6 @@ private:
 };
 
 
-/*!
-    @ingroup ckGen
-    An enum type with specified size.
-    @tparam D The data type to store a value of the enum type.
-*/
 template<class D> class ckType<D, bool>
 {
 public:

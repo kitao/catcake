@@ -439,11 +439,6 @@ private:
 };
 
 
-/*!
-    @ingroup ckGen
-    A string with fixed length.
-    @tparam T The type of the elements of a string. Typically, either char or wchar_t is used.
-*/
 template<class T> class ckStr<T, 0>
 {
 private:

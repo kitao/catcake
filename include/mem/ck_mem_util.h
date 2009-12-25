@@ -32,7 +32,7 @@
 /*!
     @ingroup ckMem
     The operator new.
-    @param[in] The type of a class.
+    @param[in] type The type of a class.
     @return An instance of a class.
 */
 #define ckNew(type) new(ckMemMgr::mallocForSystem(sizeof(type), 0, __FILE__), NULL) type
@@ -140,7 +140,6 @@
 /*!
     @ingroup ckMem
     The dummy operator new for system.
-    @param[in] size_t The size of an instance.
     @param[in] ptr The pointer to be allocated.
     @return The memory.
 */

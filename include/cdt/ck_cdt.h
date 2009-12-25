@@ -309,7 +309,7 @@ public:
     /*!
         Returns whether two aabb-s touch each other.
         @param[in] aabb1 An aabb.
-        @param[in] aabb1 An aabb.
+        @param[in] aabb2 An aabb.
         @return Whether two aabb-s touch each other.
     */
     static bool checkTouch(const AABB& aabb1, const AABB& aabb2);

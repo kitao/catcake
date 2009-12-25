@@ -76,7 +76,7 @@ public:
         Initializes this motion data as read-and-write mode.
         @param[in] node_num The number of the nodes.
         @param[in] mot_num The number of the motions.
-        @param[in] key_num The number of the key frames.
+        @param[in] key_frame_num The number of the key frames.
     */
     void initAsWriter(u16 node_num, u16 mot_num, u32 key_frame_num);
 

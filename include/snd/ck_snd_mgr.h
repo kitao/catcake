@@ -163,7 +163,7 @@ public:
     /*!
         Starts fade in/out of the track volume.
         @param[in] trk_no A track number.
-        @param[in] trk_vol The volume of a track.
+        @param[in] to_trk_vol The volume of a track.
         @param[in] delta_per_frame The speed per frame.
     */
     static void fadeTrackVolume(u8 trk_no, u8 to_trk_vol, r32 delta_per_frame);

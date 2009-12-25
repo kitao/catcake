@@ -55,7 +55,7 @@ public:
 
     /*!
         Converts a string to a wchar string.
-        @param[out] buffer The output buffer.
+        @param[out] buf The output buffer.
         @param[in] buf_size The size of a buffer.
         @param[in] str A string.
     */
@@ -80,7 +80,7 @@ public:
         @param[out] normal The calculated normals.
         @param[in] prim_data A primitive data.
         @param[in] vert_num The number of the vertices.
-        @param[in] Whether smoothing is on.
+        @param[in] is_smoothing Whether smoothing is on.
     */
     static void calcNormalAsTriangles(ckVec* normal, const ckPrim::PrimData* prim_data, u16 vert_num, bool is_smoothing);
 
@@ -90,7 +90,7 @@ public:
         @param[out] height The height of an image.
         @param[out] format The pixel format.
         @param[in] data The data of A png image.
-        @param[in] data The size of the data.
+        @param[in] data_size The size of the data.
     */
     static bool readPNGInfo(u16* width, u16* height, ckTex::TexFormat* format, const void* data, u32 data_size);
 

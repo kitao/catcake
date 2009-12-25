@@ -125,7 +125,7 @@ public:
     /*!
         Sends a message to the specified task.
         @param[in] msg_id The ID of a message. If uxID::ZERO is specified, sends to all the tasks.
-        @param[in] message A message.
+        @param[in] msg A message.
     */
     static void sendMessage(ckID msg_id, ckMsg<4>& msg);
 

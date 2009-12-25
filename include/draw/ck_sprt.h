@@ -125,7 +125,7 @@ public:
     /*!
         Copies the specified sprite data.
         @param[in] dest_index The index of destination sprite data.
-        @param[in] src_prim A source primitive.
+        @param[in] src_sprt A source primitive.
         @param[in] src_index The index of souce primitive data. 
     */
     void copyData(u16 dest_index, const ckSprt* src_sprt, u16 src_index);
@@ -186,8 +186,29 @@ public:
     */
     r32& dataV2(u16 index);
 
+	/*!
+		Returns the reference to the angle of the specified sprite data.
+        @param[in] index The index of a sprite data.
+		@return The reference to the angle of the specified sprite data.
+	*/
     s32& dataAng(u16 index);
+
+	/*!
+		Sets the size of the specified sprite data.
+        @param[in] index The index of a sprite data.
+		@param[in] width The width of a aprite data.
+		@param[in] height The height of a aprite data.
+	*/
     void setDataSize(u16 index, r32 width, r32 height);
+
+	/*!
+		Sets the uv-value of the specified sprite data.
+        @param[in] index The index of a sprite data.
+        @param[in] u1 The u value of the left-top vertex of a sprite data.
+        @param[in] v1 The v value of the left-top vertex of a sprite data.
+        @param[in] u2 The u value of the right-bottom vertex of a sprite data.
+        @param[in] v2 The v value of the right-bottom vertex of a sprite data.
+	*/
     void setDataUV(u16 index, r32 u1, r32 v1, r32 u2, r32 v2);
 
 private:

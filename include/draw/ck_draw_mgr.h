@@ -215,7 +215,7 @@ public:
 
     /*!
         Deletes the specified texture.
-        @param[in] scr_id A texture ID.
+        @param[in] tex_id A texture ID.
     */
     static void deleteTexture(ckID tex_id);
 
@@ -300,19 +300,19 @@ public:
 
     /*!
         Creates a new shader.
-        @param[in] A shader ID.
-        @param[in] vertex shader code.
-        @param[in] fragment shader code.
-        @param[in] The number of an uniforms.
-        @param[in] The number of an attributes.
-        @param[in] The number of textures.
+        @param[in] shd_id A shader ID.
+        @param[in] vert_code Vertex shader code.
+        @param[in] frag_code fragment shader code.
+        @param[in] uni_num The number of an uniforms.
+        @param[in] att_num The number of an attributes.
+        @param[in] tex_num The number of textures.
         @return A shader.
     */
     static ckShd* newShader(ckID shd_id, const char* vert_code, const char* frag_code, u8 uni_num, u8 att_num, u8 tex_num);
 
     /*!
         Deletes the specified shader.
-        @param[in] A shader ID.
+        @param[in] shd_id A shader ID.
     */
     static void deleteShader(ckID shd_id);
 
@@ -330,28 +330,28 @@ public:
 
     /*!
         Returns whether the specified light-set exits.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
         @return Whether the specified light-set exits.
     */
     static bool hasLightSet(ckID lts_id);
 
     /*!
         Returns the specified light-set.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
         @return The specified light-set.
     */
     static ckLts* getLightSet(ckID lts_id);
 
     /*!
         Creates a new light-set.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
         @return A light-set.
     */
     static ckLts* newLightSet(ckID lts_id);
 
     /*!
         Deletes the specified light-set.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
     */
     static void deleteLightSet(ckID lts_id);
 

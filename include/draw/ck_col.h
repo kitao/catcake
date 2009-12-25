@@ -38,7 +38,10 @@ struct CK_API ckCol
     static const ckCol ZERO; //!< The color whose all components are 0s.
     static const ckCol FULL; //!< The color whose all components are 255s.
 
-    u8 r, g, b, a;
+    u8 r; //!< Red component.
+	u8 g; //!< Green component.
+	u8 b; //!< Blue component.
+	u8 a; //!< Alpha component.
 
     /*!
         Constructs a ckCol.
@@ -131,7 +134,7 @@ struct CK_API ckCol
     /*!
         Returns a ckCol which is this ckCol multiplied with right hand side scalar and divided by 255.
         The values of the components are clamped between 0 and 255.
-        @param[in] The right hand side scalar.
+        @param[in] s The right hand side scalar.
         @return A ckCol which is this ckCol multiplied with right hand side scalar and divided by 255.
     */
     ckCol operator*(r32 s) const;
@@ -140,7 +143,7 @@ struct CK_API ckCol
         Returns a ckCol which is the right hand side ckCol multiplied with the left hand side scalar.
         The values of the components are clamped between 0 and 255.
         @param[in] s The left hand side scalar.
-        @param[in] col The right hand side ckCol.
+        @param[in] cogl The right hand side ckCol.
         @return A ckCol which is the right hand side ckCol multiplied with the left hand side scalar.
     */
     CK_API friend ckCol operator*(r32 s, ckCol col);
@@ -148,7 +151,7 @@ struct CK_API ckCol
     /*!
         Multiplies this ckCol with the right hand side scalar.
         The values of the components are clamped between 0 and 255.
-        @param[in] The right hand side scalar.
+        @param[in] s The right hand side scalar.
     */
     void operator*=(r32 s);
 

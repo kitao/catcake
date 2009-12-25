@@ -100,6 +100,7 @@ public:
     /*!
         Returns the specified entry. The entry is searched from the previous of the some entry. If the entry doesn't exist, returns NULL.
         @param[in] ent_name The name of an entry.     
+        @param[in] ent An entry.
         @return The specified entry.
     */
     ckEnt* getEntryBeforeN(const char* ent_name, ckEnt* ent) const;
@@ -107,6 +108,7 @@ public:
     /*!
         Returns the specified entry. The entry is searched from the next of the some entry. If the entry doesn't exist, returns NULL.
         @param[in] ent_name The name of an entry.     
+        @param[in] ent An entry.
         @return The specified entry.
     */
     ckEnt* getEntryAfterN(const char* ent_name, ckEnt* ent) const;

@@ -121,7 +121,7 @@ public:
     */
     static void readFile(void* buf, u32 offset, u32 size, void* file_handler);
 
-    /*
+    /*!
         Writes the specified file.
         @param[in] offset The position of writing.
         @param[in] buf Data to be written.
@@ -157,13 +157,13 @@ public:
 
     /*!
         Destroys the specified thread.
-        @param[in] thread handler A thread handler.
+        @param[in] thread_handler A thread handler.
     */
     static void deleteThread(void* thread_handler);
 
     /*!
         Waits for the end of the specified thread.
-        @param[in] thread handler A thread handler.
+        @param[in] thread_handler A thread handler.
     */
     static void joinThread(void* thread_handler);
 
@@ -175,19 +175,19 @@ public:
 
     /*!
         Destroys the specified mutex.
-        @parma[in] mutex_handler A mutex handler.
+        @param[in] mutex_handler A mutex handler.
     */
     static void deleteMutex(void* mutex_handler);
 
     /*!
         Locks the specified mutex.
-        @parma[in] mutex_handler A mutex handler.
+        @param[in] mutex_handler A mutex handler.
     */
     static void lockMutex(void* mutex_handler);
 
     /*!
         Unlocks the specified mutex.
-        @parma[in] mutex_handler A mutex handler.
+        @param[in] mutex_handler A mutex handler.
     */
     static void unlockMutex(void* mutex_handler);
 
@@ -290,7 +290,7 @@ public:
 
     /*!
         Sets the initial directory. This method is only for system.
-        @param[in] args The number of the arguments of the main function.
+        @param[in] argc The number of the arguments of the main function.
         @param[in] argv The arguments of the main function.
     */
     static void setInitialDirectoryForSystem(s32 argc, char** argv);

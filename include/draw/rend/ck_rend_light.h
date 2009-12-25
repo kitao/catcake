@@ -41,13 +41,13 @@ public:
     */
     struct RendData
     {
-        ckVec normal;
+        ckVec normal; //!< The normal.
     };
 
     /*!
         Initializes this renderer.
         @param[in] prim A target primitive.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
     */
     void init(ckPrim* prim, ckID lts_id);
 
@@ -55,7 +55,7 @@ public:
         Initializes this renderer.
         @param[in] prim A target primitive.
         @param[in] rend_data Shared renderer data.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
     */
     void init(ckPrim* prim, RendData* rend_data, ckID lts_id);
 
@@ -67,13 +67,13 @@ public:
 
     /*!
         Sets the light-set ID.
-        @param[in] A light-set ID.
+        @param[in] lts_id A light-set ID.
     */
     void setLightSetID(ckID lts_id);
 
     /*!
         Returns the reference to the specified renderer data.
-        @param[in] The index of a renderer data.
+        @param[in] index The index of a renderer data.
         @return The reference to the specified renderer data.
     */
     ckVec& dataN(u16 index);

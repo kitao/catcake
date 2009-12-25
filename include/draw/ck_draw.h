@@ -110,7 +110,7 @@ public:
 
     /*!
         Makes this ckDraw belong to the specified screen.
-        @param[in] The id of a screen.
+        @param[in] scr_id The id of a screen.
     */
     void setScreenID(ckID scr_id);
 
@@ -324,7 +324,7 @@ public:
 
     /*!
         Sets the center position for sorting ckDraws.
-        @param[in] The center position for sorting ckDraws.
+        @param[in] sort_center The center position for sorting ckDraws.
     */
     void setSortCenter(const ckVec& sort_center);
 

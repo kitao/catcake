@@ -120,6 +120,7 @@ public:
 
     /*!
         Registers the specified resource.
+        @param[in] id The id of a resource.
         @param[in] ext The extension of a resource.
         @param[in] data The data of a resource.
         @param[in] data_size The size of a data.

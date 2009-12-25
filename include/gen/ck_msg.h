@@ -111,6 +111,10 @@ private:
 };
 
 
+/*!
+    @ingroup ckGen
+    A general purpose message with fixed number parameters.
+*/
 template<> class ckMsg<0>
 {
 private:

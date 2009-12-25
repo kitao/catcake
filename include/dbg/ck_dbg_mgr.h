@@ -44,8 +44,8 @@ public:
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotInitialized);
 
-    static const ckID DEBUG_MODE_SCREEN_ID;
-    static const ckID DEBUG_FONT_TEXTURE_ID;
+    static const ckID DEBUG_MODE_SCREEN_ID; //!< The debug console screen ID.
+    static const ckID DEBUG_FONT_TEXTURE_ID; //!< The debug font texture ID.
 
     /*!
         The debug modes.

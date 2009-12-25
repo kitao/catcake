@@ -349,8 +349,7 @@ public:
 
     /*!
         Calculates the position in the specified plane from the position in the framebuffer.
-        @param[in] x_in_screen A x-coordinate in the framebuffer.
-        @param[in] y_in_screen A y-coordinate in the framebuffer.
+        @param[in] x_in_framebuffer A x-coordinate in the framebuffer.
         @param[in] xy_plane A xy-plane.
         @return The position in the specified xy-plane.
     */

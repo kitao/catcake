@@ -119,7 +119,8 @@ public:
 
     /*!
         Sets the specified attributes as a vector.
-        @param[in] att_index the first index of attributes.
+		@param[in] data_index The index of renderer data.
+        @param[in] att_index The first index of attributes.
         @param[in] vec A vector.
     */
     void setAttribVec(u16 data_index, u8 att_index, const ckVec& vec);

@@ -379,35 +379,35 @@ void ckDraw::setBlendMode(BlendMode blend_mode, bool is_preset_setting)
 
     m_blend_mode = blend_mode;
 
-	if (is_preset_setting)
-	{
-		setDepthTest(DEPTH_TEST_GEQUAL);
-		m_draw_flag.clear();
-		m_draw_flag.setOn(FLAG_WRITE_RGB);
-		m_draw_flag.setOn(FLAG_BILINEAR);
+    if (is_preset_setting)
+    {
+        setDepthTest(DEPTH_TEST_GEQUAL);
+        m_draw_flag.clear();
+        m_draw_flag.setOn(FLAG_WRITE_RGB);
+        m_draw_flag.setOn(FLAG_BILINEAR);
 
-		switch (m_blend_mode.getType())
-		{
-		case BLEND_OFF:
-			m_draw_flag.setOn(FLAG_WRITE_DEPTH);
-			break;
+        switch (m_blend_mode.getType())
+        {
+        case BLEND_OFF:
+            m_draw_flag.setOn(FLAG_WRITE_DEPTH);
+            break;
 
-		case BLEND_HALF:
-			m_draw_flag.setOn(FLAG_SORT);
-			break;
+        case BLEND_HALF:
+            m_draw_flag.setOn(FLAG_SORT);
+            break;
 
-		case BLEND_ADD:
-			m_draw_flag.setOn(FLAG_SORT);
-			break;
+        case BLEND_ADD:
+            m_draw_flag.setOn(FLAG_SORT);
+            break;
 
-		case BLEND_DEST_ALPHA:
-			m_draw_flag.setOn(FLAG_WRITE_DEPTH);
-			break;
+        case BLEND_DEST_ALPHA:
+            m_draw_flag.setOn(FLAG_WRITE_DEPTH);
+            break;
 
-		default:
-			break;
-		}
-	}
+        default:
+            break;
+        }
+    }
 }
 
 

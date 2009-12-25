@@ -39,8 +39,10 @@ class ckRend_Light;
 class CK_API ckMdl
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         Constructs a model.

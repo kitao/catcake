@@ -38,10 +38,12 @@
 template<class K, class D> class ckMap
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotFound);
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionSameKeyExists);
+    //! @endcond
 
     /*!
         Constructs a ckMap.

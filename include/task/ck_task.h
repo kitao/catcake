@@ -41,8 +41,10 @@ class CK_API ckTask
     friend class ckTaskMgr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
+    //! @endcond
 
     /*!
         The types of the task orders.
@@ -168,9 +170,11 @@ public:
     virtual void onMessage(ckID msg_id, ckMsg<4>& msg);
 
 protected:
+    //! @cond
     ckTask(TaskOrder order);
     ckTask(ckTask* parent);
     virtual ~ckTask();
+    //! @endcond
 
 private:
     enum TaskFlag

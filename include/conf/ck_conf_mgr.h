@@ -38,10 +38,12 @@ class CK_API ckConfMgr
     friend class ckConf;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotFound);
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionSameIDExists);
+    //! @endcond
 
     /*!
         Returns whether ckConfMgr singleton is created.

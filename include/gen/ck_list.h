@@ -37,7 +37,9 @@
 template<class T> class ckList
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
+    //! @endcond
 
     /*!
         An element of ckList.
@@ -47,9 +49,11 @@ public:
         friend class ckList<T>;
 
     public:
+        //! @cond
         ckDefineException(ExceptionInvalidArgument);
         ckDefineException(ExceptionInvalidCall);
         ckDefineException(ExceptionNotInitialized);
+        //! @endcond
 
         /*!
             Constructs a ckList::Item.

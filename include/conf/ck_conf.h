@@ -41,10 +41,12 @@ class CK_API ckConf
     friend class ckConfMgr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionCannotOpenFile);
     ckDefineException(ExceptionCannotReadFile);
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
+    //! @endcond
 
     /*!
         Returns the previous configuration. If the previous configuration doesn't exist, returns NULL.

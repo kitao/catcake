@@ -36,10 +36,12 @@
 class CK_API ckMdlData
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionInvalidData);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         The version number of the model data format.

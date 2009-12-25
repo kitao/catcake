@@ -36,8 +36,10 @@
 class CK_API ckFix
 {
 public:
+    //! @cond
     ckDefineException(ExceptionOverflow);
     ckDefineException(ExceptionUnderflow);
+    //! @endcond
 
     /*!
         Constructs a ckFix.

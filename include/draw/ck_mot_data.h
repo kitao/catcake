@@ -36,10 +36,12 @@
 class CK_API ckMotData
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionInvalidData);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         The version number of the motion data format.

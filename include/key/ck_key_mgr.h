@@ -41,8 +41,10 @@ class CK_API ckKeyMgr
     friend class ckKeyDaemon;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         The number of the extra values.

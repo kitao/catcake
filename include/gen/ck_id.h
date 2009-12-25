@@ -36,9 +36,11 @@
 class CK_API ckID
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionOutOfID);
     ckDefineException(ExceptionTooLongString);
+    //! @endcond
 
     static const ckID ZERO; //!< The initial id.
 

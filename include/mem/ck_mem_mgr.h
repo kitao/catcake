@@ -36,11 +36,13 @@
 class CK_API ckMemMgr
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionInvalidSizeOfType);
     ckDefineException(ExceptionInvalidVersionOfHeader);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         Fills the memory by the specified value.

@@ -39,9 +39,11 @@ class CK_API ckDraw
     friend class ckDrawMgr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         The types of the drawable-objects.
@@ -373,6 +375,7 @@ public:
     ckCol calcFinalColor() const;
 
 protected:
+	//! @cond
     enum PrivateFlag
     {
         FLAG_INITIALIZED, //
@@ -406,6 +409,7 @@ protected:
     r32 m_sort_offset;
     r32 m_sort_value;
     ckDraw* m_next_sort;
+	//! @endcond
 
 private:
     ckDraw(const ckDraw&);

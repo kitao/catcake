@@ -41,7 +41,9 @@ class CK_API ckLit
     friend class ckLts;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
+    //! @endcond
 
     /*!
         Returns the previous point light. If the previous point light doesn't exist, returns NULL.

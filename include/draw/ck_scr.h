@@ -39,8 +39,10 @@ class CK_API ckScr
     friend class ckDrawMgr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
+    //! @endcond
 
     /*!
         The default focal length.

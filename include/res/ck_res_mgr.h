@@ -36,6 +36,7 @@
 class CK_API ckResMgr
 {
 public:
+    //! @cond
     ckDefineException(ExceptionCannotOpenFile);
     ckDefineException(ExceptionCannotReadFile);
     ckDefineException(ExceptionInvalidArgument);
@@ -43,6 +44,7 @@ public:
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionSameExtensionExists);
     ckDefineException(ExceptionSameIDExists);
+    //! @endcond
 
     /*!
         The resource initializer type.

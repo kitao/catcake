@@ -37,9 +37,11 @@
 template<class T> class ckBuf
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionOutOfBuffer);
+    //! @endcond
 
     /*!
         Constructs and initialize a ckBuf whose size is zero.

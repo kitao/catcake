@@ -41,12 +41,14 @@ class CK_API ckSndMgr
     friend class ckSndDaemon;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionInvalidType);
     ckDefineException(ExceptionNotFound);
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionWaveInitializerFailed);
+    //! @endcond
 
     /*!
         The number of the tracks.

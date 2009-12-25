@@ -36,7 +36,9 @@
 class CK_API ckNode : public ckDraw
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
+    //! @endcond
 
     /*!
         Constructs a node.

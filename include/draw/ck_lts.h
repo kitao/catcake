@@ -38,9 +38,11 @@ class CK_API ckLts
     friend class ckDrawMgr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotFound);
     ckDefineException(ExceptionSameIDExists);
+    //! @endcond
 
     /*!
         The maximum number of parallel lights.

@@ -152,6 +152,7 @@ private:
 };
 
 
+//! @cond
 template<class D> class ckType<D, bool>
 {
 public:
@@ -215,3 +216,4 @@ public:
 private:
     D m_type;
 };
+//! @endcond

@@ -44,7 +44,9 @@ public:
         friend class ckCdt;
 
     public:
+        //! @cond
         ckDefineException(ExceptionInvalidArgument);
+        //! @endcond
 
         /*!
             Returns the minimum coordinates of this bounding box.
@@ -78,7 +80,9 @@ public:
         friend class ckCdt;
 
     public:
+        //! @cond
         ckDefineException(ExceptionInvalidArgument);
+        //! @endcond
 
         /*!
             Constructs a sphere collision.
@@ -131,7 +135,9 @@ public:
         friend class ckCdt;
 
     public:
+		//! @cond
         ckDefineException(ExceptionInvalidArgument);
+		//! @endcond
 
         /*!
             Constructs a box collision.

@@ -36,10 +36,12 @@
 class CK_API ckFont
 {
 public:
+    //! @cond
     ckDefineException(ExceptionDrawStringFailed);
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         Constructs this font texture.

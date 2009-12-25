@@ -36,6 +36,7 @@
 class CK_API ckSysMgr
 {
 public:
+    //! @cond
     ckDefineException(ExceptionCannotCreateMutex);
     ckDefineException(ExceptionCannotCreateThread);
     ckDefineException(ExceptionCannotOpenFile);
@@ -45,6 +46,7 @@ public:
     ckDefineException(ExceptionEndCatcake);
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         The system flags.

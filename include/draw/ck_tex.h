@@ -49,9 +49,11 @@ class CK_API ckTex
     friend class ckDrawMgr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionVolatileTextureUploaded);
+    //! @endcond
 
     /*!
         The texture formats.

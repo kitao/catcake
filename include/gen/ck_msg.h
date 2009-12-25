@@ -37,9 +37,11 @@
 template<u8 N> class ckMsg
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionInvalidType);
+    //! @endcond
 
     /*!
         Constructs a ckMsg.
@@ -111,8 +113,10 @@ private:
 };
 
 
+//! @cond
 template<> class ckMsg<0>
 {
 private:
     ckMsg() {}
 };
+//! @endcond

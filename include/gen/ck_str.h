@@ -38,7 +38,9 @@
 template<class T, u8 N> class ckStr
 {
 public:
+    //! @cond
     ckDefineException(ExceptionOutOfRange);
+    //! @endcond
 
     /*!
         Constructs and initializes a ckStr whose length is zero.
@@ -439,8 +441,10 @@ private:
 };
 
 
+//! @cond
 template<class T> class ckStr<T, 0>
 {
 private:
     ckStr() {}
 };
+//! @endcond

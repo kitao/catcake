@@ -38,10 +38,12 @@ class CK_API ckTaskMgr
     friend class ckTask;
 
 public:
+    //! @cond
     ckDefineException(ExceptionDeleteTaskInDestructor);
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionNewTaskInDestructor);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         Returns whether the task manager singleton is created.

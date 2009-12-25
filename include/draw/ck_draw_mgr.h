@@ -42,6 +42,7 @@ class CK_API ckDrawMgr
     friend class ckScr;
 
 public:
+    //! @cond
     ckDefineException(ExceptionCalcFontDrawWidthFailed);
     ckDefineException(ExceptionCreateFreeTypeFailed);
     ckDefineException(ExceptionDestroyFreeTypeFailed);
@@ -53,6 +54,7 @@ public:
     ckDefineException(ExceptionNotInitialized);
     ckDefineException(ExceptionSameIDExists);
     ckDefineException(ExceptionTextureInitializerFailed);
+    //! @endcond
 
     /*!
         The ID of the invisible screen.

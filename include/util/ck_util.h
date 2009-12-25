@@ -36,8 +36,10 @@
 class CK_API ckUtil
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidData);
+    //! @endcond
 
     /*!
         Returns the length of the specified string.

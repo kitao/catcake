@@ -37,9 +37,11 @@
 template<class T> class ckTree
 {
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
     /*!
         Constructs a ckTree.

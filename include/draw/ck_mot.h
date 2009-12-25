@@ -38,9 +38,11 @@ class CK_API ckMot
     friend class ckJoin;
 
 public:
+    //! @cond
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionNotInitialized);
+    //! @endcond
 
 	/*!
 		The motion play modes.

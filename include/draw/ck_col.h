@@ -39,9 +39,9 @@ struct CK_API ckCol
     static const ckCol FULL; //!< The color whose all components are 255s.
 
     u8 r; //!< Red component.
-	u8 g; //!< Green component.
-	u8 b; //!< Blue component.
-	u8 a; //!< Alpha component.
+    u8 g; //!< Green component.
+    u8 b; //!< Blue component.
+    u8 a; //!< Alpha component.
 
     /*!
         Constructs a ckCol.

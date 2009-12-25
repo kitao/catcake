@@ -119,7 +119,7 @@ public:
 
     /*!
         Sets the specified attributes as a vector.
-		@param[in] data_index The index of renderer data.
+        @param[in] data_index The index of renderer data.
         @param[in] att_index The first index of attributes.
         @param[in] vec A vector.
     */

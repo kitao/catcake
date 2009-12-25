@@ -77,7 +77,7 @@ public:
     /*!
         Initializes this model data as read-and-write mode.
         @param[in] node_num The number of the nodes.
-		@param[in] vert_num The number of the verteces.
+        @param[in] vert_num The number of the verteces.
         @param[in] tex_id A texture ID.
         @param[in] has_normal Whether this model data has normals.
     */

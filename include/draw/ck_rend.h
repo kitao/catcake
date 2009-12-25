@@ -62,7 +62,7 @@ public:
     void setActive(bool is_active);
 
 protected:
-	//! @cond
+    //! @cond
     ckRend();
     void init(ckPrim* prim, u32 body_size, u32 data_size);
     void init(ckPrim* prim, u32 body_size, u32 data_size, void* rend_data);
@@ -136,7 +136,7 @@ protected:
     static void renderDisableAttribPointers(const ckShd* shd);
 
     static void renderCallPrimRenderWithDestroyingBuffer(ckPrim* prim, const ckMat& view);
-	//! @endcond
+    //! @endcond
 
 private:
     ckRend(const ckRend&);

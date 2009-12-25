@@ -44,9 +44,9 @@ public:
     ckDefineException(ExceptionNotInitialized);
     //! @endcond
 
-	/*!
-		The motion play modes.
-	*/
+    /*!
+        The motion play modes.
+    */
     enum PlayMode
     {
         PLAY_NORMAL, //!< Play once.

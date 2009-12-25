@@ -270,7 +270,7 @@ public:
     /*!
         Sets the type of blend mode.
         @param[in] blend_mode The type of blend mode.
-		@param[in] is_preset_setting If true, sets other draw flags and the type of depth test automatically.
+        @param[in] is_preset_setting If true, sets other draw flags and the type of depth test automatically.
     */
     void setBlendMode(BlendMode blend_mode, bool is_preset_setting);
 
@@ -375,7 +375,7 @@ public:
     ckCol calcFinalColor() const;
 
 protected:
-	//! @cond
+    //! @cond
     enum PrivateFlag
     {
         FLAG_INITIALIZED, //
@@ -409,7 +409,7 @@ protected:
     r32 m_sort_offset;
     r32 m_sort_value;
     ckDraw* m_next_sort;
-	//! @endcond
+    //! @endcond
 
 private:
     ckDraw(const ckDraw&);

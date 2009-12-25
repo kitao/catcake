@@ -135,9 +135,9 @@ public:
         friend class ckCdt;
 
     public:
-		//! @cond
+        //! @cond
         ckDefineException(ExceptionInvalidArgument);
-		//! @endcond
+        //! @endcond
 
         /*!
             Constructs a box collision.

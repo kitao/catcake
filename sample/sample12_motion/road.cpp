@@ -69,7 +69,7 @@ Stage::Stage() : ckTask(ORDER_ZERO)
     lts->setParaLightColor(0, ckCol(255, 128, 96));
 
     m_road_prim.init(ckPrim::MODE_TRIANGLE_STRIP, 6, ckDrawMgr::DEFAULT_3D_SCREEN_ID);
-	m_road_prim.setBlendMode(ckDraw::BLEND_HALF, true);
+    m_road_prim.setBlendMode(ckDraw::BLEND_HALF, true);
     m_road_prim.setSortOffset(-1000.0f);
 
     m_road_prim.dataPos(0).set(200.0f, 0.0f, -20000.0f);

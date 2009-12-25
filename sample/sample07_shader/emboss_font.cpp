@@ -45,10 +45,10 @@ static const char s_vert_code[] = //
     "" //
     "void main(void)" //
     "{" //
-    "	gl_Position = ck_local_to_screen * ck_vertex;" //
+    "    gl_Position = ck_local_to_screen * ck_vertex;" //
     "" //
-    "	vary_color = ck_color;" //
-    "	vary_texcoord = ck_texcoord;" //
+    "    vary_color = ck_color;" //
+    "    vary_texcoord = ck_texcoord;" //
     "}";
 
 
@@ -64,11 +64,11 @@ static const char s_frag_code[] = //
     "" //
     "void main()" //
     "{" //
-    "	const vec2 uv1 = vary_texcoord;" //
-    "	const vec2 uv2 = uv1 + vec2(ck_uni_02 / ck_uni_00, ck_uni_03 / ck_uni_01);" //
+    "    const vec2 uv1 = vary_texcoord;" //
+    "    const vec2 uv2 = uv1 + vec2(ck_uni_02 / ck_uni_00, ck_uni_03 / ck_uni_01);" //
     "" //
-    "	gl_FragColor.rgb = vary_color.rgb;" //
-    "	gl_FragColor.a = (texture2D(ck_tex_00, uv1).a - texture2D(ck_tex_00, uv2).a) * vary_color.a;" //
+    "    gl_FragColor.rgb = vary_color.rgb;" //
+    "    gl_FragColor.a = (texture2D(ck_tex_00, uv1).a - texture2D(ck_tex_00, uv2).a) * vary_color.a;" //
     "}";
 
 

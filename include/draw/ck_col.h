@@ -143,7 +143,7 @@ struct CK_API ckCol
         Returns a ckCol which is the right hand side ckCol multiplied with the left hand side scalar.
         The values of the components are clamped between 0 and 255.
         @param[in] s The left hand side scalar.
-        @param[in] cogl The right hand side ckCol.
+        @param[in] col The right hand side ckCol.
         @return A ckCol which is the right hand side ckCol multiplied with the left hand side scalar.
     */
     CK_API friend ckCol operator*(r32 s, ckCol col);
@@ -172,7 +172,7 @@ struct CK_API ckCol
 
     /*!
         Returns a ckCol which is interpolated between this ckCol and an another ckCol by the specified ratio, using linear interpolation.
-        param[in] to An another ckCol.
+        @param[in] to An another ckCol.
         @param[in] ratio The value which indicates how far to interpolate between two ckCols. This value is clamped between 0.0f and 1.0f.
         @return A ckCol which is interpolated between two ckCols.
     */

@@ -100,7 +100,7 @@ public:
         @param[in] buf_size The size of a buffer.
         @param[in] buf_line_size The size of buffer per line.
         @param[in] data The data of A png image.
-        @param[in] data The size of the data.
+        @param[in] data_size The size of the data.
     */
     static bool readPNGImage(void* buf, u32 buf_size, u32 buf_line_size, const void* data, u32 data_size);
 

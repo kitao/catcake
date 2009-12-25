@@ -138,7 +138,7 @@ public:
 
     /*!
         Resizes the specified memory. This method is only for system.
-        @param[inout] ptr The pointer to a memory.
+        @param[in,out] ptr The pointer to a memory.
         @param[in] size The size of a memory.
         @param[in] array_size The size of an array.
         @param[in] name The name of a memory.

@@ -32,23 +32,23 @@
 #include "catcake_main.h"
 
 
-void newHelloAndroid();
+void newHelloCatcake();
 
 
 ckMain()
 {
-    ckCreateCatcake("Hello Android", 320, 480, 30);
+    ckCreateCatcake("Hello Catcake", 320, 480, 30);
 
     /*
         The resource files need to be copied to the target by using 'adb push' command like this:
-            adb push hello_android/data /data/data/catcake_application.android_catcake/data
+            adb push hello_catcake/data /data/data/catcake_application.android_catcake/data
 
         And they must be specified by the absolute paths in ckResMgr::loadResource.
     */
-    ckResMgr::loadResource("/data/data/catcake_application.hello_android/data/catcake_logo_71x14.png", true);
-    ckResMgr::loadResource("/data/data/catcake_application.hello_android/data/stonsans.ttf", true);
+    ckResMgr::loadResource("/data/data/catcake_application.hello_catcake/data/catcake_logo_71x14.png", true);
+    ckResMgr::loadResource("/data/data/catcake_application.hello_catcake/data/stonsans.ttf", true);
 
-    newHelloAndroid();
+    newHelloCatcake();
 
     /*
         ckStartCatcake doesn't block in Catcake for Android.

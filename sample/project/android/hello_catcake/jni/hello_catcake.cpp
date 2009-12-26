@@ -32,10 +32,10 @@
 #include "catcake.h"
 
 
-class HelloAndroid : public ckTask
+class HelloCatcake : public ckTask
 {
 public:
-    HelloAndroid();
+    HelloCatcake();
 
 private:
     virtual void onUpdate();
@@ -46,15 +46,15 @@ private:
 };
 
 
-void newHelloAndroid()
+void newHelloCatcake()
 {
-    ckNewTask(HelloAndroid);
+    ckNewTask(HelloCatcake);
 }
 
 
-HelloAndroid::HelloAndroid() : ckTask(ORDER_ZERO)
+HelloCatcake::HelloCatcake() : ckTask(ORDER_ZERO)
 {
-    const char* text = "Hello, Android!";
+    const char* text = "Hello, Catcake!";
 
     ckDrawMgr::setFont(ckID_("stonsans.ttf"), 0);
     ckDrawMgr::setFontSize(40);
@@ -76,7 +76,7 @@ HelloAndroid::HelloAndroid() : ckTask(ORDER_ZERO)
 }
 
 
-void HelloAndroid::onUpdate()
+void HelloCatcake::onUpdate()
 {
     m_logo_prim.local() = m_logo_prim.local().rotateY_s32(3).rotateX_s32(1);
 }

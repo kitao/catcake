@@ -33,9 +33,9 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := hello_catcake
+LOCAL_MODULE := hello_android
 
-LOCAL_SRC_FILES := main.cpp hello_catcake.cpp
+LOCAL_SRC_FILES := main.cpp hello_android.cpp
 
 LOCAL_C_INCLUDES := apps/catcake/include
 

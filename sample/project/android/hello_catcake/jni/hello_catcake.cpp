@@ -63,8 +63,8 @@ HelloCatcake::HelloCatcake() : ckTask(ORDER_ZERO)
     m_text_font.drawString(0, 0, text);
 
     m_text_sprt.init(1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+    m_text_sprt.setBlendMode(ckDraw::BLEND_HALF, true);
     m_text_sprt.setTextureID(m_text_font.getTextureID());
-    m_text_sprt.setPreset_defaultBlendHalf();
     m_text_sprt.setDataSize(0, m_text_font.getWidth(), m_text_font.getHeight());
     m_text_sprt.local().trans.set(0.0f, 90.0f, 0.0f);
 

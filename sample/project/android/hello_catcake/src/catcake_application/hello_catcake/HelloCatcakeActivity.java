@@ -29,16 +29,16 @@
 */
 
 
-package catcake_application.hello_android;
+package catcake_application.hello_catcake;
 
 import android.app.Activity;
 import android.os.Bundle;
 import com.kitaoworks.catcake.Catcake;
 
 
-public class HelloAndroidActivity extends Activity
+public class HelloCatcakeActivity extends Activity
 {
-    private Catcake m_catcake = new Catcake("hello_android");
+    private Catcake m_catcake = new Catcake("hello_catcake");
 
     @Override public void onCreate(Bundle savedInstanceState)
     {

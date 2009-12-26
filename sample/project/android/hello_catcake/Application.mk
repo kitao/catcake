@@ -30,5 +30,5 @@
 
 
 APP_PROJECT_PATH := $(call my-dir)
-APP_MODULES      := hello_android
+APP_MODULES      := hello_catcake
 APP_PLATFORM     := android-4

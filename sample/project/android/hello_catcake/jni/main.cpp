@@ -41,7 +41,7 @@ ckMain()
 
     /*
         The resource files need to be copied to the target by using 'adb push' command like this:
-            adb push hello_catcake/data /data/data/catcake_application.android_catcake/data
+            adb push hello_catcake/data /data/data/catcake_application.hello_catcake/data
 
         And they must be specified by the absolute paths in ckResMgr::loadResource.
     */

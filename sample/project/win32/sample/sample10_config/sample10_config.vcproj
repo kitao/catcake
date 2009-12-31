@@ -197,24 +197,24 @@
 			Name="config"
 			>
 			<File
-				RelativePath="..\..\..\..\data\scenario.pgc"
+				RelativePath="..\..\..\..\data\scenario.ckl"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\data\setting.pgc"
+				RelativePath="..\..\..\..\data\setting.ckl"
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\..\..\sample01_debug\catcake_logo.cpp"
+			>
+		</File>
 		<File
 			RelativePath="..\..\..\..\sample10_config\coral.cpp"
 			>
 		</File>
 		<File
 			RelativePath="..\..\..\..\sample10_config\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\..\..\sample01_debug\catcake_logo.cpp"
 			>
 		</File>
 		<File

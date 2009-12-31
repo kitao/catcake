@@ -24,10 +24,8 @@
 %~d0
 cd %~p0\..\..
 
-del /s /q *.ncb
-del /s /q *.user
-del /s /q /ah *.suo
-del /s /q /ah Thumbs.db
+del /s /q *.o *.ncb *.user log
+del /s /q /ah *.suo Thumbs.db
 
 cd doc\
 rmdir /s /q .\reference\html

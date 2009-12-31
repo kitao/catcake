@@ -599,6 +599,18 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="android"
+					>
+					<File
+						RelativePath="..\..\..\..\source\low_level_api\android\ck_low_level_snd_android.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\source\low_level_api\android\ck_low_level_sys_android.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="gen"

@@ -29,37 +29,37 @@
 
 r32 ckLowLevelAPI::sqrt(r32 x)
 {
-    return ::sqrt(x);
+    return ::sqrtf(x);
 }
 
 
 r32 ckLowLevelAPI::sin(r32 rad)
 {
-    return ::sin(rad);
+    return ::sinf(rad);
 }
 
 
 r32 ckLowLevelAPI::cos(r32 rad)
 {
-    return ::cos(rad);
+    return ::cosf(rad);
 }
 
 
 r32 ckLowLevelAPI::asin(r32 x)
 {
-    return ::asin(x);
+    return ::asinf(x);
 }
 
 
 r32 ckLowLevelAPI::acos(r32 x)
 {
-    return ::acos(x);
+    return ::acosf(x);
 }
 
 
 r32 ckLowLevelAPI::atan2(r32 y, r32 x)
 {
-    return ::atan2(y, x);
+    return ::atan2f(y, x);
 }
 
 

@@ -2,6 +2,7 @@ Changes in 0.9.1 (released on XXX XX, 2010)
 ----------------------------------------------------------------
 
 - Switched from the New BSD license to the MIT license
+- Changed the standard math functions used in the LowLevelAPI class
 
 
 Changes in 0.9.0 (released on December 29, 2009)

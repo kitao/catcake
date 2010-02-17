@@ -173,7 +173,7 @@ private:
     void operator=(const ckTex&);
 
     u32 getTexObj();
-    void expandAndRegisterTexture_ptx();
+    void expandAndRegisterTexture_ctx();
     void expandAndRegisterTexture_png();
 
     ckID m_id;

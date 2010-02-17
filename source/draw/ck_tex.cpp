@@ -344,7 +344,7 @@ u32 ckTex::getTexObj()
             }
             else if (m_flag.isOn(FLAG_UV_ADJUST))
             {
-                expandAndRegisterTexture_ptx();
+                expandAndRegisterTexture_ctx();
             }
             else
             {
@@ -360,7 +360,7 @@ u32 ckTex::getTexObj()
 }
 
 
-void ckTex::expandAndRegisterTexture_ptx()
+void ckTex::expandAndRegisterTexture_ctx()
 {
     u16 valid_width = ckDrawMgr::getValidTextureLength(m_width);
     u16 valid_height = ckDrawMgr::getValidTextureLength(m_height);

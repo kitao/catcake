@@ -140,7 +140,7 @@ void ckDbgMgr::drawString(r32 left, r32 top, ckCol col, u8 scale, const char* st
 void ckDbgMgr::newDebugFontTexture()
 {
     ckTex* debug_font_tex = ckDrawMgr::newTexture(DEBUG_FONT_TEXTURE_ID, 128, 64, ckTex::FORMAT_ALPHA);
-    u8* debug_font_image = static_cast<u8*>(debug_font_tex->editImage());
+    u8* debug_font_image = static_cast<u8*>(debug_font_tex->beginEditImage());
 
     debug_font_tex->clearImage(ckCol::ZERO);
 
@@ -161,4 +161,6 @@ void ckDbgMgr::newDebugFontTexture()
             }
         }
     }
+
+    debug_font_tex->endEditImage();
 }

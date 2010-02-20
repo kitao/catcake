@@ -70,7 +70,9 @@ void ckFont::init(u16 width, u16 height)
         }
     }
 
+    m_tex->beginEditImage();
     m_tex->clearImage(ckCol::ZERO);
+    m_tex->endEditImage();
 }
 
 
@@ -129,14 +131,36 @@ u32 ckFont::getImageSize() const
 }
 
 
-void* ckFont::editImage()
+void* ckFont::beginEditImage()
 {
     if (!m_tex)
     {
         ckThrow(ExceptionNotInitialized);
     }
 
-    return m_tex->editImage();
+    return m_tex->beginEditImage();
+}
+
+
+void ckFont::endEditImage()
+{
+    if (!m_tex)
+    {
+        ckThrow(ExceptionNotInitialized);
+    }
+
+    return m_tex->endEditImage();
+}
+
+
+void ckFont::endEditImage(u16 x, u16 y, u16 width, u16 height)
+{
+    if (!m_tex)
+    {
+        ckThrow(ExceptionNotInitialized);
+    }
+
+    return m_tex->endEditImage(x, y, width, height);
 }
 
 
@@ -176,8 +200,9 @@ u16 ckFont::drawString(s16 x, s16 y, const char* str, ...)
     wchar_t buf2[256];
     ckUtil::charToWchar(buf2, 256, buf1);
 
-    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(m_tex->editImage(), m_tex->getWidth(), m_tex->getHeight(), //
+    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(m_tex->beginEditImage(), m_tex->getWidth(), m_tex->getHeight(), //
         ins->m_font_info, ins->m_font_index, ins->m_font_size, x, y, buf2);
+    m_tex->endEditImage();
 
     if (draw_width < 0)
     {
@@ -210,8 +235,9 @@ u16 ckFont::drawString(s16 x, s16 y, const wchar_t* str, ...)
     wchar_t buf[256];
     CK_VSWPRINTF(buf, 256, str);
 
-    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(m_tex->editImage(), m_tex->getWidth(), m_tex->getHeight(), //
+    s32 draw_width = ckLowLevelAPI::drawFreeTypeFont(m_tex->beginEditImage(), m_tex->getWidth(), m_tex->getHeight(), //
         ins->m_font_info, ins->m_font_index, ins->m_font_size, x, y, buf);
+    m_tex->endEditImage();
 
     if (draw_width < 0)
     {

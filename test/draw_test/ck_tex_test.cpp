@@ -143,6 +143,18 @@ void ckTexTest()
         ckTex* tex2 = ckDrawMgr::newTexture(ckID::genID(), 12, 13, ckTex::FORMAT_RGBA);
         ckTex* tex3 = ckDrawMgr::newTexture(ckID::genID(), 14, 15, ckTex::FORMAT_ALPHA);
 
+        ckPrim* prim1 = ckNew(ckPrim);
+        ckPrim* prim2 = ckNew(ckPrim);
+        ckPrim* prim3 = ckNew(ckPrim);
+
+        prim1->init(ckPrim::MODE_POINTS, 1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        prim2->init(ckPrim::MODE_POINTS, 1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+        prim3->init(ckPrim::MODE_POINTS, 1, ckDrawMgr::DEFAULT_2D_SCREEN_ID);
+
+        prim1->setTextureID(tex1->getID());
+        prim2->setTextureID(tex2->getID());
+        prim3->setTextureID(tex3->getID());
+
         ckAssertThrow(tex1->endEditImage(), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex1->endEditImage(0, 0, 0, 0), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex1->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
@@ -155,6 +167,8 @@ void ckTexTest()
         void* image2 = tex2->beginEditImage();
         void* image3 = tex3->beginEditImage();
         ckAssert(image1 && image2 && image3);
+
+        ckAssertThrow(ckDrawMgr::renderForSystem(), ckTex::ExceptionEndEditImageNotCalled);
 
         ckAssertThrow(tex1->endEditImage(0, 0, 0, 1), ckTex::ExceptionInvalidArgument);
         ckAssertThrow(tex1->endEditImage(0, 0, 1, 0), ckTex::ExceptionInvalidArgument);
@@ -273,6 +287,10 @@ void ckTexTest()
         ckAssertThrow(tex5->setVolatile(), ckTex::ExceptionInvalidCall);
 
         ckDrawMgr::renderForSystem();
+
+        ckDelete(prim1, ckPrim);
+        ckDelete(prim2, ckPrim);
+        ckDelete(prim3, ckPrim);
 
         ckDrawMgr::destroyBeforeRes();
     }

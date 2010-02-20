@@ -88,22 +88,83 @@ u32 ckTex::getImageSize() const
 }
 
 
-void* ckTex::editImage()
+void* ckTex::beginEditImage()
 {
-    if (m_mode != MODE_READ_WRITE)
+    if (m_mode != MODE_READ_WRITE || m_flag.isOn(ckTex::FLAG_EDIT))
     {
         ckThrow(ExceptionInvalidCall);
     }
 
-    m_flag.setOn(ckTex::FLAG_UPLOAD);
+    m_flag.setOn(ckTex::FLAG_EDIT);
 
     return const_cast<void*>(m_image);
 }
 
 
+void ckTex::endEditImage()
+{
+    if (m_flag.isOff(ckTex::FLAG_EDIT))
+    {
+        ckThrow(ExceptionInvalidCall);
+    }
+
+    m_flag.setOff(ckTex::FLAG_EDIT);
+    m_flag.setOn(ckTex::FLAG_UPLOAD);
+}
+
+
+void ckTex::endEditImage(u16 x, u16 y, u16 width, u16 height)
+{
+    if (m_flag.isOff(ckTex::FLAG_EDIT))
+    {
+        ckThrow(ExceptionInvalidCall);
+    }
+
+    if (width == 0 || height == 0 || x + width > m_width || y + height > m_height)
+    {
+        ckThrow(ExceptionInvalidArgument);
+    }
+
+    m_flag.setOff(ckTex::FLAG_EDIT);
+
+    if (m_flag.isOn(ckTex::FLAG_UPLOAD))
+    {
+        return;
+    }
+
+    u16 pixel_size = ckDrawMgr::getTexturePixelSize(m_format.getType());
+    u32 image_line_size = m_width * pixel_size;
+
+    u32 sub_image_line_size = width * pixel_size;
+    u32 sub_image_size = sub_image_line_size * height;
+    u8* sub_image = static_cast<u8*>(ckMalloc(sub_image_size));
+
+    const u8* src = static_cast<const u8*>(m_image) + x * pixel_size;
+    u8* dest = sub_image;
+
+    for (s32 i = 0; i < height; i++)
+    {
+        ckMemMgr::memcpy(dest, src, sub_image_line_size);
+
+        src += image_line_size;
+        dest += sub_image_line_size;
+    }
+
+    ckLowLevelAPI::replaceSubTexture(m_tex_obj, x, y, width, height, //
+        static_cast<ckLowLevelAPI::TextureFormat>(m_format.getType()), sub_image);
+
+    ckFree(sub_image);
+}
+
+
 void ckTex::clearImage(ckCol col)
 {
-    u8* image = static_cast<u8*>(editImage());
+    if (m_flag.isOff(ckTex::FLAG_EDIT))
+    {
+        ckThrow(ExceptionInvalidCall);
+    }
+
+    u8* image = static_cast<u8*>(const_cast<void*>(m_image));
 
     switch (m_format.getType())
     {
@@ -325,6 +386,11 @@ CK_DEFINE_OPERATOR_EQUAL(ckTex)
 
 u32 ckTex::getTexObj()
 {
+    if (m_flag.isOn(FLAG_EDIT))
+    {
+        ckThrow(ExceptionEndEditImageNotCalled);
+    }
+
     if (m_flag.isOn(FLAG_UPLOAD))
     {
         if (m_mode == MODE_VOLATILE)

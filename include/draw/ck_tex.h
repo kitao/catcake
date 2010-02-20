@@ -45,6 +45,7 @@ public:
     ckDefineException(ExceptionInvalidArgument);
     ckDefineException(ExceptionInvalidCall);
     ckDefineException(ExceptionVolatileTextureUploaded);
+    ckDefineException(ExceptionEndEditImageNotCalled);
     //! @endcond
 
     /*!
@@ -127,13 +128,29 @@ public:
     u32 getImageSize() const;
 
     /*!
-        Returns the raw image of this texture for editting.
+        Starts editing the raw image of this texture.
+        endEditImage must be called after editing.
         @return The raw image of this texture.
     */
-    void* editImage();
+    void* beginEditImage();
+
+    /*!
+        Ends editing the raw image and updates the whole area.
+    */
+    void endEditImage();
+
+    /*!
+        Ends editing the raw image and updates the specified area.
+        @param[in] x The left position of the modified area.
+        @param[in] y The top position of the modified area.
+        @param[in] width The width of the modified area.
+        @param[in] height The height of the modified area.
+    */
+    void endEditImage(u16 x, u16 y, u16 width, u16 height);
 
     /*!
         Sets the all pixels of this texture to 0.
+        beginEditImage must be called before this method.
     */
     void clearImage(ckCol col);
 
@@ -164,6 +181,7 @@ public:
 private:
     enum TexFlag
     {
+        FLAG_EDIT, //
         FLAG_UPLOAD, //
         FLAG_UV_ADJUST
     };

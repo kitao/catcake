@@ -169,6 +169,7 @@ public:
     static u16 getValidTextureLength(u16 length);
     static u16 getTexturePixelSize(TextureFormat format);
     static u32 registerTexture(u16 width, u16 height, TextureFormat format, const void* image);
+    static void replaceSubTexture(u32 tex_obj, u16 x, u16 y, u16 width, u16 height, TextureFormat format, const void* sub_image);
     static void unregisterTexture(u32 tex_obj);
     static void setTexture(u32 tex_obj1, u32 tex_obj2, u32 tex_obj3, bool is_bilinear);
     static void copyImageFromFramebufferToTexture( //

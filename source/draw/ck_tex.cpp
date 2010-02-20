@@ -139,7 +139,7 @@ void ckTex::endEditImage(u16 x, u16 y, u16 width, u16 height)
     u32 sub_image_size = sub_image_line_size * height;
     u8* sub_image = static_cast<u8*>(ckMalloc(sub_image_size));
 
-    const u8* src = static_cast<const u8*>(m_image) + x * pixel_size;
+    const u8* src = static_cast<const u8*>(m_image) + (m_width * y + x) * pixel_size;
     u8* dest = sub_image;
 
     for (s32 i = 0; i < height; i++)

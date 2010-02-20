@@ -3,6 +3,10 @@ Changes in 0.9.1 (released on XXX XX, 2010)
 
 - Switched from the New BSD license to the MIT license
 - Changed the standard math functions used in the LowLevelAPI class
+- Removed ckTex::editImage and ckFont::editImage
+- Added ckTex::beginEditImage and ckTex::endEditImage
+- Added ckFont::beginEditImage and ckFont::endEditImage
+- Modified ckTex::clearImage and ckFont::clearImage
 
 
 Changes in 0.9.0 (released on December 29, 2009)

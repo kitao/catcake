@@ -100,7 +100,9 @@ void ckFontTest()
     }
 
     /*
-        void* editImage()
+        void* beginEditImage()
+        void endEditImage()
+        void endEditImage(u16 x, u16 y, u16 width, u16 height)
         void clearImage()
     */
     {
@@ -108,24 +110,32 @@ void ckFontTest()
 
         ckFont font;
 
-        ckAssertThrow(font.editImage(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.beginEditImage(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.endEditImage(), ckFont::ExceptionNotInitialized);
+        ckAssertThrow(font.endEditImage(0, 0, 0, 0), ckFont::ExceptionNotInitialized);
         ckAssertThrow(font.clearImage(), ckFont::ExceptionNotInitialized);
 
         font.init(12, 34);
 
-        ckMemMgr::memset(font.editImage(), 123, font.getImageSize());
+        ckMemMgr::memset(font.beginEditImage(), 123, font.getImageSize());
+        font.endEditImage();
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {
             ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 123);
         }
 
+        font.beginEditImage();
         font.clearImage();
+        font.endEditImage();
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {
             ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 0);
         }
+
+        font.beginEditImage();
+        font.endEditImage(1, 2, 3, 4);
 
         ckDrawMgr::destroyBeforeRes();
     }

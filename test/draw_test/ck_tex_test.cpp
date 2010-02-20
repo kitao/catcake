@@ -129,7 +129,9 @@ void ckTexTest()
     }
 
     /*
-        void* editImage()
+        void* beginEditImage()
+        void endEditImage()
+        void endEditImage(u16 x, u16 y, u16 width, u16 height)
         void clearImage(ckCol col)
         void resizeImage(u16 width, u16 height)
         void setVolatile()
@@ -141,24 +143,45 @@ void ckTexTest()
         ckTex* tex2 = ckDrawMgr::newTexture(ckID::genID(), 12, 13, ckTex::FORMAT_RGBA);
         ckTex* tex3 = ckDrawMgr::newTexture(ckID::genID(), 14, 15, ckTex::FORMAT_ALPHA);
 
+        ckAssertThrow(tex1->endEditImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex1->endEditImage(0, 0, 0, 0), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex1->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
+
         ckAssert(tex1->getImageSize() == 10 * 11 * 3);
         ckAssert(tex2->getImageSize() == 12 * 13 * 4);
         ckAssert(tex3->getImageSize() == 14 * 15 * 1);
 
-        void* image1 = tex1->editImage();
-        void* image2 = tex2->editImage();
-        void* image3 = tex3->editImage();
+        void* image1 = tex1->beginEditImage();
+        void* image2 = tex2->beginEditImage();
+        void* image3 = tex3->beginEditImage();
         ckAssert(image1 && image2 && image3);
+
+        ckAssertThrow(tex1->endEditImage(0, 0, 0, 1), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->endEditImage(0, 0, 1, 0), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->endEditImage(8, 0, 3, 1), ckTex::ExceptionInvalidArgument);
+        ckAssertThrow(tex1->endEditImage(0, 9, 1, 3), ckTex::ExceptionInvalidArgument);
 
         ckMemMgr::memset(image1, 255, tex1->getImageSize());
         ckMemMgr::memset(image2, 255, tex2->getImageSize());
         ckMemMgr::memset(image3, 255, tex3->getImageSize());
 
+        tex1->endEditImage();
+        tex2->endEditImage();
+        tex3->endEditImage(1, 2, 3, 4);
+
         ckDrawMgr::renderForSystem();
+
+        tex1->beginEditImage();
+        tex2->beginEditImage();
+        tex3->beginEditImage();
 
         tex1->clearImage(ckCol(1, 2, 3, 4));
         tex2->clearImage(ckCol(1, 2, 3, 4));
         tex3->clearImage(ckCol(1, 2, 3, 4));
+
+        tex1->endEditImage();
+        tex2->endEditImage();
+        tex3->endEditImage(1, 2, 3, 4);
 
         for (s32 i = 0; i < tex1->getWidth() * tex1->getHeight(); i++)
         {
@@ -196,14 +219,18 @@ void ckTexTest()
         ckAssert(tex2->getImageSize() == 30 * 40 * 4);
         ckAssert(tex3->getImageSize() == 50 * 60 * 1);
 
-        image1 = tex1->editImage();
-        image2 = tex2->editImage();
-        image3 = tex3->editImage();
+        image1 = tex1->beginEditImage();
+        image2 = tex2->beginEditImage();
+        image3 = tex3->beginEditImage();
         ckAssert(image1 && image2 && image3);
 
         ckMemMgr::memset(image1, 255, tex1->getImageSize());
         ckMemMgr::memset(image2, 255, tex2->getImageSize());
         ckMemMgr::memset(image3, 255, tex3->getImageSize());
+
+        tex1->endEditImage();
+        tex2->endEditImage();
+        tex3->endEditImage(1, 2, 3, 4);
 
         ckDrawMgr::renderForSystem();
 
@@ -215,13 +242,13 @@ void ckTexTest()
         ckAssert(ckMemMgr::getCurUsedMemorySize() < used_memory_size);
 
         ckAssertThrow(tex1->setVolatile(), ckTex::ExceptionInvalidCall);
-        ckAssertThrow(tex1->editImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex1->beginEditImage(), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex1->resizeImage(123, 456), ckTex::ExceptionInvalidCall);
 
         ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);
         ckTex* tex4 = ckDrawMgr::getTexture(ckID_("rgb.png"));
 
-        ckAssertThrow(tex4->editImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex4->beginEditImage(), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex4->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex4->resizeImage(123, 456), ckTex::ExceptionInvalidCall);
 
@@ -240,7 +267,7 @@ void ckTexTest()
 
         ckAssert(!tex5->getImage() && tex5->getImageSize() == 0);
 
-        ckAssertThrow(tex5->editImage(), ckTex::ExceptionInvalidCall);
+        ckAssertThrow(tex5->beginEditImage(), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex5->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex5->resizeImage(123, 456), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex5->setVolatile(), ckTex::ExceptionInvalidCall);

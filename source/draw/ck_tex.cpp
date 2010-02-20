@@ -159,12 +159,12 @@ void ckTex::endEditImage(u16 x, u16 y, u16 width, u16 height)
 
 void ckTex::clearImage(ckCol col)
 {
-    if (m_flag.isOff(ckTex::FLAG_EDIT))
+    if (m_flag.isOn(ckTex::FLAG_EDIT))
     {
         ckThrow(ExceptionInvalidCall);
     }
 
-    u8* image = static_cast<u8*>(const_cast<void*>(m_image));
+    u8* image = static_cast<u8*>(beginEditImage());
 
     switch (m_format.getType())
     {
@@ -208,6 +208,8 @@ void ckTex::clearImage(ckCol col)
     default:
         break;
     }
+
+    endEditImage();
 }
 
 

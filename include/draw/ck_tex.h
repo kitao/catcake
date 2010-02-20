@@ -150,7 +150,7 @@ public:
 
     /*!
         Sets the all pixels of this texture to 0.
-        beginEditImage must be called before this method.
+        This method can't be called during editing the raw image.
     */
     void clearImage(ckCol col);
 

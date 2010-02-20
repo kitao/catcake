@@ -70,9 +70,7 @@ void ckFont::init(u16 width, u16 height)
         }
     }
 
-    m_tex->beginEditImage();
     m_tex->clearImage(ckCol::ZERO);
-    m_tex->endEditImage();
 }
 
 

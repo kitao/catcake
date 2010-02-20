@@ -157,7 +157,6 @@ void ckTexTest()
 
         ckAssertThrow(tex1->endEditImage(), ckTex::ExceptionInvalidCall);
         ckAssertThrow(tex1->endEditImage(0, 0, 0, 0), ckTex::ExceptionInvalidCall);
-        ckAssertThrow(tex1->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
 
         ckAssert(tex1->getImageSize() == 10 * 11 * 3);
         ckAssert(tex2->getImageSize() == 12 * 13 * 4);
@@ -168,6 +167,7 @@ void ckTexTest()
         void* image3 = tex3->beginEditImage();
         ckAssert(image1 && image2 && image3);
 
+        ckAssertThrow(tex1->clearImage(ckCol::ZERO), ckTex::ExceptionInvalidCall);
         ckAssertThrow(ckDrawMgr::renderForSystem(), ckTex::ExceptionEndEditImageNotCalled);
 
         ckAssertThrow(tex1->endEditImage(0, 0, 0, 1), ckTex::ExceptionInvalidArgument);
@@ -185,17 +185,9 @@ void ckTexTest()
 
         ckDrawMgr::renderForSystem();
 
-        tex1->beginEditImage();
-        tex2->beginEditImage();
-        tex3->beginEditImage();
-
         tex1->clearImage(ckCol(1, 2, 3, 4));
         tex2->clearImage(ckCol(1, 2, 3, 4));
         tex3->clearImage(ckCol(1, 2, 3, 4));
-
-        tex1->endEditImage();
-        tex2->endEditImage();
-        tex3->endEditImage(1, 2, 3, 4);
 
         for (s32 i = 0; i < tex1->getWidth() * tex1->getHeight(); i++)
         {

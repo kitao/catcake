@@ -125,9 +125,7 @@ void ckFontTest()
             ckAssert(*(static_cast<const u8*>(font.getImage()) + i) == 123);
         }
 
-        font.beginEditImage();
         font.clearImage();
-        font.endEditImage();
 
         for (u32 i = 0; i < font.getImageSize(); i++)
         {

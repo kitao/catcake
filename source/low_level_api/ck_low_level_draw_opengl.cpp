@@ -583,6 +583,25 @@ u32 ckLowLevelAPI::registerTexture(u16 width, u16 height, TextureFormat format, 
 }
 
 
+void ckLowLevelAPI::replaceSubTexture(u32 tex_obj, u16 x, u16 y, u16 width, u16 height, TextureFormat format, const void* sub_image)
+{
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, tex_obj);
+
+    if (sub_image)
+    {
+        static const GLint s_gl_internal_format[] =
+        {
+            GL_RGB, GL_RGBA, GL_ALPHA
+        };
+
+        glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, s_gl_internal_format[format], GL_UNSIGNED_BYTE, sub_image);
+    }
+
+    resetTexture();
+}
+
+
 void ckLowLevelAPI::unregisterTexture(u32 tex_obj)
 {
     glDeleteTextures(1, &tex_obj);

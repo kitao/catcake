@@ -69,9 +69,24 @@ public:
     static const ckID DEFAULT_LIGHT_SET_ID;
 
     /*!
-        The ID of the default shader.
+        The ID of the default no-texture shader.
     */
-    static const ckID DEFAULT_SHADER_ID;
+    static const ckID DEFAULT_NO_TEXTURE_SHADER_ID;
+
+    /*!
+        The ID of the default rgb-texture shader.
+    */
+    static const ckID DEFAULT_RGB_TEXTURE_SHADER_ID;
+
+    /*!
+        The ID of the default rgba-texture shader.
+    */
+    static const ckID DEFAULT_RGBA_TEXTURE_SHADER_ID;
+
+    /*!
+        The ID of the default alpha-texture shader
+    */
+    static const ckID DEFAULT_ALPHA_TEXTURE_SHADER_ID;
 
     /*!
         The maximum rendering interval time [msec].

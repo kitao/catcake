@@ -120,17 +120,45 @@ void ckDrawMgrTest()
     }
 
     /*
-        static const ckID DEFAULT_SHADER_ID
+        static const ckID DEFAULT_NO_TEXTURE_SHADER_ID
+        static const ckID DEFAULT_RGB_TEXTURE_SHADER_ID
+        static const ckID DEFAULT_RGBA_TEXTURE_SHADER_ID
+        static const ckID DEFAULT_ALPHA_TEXTURE_SHADER_ID
     */
     {
-        ckAssert(ckDrawMgr::DEFAULT_SHADER_ID == ckID_("DEFAULT_SHADER"));
+        ckAssert(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID == ckID_("DEFAULT_NO_TEXTURE_SHADER"));
+        ckAssert(ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID == ckID_("DEFAULT_RGB_TEXTURE_SHADER"));
+        ckAssert(ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID == ckID_("DEFAULT_RGBA_TEXTURE_SHADER"));
+        ckAssert(ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID == ckID_("DEFAULT_ALPHA_TEXTURE_SHADER"));
 
         ckDrawMgr::createAfterRes();
 
-        ckShd* shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
+        ckShd* shd;
+        
+        shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID);
+        ckAssert(shd->getID() == ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID);
+        ckAssert(shd->getUniformNum() == 8);
+        ckAssert(shd->getAttribNum() == 0);
+        ckAssert(shd->getTextureNum() == 0);
+        ckAssert(ckDrawMgr::isShaderAvailable() == shd->isValid());
 
-        ckAssert(shd->getID() == ckDrawMgr::DEFAULT_SHADER_ID);
-        ckAssert(shd->getUniformNum() == 9);
+        shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID);
+        ckAssert(shd->getID() == ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID);
+        ckAssert(shd->getUniformNum() == 8);
+        ckAssert(shd->getAttribNum() == 0);
+        ckAssert(shd->getTextureNum() == 1);
+        ckAssert(ckDrawMgr::isShaderAvailable() == shd->isValid());
+
+        shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID);
+        ckAssert(shd->getID() == ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID);
+        ckAssert(shd->getUniformNum() == 8);
+        ckAssert(shd->getAttribNum() == 0);
+        ckAssert(shd->getTextureNum() == 1);
+        ckAssert(ckDrawMgr::isShaderAvailable() == shd->isValid());
+
+        shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(shd->getID() == ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(shd->getUniformNum() == 8);
         ckAssert(shd->getAttribNum() == 0);
         ckAssert(shd->getTextureNum() == 1);
         ckAssert(ckDrawMgr::isShaderAvailable() == shd->isValid());
@@ -489,27 +517,31 @@ void ckDrawMgrTest()
 
         ckDrawMgr::createAfterRes();
 
-        ckShd* def_shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
-        ckAssert(def_shd->getID() == ckDrawMgr::DEFAULT_SHADER_ID);
-        ckAssert(ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_SHADER_ID));
-        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd && ckDrawMgr::getLastShaderN() == def_shd);
+        ckShd* def_shd1 = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID);
+        ckShd* def_shd2 = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(def_shd1->getID() == ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID && def_shd2->getID() == ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID) && ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID));
+        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd1 && ckDrawMgr::getLastShaderN() == def_shd2);
 
         ckID id = ckID_("TEST_SHADER");
         ckShd* shd = ckDrawMgr::newShader(id, "dummy", "dummy", 100, 100, 3);
         ckAssert(shd->getID() == id);
         ckAssert(ckDrawMgr::hasShader(id));
-        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd && ckDrawMgr::getLastShaderN() == shd);
+        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd1 && ckDrawMgr::getLastShaderN() == shd);
 
         ckAssertThrow(ckDrawMgr::newShader(id, "dummy", "dummy", 0, 0, 0), ckDrawMgr::ExceptionSameIDExists);
 
         ckDrawMgr::deleteShader(id);
         ckAssert(!ckDrawMgr::hasShader(id));
-        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd && ckDrawMgr::getLastShaderN() == def_shd);
+        ckAssert(ckDrawMgr::getFirstShaderN() == def_shd1 && ckDrawMgr::getLastShaderN() == def_shd2);
 
         ckAssertThrow(ckDrawMgr::deleteShader(id), ckDrawMgr::ExceptionNotFound);
 
-        ckDrawMgr::deleteShader(ckDrawMgr::DEFAULT_SHADER_ID);
-        ckAssert(!ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_SHADER_ID));
+        ckDrawMgr::deleteShader(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID);
+        ckDrawMgr::deleteShader(ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID);
+        ckDrawMgr::deleteShader(ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID);
+        ckDrawMgr::deleteShader(ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(!ckDrawMgr::hasShader(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID));
         ckAssert(!ckDrawMgr::getFirstShaderN() && !ckDrawMgr::getLastShaderN());
 
         ckAssertThrow(ckDrawMgr::hasShader(ckID::ZERO), ckDrawMgr::ExceptionInvalidArgument);

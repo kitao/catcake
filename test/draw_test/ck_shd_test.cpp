@@ -34,18 +34,19 @@ void ckShdTest()
     {
         ckDrawMgr::createAfterRes();
 
-        ckShd* def_shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
-        ckAssert(def_shd->getID() == ckDrawMgr::DEFAULT_SHADER_ID);
-        ckAssert(!def_shd->getPrevN() && !def_shd->getNextN());
+        ckShd* def_shd1 = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID);
+        ckShd* def_shd2 = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(def_shd1->getID() == ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID && def_shd2->getID() == ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID);
+        ckAssert(!def_shd1->getPrevN() && !def_shd2->getNextN());
 
         ckID id = ckID::genID();
         ckShd* shd = ckDrawMgr::newShader(id, "dummy", "dummy", 0, 0, 0);
         ckAssert(shd->getID() == id);
-        ckAssert(!def_shd->getPrevN() && def_shd->getNextN() == shd);
-        ckAssert(shd->getPrevN() == def_shd && !shd->getNextN());
+        ckAssert(!def_shd1->getPrevN() && def_shd2->getNextN() == shd);
+        ckAssert(shd->getPrevN() == def_shd2 && !shd->getNextN());
 
         ckDrawMgr::deleteShader(id);
-        ckAssert(!def_shd->getPrevN() && !def_shd->getNextN());
+        ckAssert(!def_shd1->getPrevN() && !def_shd2->getNextN());
 
         ckDrawMgr::destroyBeforeRes();
     }

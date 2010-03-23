@@ -37,7 +37,10 @@ const ckID ckDrawMgr::INVISIBLE_SCREEN_ID = ckID_("INVISIBLE_SCREEN");
 const ckID ckDrawMgr::DEFAULT_3D_SCREEN_ID = ckID_("DEFAULT_3D_SCREEN");
 const ckID ckDrawMgr::DEFAULT_2D_SCREEN_ID = ckID_("DEFAULT_2D_SCREEN");
 const ckID ckDrawMgr::DEFAULT_LIGHT_SET_ID = ckID_("DEFAULT_LIGHT_SET");
-const ckID ckDrawMgr::DEFAULT_SHADER_ID = ckID_("DEFAULT_SHADER");
+const ckID ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID = ckID_("DEFAULT_NO_TEXTURE_SHADER");
+const ckID ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID = ckID_("DEFAULT_RGB_TEXTURE_SHADER");
+const ckID ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID = ckID_("DEFAULT_RGBA_TEXTURE_SHADER");
+const ckID ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID = ckID_("DEFAULT_ALPHA_TEXTURE_SHADER");
 
 ckDrawMgr* ckDrawMgr::m_instance = NULL;
 
@@ -68,10 +71,17 @@ static const char s_default_vert_code[] = //
     "    vary_texcoord.t = ck_texcoord.t * ck_uni_06 + ck_uni_07;" //
     "}";
 
-
-static const char s_default_frag_code[] = //
-    "uniform int ck_uni_08;" // texture format
+static const char s_default_no_texture_frag_code[] = //
+    "varying vec4 vary_color;" //
+    "varying vec2 vary_texcoord;" //
     "" //
+    "" //
+    "void main()" //
+    "{" //
+    "    gl_FragColor = vary_color;" //
+    "}";
+
+static const char s_default_rgb_texture_frag_code[] = //
     "uniform sampler2D ck_tex_00;" //
     "" //
     "varying vec4 vary_color;" //
@@ -80,24 +90,33 @@ static const char s_default_frag_code[] = //
     "" //
     "void main()" //
     "{" //
-    "    if (ck_uni_08 == 1)" //
-    "    {" //
-    "        gl_FragColor.rgb = texture2D(ck_tex_00, vary_texcoord.st).rgb * vary_color.rgb;" //
-    "        gl_FragColor.a = vary_color.a;" //
-    "    }" //
-    "    else if (ck_uni_08 == 2)" //
-    "    {" //
-    "        gl_FragColor = texture2D(ck_tex_00, vary_texcoord.st) * vary_color;" //
-    "    }" //
-    "    else if (ck_uni_08 == 3)" //
-    "    {" //
-    "        gl_FragColor.rgb = vary_color.rgb;" //
-    "        gl_FragColor.a = texture2D(ck_tex_00, vary_texcoord.st).a * vary_color.a;" //
-    "    }" //
-    "    else" //
-    "    {" //
-    "        gl_FragColor = vary_color;" //
-    "    }" //
+    "    gl_FragColor.rgb = texture2D(ck_tex_00, vary_texcoord.st).rgb * vary_color.rgb;" //
+    "    gl_FragColor.a = vary_color.a;" //
+    "}";
+
+static const char s_default_rgba_texture_frag_code[] = //
+    "uniform sampler2D ck_tex_00;" //
+    "" //
+    "varying vec4 vary_color;" //
+    "varying vec2 vary_texcoord;" //
+    "" //
+    "" //
+    "void main()" //
+    "{" //
+    "    gl_FragColor = texture2D(ck_tex_00, vary_texcoord.st) * vary_color;" //
+    "}";
+
+static const char s_default_alpha_texture_frag_code[] = //
+    "uniform sampler2D ck_tex_00;" //
+    "" //
+    "varying vec4 vary_color;" //
+    "varying vec2 vary_texcoord;" //
+    "" //
+    "" //
+    "void main()" //
+    "{" //
+    "    gl_FragColor.rgb = vary_color.rgb;" //
+    "    gl_FragColor.a = texture2D(ck_tex_00, vary_texcoord.st).a * vary_color.a;" //
     "}";
 
 
@@ -170,7 +189,10 @@ void ckDrawMgr::createAfterRes()
 
     ckLowLevelAPI::resetDrawState();
 
-    newShader(DEFAULT_SHADER_ID, s_default_vert_code, s_default_frag_code, 9, 0, 1);
+    newShader(DEFAULT_NO_TEXTURE_SHADER_ID, s_default_vert_code, s_default_no_texture_frag_code, 8, 0, 0);
+    newShader(DEFAULT_RGB_TEXTURE_SHADER_ID, s_default_vert_code, s_default_rgb_texture_frag_code, 8, 0, 1);
+    newShader(DEFAULT_RGBA_TEXTURE_SHADER_ID, s_default_vert_code, s_default_rgba_texture_frag_code, 8, 0, 1);
+    newShader(DEFAULT_ALPHA_TEXTURE_SHADER_ID, s_default_vert_code, s_default_alpha_texture_frag_code, 8, 0, 1);
 }
 
 

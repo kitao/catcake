@@ -534,7 +534,14 @@ void ckSprt::render_shader(const ckMat& view)
     /*
         setup shader
     */
-    ckShd* shd = ckDrawMgr::getShader(ckDrawMgr::DEFAULT_SHADER_ID);
+    static const ckID s_shader_id[] =
+    {
+        ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID, ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID, ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID, //
+        ckDrawMgr::DEFAULT_RGB_TEXTURE_SHADER_ID, ckDrawMgr::DEFAULT_RGBA_TEXTURE_SHADER_ID, ckDrawMgr::DEFAULT_ALPHA_TEXTURE_SHADER_ID
+    };
+
+    ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
+    ckShd* shd = ckDrawMgr::getShader(tex ? s_shader_id[tex->m_format.getType()] : ckDrawMgr::DEFAULT_NO_TEXTURE_SHADER_ID);
 
     if (shd->isValid())
     {
@@ -549,7 +556,6 @@ void ckSprt::render_shader(const ckMat& view)
     /*
         alloc buffer
     */
-    ckTex* tex = m_tex ? (m_tex->m_proxy_tex ? m_tex->m_proxy_tex : m_tex) : NULL;
     u32 pos_size = sizeof(ckVec) * 4 * m_cur_data_num;
     u32 col_size = sizeof(ckCol) * 4 * m_cur_data_num;
     u32 uv_size = tex ? sizeof(r32) * 8 * m_cur_data_num : 0;
@@ -661,30 +667,11 @@ void ckSprt::render_shader(const ckMat& view)
         ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[6], tex->m_v_param_a);
         ckLowLevelAPI::setUniform_r32(shd->m_uni_loc_tbl[7], tex->m_v_param_b);
 
-        switch (tex->m_format.getType())
-        {
-        case ckTex::FORMAT_RGB:
-        case ckTex::FORMAT_PNG_RGB:
-            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 1);
-            break;
-
-        case ckTex::FORMAT_RGBA:
-        case ckTex::FORMAT_PNG_RGBA:
-            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 2);
-            break;
-
-        case ckTex::FORMAT_ALPHA:
-        case ckTex::FORMAT_PNG_ALPHA:
-            ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 3);
-            break;
-        }
-
         ckLowLevelAPI::setAttribPointer_r32(shd->m_texcoord_loc, 2, sizeof(r32) * 2, uv_buf);
     }
     else
     {
         ckLowLevelAPI::setTexture(0, 0, 0, false);
-        ckLowLevelAPI::setUniform_s32(shd->m_uni_loc_tbl[8], 0);
     }
 
     /*

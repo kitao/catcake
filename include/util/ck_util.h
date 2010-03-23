@@ -130,9 +130,9 @@ public:
         @param[in] tex_id The texture ID.
         @param[in] has_normal Whether a 3DS model has normals.
         @param[in] is_smoothing_normal Whether smoothing is on.
-        @param[in] scale THe scaling factor of a 3DS model.
+        @param[in] scale The scaling factor of a 3DS model.
     */
-    static void import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
+    static void import3DSModel(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
 
     /*!
         Imports a 3DS model as the specified resource ID.
@@ -141,7 +141,22 @@ public:
         @param[in] tex_id The texture ID.
         @param[in] has_normal Whether a 3DS model has normals.
         @param[in] is_smoothing_normal Whether smoothing is on.
-        @param[in] scale THe scaling factor of a 3DS model.
+        @param[in] scale The scaling factor of a 3DS model.
     */
-    static void import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
+    static void import3DSModelAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale);
+
+    /*!
+        Imports a 3DS motion.
+        @param[in] filename The file name.
+        @param[in] scale THe scaling factor of a 3DS motion.
+    */
+    static void import3DSMotion(const char* filename, r32 scale);
+
+    /*!
+        Imports a 3DS motion as the specified resource ID.
+        @param[in] res_id The resource ID of a 3DS model.
+        @param[in] filename The file name.
+        @param[in] scale The scaling factor of a 3DS model.
+    */
+    static void import3DSMotionAs(ckID res_id, const char* filename, r32 scale);
 };

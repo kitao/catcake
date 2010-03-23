@@ -293,14 +293,14 @@ void ckUtilTest()
     }
 
     /*
-        static void import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
-        static void import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+        static void import3DSModel(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+        static void import3DSModelAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
     */
     {
         ckRes res;
         ckMdlData mdl_data;
 
-        ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID_("test_tex"), false, false, 1.0f);
+        ckUtil::import3DSModel(TEST_DATA_DIR "valid.3ds", ckID_("test_tex"), false, false, 1.0f);
 
         res = ckResMgr::getResource(ckID_("valid.3ds"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
@@ -326,7 +326,7 @@ void ckUtilTest()
 
         ckResMgr::removeResource(ckID_("valid.3ds"));
 
-        ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID::ZERO, true, true, 2.0f);
+        ckUtil::import3DSModel(TEST_DATA_DIR "valid.3ds", ckID::ZERO, true, true, 2.0f);
 
         res = ckResMgr::getResource(ckID_("valid.3ds"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
@@ -337,7 +337,7 @@ void ckUtilTest()
 
         ckResMgr::removeResource(ckID_("valid.3ds"));
 
-        ckUtil::import3DSAs(ckID_("test"), TEST_DATA_DIR "valid.3ds", ckID::ZERO, true, false, 3.0f);
+        ckUtil::import3DSModelAs(ckID_("test"), TEST_DATA_DIR "valid.3ds", ckID::ZERO, true, false, 3.0f);
 
         res = ckResMgr::getResource(ckID_("test"));
         mdl_data.initAsReader(res.getData<void>(), res.getDataSize());
@@ -347,11 +347,19 @@ void ckUtilTest()
 
         ckResMgr::removeResource(ckID_("test"));
 
-        ckAssertThrow(ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, true, 1.0f), ckUtil::ExceptionInvalidArgument);
-        ckAssertThrow(ckUtil::import3DS(TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
-        ckAssertThrow(ckUtil::import3DSAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, true, 1.0f), ckUtil::ExceptionInvalidArgument);
-        ckAssertThrow(ckUtil::import3DSAs(ckID::genID(), TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
-        ckAssertThrow(ckUtil::import3DSAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DSModel(TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, true, 1.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DSModel(TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::import3DSModel(TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DSModelAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, true, 1.0f), ckUtil::ExceptionInvalidArgument);
+        ckAssertThrow(ckUtil::import3DSModelAs(ckID::genID(), TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
+        ckAssertThrow(ckUtil::import3DSModelAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
+    }
+
+    /*
+        static void import3DSMotion(const char* filename, r32 scale)
+        static void import3DSMotionAs(ckID res_id, const char* filename, r32 scale)
+    */
+    {
+        // TODO
     }
 }

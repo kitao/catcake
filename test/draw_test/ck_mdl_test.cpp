@@ -40,7 +40,7 @@ void ckMdlTest()
         ckDraw* getNodeDraw(u16 node_index)
     */
     {
-        ckUtil::import3DS(TEST_DATA_DIR "valid.3ds", ckID_("rgb.png"), false, false, 1.0f);
+        ckUtil::import3DSModel(TEST_DATA_DIR "valid.3ds", ckID_("rgb.png"), false, false, 1.0f);
 
         ckDrawMgr::createAfterRes();
         ckResMgr::loadResource(TEST_DATA_DIR "rgb.png", true);

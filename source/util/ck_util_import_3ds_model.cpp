@@ -27,9 +27,9 @@
 #include "ck_res_all.h"
 
 
-void ckUtil::import3DS(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+void ckUtil::import3DSModel(const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
 {
-    return import3DSAs(ckID::genID(ckUtil::getBasename(filename)), filename, tex_id, has_normal, is_smoothing_normal, scale);
+    return import3DSModelAs(ckID::genID(ckUtil::getBasename(filename)), filename, tex_id, has_normal, is_smoothing_normal, scale);
 }
 
 
@@ -111,7 +111,7 @@ static void setNodeInfo(ckMdlData* mdl_data, u16 node_index, const ckMat& local,
 }
 
 
-void ckUtil::import3DSAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
+void ckUtil::import3DSModelAs(ckID res_id, const char* filename, ckID tex_id, bool has_normal, bool is_smoothing_normal, r32 scale)
 {
     if ((!has_normal && is_smoothing_normal) || scale <= 0.0f)
     {

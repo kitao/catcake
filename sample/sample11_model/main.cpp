@@ -47,8 +47,8 @@ ckMain()
     ckResMgr::loadResource("../data/copyright_304x34.png", true);
     ckResMgr::loadResource("../data/golem.png", true);
     ckResMgr::loadResource("../data/jeep.png", true);
-    ckUtil::import3DS("../data/golem.3ds", ckID_("golem.png"), true, true, 1.5f);
-    ckUtil::import3DS("../data/jeep.3ds", ckID_("jeep.png"), true, true, 0.5f);
+    ckUtil::import3DSModel("../data/golem.3ds", ckID_("golem.png"), true, true, 1.5f);
+    ckUtil::import3DSModel("../data/jeep.3ds", ckID_("jeep.png"), true, true, 0.5f);
 
     newCatcakeLogo(s_cmd, sizeof(s_cmd) / sizeof(char*));
     newGolem();

@@ -800,7 +800,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\source\util\ck_util_import_3ds.cpp"
+					RelativePath="..\..\..\..\source\util\ck_util_import_3ds_model.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\source\util\ck_util_import_3ds_motion.cpp"
 					>
 				</File>
 				<File

@@ -6,6 +6,9 @@ Changes in 0.9.1 (released on XXX XX, 2010)
 - Removed ckTex::editImage and ckFont::editImage
 - Added ckTex::beginEditImage and ckTex::endEditImage
 - Added ckFont::beginEditImage and ckFont::endEditImage
+- Renamed ckUtil::import3DS to ckUtil::import3DSModel
+- Renamed ckUtil::import3DSAs to ckUtil::import3DSModelAs
+- Modified the default shader code to get better performance
 
 
 Changes in 0.9.0 (released on December 29, 2009)

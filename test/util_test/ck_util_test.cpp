@@ -354,12 +354,4 @@ void ckUtilTest()
         ckAssertThrow(ckUtil::import3DSModelAs(ckID::genID(), TEST_DATA_DIR "invalid.3ds", ckID::ZERO, false, false, 1.0f), ckUtil::ExceptionInvalidData);
         ckAssertThrow(ckUtil::import3DSModelAs(ckID::genID(), TEST_DATA_DIR "valid.3ds", ckID::ZERO, false, false, 0.0f), ckUtil::ExceptionInvalidArgument);
     }
-
-    /*
-        static void import3DSMotion(const char* filename, r32 scale)
-        static void import3DSMotionAs(ckID res_id, const char* filename, r32 scale)
-    */
-    {
-        // TODO
-    }
 }

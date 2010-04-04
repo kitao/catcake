@@ -804,10 +804,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\source\util\ck_util_import_3ds_motion.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\..\source\util\ck_util_load_pixel_art_model.cpp"
 					>
 				</File>

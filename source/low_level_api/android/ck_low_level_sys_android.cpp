@@ -370,6 +370,8 @@ extern void ckMain_();
 
 extern "C"
 {
+    static bool s_is_resumed = false;
+
     JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeInitialize(JNIEnv*, jobject)
     {
         ckMain_();
@@ -379,6 +381,13 @@ extern "C"
     {
         if (s_update_func)
         {
+            if (s_is_resumed)
+            {
+                s_is_resumed = false;
+
+                ckDrawMgr::deleteAllVramObjForSystem();
+            }
+
             while (!(*s_update_func)());
         }
     }
@@ -395,7 +404,7 @@ extern "C"
 
     JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeResume(JNIEnv*, jobject)
     {
-        ckDrawMgr::deleteAllVramObjForSystem();
+        s_is_resumed = true;
     }
 
     JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeTouch(JNIEnv*, jobject, jint action, jint x, jint y)

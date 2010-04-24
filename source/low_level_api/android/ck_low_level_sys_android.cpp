@@ -35,6 +35,7 @@
 
 #include "ck_sys_all.h" // for ckSysMgr::SysFlag
 #include "ck_key_all.h" // for ckKeyMgr::KeyType
+#include "ck_draw_all.h" // for ckDrawMgr::deleteAllVramObjForSystem
 
 
 static ckLowLevelAPI::KeyEventHandler s_key_event_handler = NULL;
@@ -387,7 +388,17 @@ extern "C"
         ckLowLevelAPI::exit(0);
     }
 
-    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeOnTouch(JNIEnv*, jobject, jint action, jint x, jint y)
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativePause(JNIEnv*, jobject)
+    {
+        // do nothing for now
+    }
+
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeResume(JNIEnv*, jobject)
+    {
+        ckDrawMgr::deleteAllVramObjForSystem();
+    }
+
+    JNIEXPORT void JNICALL Java_com_kitaoworks_catcake_Catcake_nativeTouch(JNIEnv*, jobject, jint action, jint x, jint y)
     {
         switch (action)
         {

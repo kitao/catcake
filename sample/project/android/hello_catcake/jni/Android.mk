@@ -33,6 +33,6 @@ LOCAL_C_INCLUDES := apps/catcake/include
 
 LOCAL_CXXFLAGS := -O2 -Wall -s -DNDEBUG -DCK_ANDROID
 
-LOCAL_LDLIBS := -Lapps/catcake/lib -lcatcake -lfreetype -lpng -lz -lGLESv1_CM
+LOCAL_LDLIBS := -Lapps/catcake/lib -lcatcake -lfreetype -lpng -lz -lGLESv1_CM -lgcc
 
 include $(BUILD_SHARED_LIBRARY)

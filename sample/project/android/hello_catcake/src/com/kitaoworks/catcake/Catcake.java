@@ -60,11 +60,13 @@ public class Catcake
     public void onPause()
     {
         m_view.onPause();
+        nativePause();
     }
 
     public void onResume()
     {
         m_view.onResume();
+        nativeResume();
     }
 
     public void onDestroy()
@@ -75,7 +77,9 @@ public class Catcake
     private static native void nativeInitialize();
     private static native void nativeUpdate();
     private static native void nativeFinalize();
-    private static native void nativeOnTouch(int action, int x, int y);
+    private static native void nativePause();
+    private static native void nativeResume();
+    private static native void nativeTouch(int action, int x, int y);
     //private static native void nativeOnKeyDown(int key_code);
     //private static native void nativeOnKeyUp(int key_code);
 
@@ -93,7 +97,7 @@ public class Catcake
 
         @Override public boolean onTouchEvent(MotionEvent event)
         {
-            nativeOnTouch(event.getAction(), (int)event.getX(), (int)event.getY());
+            nativeTouch(event.getAction(), (int)event.getX(), (int)event.getY());
 
             return true;
         }

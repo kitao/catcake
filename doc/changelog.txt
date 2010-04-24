@@ -9,6 +9,7 @@ Changes in 0.9.5 (released on April 25, 2010)
 - Renamed ckUtil::import3DS to ckUtil::import3DSModel
 - Renamed ckUtil::import3DSAs to ckUtil::import3DSModelAs
 - Modified the default shader code to get better performance
+- Adapted to Android NDK r3
 
 
 Changes in 0.9.0 (released on December 29, 2009)

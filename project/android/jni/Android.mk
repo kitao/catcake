@@ -94,7 +94,7 @@ LOCAL_SRC_FILES := \
 	../../../source/task/ck_task.cpp \
 	../../../source/task/ck_task_mgr.cpp \
 	../../../source/util/ck_util.cpp \
-	../../../source/util/ck_util_import_3ds.cpp \
+	../../../source/util/ck_util_import_3ds_model.cpp \
 	../../../source/util/ck_util_load_pixel_art_model.cpp
 
 LOCAL_C_INCLUDES := \

@@ -1,4 +1,4 @@
-Changes in 0.9.5 (released on April XX, 2010)
+Changes in 0.9.5 (released on April 25, 2010)
 ----------------------------------------------------------------
 
 - Switched from the New BSD license to the MIT license

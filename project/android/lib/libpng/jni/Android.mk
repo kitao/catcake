@@ -46,6 +46,6 @@ LOCAL_SRC_FILES := \
 
 LOCAL_C_INCLUDES := apps/libpng/libpng-1.2.40 apps/zlib/zlib-1.2.3
 
-LOCAL_CFLAGS := -O2 -Wall -s -DNDEBUG
+LOCAL_CFLAGS := -DNDEBUG
 
 include $(BUILD_STATIC_LIBRARY)

@@ -26,8 +26,8 @@ DEV_DIR     = /Developer/Platforms/iPhoneOS.platform/Developer
 SDK_DIR     = $(DEV_DIR)/SDKs/iPhoneOS3.1.2.sdk
 
 CXX         = $(DEV_DIR)/usr/bin/arm-apple-darwin9-g++-4.0.1
-CXXFLAGS    = -O2 -Wall -s
-OBJCFLAGS   = -O2 -Wall -s
+CXXFLAGS    = -O2 -fno-strict-aliasing -Wall -s
+OBJCFLAGS   = -O2 -fno-strict-aliasing -Wall -s
 DEFINES     = -DNDEBUG -DCK_IPHONE
 INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/source -I$(BASE_DIR)/project/include/zlib -I$(BASE_DIR)/project/include/libpng -I$(BASE_DIR)/project/include/freetype -I$(SDK_DIR)/usr/lib/gcc/arm-apple-darwin9/4.0.1/include -I$(SDK_DIR)/usr/include -F$(SDK_DIR)/System/Library/Frameworks
 AR          = $(DEV_DIR)/usr/bin/ar

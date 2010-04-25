@@ -25,7 +25,7 @@ DEV_DIR     = /Developer/Platforms/iPhoneOS.platform/Developer
 SDK_DIR     = $(DEV_DIR)/SDKs/iPhoneOS3.1.2.sdk
 
 CC          = $(DEV_DIR)/usr/bin/arm-apple-darwin9-gcc-4.0.1
-CCFLAGS     = -O2 -Wall -s
+CCFLAGS     = -O2 -fno-strict-aliasing -Wall -s
 DEFINES     = -DNDEBUG
 INCLUDES    = -I$(SDK_DIR)/usr/lib/gcc/arm-apple-darwin9/4.0.1/include -I$(SDK_DIR)/usr/include
 AR          = $(DEV_DIR)/usr/bin/ar

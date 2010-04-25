@@ -24,7 +24,7 @@
 BASE_DIR = ../../..
 
 CXX         = g++
-CXXFLAGS    = -O2 -Wall -s
+CXXFLAGS    = -O2 -fno-strict-aliasing -Wall -s
 LDFLAGS     =
 DEFINES     = -DNDEBUG -DCK_MACOSX
 INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/test

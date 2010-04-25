@@ -31,7 +31,7 @@ LOCAL_SRC_FILES := main.cpp hello_catcake.cpp
 
 LOCAL_C_INCLUDES := apps/catcake/include
 
-LOCAL_CXXFLAGS := -O2 -Wall -s -DNDEBUG -DCK_ANDROID
+LOCAL_CXXFLAGS := -DNDEBUG -DCK_ANDROID
 
 LOCAL_LDLIBS := -Lapps/catcake/lib -lcatcake -lfreetype -lpng -lz -lGLESv1_CM -lgcc
 

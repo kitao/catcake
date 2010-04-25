@@ -24,7 +24,7 @@
 BASE_DIR = ../../..
 
 CXX         = g++
-CXXFLAGS    = -O2 -Wall -s
+CXXFLAGS    = -O2 -fno-strict-aliasing -Wall -s
 DEFINES     = -DNDEBUG -DCK_LINUX
 INCLUDES    = -I$(BASE_DIR)/include -I$(BASE_DIR)/source -I$(BASE_DIR)/project/include/zlib -I$(BASE_DIR)/project/include/libpng -I$(BASE_DIR)/project/include/freetype
 

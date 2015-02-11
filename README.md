@@ -1,6 +1,6 @@
 # Catcake
 
-**Note: This is my old project moved from Google Code.**
+**Note: This is my old project moved from [Google Code](https://code.google.com/p/catcake/).**
 
 Catcake is a cross-platform 3D graphics engine intended to be easy-to-use and high performance, which also supports the features for game development, such as animation, input device handling and sound playing.
 
